@@ -1,0 +1,138 @@
+<html window-frame="transparent">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>PowerFramework</title>
+<style type="text/css">
+html {
+	background-color: transparent;
+}
+body {
+	margin: 10dip;
+	border-radius: 4dip;
+	overflow: hidden;
+	background-color: #EBF2F9;
+	box-shadow: 0 0 8dip 4dip rgba(100,100,100,0.5);
+}
+header {
+	margin: 0 0 10dip 0;
+	prototype: lowpoly url(script/lowpoly.tis);
+	size: * 180dip;
+	color: white;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 20pt;
+}
+header > caption {
+	margin: *;
+	size: max-content;
+}
+controlbar {
+	display: block;
+	margin: 0 0 * *;
+	size: max-content;
+	flow: horizontal;
+}
+controlbar > button {
+	margin: 0;
+	padding: 0;
+	size: 20dip;
+	background: 50% 50% no-repeat;
+	background-size: 16dip;
+	border-radius: 0;
+}
+controlbar > button:hover {
+	background-color: rgba(9,163,220,0.5);
+} 
+controlbar > button:active {
+	background: 50% 70% no-repeat;
+	background-color: rgba(9,163,220,0.7);
+} 
+controlbar > #minimize  {
+	background-image: url(pfw://zip/images[btn_mini.png]);
+} 
+controlbar > #close {
+	background-image: url(pfw://zip/images[btn_close.png]);
+}
+controlbar > #close:hover {
+	background-color: #D44027
+}
+#main {
+	margin: 10dip * 10dip *;
+	size: max-content;
+	vertical-align: middle;
+	border-spacing: 10dip;
+	flow: horizontal;
+}
+#inputs {
+	border-spacing: 0dip;
+	//flow: vertical;
+	flow: stack;
+}
+input {
+	padding-left: 16px;
+	background: none;
+	background-color: white;
+	border: 1dip solid rgb(200,200,200);
+}
+input:hover {
+	border: 1dip solid rgb(0,189,255);
+	transition: border(linear,150ms);
+}
+input:focus {
+	z-index: 1;
+	border: 1dip solid rgb(0,149,215);
+	transition: border(linear,150ms);
+}
+input:not(focus) {
+	z-index: 0;
+}
+button {
+	background: none;
+	vertical-align: middle;
+	text-align: center;
+	color: #fff;
+	background-color: #09A3DC;
+	border-radius: 4dip;
+}
+button:hover {
+	background-color: #3CC3F5;
+	transition: background-color(linear,150ms);
+}
+button:active {
+	background-color: #098CBC;
+	transition: none;
+}
+#txtUid {
+	border-radius: 4dip 4dip 0 0;
+}
+#txtPsw {
+	//margin-top: 24dip;
+	margin-top: calc(self.previous().box-border-height() - 1dip);
+	border-radius: 0 0 4dip 4dip;
+}
+#btnLogin {
+	display: block;
+	size: 40dip 40dip;
+}
+</style>
+<script type="text/tiscript">
+</script>
+</head>
+<body>
+<header role="window-caption">
+	<caption disable>PowerFramework</caption>
+	<controlbar>
+		<button#minimize role="window-minimize" tooltip="最小化"></button>
+		<button#close role="window-close" tooltip="关闭"></button>
+	</controlbar>
+</header>
+<div#main>
+	<img#logo src="img/logo.png"/>
+	<div#inputs>
+		<input#txtUid/>
+		<input#txtPsw/>
+	</div>
+	<button#btnLogin>登  录</button>
+</div>
+</body>
+</html>

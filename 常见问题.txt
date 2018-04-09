@@ -1,0 +1,5 @@
+解决连接ORACLE后加载DLL失败:
+API定义:
+Function Ulong LoadLibrary(string lpLibFileName) Library "Kernel32.dll" Alias for "LoadLibraryW"
+Open事件:
+LoadLibrary("pfw.dll")
