@@ -1,6 +1,61 @@
 pfw/PowerFramework/PowerUI QQ技术交流群:303560219
 by gaoqiangz@msn.com
 ---------------------
+1.2.4.822(2018-05-28)
+[新增]
+1.[pfw.utility.invoker]
+增加n_cst_eventful对象（事件分发器，见pfw.pbl::w_test_eventful）
+2.[pfw.utility.regexp]
+RegExpFind全局函数增加分组index重载版本
+3.[pfw.thread]
+重构线程事件分发机制（采用n_cst_eventful）
+n_cst_threading/n_cst_threading_task增加of_On/of_Off函数订阅事件（见pfw.pbl::w_test_thread）
+4.[pfw.utility.invoker]
+n_scriptinvoker增加SetArgs函数（通过数组传递参数列表）
+5.[pfw.net.http.ext]
+n_cst_alipay增加#SignType属性支持指定签名算法的类型（现在新的支付宝应用开始采用RSA2）
+6.[pfw.crypto]
+增加HexEncode/HexDecode全局函数（对blob进行16进制编解码）
+7.[pfw.ui.objects]
+n_cst_splitcontainer/n_cst_splitcontainer_panel增加of_GetWidth/of_GetHeight函数
+8.[pfw.ui.objects]
+n_cst_splitcontainer_panel增加#Fixed属性和of_SetFixed函数，设置panel在拖动拆分条时固定大小（见pfw.pbl::w_test_splitcontainer_complex）
+9.[pfw.ui.sciter.ext]
+n_cst_sciter_treeview_option增加of_IsPopulated函数
+10.[pfw.ui.controls]
+s_cst_singlelineedit/s_cst_dropdownlist重写[Default Text]功能（默认提示文本）
+11.[pfw.datawindow.services]
+n_cst_dwsvc_dropdownsearch支持多音字检索，增加DDSPYFirstLetterLike全局函数
+12.[pfw.ui.controls]
+u_cst_tabpage/s_cst_tabpagew增加OnReposition事件
+[调整]
+1.[pfw.thread]
+n_cst_threading/n_cst_threading_task移除#NotifyObject属性和of_SetNotifyObject函数，原OnThreadNotify通知事件请订阅："common-notify"
+2.[pfw.thread]
+n_cst_threading/n_cst_threading_task移除OnStarted/onStopped事件
+3.[pfw.thread]
+n_cst_threading_task移除OnPreNotify/OnNotified事件
+4.[pfw.thread]
+n_cst_threading_task的#Type属性改为string类型
+5.[pfw.ui.controls]
+u_cst_splitcontainer删除OnSplitBarMoving事件
+6.[pfw.ui.controls]
+s_cst_singlelineedit/s_cst_dropdownlist删除of_GetText/of_IsDefaultText函数（不再需要）
+7.[pfw.ui.controls]
+s_cst_editmask/s_cst_multiline移除[Default Text]功能（不兼容这种风格）
+8.[pfw.datawindow.services]
+删除DDSGetPYFirstLetter全局函数
+[修复]
+1.[pfw.net.http]
+请求失败时可能出现缓冲区溢出的问题
+2.[pfw.net.http]
+修复对SSL 2.0的支持（不建议使用！）
+3.[pfw.thread.ext]
+修复n_cst_thread_task_sqlupdate对自增列的判断
+4.[pfw.utility.compiler]
+修复在连续调用Evaluate执行不同的脚本时没有更新缓存的问题
+---------------------
+
 1.2.3.659(2018-04-09)
 [新增]
 1.[pfw.ui.sciter]
