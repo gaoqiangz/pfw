@@ -1,0 +1,43 @@
+﻿<html>
+<head>
+<style type="text/css">
+div {
+	width: 100px;
+	height: 100px;
+	color: red;
+}
+</style>
+<script type="text/javascript">
+function global_function(a,b,c)
+{
+	alert(a.toString()+"\n"+b.toString()+"\n"+c.toLocaleDateString());
+	return "js return value";
+}
+function test_pb_function(fn)
+{
+	try
+	{
+		return fn(1,2);
+	}
+	catch (ex)
+	{
+		alert(ex);
+		return ex.toString();
+	}
+}
+function test_pb_object(obj)
+{
+	alert(obj.$ClassName());
+	alert(obj["#isVar"]);
+	obj.Title = "test_pb_object";
+}
+</script>
+</head>
+<body>
+<input type="checkbox" id="cbx">hahah</input>
+<div id="a" x="x" c="a">a</div>
+<div id="b">b</div>
+<div id="c">c</div>
+<img src="pbr://res/zip/images[logo.png]"/>
+</body>
+</html>

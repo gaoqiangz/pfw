@@ -1,0 +1,67 @@
+<html>
+<head>
+<style>
+	@import url(md.css);
+	@import url(notification.css); 
+	html  { background-color: white;overflow: scroll-indicator; }
+	p.img { margin:*; width:max-intrinsic; color:black;} 
+	body  { margin:0; }
+	div#dw{height:200}
+	button#test-csss 
+	{ 
+		click! : $1(span#csss):value = "csss! works!"; 
+	}
+</style>
+<script type="text/tiscript">
+	$(#test-invoke).onClick = function(){
+		try
+		{
+			//传Sciter函数对象给PB调用
+			view.testSciterFunctionObject(function(arg){
+				view.msgbox("Sciter - testSciterFunctionObject",arg);
+			});
+			//调用PB端函数并获得返回结果集
+			var pbRetVal = view.getValueFromPB("param");
+			//调用PB函数对象
+			pbRetVal.PBFunc("Sciter value");
+			//显示PB传回的字符值
+			view.msgbox("Sciter - PBValue",pbRetVal.PBValue);
+			//显示PB传回的Element的值
+			view.msgbox("Sciter - Element Value",pbRetVal.Element.value);
+			//调用元素的自定义函数
+			view.msgbox("Sciter - PBValue",$(#test-eventhandler).testElementMethod("TEST VALUE"));
+		}
+		catch (ex)
+		{
+			view.msgbox("EXCEPTION",ex);
+		}
+	}
+	
+    $(button#notify).onClick = function() {
+      Notification.show($(#notifyInfo).value,"Notifycation");     
+    }
+</script>
+</head>
+<body>
+<p>Test animation: <img src="progress.gif"/></p>
+<p>Test pbr res: <img src="pbr://res.pbd|zip|images[waiting.png]"/></p>
+<p>Test CSSS!: <button #test-csss>Press me</button> <span #csss /></p>
+<p>Test element event handler: <button.raised #test-eventhandler>Press me</button></p>
+<p>Test invoke method: <button.raised #test-invoke>Invoke</button></p>
+<p>Test notifycation: <input #notifyInfo value="Hello world!"> <button.raised #notify>Show notification</button></input></p>
+<p>DataWindow:</p>
+<div #dw></div>
+
+<p.img>
+<img src="data:image/jpeg;base64,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"/>
+<br/>Hello world!</p>
+
+
+<popup #notification>
+  <header>Question:</header>
+  <content></content>
+</popup>
+
+</body>
+</html>
+

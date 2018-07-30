@@ -1,6 +1,62 @@
 pfw/PowerFramework/PowerUI QQ技术交流群:303560219
 by gaoqiangz@msn.com
+---------------------------------------
+****************************************
+***  #! 为可能会引起兼容问题的修改   ***
+****************************************
+*** pfw从2.0开始必须初始化后才能使用 ***
+****************************************
+---------------------------------------
+2.0.1.1068(2018-07-30)
+[新增]
+1.[pfw.ui.blink]
+集成blink渲染引擎（MiniBlink），提供与sciter一致的交互方式
+2.[pfw.utility.devinfo]
+增加u_cameracapture（USB摄像头捕获控件，支持多摄像头，见pfw.pbl::w_test_camera_capture）
+3.[pfw.net.ftp]
+增加n_ftpclient对象（见pfw.pbl::w_test_ftpclient）
+4.[pfw.net.ftp]
+增加FtpDownload/FtpUpload全局辅助函数，函数可能有多个重载版本（封装调用n_ftpclient）
+5.[pfw.ui]
+增加进度条控件（见：pfw.pbl::w_test_progressbar）
+6.[pfw.utility]
+增加GetPinyinFirstLetter获取汉字拼音首字母全局函数（GetPinyinFirstLetters支持多音字组合）
+7.[pfw.ui.sciter]
+n_sciterelement增加GetTagName/SetName/SetID/HasAttribute函数(GetTagName等于原来的GetName函数，现在的GetName函数返回"name"属性的值)
+8.[pfw.ui.sciter]
+u_sciter/n_sciter增加GetElementsByName/GetElementsByTagName/GetElementsByClassName函数
+9.[pfw.ui.sciter]
+n_scitervalue增加InvokeMethod函数
+10.[pfw.net.http]
+增加HttpRequest/HttpGet/HttpPost/HttpDownload/HttpUpload全局辅助函数，函数可能有多个重载版本（封装调用n_httpclient）
+[调整]
+1.[pfw.ui,#!]
+win32/painter对象重构为全局对象，由初始化函数初始化（Enums.INIT_FLAG_ENABLE_UI）
+2.[pfw.ui,#!]
+废弃OnThemeChanging事件
+3.[pfw.ui,#!]
+n_cst_base_theme废弃of_UpdateBegin/of_UpdateEnd函数
+4.[pfw]
+w_test_static_map使用百度地图API
+[修复]
+1.[pfw.utility.invoker]
+n_scriptinvoker::Init绑定对象函数时包含私有函数
+2.[pfw.datawindow.services]
+修复n_cst_dwsvc_columnexp缓存dwo可能失效的问题
+3.[pfw.thread.ext]
+n_cst_threading_task_sqlquery修复交叉报表SQL还原的问题
+4.[pfw.thread.ext]
+n_cst_threading_task_sqlquery修复查询参数包含数组时可能会异常的问题
+5.[pfw.datawindow.services]
+n_cst_dwsvc_columnsort修复标题对象名称中间带'_t'排序功能失效的问题
+6.[pfw.utility.invoker]
+修复几处内存泄露的问题
+7.[pfw.datawindow.services]
+修复n_cst_dwsvc_columnexp宏变量捕获解析的小bug（增加分隔符数量）
+8.[pfw.datawindow.services]
+修复u_dw GRID风格鼠标单击切换行失败没有继续传递Clicked事件的问题
 ---------------------
+
 1.2.4.822(2018-05-28)
 [新增]
 1.[pfw.utility.invoker]
@@ -147,7 +203,7 @@ n_cst_dwsvc_columnexp改进自动关联列和展开变量的算法
 
 1.2.1.455(2018-01-22)
 [新增]
-1.[pfwUI](!!!)
+1.[pfwUI,#!]
 增加对支持svg和icon-font的支持（见pfw.pbl::w_test_svg/w_test_iconfont）
 2.[对象,pfwBarcode]
 增加n_barcode对象，支持各种一维码（见pfw.pbl::w_test_barcode）
@@ -196,7 +252,7 @@ n_cst_dwsvc_columnsort增加对compute列的支持，同时优化了箭头符号
 
 1.2.0.1204(2017-12-04)
 [新增]
-1.[特性,pfwSciter](!!!)
+1.[特性,pfwSciter,#!]
 PB与Sciter传值采用any，无缝与tiscript交互（不再要求使用n_scitervalue封装PB值，由PFW自动匹配相应的tis值，同时兼容n_scitervalue传值）
 *升级到该版本可能会遇到兼容问题，代码改动量小
 2.[特性,pfwHttp]
@@ -262,7 +318,7 @@ u_cst_sciter_treeview在DPI为125%的屏幕上显示checkbox不正常
 
 1.1.0.0904(2017-09-04)
 [新增]
-1.[特性,pfwUI](!!!)
+1.[特性,pfwUI,#!]
 支持高分屏(High DPI),从这个版本开始,pfw的所有UI单位都由px改为dip
 DIP:设备无关像素,在DPI为96的屏幕上1dip等于1px,DPI为192的屏幕上1dip等于2px
 *升级到该版本可能会遇到兼容问题，代码改动量小
@@ -302,7 +358,7 @@ n_cst_threading_task_sqlquery修复DW中同一个参数多处使用报绑定参数失败的错误
 n_cst_wxpay修复金额错误的问题
 5.[pfwControls]
 修复窗口上按钮快捷键失效的问题
-6.[pfw](!!!)
+6.[pfw,#!]
 修复几处pfw.dll内存访问错误
 ---------------------
 
@@ -409,11 +465,11 @@ u_cst_shortcutbar_theme增加CLR_SPLITBARBORDER
 [调整]
 1.[pfwHttp]
 n_httpclient的证书和密钥设置函数做了修改,删除了SetCertType/GetCertType函数
-2.[pfwCrypto](!!!)
+2.[pfwCrypto,#!]
 n_crypto对称加密与HMAC调整了算法(不兼容之前的版本),为跨语言(库)对称加密通讯提供可能(注:SymEncrypt/SymDecrypt仅支持PKCS5 PADDING)
 3.[pfwUIControlsExt]
 pfwUIControlsExt.pbl包里的控件不再根据操作系统版本设置微软雅黑字体,默认都为Arial
-4.[pfwUI](!!!)
+4.[pfwUI,#!]
 重新设计了颜色取值的机制,涉及所有OnGetColor/OnGetItemColor事件
 [优化]
 1.[pfwUIControls]

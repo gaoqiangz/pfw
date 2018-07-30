@@ -1,0 +1,32 @@
+<html>
+<head>
+<style>
+</style>
+<script type="text/tiscript">
+$(#btnTest).onClick = function(){
+	//view.msgbox("","click");
+	try
+	{
+		//view.msgbox("",view.pbFunc("sciter"));
+		/*view.pbInvokeFunc(function(arg){
+			view.msgbox("",arg);
+		});*/
+		//view.getPBFunc()("xxxxx");
+		//var pbWindow = host.GetParent();
+		//view.msgbox("",pbWindow["is_test"]);
+		//Open("w_demo");
+		//var pbWindow = host.GetParent();
+		//view.msgbox("",pbWindow.InvokeMethod("wf_test","",["1","2","A","B"]));
+		view.msgbox("",view.pbTestArrary(["1","2","A","B"]));
+	}
+	catch (ex)
+	{
+		view.msgbox("EXCEPTION",ex);
+	}
+}
+</script>
+</head>
+<body>
+<button #btnTest>Test</button>
+</body>
+</html>
