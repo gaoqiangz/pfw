@@ -7,6 +7,49 @@ by gaoqiangz@msn.com
 *** pfw从2.0开始必须初始化后才能使用 ***
 ****************************************
 ---------------------------------------
+2.0.3.1163(2018-09-10)
+[新增]
+1.[pfw.net.websocket]
+n_wsclient增加MQTT协议支持（mqtt://，mqtts:// for SSL），需要Broker(MQTT服务）支持WebSocket连接（见pfw.pbl::w_test_websocket_mqtt）
+2.[pfw.net.websocket]
+n_wsclient增加自动重连机制
+增加SetAutoReconnect函数开启自动重连
+增加IsReconnecting函数判断当前是否正在执行自动重连
+OnOpen事件增加[reconnect]参数用于判断是否为重新连接
+OnOpen事件增加[sessionPresent]参数用于MQTT协议
+3.[pfw.net.websocket]
+n_wsmessage增加GetTopic/GetQoS函数（用于MQTT协议）
+[优化]
+1.[pfw.utility]
+n_logger优化输出格式
+[修复]
+1.[pfw.ui.blink]
+修复n_blinkvalue函数返回值声明错误
+2.[pfw.ui.blink]
+修复n_blinkvalue::GetItemCount始终返回0的问题
+3.[pfw.ui.blink]
+修复n_blinkvalue::GetItemBoolean始终返回false的问题
+4.[pfw.ui.blink]
+修复输入法输入部份字符可能导致焦点被切换的问题
+5.[pfw.utility.zip]
+修复ZipCompress/ZipUncompress格式为gzip/zlib时失败的问题
+6.[pfw.utility.parser]
+修复n_json变量循环引用时GC释放对象的问题
+7.[pfw.net.http]
+修复回调事件参数可能会赋值失败而引起空对象异常的问题
+8.[pfw.net.http]
+修复设置x509 private key之后可能出现释放内存异常的问题
+9.[pfw.thread.ext]
+n_cst_threading_task_sqlquery修复检索参数为NULL时可能失败的问题
+
+2.0.2.1073(2018-07-31)
+[新增]
+1.[pfw.ui.blink]
+支持High DPI
+[修复]
+1.[pfw.ui.blink]
+修复开发模式下可能出现崩溃的问题
+
 2.0.1.1068(2018-07-30)
 [新增]
 1.[pfw.ui.blink]

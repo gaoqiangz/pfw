@@ -1,10 +1,10 @@
-pfw从2.0开始必须初始化后才能使用（为了提高开发时的稳定时，同时可以更好的实现模块化加载，与其它框架更好的协同工作）
+pfw从2.0开始必须初始化后才能使用（为了提高开发时的稳定性，同时可以更好的实现模块化加载，与其它框架更好的协同工作）
 初始化方式有以下两种：
 1.全局初始化函数
 pfwInitialize([flags]) //初始化环境，flags可选（见Enums.INIT_FLAG_XXX，支持组合）
-pfwUninitialize //反初始化环境
+pfwFinalize //反初始化环境
 pfwInitialize一般情况下分别放在Application Open事件最开头
-pfwUninitialize放在Application Close事件的最后
+pfwFinalize放在Application Close事件的最后
 2.继承初始化对象实现自动初始化
 继承pfwCommon.pbl::n_initializer对象，开启[AutoInstantiate]属性，将对象实例放在全局变量里，这样就可以实现自动初始化环境
 n_initializer有一些属性开关，与Enums.INIT_FLAG_XXX枚举值是等价的，根据需要开启对应的功能模块
