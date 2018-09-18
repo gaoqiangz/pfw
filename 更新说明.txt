@@ -7,6 +7,21 @@ by gaoqiangz@msn.com
 *** pfw从2.0开始必须初始化后才能使用 ***
 ****************************************
 ---------------------------------------
+2.0.4.1198(2018-09-18)
+[新增]
+1.[pfw]
+增加自定义打包工具，可以根据自己的需要打包类库到一个PBL中（见pfw.pbl::w_packager）
+2.[pfw.net.websocket]
+n_wsclient增加更多Publish（直接发送JSON/XML对象）/Subscribe/Unsubscribe重载
+3.[pfw.net.websocket]
+MQTT连接参数增加[offlinePublish]和[offlineSize]参数（见pfw.pbl::w_test_websocket_mqtt）
+4.[pfw.thread]
+支持没有任务队列时也能运行线程（of_Run），并且允许在线程运行时动态添加任务
+[修复]
+1.[pfw.net.websocket]
+修复MQTT重连重新订阅主题包含已取消的主题的问题
+---------------------
+
 2.0.3.1163(2018-09-10)
 [新增]
 1.[pfw.net.websocket]
@@ -22,6 +37,9 @@ n_wsmessage增加GetTopic/GetQoS函数（用于MQTT协议）
 [优化]
 1.[pfw.utility]
 n_logger优化输出格式
+[调整]
+1.[pfw.ui.blink]
+默认禁用Debug输出(使用SetDebugOutput(true)开启)
 [修复]
 1.[pfw.ui.blink]
 修复n_blinkvalue函数返回值声明错误
@@ -41,6 +59,7 @@ n_logger优化输出格式
 修复设置x509 private key之后可能出现释放内存异常的问题
 9.[pfw.thread.ext]
 n_cst_threading_task_sqlquery修复检索参数为NULL时可能失败的问题
+---------------------
 
 2.0.2.1073(2018-07-31)
 [新增]
@@ -49,6 +68,7 @@ n_cst_threading_task_sqlquery修复检索参数为NULL时可能失败的问题
 [修复]
 1.[pfw.ui.blink]
 修复开发模式下可能出现崩溃的问题
+---------------------
 
 2.0.1.1068(2018-07-30)
 [新增]
