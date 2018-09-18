@@ -1,7 +1,7 @@
 # PowerFramework for PowerBuilder 
 
 # version
-2.0.3.1163
+2.0.4.1198
 
 # license
 BSD 2-Clause License
