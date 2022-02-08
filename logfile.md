@@ -6,7 +6,7 @@
 
 * [pfw.utility]
   - `n_logger`增加`SetHead`函数(每次输出附加的头部信息)
-> 增强Header格式化功能，支持：{L}级别，{Y}年，{M}月，{D}日，{h}时，{m}分，{s}秒，{ms}毫秒
+  > 增强Header格式化功能，支持：{L}级别，{Y}年，{M}月，{D}日，{h}时，{m}分，{s}秒，{ms}毫秒
 * [pfw.utility.parser]
   - `n_json`增加`FindItemString`/`FindItemLong`/`FindItemLongLong`/`FindItemDouble`/`FindItemBoolean`
 * [pfw.net.websocket]
@@ -19,7 +19,7 @@
   - `sqlquery`增加`#PageNative`属性，使用原生语法实现分页(如MSSQL的`LIMIT`语法)
   - `sqlquery`增加`of_SetPagedUniqueIndexColumns`函数，支持唯一索引列分页优化
   - `sqlquery`/`sqlupdate`/`sqlcommand`增加`of_GetParam`/`of_GetParamName`/`of_GetParamCount`函数
-> 目前仅包含MSSQL实现
+  > 目前仅包含MSSQL实现
   - `sqlquery`增加`of_SetReceiver`函数，设置直接接收数据的对象，减少内存拷贝提高性能
   - `sqlcommand`支持绑定参数
   - `sqlquery`增加钩子机制，继承`n_cst_thread_task_sqlbase_hook`拦截默认查询方式
@@ -50,7 +50,7 @@
   - 优化`sqlquery`/`sqlupdate`/`sqlcommand`事务管理
   - `sqlupdate`完善多表更新对`UpdateKeyInPlace`的处理
   - `sqlupdate`支持`NChar`字符串绑定语法
-> 需要DBParm开启DisableBind=1并且NCharBind=1
+  > 需要DBParm开启DisableBind=1并且NCharBind=1
   - `sqlquery`/`sqlupdate`增加对象缓存，大幅优化查询、更新构建性能
   - 属性设置保存在工作任务内，减少线程同步开销
   - `n_cst_thread_trans`连接已经意外断开，不能使用`DISCONNECT`避免发生崩溃
@@ -118,13 +118,13 @@
 * [pfw.ui.blink]
   - 集成VIP版本的blink接口（fastmb/miniblink）
   - n_blinkfast/u_blinkfast/w_blinkfast
-> 支持下载、打印等VIP定制功能
-> 注：
-> 使用INIT_FLAG_ENABLE_BLINKFAST初始化，并且不能与普通版本接口同时使用
-> VIP版本的交互是异步的，不支持普通版本的JS集成功能（交互示例见：w_test_blinkfast）
+  > 支持下载、打印等VIP定制功能   
+  > 注：   
+  > 使用INIT_FLAG_ENABLE_BLINKFAST初始化，并且不能与普通版本接口同时使用   
+  > VIP版本的交互是异步的，不支持普通版本的JS集成功能（交互示例见：w_test_blinkfast）   
 * [pfw.ui.blink]
   - n_blink/u_blink/w_blink增加ShowDevTools函数调出页面调试窗口
-> ShowDevTools([inspectorPath]),insepctor默认值为: blink\devtools\inspector.html
+  > ShowDevTools([inspectorPath]),insepctor默认值为: blink\devtools\inspector.html   
 * [pfw.ui.controls]
   - s_cst_datawindow增加of_Reattach函数，用于修改如DataObject属性时导致窗口被重建，立即手动让pfw接管绘制
 * [pfw.utility.invoker]
@@ -175,12 +175,12 @@
   - 支持安全的在线程运行过程插入和删除任务（可以在任务的Stop事件中删除任务自身）
 * [pfw.thread]
   - n_cst_threading增加OnThreadCreate事件，允许自定义创建线程
-> 使用该事件可以实现单线程模拟多线程机制，共享同一套代码，方便排查问题，并且在单线程模式下SQL任务的查询不会发生内存拷贝，还可以共享同一个事务连接（需要自定义连接池）
-```
-onThreadCreate(string clsname,ref n_cst_thread thread,ref string instancename):
-	thread = Create Using clsName //直接Create，不使用SharedObjectRegister
-	return 1 //阻止默认行为
-```
+  > 使用该事件可以实现单线程模拟多线程机制，共享同一套代码，方便排查问题，并且在单线程模式下SQL任务的查询不会发生内存拷贝，还可以共享同一个事务连接（需要自定义连接池）
+  ```
+  onThreadCreate(string clsname,ref n_cst_thread thread,ref string instancename):
+  	thread = Create Using clsName //直接Create，不使用SharedObjectRegister
+  	return 1 //阻止默认行为
+  ```
 * [pfw.thread.ext]
   - n_cst_threading_task_sqlquery增加of_MoveData函数转移Data实例变量的所有权，避免内存拷贝
 * [pfw.thread.ext]
@@ -191,14 +191,14 @@ onThreadCreate(string clsname,ref n_cst_thread thread,ref string instancename):
   - n_logger增加GetTraceLevel/SetTraceLevel函数，用于控制指定日志级别是否同时输出调用栈信息（见：w_test_logger）
 * [pfw.common]
   - Sprintf支持'{}'自动索引编号（n_logger格式化输出同样支持）
-```
-	Sprintf("{}-{}-{}",123,"abcd",true) -> 123-abcd-true
-```
+  ```
+  	Sprintf("{}-{}-{}",123,"abcd",true) -> 123-abcd-true
+  ```
 * [pfw.common]
   - Sprintf支持直接输出数组和n_json/n_xmldoc（n_logger格式化输出同样支持）
 * [pfw.net.ftp]
   - n_ftpclient增加GetLastError/GetLastErrorInfo/List函数
-> List获取文件列表
+  > List获取文件列表
 
 ### 优化
 
@@ -219,10 +219,10 @@ onThreadCreate(string clsname,ref n_cst_thread thread,ref string instancename):
 
 * [pfw.thread]
   - :warning: pfw使用的参数以'$'开头，避免与用户参数混淆（在使用线程池时of_Release以后被清除）
-> 现有参数变动：
-> SQL.TransPool.TransClass -> $SQL.TransPool.TransClass
-> SQL.TransPool.KeepAlive -> $SQL.TransPool.KeepAlive
-> SQL.TransPool.KeepAliveExpireTime -> $SQL.TransPool.KeepAliveExpireTime
+  > 现有参数变动：   
+  > SQL.TransPool.TransClass -> $SQL.TransPool.TransClass   
+  > SQL.TransPool.KeepAlive -> $SQL.TransPool.KeepAlive   
+  > SQL.TransPool.KeepAliveExpireTime -> $SQL.TransPool.KeepAliveExpireTime   
 
 ### 修复
 
@@ -271,7 +271,7 @@ onThreadCreate(string clsname,ref n_cst_thread thread,ref string instancename):
 
 * [pfw.utility.sqlite]
   - n_sqlite::Commit[auto]参数改为[autorollback] （[COMMIT]失败时自动[ROLLBACK],默认为true）
-> 该重载函数由2.1.6.1791引入
+  > 该重载函数由2.1.6.1791引入
 
 ## 2.1.6.1791(2019-06-19)
 
@@ -281,19 +281,19 @@ onThreadCreate(string clsname,ref n_cst_thread thread,ref string instancename):
   - n_sqlite::Commit增加[auto]参数的重载版本（[SQLCode=0]时[COMMIT],否则[ROLLBACK],[COMMIT]失败时也自动[ROLLBACK]）
 * [pfw.ui.sciter]
   - TIS集成SQLite，移植自Sciter SDK SQLite插件，并将DB更名为SQLite（用法见：sciter-sdk\samples\sqlite）
-```
-var db = SQLite.open(":memory:"); //SQLite.open("c:/test.db"[,password]);
-//open函数同时支持[password]参数
-```
+  ```
+  var db = SQLite.open(":memory:"); //SQLite.open("c:/test.db"[,password]);
+  //open函数同时支持[password]参数
+  ```
 * [pfw.net.websocket]
   - n_wsmessage增加IsRetained函数判断MQTT消息是否为[Retained]消息
 * [pfw.ui.sciter]
   - n_sciter增加退出Popup状态时触发view.closingPopup([reason])或self.closingPopup([reason])回调函数
-> reason值可能为：
-> #by-code, 调用n_sciter::ClosePopup或view.closePopup函数退出
-> #by-mouse, 鼠标点击其他窗口区域时退出
-> #by-key, 按下VK_ESCAPE按键退出
-> #by-deactivation, 切换到其他进程进入非激活状态
+  > reason值可能为：   
+  > #by-code, 调用n_sciter::ClosePopup或view.closePopup函数退出   
+  > #by-mouse, 鼠标点击其他窗口区域时退出   
+  > #by-key, 按下VK_ESCAPE按键退出   
+  > #by-deactivation, 切换到其他进程进入非激活状态   
 * [pfw.utility]
   - 增加PinyinFirstLetterLike全局函数，拼音首字母模糊匹配，支持多音字、模糊音匹配
 * [pfw.common]
@@ -396,7 +396,7 @@ var db = SQLite.open(":memory:"); //SQLite.open("c:/test.db"[,password]);
   - n_logger移除SetDebugMode函数（使用SetLevel函数替代）
 * [pfw.thread]
   - n_cst_threading_pool移除OnIdle事件
-> 不再需要手动调用n_cst_threading::OnIdle事件
+  > 不再需要手动调用n_cst_threading::OnIdle事件   
 
 ### 其它
 
@@ -421,16 +421,16 @@ var db = SQLite.open(":memory:"); //SQLite.open("c:/test.db"[,password]);
   - n_cst_threading_task_sqlcommand/n_cst_threading_task_sqlquery/n_cst_threading_task_sqlupdate移除of_SetTransClass函数
 * [pfw.thread]
   - 当使用SQL任务（继承自n_cst_thread_task_sqlbase的任务）时，线程代理对象支持设置全局事件控制参数：
-```
-Threading.of_SetData("SQL.TransPool.TransClass","ne_cst_thread_trans") //设置事务连接池使用的事务类名（要求继承自n_cst_thread_trans）
-Threading.of_SetData("SQL.TransPool.KeepAlive",true) //开启事务连接保持机制（没有任务引用的事务将保持连接，以便线程复用时新的SQL任务能直接复用连接）
-Threading.of_SetData("SQL.TransPool.KeepAliveExpireTime",15) //连接保持的最长时间(s)，默认30
-注：
-事务连接保持机制需要配合OnIdle事件，否则保持超时后不能断开连接
-Threading.Event OnIdle()
-或
-ThreadPool.Event OnIdle()
-```
+  ```
+  Threading.of_SetData("SQL.TransPool.TransClass","ne_cst_thread_trans") //设置事务连接池使用的事务类名（要求继承自n_cst_thread_trans）
+  Threading.of_SetData("SQL.TransPool.KeepAlive",true) //开启事务连接保持机制（没有任务引用的事务将保持连接，以便线程复用时新的SQL任务能直接复用连接）
+  Threading.of_SetData("SQL.TransPool.KeepAliveExpireTime",15) //连接保持的最长时间(s)，默认30
+  注：
+  事务连接保持机制需要配合OnIdle事件，否则保持超时后不能断开连接
+  Threading.Event OnIdle()
+  或
+  ThreadPool.Event OnIdle()
+  ```
 * [pfw.thread]
   - n_cst_threading/n_cst_threading_pool增加OnIdle事件，用于定期通知空闲线程执行一些维护代码，比如上面提到的事务连接保持超时的清理
 * [pfw.thread]
@@ -503,11 +503,11 @@ ThreadPool.Event OnIdle()
   - 完善DateTimeToTimestamp/TimestampToDateTime实现
 * [pfw.utility]
   - 增加ParseDateTime全局函数，解析日期字符串，支持RFC822/RFC850/ANSI C格式，同时兼容PB格式
-```
-Wed, 21 Oct 2015 07:28:00 GMT
-Wed, 21 Oct 2015 15:28:00 UTC+0800
-//返回的日期始终为本地时区
-```
+  ```
+  Wed, 21 Oct 2015 07:28:00 GMT
+  Wed, 21 Oct 2015 15:28:00 UTC+0800
+  //返回的日期始终为本地时区
+  ```
 * [pfw.thread]
   - n_cst_thread增加of_GetExecCount函数获取执行次数
 * [pfw.thread.ext]
@@ -603,23 +603,23 @@ Wed, 21 Oct 2015 15:28:00 UTC+0800
 
 * [pfw.utility.parser]
   - n_json完整实现Find函数，支持索引查找元素
-```
-语法：
-    key/#index/key
-    路径由'/'分隔，'#'开头为索引（下标从1开始）
-    *使用'\'转义字符
-
-如：
-{"key1":[{"subKey1":"abcd"},{"subKey2":"efgh"}],
-"key2":[{"subKey1":"ijkl"},{"subKey2":"mnop"}]}
-
-    json.Find("key2/#2/subKey2") ==> "efgh"
-等价:
-    json.Find("#2/#2/#2") ==> "efgh"
-```
+  ```
+  语法：
+      key/#index/key
+      路径由'/'分隔，'#'开头为索引（下标从1开始）
+      *使用'\'转义字符
+  
+  如：
+  {"key1":[{"subKey1":"abcd"},{"subKey2":"efgh"}],
+  "key2":[{"subKey1":"ijkl"},{"subKey2":"mnop"}]}
+  
+      json.Find("key2/#2/subKey2") ==> "efgh"
+  等价:
+      json.Find("#2/#2/#2") ==> "efgh"
+  ```
 * [pfw.utility.parser]
   - n_json增加FromObject（PB对象转换为JSON）/ToObject（JSON赋值给PB对象）函数，见pfw.pbl::w_test_json
-> 结构转换为JSON,JSON转换为结构
+  > 结构转换为JSON,JSON转换为结构
 * [pfw]
   - 增加n_cst_appargs(程序启动命令行参数解析)/n_cst_appconfig(程序XML配置文件解析)工具类，见pfw.pbl::w_test_appargs/w_test_appconfig
 
@@ -977,7 +977,7 @@ Wed, 21 Oct 2015 15:28:00 UTC+0800
 
 ### 调整
 
-  - 重命令PBL
+  - 重命名PBL
 
 ### 完善
 
