@@ -1,0 +1,12 @@
+﻿$PBExportHeader$u2dy.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type u2dy from function_object
+end type
+
+forward prototypes
+global function real u2dy (readonly long pbu)
+end prototypes
+
+global function real u2dy (readonly long pbu);return P2DY(U2PY(pbu))
+end function
+

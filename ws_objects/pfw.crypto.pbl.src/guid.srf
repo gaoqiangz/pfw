@@ -1,0 +1,17 @@
+﻿$PBExportHeader$guid.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type guid from function_object
+end type
+
+forward prototypes
+global function string guid ()
+global function string guid (readonly ulong flags)
+end prototypes
+
+global function string guid ();return Guid(Enums.CRYPTO_GUID_INCLUDE_BRACKET + Enums.CRYPTO_GUID_INCLUDE_SEPARATOR)
+end function
+
+global function string guid (readonly ulong flags);if Not IsValid(n_crypto) then n_crypto = Create n_crypto
+return n_crypto.GenGuid(flags)
+end function
+

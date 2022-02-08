@@ -1,0 +1,11 @@
+﻿$PBExportHeader$evaluate.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type evaluate from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function any Evaluate(readonly string scripting)
+global function any Evaluate(readonly string scripting,any param)
+global function any Evaluate(readonly string scripting,readonly string arglist,any param,...)
+end prototypes
+

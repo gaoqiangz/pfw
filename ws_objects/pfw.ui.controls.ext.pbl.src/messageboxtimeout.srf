@@ -1,0 +1,156 @@
+﻿$PBExportHeader$messageboxtimeout.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type messageboxtimeout from function_object
+end type
+
+forward prototypes
+global function integer messageboxtimeout (readonly boolean text,readonly long timeout)
+global function integer messageboxtimeout (readonly boolean text, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly boolean text, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout)
+global function integer messageboxtimeout (readonly double text,readonly long timeout)
+global function integer messageboxtimeout (readonly double text, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly double text, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout)
+global function integer messageboxtimeout (readonly string text,readonly long timeout)
+global function integer messageboxtimeout (readonly string text, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly string text, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly boolean text,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly string detail,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly string detail, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly string detail, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly double text,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly string detail,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly string detail, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly string detail, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail, readonly icon icon,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button,readonly long timeout)
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout)
+end prototypes
+
+global function integer messageboxtimeout (readonly boolean text,readonly long timeout);return MessageBoxTimeout("",String(text),"",Information!,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly boolean text, readonly icon icon,readonly long timeout);return MessageBoxTimeout("",String(text),"",icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly boolean text, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout("",String(text),"",icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout);return MessageBoxTimeout("",String(text),"",icon,button,defaultbutton,timeout)
+end function
+
+global function integer messageboxtimeout (readonly double text,readonly long timeout);return MessageBoxTimeout("",String(text),"",Information!,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly double text, readonly icon icon,readonly long timeout);return MessageBoxTimeout("",String(text),"",icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly double text, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout("",String(text),"",icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout);return MessageBoxTimeout("",String(text),"",icon,button,defaultbutton,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string text,readonly long timeout);return MessageBoxTimeout("",text,"",Information!,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string text, readonly icon icon,readonly long timeout);return MessageBoxTimeout("",text,"",icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string text, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout("",text,"",icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout);return MessageBoxTimeout("",text,"",icon,button,defaultbutton,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly boolean text,readonly long timeout);return MessageBoxTimeout(title,String(text),"",Information!,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly icon icon,readonly long timeout);return MessageBoxTimeout(title,String(text),"",icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout(title,String(text),"",icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout);return MessageBoxTimeout(title,String(text),"",icon,button,defaultbutton,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly string detail,readonly long timeout);return MessageBoxTimeout(title,String(text),detail,Information! ,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly string detail, readonly icon icon,readonly long timeout);return MessageBoxTimeout(title,String(text),detail,icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly boolean text, readonly string detail, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout(title,String(text),detail,icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly double text,readonly long timeout);return MessageBoxTimeout(title,String(text),"",Information!,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly icon icon,readonly long timeout);return MessageBoxTimeout(title,String(text),"",icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout(title,String(text),"",icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout);return MessageBoxTimeout(title,String(text),"",icon,button,defaultbutton,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly string detail,readonly long timeout);return MessageBoxTimeout(title,String(text),detail,Information! ,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly string detail, readonly icon icon,readonly long timeout);return MessageBoxTimeout(title,String(text),detail,icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly double text, readonly string detail, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout(title,String(text),detail,icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text,readonly long timeout);return MessageBoxTimeout(title,text,"",Information!,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly icon icon,readonly long timeout);return MessageBoxTimeout(title,text,"",icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout(title,text,"",icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout);return MessageBoxTimeout(title,text,"",icon,button,defaultbutton,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail,readonly long timeout);return MessageBoxTimeout(title,text,detail,Information! ,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail, readonly icon icon,readonly long timeout);return MessageBoxTimeout(title,text,detail,icon,OK!,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button,readonly long timeout);return MessageBoxTimeout(title,text,detail,icon,button,1,timeout)
+end function
+
+global function integer messageboxtimeout (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button, readonly integer defaultbutton,readonly long timeout);MSGBOXDATA MsgData
+
+if timeout <= 0 then return RetCode.E_INVALID_ARGUMENT
+
+MsgData.Title = title
+MsgData.Text = text
+MsgData.Detail = detail
+MsgData.Icon = icon
+MsgData.Button = button
+MsgData.DefaultButton = defaultButton
+MsgData.TimeOut = timeout
+
+return MessageBoxEx(MsgData)
+end function
+

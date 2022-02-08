@@ -1,0 +1,152 @@
+<pfw>
+	<window lang="en">
+		<tr text="最大化" to="Maximize" />
+		<tr text="最小化" to="Maximize"/>
+		<tr text="还原" to="Restore"/>
+		<tr text="关闭" to="Close"/>
+		<tr text="窗口列表" to="Window List"/>
+		<tr text="层叠排列" to="Cascade"/>
+		<tr text="平铺排列" to="Layer"/>
+		<tr text="水平排列" to="Tile Horizontal"/>
+		<tr text="垂直排列" to="Tile Vertical"/>
+		<tr text="排列图标" to="Arrange Icons"/>
+		<tr text="关闭所有窗口" to="Close All"/>
+	</window>
+	<splitcontainer lang="en">
+		<tr text="双击折叠左侧面板" to="Double-click to collapse the left panel"/>
+		<tr text="双击折叠右侧面板" to="Double-click to collapse the right panel"/>
+		<tr text="双击折叠上侧面板" to="Double-click to collapse the top panel"/>
+		<tr text="双击折叠下侧面板" to="Double-click to collapse the bottom panel"/>
+		<tr text="双击展开左侧面板" to="Double-click to expand the left panel"/>
+		<tr text="双击展开右侧面板" to="Double-click to expand the right panel"/>
+		<tr text="双击展开上侧面板" to="Double-click to expand the top panel"/>
+		<tr text="双击展开下侧面板" to="Double-click to expand the bottom panel"/>
+		<tr text="展开左侧面板" to="Expand the left panel"/>
+		<tr text="展开右侧面板" to="Expand the right panel"/>
+		<tr text="展开上侧面板" to="Expand the top panel"/>
+		<tr text="展开下侧面板" to="Expand the bottom panel"/>
+	</splitcontainer>
+	<tabcontrol lang="en">
+		<tr text="固定" to="Dock"/>
+	</tabcontrol>
+	<ribbonbar lang="en">
+		<tr text="折叠功能区" to="Collapse"/>
+		<tr text="展开功能区" to="Expand"/>
+	</ribbonbar>
+	<msgbox lang="en">
+		<tr text="提示" to="Information"/>
+		<tr text="询问" to="Question"/>
+		<tr text="警告" to="Warning"/>
+		<tr text="错误" to="Error"/>
+		<tr text="确定" to="OK"/>
+		<tr text="取消" to="Cancel"/>
+		<tr text="是" to="Yes"/>
+		<tr text="否" to="No"/>
+		<tr text="中止" to="Abort"/>
+		<tr text="重试" to="Retry"/>
+		<tr text="忽略" to="Ignore"/>
+		<tr text="查看详情" to="Show details"/>
+		<tr text="隐藏" to="Htexte details"/>
+	</msgbox>
+	<dwsvc lang="en">
+		<tr text="第{}行" to="Line {}"/>
+		<tr text="修改数据被拒绝" to="Modified data is rejected"/>
+		<tr text="数据类型不匹配" to="Mismatched datatype"/>
+		<tr text="无效的值" to="Invalid value"/>
+		<tr text="错误" to="Error"/>
+		<tr text="输入了无效的值" to="Invalid input value"/>
+		<tr text="复制单元格" to="Copy"/>
+		<tr text="复制单元格值" to="Copy the value of a cell"/>
+		<tr text="复制" to="Copy"/>
+		<tr text="复制值" to="Copy"/>
+		<tr text="复制列" to="Copy"/>
+		<tr text="复制整列的数据" to="Copy the entire column"/>
+		<tr text="粘贴列" to="Paste"/>
+		<tr text="拷贝粘帖板数据覆盖到整列" to="Paste to the entire column"/>
+		<tr text="自动列宽" to="Column width"/>
+		<tr text="自动调整列宽度" to="Automatically adjust width of column"/>
+		<tr text="所有列" to="All columns"/>
+		<tr text="自动调整所有列宽度" to="Automatically adjust the width of all columns"/>
+		<tr text="勾选列" to="Check column"/>
+		<tr text="勾选整列" to="Check the entire column"/>
+		<tr text="清除勾选列" to="Uncheck column"/>
+		<tr text="清除勾选整列" to="Uncheck the entire column"/>
+		<tr text="反向勾选列" to="Revert check column"/>
+		<tr text="反向勾选整列" to="Revert check the entire column"/>
+	</dwsvc>
+	<window lang="cht">
+		<tr text="最大化" to="最大化"/>
+		<tr text="最小化" to="最小化"/>
+		<tr text="还原" to="還原"/>
+		<tr text="关闭" to="關閉"/>
+		<tr text="窗口列表" to="窗體列表"/>
+		<tr text="层叠排列" to="層疊排列"/>
+		<tr text="平铺排列" to="平鋪排列"/>
+		<tr text="水平排列" to="水平排列"/>
+		<tr text="垂直排列" to="垂直排列"/>
+		<tr text="排列图标" to="排列圖標"/>
+		<tr text="关闭所有窗口" to="關閉所有窗體"/>
+	</window>
+	<splitcontainer lang="cht">
+		<tr text="双击折叠左侧面板" to="雙擊折疊左側面板"/>
+		<tr text="双击折叠右侧面板" to="雙擊折疊右側面板"/>
+		<tr text="双击折叠上侧面板" to="雙擊折疊上側面板"/>
+		<tr text="双击折叠下侧面板" to="雙擊折疊下側面板"/>
+		<tr text="双击展开左侧面板" to="雙擊展開左側面板"/>
+		<tr text="双击展开右侧面板" to="雙擊展開右側面板"/>
+		<tr text="双击展开上侧面板" to="雙擊展開上側面板"/>
+		<tr text="双击展开下侧面板" to="雙擊展開下側面板"/>
+		<tr text="展开左侧面板" to="展開左側面板"/>
+		<tr text="展开右侧面板" to="展開右側面板"/>
+		<tr text="展开上侧面板" to="展開上側面板"/>
+		<tr text="展开下侧面板" to="展開下側面板"/>
+	</splitcontainer>
+	<tabcontrol lang="cht">
+		<tr text="固定" to="固定"/>
+	</tabcontrol>
+	<ribbonbar lang="cht">
+		<tr text="折叠功能区" to="折疊功能區"/>
+		<tr text="展开功能区" to="展開功能區"/>
+	</ribbonbar>
+	<msgbox lang="cht">
+		<tr text="提示" to="提示"/>
+		<tr text="询问" to="詢問"/>
+		<tr text="警告" to="警告"/>
+		<tr text="错误" to="錯誤"/>
+		<tr text="确定" to="確定"/>
+		<tr text="取消" to="取消"/>
+		<tr text="是" to="是"/>
+		<tr text="否" to="否"/>
+		<tr text="中止" to="中止"/>
+		<tr text="重试" to="重試"/>
+		<tr text="忽略" to="忽略"/>
+		<tr text="查看详情" to="查看詳情"/>
+		<tr text="隐藏" to="隱藏"/>
+	</msgbox>
+	<dwsvc lang="cht">
+		<tr text="第{}行" to="第{}行"/>
+		<tr text="修改数据被拒绝" to="修改數據被拒絕"/>
+		<tr text="数据类型不匹配" to="數據類型不匹配"/>
+		<tr text="无效的值" to="無效的值"/>
+		<tr text="错误" to="錯誤"/>
+		<tr text="输入了无效的值" to="輸入了無效的值"/>
+		<tr text="复制单元格" to="複製單元格"/>
+		<tr text="复制单元格值" to="複製單元格值"/>
+		<tr text="复制" to="複製"/>
+		<tr text="复制值" to="複製值"/>
+		<tr text="复制列" to="複製列"/>
+		<tr text="复制整列的数据" to="複製整列的數據"/>
+		<tr text="粘贴列" to="粘贴列"/>
+		<tr text="拷贝粘帖板数据覆盖到整列" to="拷貝粘帖板數據覆蓋到整列"/>
+		<tr text="自动列宽" to="自動列寬"/>
+		<tr text="自动调整列宽度" to="自動調整列寬度"/>
+		<tr text="所有列" to="所有列"/>
+		<tr text="自动调整所有列宽度" to="自動調整所有列寬度"/>
+		<tr text="勾选列" to="勾選列"/>
+		<tr text="勾选整列" to="勾選整列"/>
+		<tr text="清除勾选列" to="清除勾選列"/>
+		<tr text="清除勾选整列" to="清除勾選整列"/>
+		<tr text="反向勾选列" to="反向勾選列"/>
+		<tr text="反向勾选整列" to="反向勾選整列"/>
+	</dwsvc>
+</pfw>

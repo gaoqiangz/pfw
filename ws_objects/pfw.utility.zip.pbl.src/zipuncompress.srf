@@ -1,0 +1,12 @@
+﻿$PBExportHeader$zipuncompress.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type zipuncompress from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function string ZipUncompress (readonly string data)
+global function string ZipUncompress (readonly string data,readonly long format)
+global function blob ZipUncompress (readonly blob data)
+global function blob ZipUncompress (readonly blob data,readonly long format)
+end prototypes
+

@@ -1,0 +1,36 @@
+﻿<html>
+<head>
+<style type="text/css">
+</style>
+<script src="jsrsasign-all-min.js" type="text/javascript"></script>
+<script type="text/javascript">
+function onClick() {
+	var sPriKey = "-----BEGIN RSA PRIVATE KEY-----\n" +
+					"MIICXAIBAAKBgQDDfzfM/5gen9R6vBAWkljoGF+65pdZTmOVbwXTMXZhVU3z4XFM\n" +
+					"JYUmxrI4oUJqpVmbyosXzaZbmRr8qNPBLFyud8rqPGNEmV8eGsvCihV5+Po91V7z\n" +
+					"YonvdTnd4H6KmZSBzJeoWYhaOIz4kQkdhK1r68oy2qYatcz9Pfvr8rrGLQIDAQAB\n" +
+					"AoGAYutXR9I4nZ5P/D52gYVRmTbkEYUmJdklSHKh5ugLN1rbk8CJ/HartiAqA7+N\n" +
+					"BLtf6RWGZef3+jcxUZD3fLI+vmKXpv1AabnocceMjldIVVfzuZVWIy1IiBRHtXqG\n" +
+					"QkxifAfMbN8ENFNv84XnJBpZjoL7GpbeK0ROCU8fxfHwCt0CQQDgG745D1rtzape\n" +
+					"1D1C7dKAmoVd2VhLPp2YQKJafaIB7QehuyOKhAQzmjwa9y8noVAIPXufFnitRZOU\n" +
+					"j5FSPHKHAkEA31EpfUS2YmPKjWvCmy5RwPqprNCJ/vCtcC+q36grZzyRlGmIgsRL\n" +
+					"9JB8M6iCCKvZtapdEHZxG8um6wbEZFcKqwJBALU4WesEKrAvZfxGvb8YVucdjIjm\n" +
+					"TwqReJh8c4yfGNlb1ZcHn+bLeCZOKxpXFa+DNxdiuEtdvXnH0F4KdiW8sZMCQAFh\n" +
+					"SgVZKFthTH4lPVWiKqUrp2LHAyNNL3UzBjZNnr8Lk8a8BDjyp5mCTxIup2cQUM8b\n" +
+					"l2mjob1PO9/V8d7A3vMCQGu1P3L1EkZTPkikFgQ82zCAM8t/6xWPs2R/LHNnJYUg\n" +
+					"n0dY7eRH5VR+utma8EKF10ny8OpvTEv0+Egan68MTw4=\n" +
+					"-----END RSA PRIVATE KEY-----\n";
+var sJWS = KJUR.jws.JWS.sign(null, '{"alg":"PS256","typ":"JWT"}', '{"sub":"chanjet","exp":1553612466,"datas":"558be3690021d94f65f30268e5104899","access_token":"9caeb3f7-58a1-4f9c-869a-2d4b45c2aafa"}', sPriKey);
+  //alert(sJWS);
+  console.log(sJWS);
+}
+window.onload = function(){
+	var el = document.getElementById("btn");
+	el.onclick = onClick;
+}
+</script>
+</head>
+<body>
+<button type="button" id="btn">test</button>
+</body>
+</html>

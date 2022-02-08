@@ -1,0 +1,9 @@
+﻿$PBExportHeader$bitrsh.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type bitrsh from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  ulong bitrsh(readonly ulong num,readonly uint shift)
+end prototypes
+

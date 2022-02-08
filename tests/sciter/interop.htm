@@ -1,0 +1,362 @@
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<style>
+body {
+	border-spacing: 2dip;
+}
+input {
+	margin: 2dip;
+}
+#dwPanel {
+	size: 200dip;
+}
+hr {
+	border: 1dip dashed #ccc;
+}
+</style>
+<script type="module">
+import {$} from "@sciter";
+
+//取得窗口对象
+var scWindow = pb.host.$GetParent();
+
+function msgbox(title,content) {
+	Window.this.modal(<info caption={title}>{content}</info>);
+}
+function test(arg1,arg2,arg3)
+{
+	msgbox("",arg1.toString()+"|"+arg2.toString()+"|"+arg3.toString()+"|");
+	return view.test(arg1,arg2,arg3);
+	//arg3.SetVar("text","fsafa",true);
+	return {key:"value"};
+}
+function test2(args)
+{
+	for(var el in args)
+	{
+		msgbox("",el.toString());
+	}
+}
+
+document.on("ready",()=>{
+	//console.log(pb.U2PX);
+	//console.log(pb.U2PX(3233));
+	/*console.log(pb.host);
+	console.log(pb.version);
+	console.log(pb.pbVersion);
+	console.log(pb.global);
+	console.log(Crypto.Hash("adsfadsf","MD5"));
+	console.log(Crypto.RSF_INCLUDE_NTC);
+	//pb.host.width = 10000;
+	console.log(pb.host.width);
+	console.log(pb.host.ClassName$(""));
+	var f = pb.host.ClassName$;
+	console.log(f(""));
+	console.log(f(""));
+	console.log(f(""));
+	for(var prop in pb.host) {
+		console.log(prop)
+	}*/
+});
+document.on("click","#test",()=>{
+	try
+	{
+		//console.log(pb.Create("test"));
+		//pb.global.$MessageBox("title",true);
+		//pb.global.MessageBox$("ISS","title","text2");
+		//pb.host.$$ue_evtname("test");
+		//pb.host.ue_evtname$$("QS","test");
+
+		//pb.Open("w_test",pb.host);
+		//pb.MsgBox("hhahaha","testset","StopSign","YesNoCancel",3);
+		//console.log(pb.global.gs_var)
+		//pb.host.width = 123;
+		//var db = SQLite.open("D:/JMP/JMP.dat","xxx");
+		//console.log(db);
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex.message);
+	}
+});
+
+//dw访问测试
+document.on("click","#dw",()=>{
+	try
+	{
+		//获取窗口上的dw_1和dw_2控件对象的引用
+		var dw = scWindow.dw_1;
+		var dw2 = scWindow.dw_2;
+		//创建内存ds,将数据移复制到它里面处理好再移到dw_2
+		var ds = pb.Create("datastore");
+		ds.$Create(dw.$Describe("DataWindow.Syntax"));
+		dw.$RowsCopy(1,dw.$RowCount(),"primary",ds,1,"primary");
+		var nRowCnt = ds.$RowCount();
+		var nColCnt = parseInt(ds.$Describe("DataWindow.Column.Count"));
+		for(var row = 1;row <= nRowCnt;++row)
+		{
+			for(var col = 1;col <= nColCnt;++col)
+			{
+				ds.$SetItem(row,col,ds.$GetItemString(row,col) + "abcd");
+			}
+		}
+		dw2.$Create(dw.$Describe("DataWindow.Syntax"));
+		ds.$RowsMove(1,ds.$RowCount(),"primary",dw2,1,"primary");
+		//销毁ds
+		pb.Destroy(ds);
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//dw访问测试SetFullState/GetFullState
+document.on("click","#dw2",()=>{
+	try
+	{
+		//获取窗口上的dw_1和dw_2控件对象的引用
+		var dw = scWindow.dw_1;
+		var dw2 = scWindow.dw_2;
+		//--- 以下代码演示调用dw的GetFullState/SetFullState ---//
+		//使用n_scriptinvoker
+		var invoker = pb.Create("n_scriptinvoker");
+		invoker.Init$("LXCpowerobject.XSXSXCscriptkind.",dw,"getfullstate","LRO","scriptfunction");
+		invoker.$Invoke();
+		var blbData = invoker.$GetArg(1);
+		invoker.$Release();
+		invoker.Init$("LXCpowerobject.XSXSXCscriptkind.",dw2,"setfullstate","IXO","scriptfunction");
+		invoker.$SetArg(1,blbData);
+		invoker.$Invoke();
+		invoker.$Release();
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//创建一个DW并将它附加给Sciter
+document.on("click","#createdw",()=>{
+	try
+	{
+		var dw = pb.OpenUserObject(pb.host,"u_test_sciter_dw");
+		dw.DataObject = "dw_test";
+		dw.BringToTop = true;
+		//注册ItemChanged事件回调
+		dw.$of_RegisterItemChanged(function(row,name,data){
+			//msgbox(name,data);
+			console.log(`ItemChanged:${row},${name},${data}`);
+		});
+		//附加给DOM元素
+		var el = $("#dwPanel");
+		console.log(pb.AttachToElement(dw,el));
+		//将视图滚向该元素
+		el.scrollIntoView();
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//ds访问性能测试
+document.on("click","#dsptest",()=>{
+	try
+	{
+		const nRowCnt = 200000;
+		const dtBegin = Date.now();
+		const ds = pb.Create("datastore");
+		ds.DataObject = "dw_test";
+		const nColCnt = parseInt(ds.$Describe("DataWindow.Column.Count"));
+		const Insert = ds.$InsertRow;
+		const SetItem = ds.$SetItem;
+		for(var row = 1;row <= nRowCnt;++row)
+		{
+			//InsertRow被调用20W次
+			Insert(0);
+			for(var col = 1;col <= nColCnt;++col)
+			{
+				//SetItem被调用80W次
+				SetItem(row,col,"abcd");
+			}
+		}
+		//释放ds
+		pb.Destroy(ds);
+		console.log((Date.now() - dtBegin) + "ms");
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//调用窗口函数wf_Test
+document.on("click","#wftest",()=>{
+	try
+	{
+		console.log(scWindow.$wf_Test("pfwSciter",100,123.456,567.899,["a","b","c","d"],[1,2,3,4],[123.255,424.44,544514.5547,34.5465],[64.554,454,4.469,6547.556]));
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//调用窗口事件OnTest
+document.on("click","#ontest",()=>{
+	try
+	{
+		console.log(scWindow.$$OnTest("pfwSciter"));
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//获取窗口成员变量列表
+document.on("click","#listprop",()=>{
+	try
+	{
+		var varList = "";
+		//遍历窗口成员变量
+		for(var v in scWindow)
+		{
+			varList += v + "\n";
+		}
+		console.log(varList);
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//获取窗口标题
+document.on("click","#gettitle",()=>{
+	try
+	{
+		console.log(scWindow.Title);
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//设置窗口标题
+document.on("click","#settitle",()=>{
+	try
+	{
+		scWindow.Title = "new Title";
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//设置窗口大小
+document.on("click","#setwidth",()=>{
+	try
+	{
+		scWindow.Width += 20;
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//打开UserObject
+var uo_test;
+document.on("click","#openuo",()=>{
+	try
+	{
+		if(!pb.IsValid(uo_test))
+		{
+			uo_test = pb.OpenUserObject(scWindow,"u_cst_tabpage_control_shortcutbar_blb");
+		}
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//关闭UserObject
+document.on("click","#closeuo",()=>{
+	try
+	{
+		if(pb.IsValid(uo_test))
+		{
+			pb.CloseUserObject(scWindow,uo_test);
+		}
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//打开窗口
+var w_demo;
+document.on("click","#openwnd",()=>{
+	try
+	{
+		if(!pb.IsValid(w_demo))
+		{
+			w_demo = pb.Open("w_demo",scWindow);
+			//将窗口还原(不能设置WindowState,只能通过函数来实现,见上面的说明)
+			w_demo.$wf_SetWindowState("normal");
+		}
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//关闭窗口
+document.on("click","#closewnd",()=>{
+	try
+	{
+		if(pb.IsValid(w_demo))
+		{
+			pb.Close(w_demo);
+		}
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+//关闭本窗口
+document.on("click","#closethis",()=>{
+	try
+	{
+		pb.Close(scWindow);
+	}
+	catch (ex)
+	{
+		msgbox("EXCEPTION",ex);
+	}
+});
+</script>
+</head>
+<body>
+<input|button#test value="test"></input>
+<hr>
+<input|button#dw value="dw访问测试"></input>
+<input|button#dw2 value="dw访问测试SetFullState/GetFullState"></input>
+<input|button#createdw value="创建一个DW并将它附加给Sciter"></input>
+<input|button#dsptest value="ds访问性能测试"></input>
+<hr>
+<input|button#wftest value="调用窗口函数wf_Test"></input>
+<input|button#ontest value="调用窗口事件OnTest"></input>
+<input|button#listprop value="获取窗口成员变量列表"></input>
+<input|button#gettitle value="获取窗口标题"></input>
+<input|button#settitle value="设置窗口标题"></input>
+<input|button#setwidth value="设置窗口大小"></input>
+<hr>
+<input|button#openuo value="打开UserObject"></input>
+<input|button#closeuo value="关闭UserObject"></input>
+<hr>
+<input|button#openwnd value="打开窗口"></input>
+<input|button#closewnd value="关闭窗口"></input>
+<hr>
+<input|button#closethis value="关闭本窗口"></input>
+<hr>
+<div#dwPanel></div>
+</body>
+</html>
+

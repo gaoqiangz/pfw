@@ -1,0 +1,35 @@
+﻿$PBExportHeader$m_empty.srm
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+forward
+global type m_empty from menu
+end type
+end forward
+
+global type m_empty from menu
+end type
+global m_empty m_empty
+
+on m_empty.create
+m_empty=this
+call super::create
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_empty.destroy
+call super::destroy
+end on
+

@@ -1,0 +1,10 @@
+﻿$PBExportHeader$dectostring.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type dectostring from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function string DecToString(readonly ulong num)
+global function string DecToString(readonly ulong num,readonly uint radix)
+end prototypes
+

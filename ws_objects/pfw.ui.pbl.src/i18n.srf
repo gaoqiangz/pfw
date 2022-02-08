@@ -1,0 +1,24 @@
+﻿$PBExportHeader$i18n.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type i18n from function_object
+end type
+
+forward prototypes
+global function long i18n (n_cst_i18n n)
+global function string i18n (readonly long category,string text)
+global function string i18n (readonly long source,readonly long category,string text)
+end prototypes
+
+global function long i18n (n_cst_i18n n);if Not IsValid(n) then return RetCode.E_INVALID_OBJECT
+n_cst_i18n = n
+return RetCode.OK
+end function
+
+global function string i18n (readonly long category,string text);if IsValid(n_cst_i18n) then n_cst_i18n.Event OnTranslate(Enums.I18N_SRC_PFW,category,ref text)
+return text
+end function
+
+global function string i18n (readonly long source,readonly long category,string text);if IsValid(n_cst_i18n) then n_cst_i18n.Event OnTranslate(source,category,ref text)
+return text
+end function
+

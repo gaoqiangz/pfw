@@ -1,0 +1,10 @@
+﻿$PBExportHeader$stringtodec.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type stringtodec from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function ulong StringToDec(readonly string num)
+global function ulong StringToDec(readonly string num,readonly uint radix)
+end prototypes
+

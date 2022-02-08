@@ -1,0 +1,9 @@
+﻿$PBExportHeader$loword.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type loword from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  uint loword(readonly ulong num)
+end prototypes
+

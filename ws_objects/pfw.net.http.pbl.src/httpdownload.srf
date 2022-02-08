@@ -1,0 +1,20 @@
+﻿$PBExportHeader$httpdownload.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type httpdownload from function_object
+end type
+
+forward prototypes
+global function n_httpresponse httpdownload (readonly string url, readonly string filename)
+end prototypes
+
+global function n_httpresponse httpdownload (readonly string url, readonly string filename);n_httpclient httpClient
+
+httpClient = Create n_httpclient
+
+try
+	return httpClient.DownloadFile(Enums.HTTP_METHOD_GET,url,fileName)
+finally
+	Destroy httpClient
+end try
+end function
+

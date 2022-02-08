@@ -1,0 +1,254 @@
+@import url(../common/theme.css);
+
+treeview {
+	style-set: pfw-treeview;
+}
+
+treeview[multiple="checkmarks"] {
+	style-set: pfw-treeview-checkmarks;
+}
+
+treeview option>caption>popup[role="tooltip"] {
+	style-set: pfw-tooltip;
+}
+
+@set pfw-treeview {
+
+	/* 定义CSS变量 */
+	:root {
+		var(font_size): 12pt;
+		var(check_size): 14dip;
+		var(icon_size): 16dip;
+		var(clr_bkgnd): white;
+		var(clr_border): rgb(180, 180, 180);
+		var(clr_text): windowtext;
+		var(clr_text_hover): windowtext;
+		var(clr_icon): windowtext;
+		var(clr_icon_hover): windowtext;
+		var(clr_item_hover): rgb(220, 220, 220);
+		var(clr_item_selected): rgb(229, 229, 229);
+		var(clr_item_focus): #ccc;
+		var(clr_list_marker): #aaa;
+		var(clr_drag_marker_bkgnd): rgba(62, 151, 246, 80);
+		var(clr_drag_marker_border): rgb(62, 151, 246);
+		var(tooltip_bkgnd): var(clr_item_hover);
+		var(tooltip_text): var(clr_text);
+		var(tooltip_border): var(clr_border);
+	}
+
+	/* 定义原型 */
+	:root {
+		prototype: pfwTreeView url(pfwTreeView.js);
+		behavior: pfwTreeView;
+		display: inline-block;
+		padding: 2dip;
+		width: 300dip;
+		height: 150dip;
+		font-size: var(font_size);
+		color: var(clr_text);
+		background: var(clr_bkgnd);
+		border: 1dip solid var(clr_border);
+		flow: vertical;
+		overflow: scroll-indicator;
+		vertical-scrollbar: pfw-scroll-indicator;
+		horizontal-scrollbar: pfw-scroll-indicator;
+	}
+
+	/* 节点 */
+
+	option {
+		line-height: 1.6em;
+		min-height: 1.6em;
+	}
+
+	option:not(:node) {
+		margin-left: 16dip;
+		padding: 1dip 5dip;
+		width: *;
+		max-width: max-content;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	option:node {
+		padding-left: 16dip;
+		width: *;
+		max-width: auto;
+		foreground-repeat: no-repeat;
+		foreground-position: 3dip 6dip;
+		foreground-image-cursor: pointer;
+	}
+
+	/* 折叠/展开 */
+
+	option:node:collapsed {
+		foreground-image: url(stock:arrow-e-hollow);
+		foreground-size: 5dip 9dip;
+	}
+
+	option:node:expanded {
+		foreground-image: url(stock:arrow-se);
+		foreground-size: 6dip 6dip;
+	}
+
+	option:node>* {
+		visibility: none;
+	}
+
+	option:node:expanded>* {
+		visibility: visible;
+	}
+
+	/* 节点标题 */
+
+	option:node>caption {
+		padding: 1dip 5dip;
+		min-height: 1.2em;
+		white-space: nowrap;
+		visibility: visible;
+		width: max-intrinsic;
+		overflow: visible;
+		text-overflow: ellipsis;
+	}
+
+	option:not(:node):hover,
+	option:node>caption:hover {
+		background: var(clr_item_hover);
+		color: var(clr_text_hover);
+	}
+
+	/* 节点标题编辑器 */
+
+	option>caption input[role="node-text-editor"] {
+		min-width: 20dip;
+		max-width: max-content;
+	}
+
+	/* 当前节点 */
+
+	option:not(:node):current,
+	option:node:current>caption {
+		background: var(clr_item_selected);
+		color: var(clr_text_selected);
+	}
+
+	:root:focus option:not(:node):current,
+	:root:focus option:node:current>caption {
+		background: var(clr_item_focus);
+		color: var(clr_text_focus);
+	}
+
+	option:not(:node):current:hover,
+	option:node:current>caption:hover {
+		background: var(clr_item_hover);
+		color: var(clr_text_hover);
+	}
+
+	/* 图标 */
+
+	.tv-img {
+		size: var(icon_size);
+		font-size: var(icon_size);
+		fill: var(clr_icon);
+		color: var(clr_icon);
+	}
+
+	option>caption:hover>.tv-img {
+		fill: var(clr_icon_hover);
+		color: var(clr_icon_hover);
+	}
+
+	option>caption[imgpos="left"],
+	option>caption[imgpos="right"] {
+		flow: horizontal;
+		vertical-align: middle;
+	}
+
+	option>caption[imgpos="top"],
+	option>caption[imgpos="bottom"] {
+		flow: vertical;
+		vertical-align: middle;
+	}
+
+	option>caption[imgpos="top"]>.tv-img,
+	option>caption[imgpos="bottom"]>.tv-img {
+		margin-left: *;
+		margin-right: *;
+	}
+
+	option>caption[imgpos="left"]>.tv-img {
+		margin-right: 4dip;
+	}
+
+	option>caption[imgpos="right"]>.tv-img {
+		margin-left: 4dip;
+	}
+
+	option>caption[imgpos="top"]>.tv-img {
+		margin-bottom: 4dip;
+	}
+
+	option>caption[imgpos="bottom"]>.tv-img {
+		margin-top: 4dip;
+	}
+
+	/* 拖拽状态 */
+
+	option.dragging {
+		opacity: 0.5;
+		outline: 1px dashed var(clr_drag_marker_border);
+	}
+
+	option.dragging:not(:node),
+	option.dragging:node>caption {
+		background: none;
+	}
+
+	option.dragenter {}
+
+	/* 不可用外观 */
+
+	option.disable>caption,
+	option.disable>caption>.tv-img {
+		color: rgb(128, 128, 128) !important;
+		foreground-image-transformation: colorize(rgb(128, 128, 128));
+	}
+
+	/* [treeline]支持 */
+
+	:root[treelines] option>option {
+		display: list-item;
+		list-style-type: tree-line;
+		list-marker-size: 1dip;
+		list-marker-color: var(clr_list_marker);
+		list-marker-style: solid;
+	}
+
+}
+
+@set pfw-treeview-checkmarks < pfw-treeview {
+
+	option:not(:node),
+	option:node>caption {
+		padding-left: 20dip;
+		foreground-image: url(path:M810.666667 213.333333v597.333334H213.333333V213.333333h597.333334m85.333333-85.333333H128v768h768V128z);
+		foreground-size: var(check_size);
+		fill: var(clr_text);
+		foreground-repeat: no-repeat;
+		foreground-position: 2dip 50%;
+		foreground-image-cursor: pointer;
+	}
+
+	option:not(:node):incomplete,
+	option:node:incomplete>caption {
+		foreground-image: url(path:M810.666667 213.333333v597.333334H213.333333V213.333333h597.333334m85.333333-85.333333H128v768h768V128z m-170.666667 341.333333H298.666667v85.333334h426.666666z);
+		foreground-size: var(check_size);
+	}
+
+	option:not(:node):checked,
+	option:node:checked>caption {
+		foreground-image: url(path:M810.666667 213.333333v597.333334H213.333333V213.333333h597.333334m85.333333-85.333333H128v768h768V128zM674.773333 349.013333L469.333333 554.666667l-120.106666-120.106667-60.373334 60.16L469.333333 674.986667l265.813334-265.813334z);
+		foreground-size: var(check_size);
+	}
+
+}

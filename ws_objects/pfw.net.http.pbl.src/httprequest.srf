@@ -1,0 +1,56 @@
+﻿$PBExportHeader$httprequest.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type httprequest from function_object
+end type
+
+forward prototypes
+global function n_httpresponse httprequest (readonly string method, readonly string url)
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly string data, readonly string contenttype)
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_json data)
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_json data, readonly string contenttype)
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_xmldoc data)
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_xmldoc data, readonly string contenttype)
+end prototypes
+
+global function n_httpresponse httprequest (readonly string method, readonly string url);return HttpRequest(method,url,"","")
+end function
+
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly string data, readonly string contenttype);n_httpclient httpClient
+
+httpClient = Create n_httpclient
+
+try
+	return httpClient.Request(method,url,data,contentType)
+finally
+	Destroy httpClient
+end try
+end function
+
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_json data);return HttpRequest(method,url,data,"")
+end function
+
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_json data, readonly string contenttype);n_httpclient httpClient
+
+httpClient = Create n_httpclient
+
+try
+	return httpClient.Request(method,url,data,contentType)
+finally
+	Destroy httpClient
+end try
+end function
+
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_xmldoc data);return HttpRequest(method,url,data,"")
+end function
+
+global function n_httpresponse httprequest (readonly string method, readonly string url, readonly n_xmldoc data, readonly string contenttype);n_httpclient httpClient
+
+httpClient = Create n_httpclient
+
+try
+	return httpClient.Request(method,url,data,contentType)
+finally
+	Destroy httpClient
+end try
+end function
+

@@ -1,0 +1,35 @@
+/* 响应式滚动条 */
+@set pfw-scroll-indicator {
+
+    .prev,
+    .next,
+    .prev-page,
+    .next-page,
+    .corner {
+        display: none;
+    }
+
+    .slider {
+        padding: 0;
+        margin: 0;
+        background: var(scrollbar_bkgnd, rgba(140, 140, 140, 0.5));
+        //border-radius: 3dip;
+    }
+
+    .base {
+        size: var(scrollbar_size, 6dip);
+    }
+}
+
+/* 鼠标浮动提示 */
+@set pfw-tooltip {
+
+    :root {
+        padding: 6dip;
+        font-size: 9pt;
+        background: var(tooltip_bkgnd, rgba(140, 140, 140, 0.9));
+        border: 1px solid var(tooltip_border, rgb(140, 140, 140));
+        color: var(tooltip_text, white);
+        border-radius: 0;
+    }
+}

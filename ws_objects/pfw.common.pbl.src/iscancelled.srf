@@ -1,0 +1,11 @@
+﻿$PBExportHeader$iscancelled.srf
+global type iscancelled from function_object
+end type
+
+forward prototypes
+global function boolean iscancelled (readonly long rtcode)
+end prototypes
+
+global function boolean iscancelled (readonly long rtcode);return rtCode = RetCode.CANCELLED
+end function
+

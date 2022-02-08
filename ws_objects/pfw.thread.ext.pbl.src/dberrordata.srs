@@ -1,0 +1,10 @@
+﻿$PBExportHeader$dberrordata.srs
+$PBExportComments$PowerThread数据库错误数据(DBError)~r~nBy gaoqiangz@msn.com
+global type dberrordata from structure
+	long		sqldbcode
+	string		sqlerrtext
+	string		sqlsyntax
+	dwbuffer		buffer
+	long		row
+end type
+

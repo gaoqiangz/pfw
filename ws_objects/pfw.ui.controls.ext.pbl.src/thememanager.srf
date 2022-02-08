@@ -1,0 +1,13 @@
+﻿$PBExportHeader$thememanager.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type thememanager from function_object
+end type
+
+forward prototypes
+global function n_cst_thememanager thememanager ()
+end prototypes
+
+global function n_cst_thememanager thememanager ();if Not IsValidObject(n_cst_thememanager) then n_cst_thememanager = Create n_cst_thememanager
+return n_cst_thememanager
+end function
+

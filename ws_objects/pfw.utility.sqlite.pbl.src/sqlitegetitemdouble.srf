@@ -1,0 +1,16 @@
+﻿$PBExportHeader$sqlitegetitemdouble.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type sqlitegetitemdouble from function_object
+end type
+
+forward prototypes
+global function double sqlitegetitemdouble (readonly long row, readonly integer col, readonly dwbuffer buff, readonly boolean org, readonly datastore ds)
+global function double sqlitegetitemdouble (readonly long row, readonly integer col, readonly dwbuffer buff, readonly boolean org, readonly datawindow dw)
+end prototypes
+
+global function double sqlitegetitemdouble (readonly long row, readonly integer col, readonly dwbuffer buff, readonly boolean org, readonly datastore ds);return ds.GetItemNumber(row,col,buff,org)
+end function
+
+global function double sqlitegetitemdouble (readonly long row, readonly integer col, readonly dwbuffer buff, readonly boolean org, readonly datawindow dw);return dw.GetItemNumber(row,col,buff,org)
+end function
+

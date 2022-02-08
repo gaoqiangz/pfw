@@ -1,0 +1,9 @@
+﻿$PBExportHeader$getbit.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type getbit from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  boolean getbit(readonly ulong num,readonly uint bit)
+end prototypes
+

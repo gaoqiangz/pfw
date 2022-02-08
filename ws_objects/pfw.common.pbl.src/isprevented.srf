@@ -1,0 +1,18 @@
+﻿$PBExportHeader$isprevented.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type isprevented from function_object
+end type
+
+forward prototypes
+global function boolean isprevented (readonly long rtcode)
+global function boolean isprevented (readonly boolean rtcode)
+end prototypes
+
+global function boolean isprevented (readonly long rtcode);if IsNull(rtCode) then return false
+return (rtCode = RetCode.PREVENT)
+end function
+
+global function boolean isprevented (readonly boolean rtcode);if IsNull(rtCode) then return false
+return (Not rtCode)
+end function
+

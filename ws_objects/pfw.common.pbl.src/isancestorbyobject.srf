@@ -1,0 +1,22 @@
+﻿$PBExportHeader$isancestorbyobject.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type isancestorbyobject from function_object
+end type
+
+forward prototypes
+global function boolean isancestorbyobject (readonly powerobject object, readonly string parentcls)
+end prototypes
+
+global function boolean isancestorbyobject (readonly powerobject object, readonly string parentcls);ClassDefinition clsDef
+
+if Not IsValidObject(object) or parentCls = "" then return false
+
+clsDef = object.ClassDefinition
+do while IsValid(clsDef)
+	if clsDef.name=parentCls then return true
+	clsDef = clsDef.Ancestor
+loop
+
+return false
+end function
+

@@ -1,0 +1,8 @@
+﻿$PBExportHeader$scrollbarcreateinfo.srs
+$PBExportComments$PowerUI~r~nBy gaoqiangz@msn.com
+global type scrollbarcreateinfo from structure
+	real		fbarsize
+	real		farrowsize
+	RECTF		rcbordermargin
+end type
+

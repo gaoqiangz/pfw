@@ -1,0 +1,9 @@
+﻿$PBExportHeader$bitand.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type bitand from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  ulong bitand(readonly ulong a,readonly ulong b)
+end prototypes
+

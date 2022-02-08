@@ -1,0 +1,23 @@
+﻿$PBExportHeader$getcurrentscript.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type getcurrentscript from function_object
+end type
+
+forward prototypes
+global function string getcurrentscript ()
+end prototypes
+
+global function string getcurrentscript ();int nCount
+string sScript,sCallStack[]
+
+try
+	nCount = StackTrace(ref sCallStack)
+	if nCount < 1  then return ""
+	sScript = sCallStack[nCount - 1]
+catch(throwable ex)
+	sScript = ""
+end try
+
+return sScript
+end function
+

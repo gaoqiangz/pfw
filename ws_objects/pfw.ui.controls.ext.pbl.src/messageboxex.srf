@@ -1,0 +1,225 @@
+﻿$PBExportHeader$messageboxex.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type messageboxex from function_object
+end type
+
+forward prototypes
+global function integer messageboxex (readonly boolean text)
+global function integer messageboxex (readonly boolean text, readonly icon icon)
+global function integer messageboxex (readonly boolean text, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton)
+global function integer messageboxex (readonly double text)
+global function integer messageboxex (readonly double text, readonly icon icon)
+global function integer messageboxex (readonly double text, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton)
+global function integer messageboxex (readonly string text)
+global function integer messageboxex (readonly string text, readonly icon icon)
+global function integer messageboxex (readonly string text, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton)
+global function integer messageboxex (readonly string title, readonly boolean text)
+global function integer messageboxex (readonly string title, readonly boolean text, readonly icon icon)
+global function integer messageboxex (readonly string title, readonly boolean text, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly string title, readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton)
+global function integer messageboxex (readonly string title, readonly boolean text, readonly string detail)
+global function integer messageboxex (readonly string title, readonly boolean text, readonly string detail, readonly icon icon)
+global function integer messageboxex (readonly string title, readonly boolean text, readonly string detail, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly string title, readonly double text)
+global function integer messageboxex (readonly string title, readonly double text, readonly icon icon)
+global function integer messageboxex (readonly string title, readonly double text, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly string title, readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton)
+global function integer messageboxex (readonly string title, readonly double text, readonly string detail)
+global function integer messageboxex (readonly string title, readonly double text, readonly string detail, readonly icon icon)
+global function integer messageboxex (readonly string title, readonly double text, readonly string detail, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly string title, readonly string text)
+global function integer messageboxex (readonly string title, readonly string text, readonly icon icon)
+global function integer messageboxex (readonly string title, readonly string text, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly string title, readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton)
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail)
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail, readonly icon icon)
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button)
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button, readonly integer defaultbutton)
+global function integer messageboxex (msgboxdata msgdata)
+end prototypes
+
+global function integer messageboxex (readonly boolean text);return MessageBoxEx("",String(text),"",Information!,OK!,1)
+end function
+
+global function integer messageboxex (readonly boolean text, readonly icon icon);return MessageBoxEx("",String(text),"",icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly boolean text, readonly icon icon, readonly button button);return MessageBoxEx("",String(text),"",icon,button,1)
+end function
+
+global function integer messageboxex (readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton);return MessageBoxEx("",String(text),"",icon,button,defaultbutton)
+end function
+
+global function integer messageboxex (readonly double text);return MessageBoxEx("",String(text),"",Information!,OK!,1)
+end function
+
+global function integer messageboxex (readonly double text, readonly icon icon);return MessageBoxEx("",String(text),"",icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly double text, readonly icon icon, readonly button button);return MessageBoxEx("",String(text),"",icon,button,1)
+end function
+
+global function integer messageboxex (readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton);return MessageBoxEx("",String(text),"",icon,button,defaultbutton)
+end function
+
+global function integer messageboxex (readonly string text);return MessageBoxEx("",text,"",Information!,OK!,1)
+end function
+
+global function integer messageboxex (readonly string text, readonly icon icon);return MessageBoxEx("",text,"",icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly string text, readonly icon icon, readonly button button);return MessageBoxEx("",text,"",icon,button,1)
+end function
+
+global function integer messageboxex (readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton);return MessageBoxEx("",text,"",icon,button,defaultbutton)
+end function
+
+global function integer messageboxex (readonly string title, readonly boolean text);return MessageBoxEx(title,String(text),"",Information!,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly boolean text, readonly icon icon);return MessageBoxEx(title,String(text),"",icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly boolean text, readonly icon icon, readonly button button);return MessageBoxEx(title,String(text),"",icon,button,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly boolean text, readonly icon icon, readonly button button, readonly integer defaultbutton);return MessageBoxEx(title,String(text),"",icon,button,defaultbutton)
+end function
+
+global function integer messageboxex (readonly string title, readonly boolean text, readonly string detail);return MessageBoxEx(title,String(text),detail,Information! ,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly boolean text, readonly string detail, readonly icon icon);return MessageBoxEx(title,String(text),detail,icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly boolean text, readonly string detail, readonly icon icon, readonly button button);return MessageBoxEx(title,String(text),detail,icon,button,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly double text);return MessageBoxEx(title,String(text),"",Information!,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly double text, readonly icon icon);return MessageBoxEx(title,String(text),"",icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly double text, readonly icon icon, readonly button button);return MessageBoxEx(title,String(text),"",icon,button,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly double text, readonly icon icon, readonly button button, readonly integer defaultbutton);return MessageBoxEx(title,String(text),"",icon,button,defaultbutton)
+end function
+
+global function integer messageboxex (readonly string title, readonly double text, readonly string detail);return MessageBoxEx(title,String(text),detail,Information! ,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly double text, readonly string detail, readonly icon icon);return MessageBoxEx(title,String(text),detail,icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly double text, readonly string detail, readonly icon icon, readonly button button);return MessageBoxEx(title,String(text),detail,icon,button,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text);return MessageBoxEx(title,text,"",Information!,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text, readonly icon icon);return MessageBoxEx(title,text,"",icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text, readonly icon icon, readonly button button);return MessageBoxEx(title,text,"",icon,button,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text, readonly icon icon, readonly button button, readonly integer defaultbutton);return MessageBoxEx(title,text,"",icon,button,defaultbutton)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail);return MessageBoxEx(title,text,detail,Information! ,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail, readonly icon icon);return MessageBoxEx(title,text,detail,icon,OK!,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button);return MessageBoxEx(title,text,detail,icon,button,1)
+end function
+
+global function integer messageboxex (readonly string title, readonly string text, readonly string detail, readonly icon icon, readonly button button, readonly integer defaultbutton);MSGBOXDATA MsgData
+
+MsgData.Title = title
+MsgData.Text = text
+MsgData.Detail = detail
+MsgData.Icon = icon
+MsgData.Button = button
+MsgData.DefaultButton = defaultButton
+
+return MessageBoxEx(MsgData)
+end function
+
+global function integer messageboxex (msgboxdata msgdata);w_cst_msgbox lw_msgbox
+PBMSGSTRUCT msg
+int nvl,nBtnCnt
+int rtCode
+
+SetNull(nvl)
+
+if IsNull(MsgData.title) or IsNull(MsgData.text) or IsNull(MsgData.detail) or IsNull(MsgData.icon) or IsNull(MsgData.button) or IsNull(MsgData.defaultButton) or IsNull(MsgData.timeout) then return nvl
+if MsgData.defaultButton < 1 then return RetCode.E_INVALID_ARGUMENT
+
+choose case MsgData.button
+	case OK!
+		nBtnCnt = 1
+	case OKCancel!
+		nBtnCnt = 2
+	case YesNo!
+		nBtnCnt = 2
+	case YesNoCancel!
+		nBtnCnt = 3
+	case RetryCancel!
+		nBtnCnt = 2
+	case AbortRetryIgnore!
+		nBtnCnt = 3
+end choose
+if MsgData.defaultButton > nBtnCnt then return RetCode.E_INVALID_ARGUMENT
+
+if MsgData.title = "" then
+	choose case MsgData.icon
+		case Information!
+			MsgData.title = I18N(ne_cst_i18n.CAT_MSGBOX,"提示")
+		case Question!
+			MsgData.title = I18N(ne_cst_i18n.CAT_MSGBOX,"询问")
+		case Exclamation!
+			MsgData.title = I18N(ne_cst_i18n.CAT_MSGBOX,"警告")
+		case StopSign!
+			MsgData.title = I18N(ne_cst_i18n.CAT_MSGBOX,"错误")
+	end choose
+end if
+
+if Pos(MsgData.Detail,"~n") > 0 then
+	MsgData.Detail = ReplaceAll(MsgData.Detail,"~n","~r~n",true)
+end if
+
+MsgData.hWndActive = Win32.GetActiveWindow()
+
+msg.Handle = Message.Handle
+msg.Number = Message.Number
+msg.WordParm = Message.WordParm
+msg.LongParm = Message.LongParm
+msg.DoubleParm = Message.DoubleParm
+msg.StringParm = Message.StringParm
+msg.PowerObjectParm = Message.PowerObjectParm
+msg.Processed = Message.Processed
+msg.ReturnValue = Message.ReturnValue
+
+OpenWithParm(lw_msgbox,MsgData)
+rtCode = Message.DoubleParm
+
+Message.Handle = msg.Handle
+Message.Number = msg.Number
+Message.WordParm = msg.WordParm
+Message.LongParm = msg.LongParm
+Message.DoubleParm = msg.DoubleParm
+Message.StringParm = msg.StringParm
+Message.PowerObjectParm = msg.PowerObjectParm
+Message.Processed = msg.Processed
+Message.ReturnValue = msg.ReturnValue
+
+return rtCode
+end function
+

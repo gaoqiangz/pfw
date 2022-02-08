@@ -1,0 +1,80 @@
+﻿$PBExportHeader$iif.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type iif from function_object
+end type
+
+forward prototypes
+global function string iif (readonly boolean abExpression, readonly string asTruePart, readonly string asFalsePart)
+global function boolean iif (readonly boolean abExpression, readonly boolean abTruePart, readonly boolean abFalsePart)
+global function long iif (readonly boolean abExpression, readonly long alTruePart, readonly long alFalsePart)
+global function integer iif (readonly boolean abExpression, readonly integer aiTruePart, readonly integer aiFalsePart)
+global function date iif (readonly boolean abExpression, readonly date adtTruePart, readonly date adtFalsePart)
+global function time iif (readonly boolean abExpression, readonly time atTruePart, readonly time atFalsePart)
+global function datetime iif (readonly boolean abExpression, readonly datetime adtTruePart, readonly datetime adtFalsePart)
+global function decimal iif (readonly boolean abExpression, readonly decimal adTruePart, readonly decimal adFalsePart)
+global function double iif (readonly boolean abExpression, readonly double adTruePart, readonly double adFalsePart)
+end prototypes
+
+global function string iif (readonly boolean abExpression, readonly string asTruePart, readonly string asFalsePart);if abExpression then
+	return asTruePart
+else
+	return asFalsePart
+end if
+end function
+
+global function boolean iif (readonly boolean abExpression, readonly boolean abTruePart, readonly boolean abFalsePart);if abExpression then
+	return abTruePart
+else
+	return abFalsePart
+end if
+end function
+
+global function long iif (readonly boolean abExpression, readonly long alTruePart, readonly long alFalsePart);if abExpression then
+	return alTruePart
+else
+	return alFalsePart
+end if
+end function
+
+global function integer iif (readonly boolean abExpression, readonly integer aiTruePart, readonly integer aiFalsePart);if abExpression then
+	return aiTruePart
+else
+	return aiFalsePart
+end if
+end function
+
+global function date iif (readonly boolean abExpression, readonly date adtTruePart, readonly date adtFalsePart);if abExpression then
+	return adtTruePart
+else
+	return adtFalsePart
+end if
+end function
+
+global function time iif (readonly boolean abExpression, readonly time atTruePart, readonly time atFalsePart);if abExpression then
+	return atTruePart
+else
+	return atFalsePart
+end if
+end function
+
+global function datetime iif (readonly boolean abExpression, readonly datetime adtTruePart, readonly datetime adtFalsePart);if abExpression then
+	return adtTruePart
+else
+	return adtFalsePart
+end if
+end function
+
+global function decimal iif (readonly boolean abExpression, readonly decimal adTruePart, readonly decimal adFalsePart);if abExpression then
+	return adTruePart
+else
+	return adFalsePart
+end if
+end function
+
+global function double iif (readonly boolean abExpression, readonly double adTruePart, readonly double adFalsePart);if abExpression then
+	return adTruePart
+else
+	return adFalsePart
+end if
+end function
+

@@ -1,0 +1,156 @@
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="pfwTreeView.css">
+        <style>
+            html {
+                overflow: hidden;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 微软雅黑, 宋体;
+            }
+        </style>
+    </head>
+    <script type="module">
+        import { $, $$ } from "@sciter";
+
+        document.ready = function () {
+            let max_name = "abcdasf".repeat(100);
+            for (let elTree of $$("treeview")) {
+                var sImg = "#f187";
+                elTree.setIconFont("../../res/fonts/awesome.ttf");
+                elTree.load([{
+                    text: "testxxx1123",
+                    checked: true,
+                    image: sImg,
+                    imagePosition: "left",
+                    tipText: "tipText1",
+                    attributes: {
+                        _test: "test value",
+                        _atr: "afasdf"
+                    },
+                    children: [{
+                        text: max_name,
+                        image: sImg,
+                        imagePosition: "top",
+                        tipText: "tipText2"
+                    }, {
+                        text: "test3",
+                        image: sImg,
+                        imagePosition: "top",
+                        tipText: "tipText3"
+                    }, {
+                        text: "test4",
+                        image: sImg,
+                        imagePosition: "top",
+                        tipText: "tipText4"
+                    }, {
+                        text: "test5",
+                        image: sImg,
+                        imagePosition: "top",
+                        tipText: "tipText5"
+                    }, {
+                        text: "test6",
+                        image: sImg,
+                        imagePosition: "top",
+                        tipText: "tipText6"
+                    }]
+                }, {
+                    text: "test2",
+                    image: sImg,
+                    tipText: "tipText2"
+                }]);
+
+
+                elTree.on("tv-collapsing", (evt) => {
+                    console.log("collapsing", evt, evt.data);
+                });
+                elTree.on("tv-collapsed", (evt) => {
+                    console.log("collapsed", evt, evt.data);
+                });
+                elTree.on("tv-expanding", (evt) => {
+                    console.log("expanding", evt, evt.data);
+                });
+                elTree.on("tv-expanded", (evt) => {
+                    console.log("expanded", evt, evt.data);
+                });
+                elTree.on("tv-populate", (evt) => {
+                    console.log("populate", evt, evt.data);
+                });
+                elTree.on("tv-selection-changing", (evt) => {
+                    console.log("selection-changing", evt, evt.data);
+                });
+                elTree.on("tv-selection-changed", (evt) => {
+                    console.log("selection-changed", evt, evt.data);
+                });
+                elTree.on("tv-check-state-changing", (evt) => {
+                    console.log("check-state-changing", evt, evt.data);
+                });
+                elTree.on("tv-check-state-changed", (evt) => {
+                    console.log("check-state-changed", evt, evt.data);
+                });
+                elTree.on("tv-begin-drag", (evt) => {
+                    console.log("begin-drag", evt, evt.data);
+                });
+                elTree.on("tv-end-drag", (evt) => {
+                    console.log("end-drag", evt, evt.data);
+                });
+                elTree.on("tv-drag-enter", (evt) => {
+                    console.log("drag-enter", evt, evt.data);
+                });
+                elTree.on("tv-drag-leave", (evt) => {
+                    console.log("drag-leave", evt, evt.data);
+                });
+                elTree.on("tv-drag-drop", (evt) => {
+                    console.log("drag-drop", evt, evt.data);
+                });
+                elTree.on("tv-begin-text-edit", (evt) => {
+                    console.log("begin-text-edit", evt, evt.data);
+                });
+                elTree.on("tv-end-text-edit", (evt) => {
+                    console.log("end-text-edit", evt, evt.data);
+                });
+                elTree.on("tv-clicked", (evt) => {
+                    console.log("clicked", evt, evt.data);
+                });
+                elTree.on("tv-dblclicked", (evt) => {
+                    console.log("dblclicked", evt, evt.data);
+                });
+                elTree.on("tv-rightclicked", (evt) => {
+                    console.log("rightclicked", evt, evt.data);
+                });
+                elTree.on("tv-dbrclicked", (evt) => {
+                    console.log("dbrclicked", evt, evt.data);
+                    elTree.editText(evt.data);
+                });
+
+                let elOwner = elTree.$("option");
+                let opt = elTree.insertOption(elOwner, 2, "testxxx", false, "#f219", 2, "testxxx", true);
+                elTree.addChildOption(opt, "testxxx", false, "#f219", 2, "testxxx", true);
+            }
+        };
+    </script>
+
+    <body>
+        <treeview multiple="checkmarks">
+        </treeview>
+        <treeview>
+        </treeview>
+        <br />
+        <select type="tree" multiple="checkmarks" treelines>
+            <option checked>
+                <caption>
+                    <span .icon-font-default>&#xf187;</span>
+                    <text>test</text>
+                </caption>
+            <option>test</option>
+            </option>
+            <option>test</option>
+        </select>
+    </body>
+
+</html>

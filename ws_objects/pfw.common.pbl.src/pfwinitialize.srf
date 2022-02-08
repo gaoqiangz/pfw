@@ -1,0 +1,10 @@
+﻿$PBExportHeader$pfwinitialize.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type pfwinitialize from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function long pfwInitialize ()
+global function long pfwInitialize (readonly unsignedlong flags)
+end prototypes
+

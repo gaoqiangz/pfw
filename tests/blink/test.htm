@@ -1,0 +1,54 @@
+﻿<html>
+<head>
+<style type="text/css">
+div {
+	width: 100px;
+	height: 100px;
+	color: red;
+}
+</style>
+<script type="text/javascript">
+function global_function(a,b,c)
+{
+	alert(a.toString()+"\n"+b.toString()+"\n"+c.toLocaleDateString());
+	return "js return value";
+}
+function test_pb_function(fn)
+{
+	try
+	{
+		return fn(1,2);
+	}
+	catch (ex)
+	{
+		alert(ex);
+		return ex.toString();
+	}
+}
+function test_pb_object(obj)
+{
+	alert(obj.$ClassName());
+	alert(obj["#isVar"]);
+	obj.Title = "test_pb_object";
+}
+function open_test()
+{
+	pb.host.$GetParent().$wf_opentest();
+}
+window.onload = function(){
+	var el = document.getElementById("btn");
+	el.onclick = function(){
+		pb.host.$GetParent().$wf_close();
+	};
+}
+</script>
+</head>
+<body>
+<button type="button" id="btn">close</button>
+<input type="checkbox" id="cbx">hahah</input>
+<div id="a" x="x" c="a">a</div>
+<div id="b">b</div>
+<div id="c">c</div>
+<img src="pbr://res/zip/images[logo.png]"/>
+</body>
+</html>

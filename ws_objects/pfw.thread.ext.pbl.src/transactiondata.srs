@@ -1,0 +1,14 @@
+﻿$PBExportHeader$transactiondata.srs
+$PBExportComments$PowerThread数据库错误数据(DBError)~r~nBy gaoqiangz@msn.com
+global type transactiondata from structure
+	string		dbms
+	string		servername
+	string		database
+	string		logid
+	string		logpass
+	string		dbparm
+	string		lock
+	boolean		autocommit
+	string		userparm
+end type
+

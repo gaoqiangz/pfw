@@ -1,0 +1,31 @@
+﻿$PBExportHeader$classnameex.srf
+global type classnameex from function_object
+end type
+
+forward prototypes
+global function string classnameex (readonly any val)
+end prototypes
+
+global function string classnameex (readonly any val);long nPos
+string cls
+
+try
+	cls = ClassName(val)
+catch(throwable _ex)
+end try
+
+if cls = "" or IsNull(cls) then
+	try
+		if val = 0 then
+		end if
+	catch(throwable ex)
+		nPos = Pos(ex.text,":")
+		if nPos > 0 then
+			cls = Trim(Mid(ex.text,nPos + 1,Pos(ex.text,",",nPos + 1) - nPos - 1))
+		end if
+	end try
+end if
+
+return cls
+end function
+

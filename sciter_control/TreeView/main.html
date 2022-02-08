@@ -1,0 +1,37 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="pfwTreeView.css">
+		<style>
+			html {
+				overflow: hidden;
+			}
+
+			body {
+				margin: 0;
+				padding: 0;
+				font-family: 微软雅黑, 宋体;
+			}
+
+			treeview {
+				display: block !important;
+				size: * !important;
+			}
+		</style>
+		<script type="module">
+			document.ready = () => {
+				document.$("#treeview").onNormalizeUrl = (url) => {
+					if (url.indexOf(":") < 0) url = "home://" + url;
+					return url;
+				};
+			};
+		</script>
+	</head>
+
+	<body>
+		<treeview id="treeview">
+		</treeview>
+	</body>
+
+</html>

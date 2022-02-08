@@ -1,0 +1,9 @@
+﻿$PBExportHeader$getpinyinfirstletter.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type getpinyinfirstletter from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function string GetPinyinFirstLetter(readonly string text)
+end prototypes
+

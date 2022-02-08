@@ -1,0 +1,106 @@
+notification {
+  style-set: notification;
+}
+
+@set notification {
+
+  :root {
+    prototype: Notification url(notification.js);
+    display: block;
+  }
+}
+
+popup.message {
+  style-set: message;
+}
+
+@set message {
+
+  :root {
+    prototype: Message url(notification.js);
+    display: none;
+    size: max-content;
+    background: transparent;
+    font-family: 微软雅黑,宋体;
+    transform: translate(0,0);
+    opacity: 1.0;
+  }
+  
+  :root[state] {
+    display: block;
+  }
+  :root[state=initial] {
+    transform: translate(0,100%);
+    opacity: 0.0;
+  } /* offstage */
+  :root[state=shown] {
+    transform: translate(0,0);
+    opacity: 1.0;
+    transition: transform quad-out 500ms,
+                opacity linear 500ms;
+  }
+  :root[state=closed] {
+    transform: translate(100%,0);
+    opacity: 0.0;
+    transition: transform linear 500ms,
+                opacity linear 500ms;
+  }
+
+  :root > div {
+    margin: 8dip;
+    size: max-content;
+    min-width: 300dip;
+    background: rgb(250,250,250);
+    border: solid 1px transparent;
+    border-radius: 4dip;
+	  box-shadow: 0 0 4dip 2dip rgba(0,0,0,0.3);
+  }
+  :root[severity=warning] header,
+  :root[severity=error] header {
+    padding: 4dip 4dip 4dip 24dip;
+    fill: white;
+    color: white;
+  }
+  :root[severity=warning] header {
+	  foreground: url(images/warning.svg) no-repeat 2dip center;
+	  foreground-size: 16dip;
+    background: #FF9900;
+  }
+  :root[severity=warning] content {
+    color: #FF8000;
+  }
+  :root[severity=error] header {
+	  foreground: url(images/error.svg) no-repeat 2dip center;
+	  foreground-size: 16dip;
+    background: #EC560A;
+  }
+  :root[severity=error] content {
+    color: #EC560A;
+  }
+
+  :root header > close {
+    display: inline-block;
+    behavior: clickable;
+	  foreground: url(images/close.svg) no-repeat 2dip center;
+	  foreground-size: 16dip;
+    size: 16dip;
+    fill: white;
+    margin-left: *;
+  }
+  
+  header {
+    display: block;
+    padding: 4dip;
+    color: white;
+    background: #207346;
+    font-size: 12pt;
+    border-radius: 4dip 4dip 0 0;
+  }
+  content {
+    display: block;
+    padding: 8dip;
+    color: #666;
+    font-size: 10pt;
+  }
+
+}

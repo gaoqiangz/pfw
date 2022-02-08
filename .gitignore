@@ -1,0 +1,15 @@
+/pack/*
+/packuse/*
+/blink/*
+/bak/*
+/*.usr.opt
+/**/pfw.dev.*
+*.dmp
+*.log
+*.bak
+*.bat
+*.zip
+*.rar
+thumbs.db
+!/res/*.zip
+!/samples/*.zip

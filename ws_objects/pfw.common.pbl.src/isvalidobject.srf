@@ -1,0 +1,18 @@
+﻿$PBExportHeader$isvalidobject.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type isvalidobject from function_object
+end type
+
+forward prototypes
+global function boolean isvalidobject (readonly any object)
+global function boolean isvalidobject (readonly powerobject object)
+end prototypes
+
+global function boolean isvalidobject (readonly any object);if IsNull(object) then return false
+return IsValid(object)
+end function
+
+global function boolean isvalidobject (readonly powerobject object);if IsNull(object) then return false
+return IsValid(object)
+end function
+

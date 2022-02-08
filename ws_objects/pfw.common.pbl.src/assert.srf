@@ -1,0 +1,124 @@
+﻿$PBExportHeader$assert.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type assert from function_object
+end type
+
+forward prototypes
+global subroutine assertfailed (readonly string info)
+global subroutine assert (readonly boolean condition)
+global subroutine assert (readonly boolean condition, readonly string info)
+global subroutine assert (readonly long rtcode)
+global subroutine assert (readonly long rtcode, readonly string info)
+global subroutine assert (readonly powerobject object)
+global subroutine assert (readonly powerobject object, readonly string info)
+end prototypes
+
+global subroutine assertfailed (readonly string info);long nPos,nPos2,nIndex,nCount
+string sCallStack[],sCalling,sMessages[],sMessageStr
+assertionfailed ex
+constant string DELIMITER = "~r~n"
+
+//Number
+sMessages[1] = "-10000"
+//Text
+sMessages[2] = "Assertion failed"
+if info <> "" then
+	sMessages[2] += "~n" + info
+end if
+
+try
+	nCount = StackTrace(ref sCallStack)
+catch(throwable ex1)
+end try
+
+ex = Create AssertionFailed
+ex.#Info = sMessages[2]
+
+if nCount > 2 then
+	sCalling = sCallStack[nCount - 2]
+	nPos = LastPos(sCalling,".")
+	if nPos > 0 then
+		nPos2 = Pos(sCalling,".")
+		if nPos2 < nPos then
+			//WindowMenu
+			ex.#WindowMenu = Left(sCalling,nPos2 - 1)
+			//Object
+			ex.#Object = Mid(sCalling,nPos2 + 1,nPos - nPos2 - 1)
+		else
+			//WindowMenu
+			ex.#WindowMenu = Left(sCalling,nPos - 1)
+			//Object
+			ex.#Object = ex.#WindowMenu
+		end if
+	end if
+	//ObjectEvent
+	nPos2 = Pos(sCalling," ",nPos + 1)
+	ex.#ObjectEvent = Mid(sCalling,nPos + 1,nPos2 - nPos - 1)
+	//Line
+	nPos = Pos(sCalling,":",nPos2 + 1)
+	ex.#Line = Long(Mid(sCalling,nPos + 1))
+	//StackTraceInfo
+	for nIndex = 1 to nCount - 2
+		ex.#StackTrace[UpperBound(ex.#StackTrace) + 1] = sCallStack[nIndex]
+		if nIndex > 1 then ex.#StackTraceInfo += "~n"
+		ex.#StackTraceInfo += sCallStack[nIndex]
+	next
+	sMessages[3] = ex.#WindowMenu
+	sMessages[4] = ex.#Object
+	sMessages[5] = ex.#ObjectEvent
+	sMessages[6] = String(ex.#Line)
+	sMessages[7] = ex.#StackTraceInfo
+	ex.#Info += "~nat " + ex.#Object + "::" + ex.#ObjectEvent + "(" + String(ex.#Line) + ")"
+end if
+
+nCount = UpperBound(sMessages)
+for nIndex = 1 to nCount
+	if nIndex > 1 then sMessageStr += DELIMITER
+	sMessageStr += sMessages[nIndex]
+next
+
+ex.SetMessage(sMessageStr)
+
+//try
+	throw ex
+//catch(throwable ex2)
+//	throw ex2
+//end try
+end subroutine
+
+global subroutine assert (readonly boolean condition);if condition then return
+
+AssertFailed("")
+
+end subroutine
+
+global subroutine assert (readonly boolean condition, readonly string info);if condition then return
+
+AssertFailed(info)
+
+end subroutine
+
+global subroutine assert (readonly long rtcode);if IsSucceeded(rtcode) then return
+
+AssertFailed("")
+
+end subroutine
+
+global subroutine assert (readonly long rtcode, readonly string info);if IsSucceeded(rtcode) then return
+
+AssertFailed(info)
+
+end subroutine
+
+global subroutine assert (readonly powerobject object);if IsValidObject(object) then return
+
+AssertFailed("")
+
+end subroutine
+
+global subroutine assert (readonly powerobject object, readonly string info);if IsValidObject(object) then return
+
+AssertFailed(info)
+
+end subroutine
+

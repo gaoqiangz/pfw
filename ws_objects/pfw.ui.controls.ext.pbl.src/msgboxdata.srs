@@ -1,0 +1,13 @@
+﻿$PBExportHeader$msgboxdata.srs
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type msgboxdata from structure
+	string		title
+	string		text
+	string		detail
+	icon		icon
+	button		button
+	integer		defaultbutton
+	long		timeout
+	ulong		hWndActive
+end type
+

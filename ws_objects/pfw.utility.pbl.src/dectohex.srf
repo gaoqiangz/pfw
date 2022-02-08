@@ -1,0 +1,12 @@
+﻿$PBExportHeader$dectohex.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type dectohex from function_object
+end type
+
+forward prototypes
+global function string dectohex (readonly unsignedlong num)
+end prototypes
+
+global function string dectohex (readonly unsignedlong num);return DecToString(num,16)
+end function
+

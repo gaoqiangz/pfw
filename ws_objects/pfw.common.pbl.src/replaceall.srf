@@ -1,0 +1,11 @@
+﻿$PBExportHeader$replaceall.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type replaceall from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  string	replaceall(readonly string src,readonly string rplsrc,readonly string rpldst)
+global function  string	replaceall(readonly string src,readonly string rplsrc,readonly string rpldst,readonly boolean matchcase)
+global function  string	replaceall(readonly string src,readonly string rplsrc,readonly string rpldst,readonly boolean matchcase,readonly boolean kwrpl)
+end prototypes
+

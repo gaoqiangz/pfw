@@ -1,0 +1,400 @@
+﻿$PBExportHeader$m_mdi_sheet.srm
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+forward
+global type m_mdi_sheet from m_mdi_frame
+end type
+end forward
+
+global type m_mdi_sheet from m_mdi_frame
+end type
+global m_mdi_sheet m_mdi_sheet
+
+on m_mdi_sheet.create
+m_mdi_sheet=this
+call super::create
+this.textsize = -12
+end on
+
+on m_mdi_sheet.destroy
+call super::destroy
+end on
+
+type m_文件f from m_mdi_frame`m_文件f within m_mdi_sheet
+end type
+
+on m_文件f.create
+call super::create
+this.textsize = -12
+end on
+
+on m_文件f.destroy
+call super::destroy
+end on
+
+type m_新建n from m_mdi_frame`m_新建n within m_文件f
+end type
+
+on m_新建n.create
+call super::create
+this.textsize = -12
+end on
+
+on m_新建n.destroy
+call super::destroy
+end on
+
+type m_打开o from m_mdi_frame`m_打开o within m_文件f
+end type
+
+on m_打开o.create
+call super::create
+this.microhelp = "打开"
+this.textsize = -12
+end on
+
+on m_打开o.destroy
+call super::destroy
+end on
+
+type m_4 from m_mdi_frame`m_4 within m_文件f
+end type
+
+on m_4.create
+call super::create
+this.textsize = -12
+end on
+
+on m_4.destroy
+call super::destroy
+end on
+
+type m_保存s from m_mdi_frame`m_保存s within m_文件f
+end type
+
+on m_保存s.create
+call super::create
+this.enabled = true
+this.microhelp = "保存"
+this.textsize = -12
+end on
+
+on m_保存s.destroy
+call super::destroy
+end on
+
+event m_保存s::clicked;call super::clicked;String ls_filename
+GetFileSaveName("Save File",ls_filename,ls_filename)
+end event
+
+type m_5 from m_mdi_frame`m_5 within m_文件f
+end type
+
+on m_5.create
+call super::create
+this.textsize = -12
+end on
+
+on m_5.destroy
+call super::destroy
+end on
+
+type m_关闭c from m_mdi_frame`m_关闭c within m_文件f
+end type
+
+on m_关闭c.create
+call super::create
+this.enabled = true
+this.microhelp = "关闭"
+this.textsize = -12
+end on
+
+on m_关闭c.destroy
+call super::destroy
+end on
+
+event m_关闭c::clicked;call super::clicked;#ParentMDIWindow.wf_CloseSheet(#ParentWindow)
+end event
+
+type m_0 from m_mdi_frame`m_0 within m_文件f
+end type
+
+on m_0.create
+call super::create
+this.textsize = -12
+end on
+
+on m_0.destroy
+call super::destroy
+end on
+
+type m_退出e from m_mdi_frame`m_退出e within m_文件f
+end type
+
+on m_退出e.create
+call super::create
+this.microhelp = "退出"
+this.textsize = -12
+end on
+
+on m_退出e.destroy
+call super::destroy
+end on
+
+type m_编辑e from m_mdi_frame`m_编辑e within m_mdi_sheet
+end type
+
+on m_编辑e.create
+call super::create
+this.textsize = -12
+end on
+
+on m_编辑e.destroy
+call super::destroy
+end on
+
+type m_复制c from m_mdi_frame`m_复制c within m_编辑e
+end type
+
+on m_复制c.create
+call super::create
+this.enabled = true
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_复制c.destroy
+call super::destroy
+end on
+
+event m_复制c::clicked;call super::clicked;MessageBoxEx(#ParentWindow.Title,Text)
+end event
+
+type m_剪切x from m_mdi_frame`m_剪切x within m_编辑e
+end type
+
+on m_剪切x.create
+call super::create
+this.enabled = true
+this.microhelp = "剪切"
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_剪切x.destroy
+call super::destroy
+end on
+
+event m_剪切x::clicked;call super::clicked;MessageBoxEx(#ParentWindow.Title,Text)
+end event
+
+type m_粘贴p from m_mdi_frame`m_粘贴p within m_编辑e
+end type
+
+on m_粘贴p.create
+call super::create
+this.enabled = true
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_粘贴p.destroy
+call super::destroy
+end on
+
+event m_粘贴p::clicked;call super::clicked;MessageBoxEx(#ParentWindow.Title,Text)
+end event
+
+type m_3 from m_mdi_frame`m_3 within m_编辑e
+end type
+
+on m_3.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_3.destroy
+call super::destroy
+end on
+
+type m_查找f from m_mdi_frame`m_查找f within m_编辑e
+end type
+
+on m_查找f.create
+call super::create
+this.enabled = true
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_查找f.destroy
+call super::destroy
+end on
+
+event m_查找f::clicked;call super::clicked;MessageBoxEx(#ParentWindow.Title,Text)
+end event
+
+type m_视图v from m_mdi_frame`m_视图v within m_mdi_sheet
+end type
+
+on m_视图v.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_视图v.destroy
+call super::destroy
+end on
+
+type m_层叠排列c from m_mdi_frame`m_层叠排列c within m_视图v
+end type
+
+on m_层叠排列c.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_层叠排列c.destroy
+call super::destroy
+end on
+
+type m_平铺排列l from m_mdi_frame`m_平铺排列l within m_视图v
+end type
+
+on m_平铺排列l.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_平铺排列l.destroy
+call super::destroy
+end on
+
+type m_水平排列h from m_mdi_frame`m_水平排列h within m_视图v
+end type
+
+on m_水平排列h.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_水平排列h.destroy
+call super::destroy
+end on
+
+type m_垂直排列v from m_mdi_frame`m_垂直排列v within m_视图v
+end type
+
+on m_垂直排列v.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_垂直排列v.destroy
+call super::destroy
+end on
+
+type m_排列图标a from m_mdi_frame`m_排列图标a within m_视图v
+end type
+
+on m_排列图标a.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_排列图标a.destroy
+call super::destroy
+end on
+
+type m_1 from m_mdi_frame`m_1 within m_视图v
+end type
+
+on m_1.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_1.destroy
+call super::destroy
+end on
+
+type m_关闭所有窗口 from m_mdi_frame`m_关闭所有窗口 within m_视图v
+end type
+
+on m_关闭所有窗口.create
+call super::create
+this.toolbaritemvisible = true
+this.textsize = -12
+end on
+
+on m_关闭所有窗口.destroy
+call super::destroy
+end on
+
+type m_帮助h from m_mdi_frame`m_帮助h within m_mdi_sheet
+end type
+
+on m_帮助h.create
+call super::create
+this.textsize = -12
+end on
+
+on m_帮助h.destroy
+call super::destroy
+end on
+
+type m_帮助手册h from m_mdi_frame`m_帮助手册h within m_帮助h
+end type
+
+on m_帮助手册h.create
+call super::create
+this.textsize = -12
+end on
+
+on m_帮助手册h.destroy
+call super::destroy
+end on
+
+type m_系统s from m_mdi_frame`m_系统s within m_帮助h
+end type
+
+on m_系统s.create
+call super::create
+this.textsize = -12
+end on
+
+on m_系统s.destroy
+call super::destroy
+end on
+
+type m_2 from m_mdi_frame`m_2 within m_帮助h
+end type
+
+on m_2.create
+call super::create
+this.textsize = -12
+end on
+
+on m_2.destroy
+call super::destroy
+end on
+
+type m_关于a from m_mdi_frame`m_关于a within m_帮助h
+end type
+
+on m_关于a.create
+call super::create
+this.textsize = -12
+end on
+
+on m_关于a.destroy
+call super::destroy
+end on
+

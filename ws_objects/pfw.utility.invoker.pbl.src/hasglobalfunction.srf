@@ -1,0 +1,9 @@
+﻿$PBExportHeader$hasglobalfunction.srf
+$PBExportComments$PowerThread~r~nBy gaoqiangz@msn.com
+global type hasglobalfunction from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function boolean hasglobalfunction (readonly string name, readonly string sign)
+end prototypes
+

@@ -1,0 +1,16 @@
+﻿$PBExportHeader$isallowed.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type isallowed from function_object
+end type
+
+forward prototypes
+global function boolean isallowed (readonly long rtcode)
+global function boolean isallowed (readonly boolean rtcode)
+end prototypes
+
+global function boolean isallowed (readonly long rtcode);return (rtCode = RetCode.ALLOW or IsNull(rtCode) or rtCode > 1000)
+end function
+
+global function boolean isallowed (readonly boolean rtcode);return (rtCode or IsNull(rtCode))
+end function
+
