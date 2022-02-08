@@ -1,0 +1,10 @@
+﻿$PBExportHeader$isancestor.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type isancestor from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function boolean isancestor (readonly powerobject object, readonly string parentcls)
+global function boolean isancestor (readonly string cls, readonly string parentcls)
+end prototypes
+

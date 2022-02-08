@@ -1,0 +1,12 @@
+﻿$PBExportHeader$hextodec.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type hextodec from function_object
+end type
+
+forward prototypes
+global function unsignedlong hextodec (readonly string num)
+end prototypes
+
+global function unsignedlong hextodec (readonly string num);return StringToDec(num,16)
+end function
+

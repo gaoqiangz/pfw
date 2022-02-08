@@ -1,0 +1,18 @@
+﻿$PBExportHeader$sha256.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type sha256 from function_object
+end type
+
+forward prototypes
+global function string sha256 (readonly blob data)
+global function string sha256 (readonly string str)
+end prototypes
+
+global function string sha256 (readonly blob data);if Not IsValid(n_crypto) then n_crypto = Create n_crypto
+return n_crypto.Hash(data,Enums.CRYPTO_HASH_SHA256)
+end function
+
+global function string sha256 (readonly string str);if Not IsValid(n_crypto) then n_crypto = Create n_crypto
+return n_crypto.Hash(str,Enums.CRYPTO_HASH_SHA256)
+end function
+

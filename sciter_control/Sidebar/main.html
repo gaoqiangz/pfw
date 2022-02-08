@@ -1,0 +1,36 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="pfwSidebar.css">
+		<style>
+			html {
+				overflow: hidden;
+			}
+
+			body {
+				margin: 0;
+				padding: 0;
+				font-family: 微软雅黑, 宋体;
+			}
+
+			sidebar {
+				display: block !important;
+				size: *;
+			}
+		</style>
+		<script type="module">
+			document.ready = () => {
+				document.$("#sidebar").onNormalizeUrl = (url) => {
+					if (url.indexOf(":") < 0) url = "home://" + url;
+					return url;
+				};
+			};
+		</script>
+	</head>
+
+	<body>
+		<sidebar id="sidebar"></sidebar>
+	</body>
+
+</html>

@@ -1,0 +1,10 @@
+﻿$PBExportHeader$paintpane.srs
+$PBExportComments$PowerUI~r~nBy gaoqiangz@msn.com
+global type paintpane from structure
+	boolean		visible
+	boolean		enabled
+	boolean		mouseover
+	boolean		mousedown
+	RECTF			rcpaint
+end type
+

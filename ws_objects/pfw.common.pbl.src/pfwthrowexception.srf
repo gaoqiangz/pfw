@@ -1,0 +1,11 @@
+﻿$PBExportHeader$pfwthrowexception.srf
+global type pfwthrowexception from function_object
+end type
+
+forward prototypes
+global subroutine pfwthrowexception (readonly string text)
+end prototypes
+
+global subroutine pfwthrowexception (readonly string text);ThrowException("pfwexception",text)
+end subroutine
+

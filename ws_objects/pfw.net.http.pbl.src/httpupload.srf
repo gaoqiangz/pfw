@@ -1,0 +1,30 @@
+﻿$PBExportHeader$httpupload.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type httpupload from function_object
+end type
+
+forward prototypes
+global function n_httpresponse httpupload (readonly string filename, readonly string contenttype, readonly string url)
+global function n_httpresponse httpupload (readonly string filename, readonly string contenttype, readonly string url, readonly string multipartparams)
+end prototypes
+
+global function n_httpresponse httpupload (readonly string filename, readonly string contenttype, readonly string url);string multiPartParams
+SetNull(multiPartParams)
+return HttpUpload(fileName,contentType,url,multiPartParams)
+end function
+
+global function n_httpresponse httpupload (readonly string filename, readonly string contenttype, readonly string url, readonly string multipartparams);n_httpclient httpClient
+
+httpClient = Create n_httpclient
+
+try
+	if IsNull(multiPartParams) then
+		return httpClient.UploadFile(Enums.HTTP_METHOD_POST,url,fileName,contentType,Enums.HTTP_UPLOAD_CHUNK)
+	else
+		return httpClient.UploadFile(Enums.HTTP_METHOD_POST,url,fileName,contentType,Enums.HTTP_UPLOAD_MULTIPART,multiPartParams)
+	end if
+finally
+	Destroy httpClient
+end try
+end function
+

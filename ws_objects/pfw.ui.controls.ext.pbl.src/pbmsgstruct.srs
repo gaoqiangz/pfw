@@ -1,0 +1,13 @@
+﻿$PBExportHeader$pbmsgstruct.srs
+global type pbmsgstruct from structure
+	long		handle
+	uint		number
+	long		wordparm
+	long		longparm
+	double		doubleparm
+	string		stringparm
+	powerobject		powerobjectparm
+	boolean		processed
+	long		returnvalue
+end type
+

@@ -1,0 +1,28 @@
+﻿$PBExportHeader$getparentwindow.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type getparentwindow from function_object
+end type
+
+forward prototypes
+global function window getparentwindow (readonly powerobject obj)
+end prototypes
+
+global function window getparentwindow (readonly powerobject obj);powerobject objParent
+window wnd
+
+objParent = obj.GetParent()
+
+do while IsValidObject(objParent)
+	if objParent.TypeOf() = Window! then exit
+	objParent = objParent.GetParent()
+loop
+
+if IsValidObject(objParent) then
+	wnd = objParent
+else
+	SetNull(wnd)
+end if
+
+return wnd
+end function
+

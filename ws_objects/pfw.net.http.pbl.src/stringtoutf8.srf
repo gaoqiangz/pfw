@@ -1,0 +1,13 @@
+﻿$PBExportHeader$stringtoutf8.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type stringtoutf8 from function_object
+end type
+
+forward prototypes
+global function blob stringtoutf8 (readonly string str)
+end prototypes
+
+global function blob stringtoutf8 (readonly string str);if Not IsValid(n_httputility) then n_httputility = Create n_httputility
+return n_httputility.StringToBlob(str,Enums.HTTP_ENCODING_UTF8)
+end function
+

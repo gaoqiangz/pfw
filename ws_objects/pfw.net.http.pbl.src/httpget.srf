@@ -1,0 +1,12 @@
+﻿$PBExportHeader$httpget.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type httpget from function_object
+end type
+
+forward prototypes
+global function n_httpresponse httpget (readonly string url)
+end prototypes
+
+global function n_httpresponse httpget (readonly string url);return HttpRequest(Enums.HTTP_METHOD_GET,url)
+end function
+

@@ -1,0 +1,23 @@
+﻿$PBExportHeader$urlencode.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type urlencode from function_object
+end type
+
+forward prototypes
+global function string urlencode (readonly string url)
+global function string urlencode (readonly string url,readonly long encoding)
+global function string urlencode (readonly string url,readonly long encoding,readonly boolean uppercase)
+end prototypes
+
+global function string urlencode (readonly string url);if Not IsValid(n_httputility) then n_httputility = Create n_httputility
+return n_httputility.URLEncode(url)
+end function
+
+global function string urlencode (readonly string url,readonly long encoding);if Not IsValid(n_httputility) then n_httputility = Create n_httputility
+return n_httputility.URLEncode(url,encoding)
+end function
+
+global function string urlencode (readonly string url,readonly long encoding,readonly boolean uppercase);if Not IsValid(n_httputility) then n_httputility = Create n_httputility
+return n_httputility.URLEncode(url,encoding,uppercase)
+end function
+

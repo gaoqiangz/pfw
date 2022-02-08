@@ -1,0 +1,40 @@
+﻿$PBExportHeader$toolbaritem.srs
+$PBExportComments$PowerUI~r~nBy gaoqiangz@msn.com
+global type toolbaritem from structure
+	unsignedinteger	itemtype
+	alignment			position
+	boolean				enabled
+	boolean				visible
+	boolean				hidden
+	boolean				displaytext
+	boolean				mouseover
+	boolean				mousedown
+	boolean				toggled
+	boolean				highlighted
+	boolean				multiline
+	boolean				flashing
+	long					flashtime
+	long					id
+	string					text
+	string					tiptext
+	long					tiptime
+	string					image
+	integer				imageindex
+	string					amimage
+	n_image		animatedimage
+	boolean				useanimatedimage
+	n_cst_popupmenu	popupmenu
+	boolean				menuowner
+	dragobject			object
+	boolean				objectowner
+	unsignedlong		holdparent
+	paintpane			chevron
+	any					data
+	string					tag
+	sizef					sztext
+	sizef					szobject
+	rectf					rctext
+	rectf					rcimage
+	rectf					rcpaint
+end type
+

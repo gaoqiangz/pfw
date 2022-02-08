@@ -1,0 +1,44 @@
+﻿$PBExportHeader$stacktraceinfo.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type stacktraceinfo from function_object
+end type
+
+forward prototypes
+global function string stacktraceinfo ()
+global function string stacktraceinfo (readonly string prefix)
+global function string stacktraceinfo (readonly uint offset)
+global function string stacktraceinfo (readonly uint offset,readonly string prefix)
+end prototypes
+
+global function string stacktraceinfo ();return StackTraceInfo(1,"")
+end function
+
+global function string stacktraceinfo (readonly string prefix);return StackTraceInfo(1,prefix)
+end function
+
+global function string stacktraceinfo (readonly uint offset);return StackTraceInfo(offset + 1,"")
+end function
+
+global function string stacktraceinfo (readonly uint offset,readonly string prefix);int nIndex,nCount
+string sCallStackInfo,sCallStack[]
+
+try
+	nCount = StackTrace(ref sCallStack)
+	if nCount < 1  then return ""
+	
+	nCount -= offset + 1
+	if nCount <= 0 or nCount > UpperBound(sCallStack) then return ""
+	
+	for nIndex = 1 to nCount
+		if nIndex > 1 then sCallStackInfo += "~n"
+		if prefix <> "" then sCallStackInfo += prefix
+		sCallStackInfo += sCallStack[nIndex]
+	next
+	
+catch(throwable ex)
+	sCallStackInfo = ""
+end try
+
+return sCallStackInfo
+end function
+

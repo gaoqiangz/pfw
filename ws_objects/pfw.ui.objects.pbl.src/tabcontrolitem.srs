@@ -1,0 +1,48 @@
+﻿$PBExportHeader$tabcontrolitem.srs
+$PBExportComments$PowerUI~r~nBy gaoqiangz@msn.com
+global type tabcontrolitem from structure
+	boolean		enabled
+	boolean		visible
+	boolean		hidden
+	boolean		iswindow
+	boolean		ispage
+	boolean		ispagew
+	boolean		displaytext
+	boolean		selected
+	boolean		mouseover
+	boolean		highlighted
+	boolean		multiline
+	boolean		locked
+	boolean		floated
+	boolean		flashing
+	long		flashtime
+	string		text
+	string		tiptext
+	long		tiptime
+	string		image
+	integer		imageindex
+	string		amimage
+	n_image		animatedimage
+	boolean		useanimatedimage
+	dragobject		object
+	window		objectw
+	u_cst_tabpage		page
+	s_cst_tabpagew		pagew
+	boolean		isole
+	boolean		objectowner
+	unsignedlong		holdparent
+	u_cst_tabcontrol parenttabcontrol
+	w_cst_tabfloat		floatwnd
+	pointf		floatpos
+	sizef		floatsize
+	paintpane		closebutton
+	any		data
+	string		tag
+	sizef		sztext
+	rectf		rcimage
+	rectf		rctext
+	rectf		rcpaint
+	unsignedlong		paintpath
+	real		offsetposition
+end type
+

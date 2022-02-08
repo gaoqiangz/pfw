@@ -1,0 +1,85 @@
+﻿$PBExportHeader$formatretcode.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type formatretcode from function_object
+end type
+
+forward prototypes
+global function string formatretcode (readonly long rtcode)
+end prototypes
+
+global function string formatretcode (readonly long rtcode);choose case rtCode
+	case RetCode.OK
+		return "OK"
+	case RetCode.FAILED
+		return "FAILED"
+	case RetCode.CANCELLED
+		return "CANCELLED"
+	case RetCode.E_INVALID_ARGUMENT
+		return "E_INVALID_ARGUMENT"
+	case RetCode.E_INVALID_IMAGE
+		return "E_INVALID_IMAGE"
+	case RetCode.E_INVALID_OBJECT
+		return "E_INVALID_OBJECT"
+	case RetCode.E_INVALID_TYPE
+		return "E_INVALID_TYPE"
+	case RetCode.E_INVALID_TRANSACTION
+		return "E_INVALID_TRANSACTION"
+	case RetCode.E_INVALID_SQL
+		return "E_INVALID_SQL"
+	case RetCode.E_INVALID_DATA
+		return "E_INVALID_DATA"
+	case RetCode.E_INVALID_DATAOBJECT
+		return "E_INVALID_DATAOBJECT"
+	case RetCode.E_INVALID_HANDLE
+		return "E_INVALID_HANDLE"
+	case RetCode.E_OUT_OF_BOUND
+		return "E_OUT_OF_BOUND"
+	case RetCode.E_OUT_OF_RANGE
+		return "E_OUT_OF_RANGE"
+	case RetCode.E_OUT_OF_MEMORY
+		return "E_OUT_OF_MEMORY"
+	case RetCode.E_FILE_NOT_FOUND
+		return "E_FILE_NOT_FOUND"
+	case RetCode.E_OBJECT_NOT_FOUND
+		return "E_OBJECT_NOT_FOUND"
+	case RetCode.E_DATA_NOT_FOUND
+		return "E_DATA_NOT_FOUND"
+	case RetCode.E_FUNCTION_NOT_FOUND
+		return "E_FUNCTION_NOT_FOUND"
+	case RetCode.E_EVENT_NOT_FOUND
+		return "E_EVENT_NOT_FOUND"
+	case RetCode.E_MEMBER_NOT_FOUND
+		return "E_MEMBER_NOT_FOUND"
+	case RetCode.E_VAR_NOT_FOUND
+		return "E_VAR_NOT_FOUND"
+	case RetCode.E_NOT_EXISTS
+		return "E_NOT_EXISTS"
+	case RetCode.E_BUSY
+		return "E_BUSY"
+	case RetCode.E_TIME_OUT
+		return "E_TIME_OUT"
+	case RetCode.E_ACCESS_DENIED
+		return "E_ACCESS_DENIED"
+	case RetCode.E_WIN32_ERROR
+		return "E_WIN32_ERROR"
+	case RetCode.E_INTERNAL_ERROR
+		return "E_INTERNAL_ERROR"
+	case RetCode.E_DB_ERROR
+		return "E_DB_ERROR"
+	case RetCode.E_HTTP_ERROR
+		return "E_HTTP_ERROR"
+	case RetCode.E_WINHTTP_ERROR
+		return "E_WINHTTP_ERROR"
+	case RetCode.E_IO_ERROR
+		return "E_IO_ERROR"
+	case RetCode.E_SQL_BIND_ARG_FAILED
+		return "E_SQL_BIND_ARG_FAILED"
+	case RetCode.E_NO_SUPPORT
+		return "E_NO_SUPPORT"
+	case RetCode.E_NO_IMPLEMENTATION
+		return "E_NO_IMPLEMENTATION"
+	case else
+		return "UNKNOWN (" + String(rtCode) + ")"
+end choose
+end function
+

@@ -1,0 +1,18 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title></title>
+<link rel="stylesheet" type="text/css" href="notification.css" />
+<script type="module">
+import {Notification} from "notification.js";
+function showMessage(title,message,severity, delay = 0)
+{
+  Notification.show(title,message,severity, delay);
+}
+globalThis.showMessage = showMessage;
+</script>
+</head>
+<body>
+<notification/>
+</body>
+</html>

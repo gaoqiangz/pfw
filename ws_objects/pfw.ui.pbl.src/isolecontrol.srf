@@ -1,0 +1,12 @@
+﻿$PBExportHeader$isolecontrol.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type isolecontrol from function_object
+end type
+
+forward prototypes
+global function boolean isolecontrol (readonly windowobject object)
+end prototypes
+
+global function boolean isolecontrol (readonly windowobject object);return IsAncestor(object,"olecustomcontrol")
+end function
+

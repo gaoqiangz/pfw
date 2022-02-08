@@ -1,0 +1,25 @@
+﻿$PBExportHeader$f_dwdrawqrcode.srf
+global type f_dwdrawqrcode from function_object
+end type
+
+forward prototypes
+global subroutine f_dwdrawqrcode (readonly string text, readonly unsignedlong hdc, readonly long x, readonly long y, readonly long width, readonly long height)
+end prototypes
+
+global subroutine f_dwdrawqrcode (readonly string text, readonly unsignedlong hdc, readonly long x, readonly long y, readonly long width, readonly long height);long nSize
+
+if text = "" or IsNull(text) then return
+
+if Not IsValidObject(n_qrcode) then
+	n_qrcode = Create n_qrcode
+end if
+
+nSize = Min(width,height)
+n_qrcode.SetUnit(Enums.QRCODE_UNIT_PIXEL)
+n_qrcode.SetSize(nSize)
+
+n_qrcode.Encode(Text)
+
+n_qrcode.Draw(hdc,x + (width - nSize) / 2,y + (height - nSize) / 2)
+end subroutine
+

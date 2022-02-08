@@ -1,0 +1,28 @@
+﻿$PBExportHeader$httppost.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type httppost from function_object
+end type
+
+forward prototypes
+global function n_httpresponse httppost (readonly string url, readonly string data, readonly string contenttype)
+global function n_httpresponse httppost (readonly string url, readonly n_json data)
+global function n_httpresponse httppost (readonly string url, readonly n_json data, readonly string contenttype)
+global function n_httpresponse httppost (readonly string url, readonly n_xmldoc data)
+global function n_httpresponse httppost (readonly string url, readonly n_xmldoc data, readonly string contenttype)
+end prototypes
+
+global function n_httpresponse httppost (readonly string url, readonly string data, readonly string contenttype);return HttpRequest(Enums.HTTP_METHOD_POST,url,data,contentType)
+end function
+
+global function n_httpresponse httppost (readonly string url, readonly n_json data);return HttpRequest(Enums.HTTP_METHOD_POST,url,data)
+end function
+
+global function n_httpresponse httppost (readonly string url, readonly n_json data, readonly string contenttype);return HttpRequest(Enums.HTTP_METHOD_POST,url,data,contentType)
+end function
+
+global function n_httpresponse httppost (readonly string url, readonly n_xmldoc data);return HttpRequest(Enums.HTTP_METHOD_POST,url,data)
+end function
+
+global function n_httpresponse httppost (readonly string url, readonly n_xmldoc data, readonly string contenttype);return HttpRequest(Enums.HTTP_METHOD_POST,url,data,contentType)
+end function
+

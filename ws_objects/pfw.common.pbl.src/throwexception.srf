@@ -1,0 +1,33 @@
+﻿$PBExportHeader$throwexception.srf
+global type throwexception from function_object
+end type
+
+forward prototypes
+global subroutine throwexception (readonly string text)
+global subroutine throwexception (readonly string cls, readonly string text)
+end prototypes
+
+global subroutine throwexception (readonly string text);runtimeerror ex
+
+try
+	ex = Create RuntimeError
+	ex.SetMessage(text)
+	throw ex
+catch(throwable e)
+	throw e
+end try
+end subroutine
+
+global subroutine throwexception (readonly string cls, readonly string text);throwable ex
+
+if cls = "" then return
+
+try
+	ex = Create Using cls
+	ex.SetMessage(text)
+	throw ex
+catch(throwable e)
+	throw e
+end try
+end subroutine
+

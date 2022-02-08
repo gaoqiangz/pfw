@@ -1,0 +1,9 @@
+﻿$PBExportHeader$scitersetmasterscript.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type scitersetmasterscript from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function long SciterSetMasterScript (readonly string scripting)
+end prototypes
+

@@ -1,0 +1,9 @@
+﻿$PBExportHeader$rectf.srs
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type rectf from structure
+	real		left
+	real		top
+	real		right
+	real		bottom
+end type
+

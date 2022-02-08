@@ -1,0 +1,13 @@
+﻿$PBExportHeader$big5tostring.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type big5tostring from function_object
+end type
+
+forward prototypes
+global function string big5tostring (readonly blob data)
+end prototypes
+
+global function string big5tostring (readonly blob data);if Not IsValid(n_httputility) then n_httputility = Create n_httputility
+return n_httputility.BlobToString(data,Enums.HTTP_ENCODING_BIG5)
+end function
+

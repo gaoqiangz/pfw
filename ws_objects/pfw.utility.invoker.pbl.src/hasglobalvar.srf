@@ -1,0 +1,9 @@
+﻿$PBExportHeader$hasglobalvar.srf
+$PBExportComments$PowerThread~r~nBy gaoqiangz@msn.com
+global type hasglobalvar from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function boolean hasglobalvar (readonly string name)
+end prototypes
+

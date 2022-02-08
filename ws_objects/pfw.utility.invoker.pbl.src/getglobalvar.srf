@@ -1,0 +1,9 @@
+﻿$PBExportHeader$getglobalvar.srf
+$PBExportComments$PowerThread~r~nBy gaoqiangz@msn.com
+global type getglobalvar from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function any getglobalvar(readonly string name)
+end prototypes
+

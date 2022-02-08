@@ -1,0 +1,11 @@
+﻿$PBExportHeader$regexpreplace.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type RegExpReplace from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function string RegExpReplace (readonly string str, readonly string pattern, readonly string rpl)
+global function string RegExpReplace (readonly string str, readonly string pattern, readonly string rpl, readonly boolean matchcase)
+global function string RegExpReplace (readonly string str, readonly string pattern, readonly string rpl, readonly boolean matchcase, readonly unsignedlong flags)
+end prototypes
+

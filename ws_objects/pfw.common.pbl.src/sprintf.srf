@@ -1,0 +1,23 @@
+﻿$PBExportHeader$sprintf.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type sprintf from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function string Sprintf(readonly string fmt,any param1)
+global function string Sprintf(readonly string fmt,any param1,any param2)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,...)
+global function string Sprintf(readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15,...)
+end prototypes
+

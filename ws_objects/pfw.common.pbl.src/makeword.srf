@@ -1,0 +1,9 @@
+﻿$PBExportHeader$makeword.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type makeword from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  uint makeword(readonly uint low,readonly uint high)
+end prototypes
+

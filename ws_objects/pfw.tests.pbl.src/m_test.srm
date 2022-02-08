@@ -1,0 +1,835 @@
+﻿$PBExportHeader$m_test.srm
+forward
+global type m_test from menu
+end type
+type m_file from menu within m_test
+end type
+type m_open from menu within m_file
+end type
+type m_0 from menu within m_file
+end type
+type m_recent from menu within m_file
+end type
+type m_2 from menu within m_recent
+end type
+type m_3 from menu within m_recent
+end type
+type m_4 from menu within m_recent
+end type
+type m_recent from menu within m_file
+m_2 m_2
+m_3 m_3
+m_4 m_4
+end type
+type m_1 from menu within m_file
+end type
+type m_exit from menu within m_file
+end type
+type m_file from menu within m_test
+m_open m_open
+m_0 m_0
+m_recent m_recent
+m_1 m_1
+m_exit m_exit
+end type
+type m_5 from menu within m_test
+end type
+type m_view from menu within m_test
+end type
+type m_tree from menu within m_view
+end type
+type m_statusbar from menu within m_view
+end type
+type m_6 from menu within m_view
+end type
+type m_layout from menu within m_view
+end type
+type m_vert from menu within m_layout
+end type
+type m_horz from menu within m_layout
+end type
+type m_layout from menu within m_view
+m_vert m_vert
+m_horz m_horz
+end type
+type m_view from menu within m_test
+m_tree m_tree
+m_statusbar m_statusbar
+m_6 m_6
+m_layout m_layout
+end type
+type m_edit from menu within m_test
+end type
+type m_cut from menu within m_edit
+end type
+type m_copy from menu within m_edit
+end type
+type m_paste from menu within m_edit
+end type
+type m_edit from menu within m_test
+m_cut m_cut
+m_copy m_copy
+m_paste m_paste
+end type
+global type m_test from menu
+m_file m_file
+m_5 m_5
+m_view m_view
+m_edit m_edit
+end type
+end forward
+
+global type m_test from menu
+m_file m_file
+m_5 m_5
+m_view m_view
+m_edit m_edit
+end type
+global m_test m_test
+
+on m_test.create
+m_test=this
+call super::create
+this.text = "m_test"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_file=create m_file
+this.m_5=create m_5
+this.m_view=create m_view
+this.m_edit=create m_edit
+this.Item[UpperBound(this.Item)+1]=this.m_file
+this.Item[UpperBound(this.Item)+1]=this.m_5
+this.Item[UpperBound(this.Item)+1]=this.m_view
+this.Item[UpperBound(this.Item)+1]=this.m_edit
+end on
+
+on m_test.destroy
+call super::destroy
+destroy(this.m_file)
+destroy(this.m_5)
+destroy(this.m_view)
+destroy(this.m_edit)
+end on
+
+type m_file from menu within m_test
+m_open m_open
+m_0 m_0
+m_recent m_recent
+m_1 m_1
+m_exit m_exit
+end type
+
+on m_file.create
+call super::create
+this.text = "文件"
+this.mergeoption = filemenu!
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_open=create m_open
+this.m_0=create m_0
+this.m_recent=create m_recent
+this.m_1=create m_1
+this.m_exit=create m_exit
+this.Item[UpperBound(this.Item)+1]=this.m_open
+this.Item[UpperBound(this.Item)+1]=this.m_0
+this.Item[UpperBound(this.Item)+1]=this.m_recent
+this.Item[UpperBound(this.Item)+1]=this.m_1
+this.Item[UpperBound(this.Item)+1]=this.m_exit
+end on
+
+on m_file.destroy
+call super::destroy
+destroy(this.m_open)
+destroy(this.m_0)
+destroy(this.m_recent)
+destroy(this.m_1)
+destroy(this.m_exit)
+end on
+
+type m_open from menu within m_file
+end type
+
+on m_open.create
+call super::create
+this.text = "打开~tAlt+O"
+this.shortcut = 591
+this.menuimage = "open!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_open.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_0 from menu within m_file
+end type
+
+on m_0.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_0.destroy
+call super::destroy
+end on
+
+type m_recent from menu within m_file
+m_2 m_2
+m_3 m_3
+m_4 m_4
+end type
+
+on m_recent.create
+call super::create
+this.text = "最近打开的文档"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_2=create m_2
+this.m_3=create m_3
+this.m_4=create m_4
+this.Item[UpperBound(this.Item)+1]=this.m_2
+this.Item[UpperBound(this.Item)+1]=this.m_3
+this.Item[UpperBound(this.Item)+1]=this.m_4
+end on
+
+on m_recent.destroy
+call super::destroy
+destroy(this.m_2)
+destroy(this.m_3)
+destroy(this.m_4)
+end on
+
+type m_2 from menu within m_recent
+end type
+
+on m_2.create
+call super::create
+this.text = "Item1"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_2.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_3 from menu within m_recent
+end type
+
+on m_3.create
+call super::create
+this.text = "Item2"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_3.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_4 from menu within m_recent
+end type
+
+on m_4.create
+call super::create
+this.text = "Item3"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_4.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_1 from menu within m_file
+end type
+
+on m_1.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_1.destroy
+call super::destroy
+end on
+
+type m_exit from menu within m_file
+end type
+
+on m_exit.create
+call super::create
+this.text = "退出~tAlt+X"
+this.shortcut = 600
+this.menuimage = "Exit!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_exit.destroy
+call super::destroy
+end on
+
+event clicked;Close(ParentWindow)
+end event
+
+type m_5 from menu within m_test
+end type
+
+on m_5.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_5.destroy
+call super::destroy
+end on
+
+type m_view from menu within m_test
+m_tree m_tree
+m_statusbar m_statusbar
+m_6 m_6
+m_layout m_layout
+end type
+
+on m_view.create
+call super::create
+this.text = "视图"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_tree=create m_tree
+this.m_statusbar=create m_statusbar
+this.m_6=create m_6
+this.m_layout=create m_layout
+this.Item[UpperBound(this.Item)+1]=this.m_tree
+this.Item[UpperBound(this.Item)+1]=this.m_statusbar
+this.Item[UpperBound(this.Item)+1]=this.m_6
+this.Item[UpperBound(this.Item)+1]=this.m_layout
+end on
+
+on m_view.destroy
+call super::destroy
+destroy(this.m_tree)
+destroy(this.m_statusbar)
+destroy(this.m_6)
+destroy(this.m_layout)
+end on
+
+type m_tree from menu within m_view
+end type
+
+on m_tree.create
+call super::create
+this.text = "导航树"
+this.menuimage = "TreeView!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_tree.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_statusbar from menu within m_view
+end type
+
+on m_statusbar.create
+call super::create
+this.text = "任务栏"
+this.menuimage = "Having!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_statusbar.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_6 from menu within m_view
+end type
+
+on m_6.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_6.destroy
+call super::destroy
+end on
+
+type m_layout from menu within m_view
+m_vert m_vert
+m_horz m_horz
+end type
+
+on m_layout.create
+call super::create
+this.text = "布局"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_vert=create m_vert
+this.m_horz=create m_horz
+this.Item[UpperBound(this.Item)+1]=this.m_vert
+this.Item[UpperBound(this.Item)+1]=this.m_horz
+end on
+
+on m_layout.destroy
+call super::destroy
+destroy(this.m_vert)
+destroy(this.m_horz)
+end on
+
+type m_vert from menu within m_layout
+end type
+
+on m_vert.create
+call super::create
+this.text = "Vertical"
+this.menuimage = "Tile!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_vert.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_horz from menu within m_layout
+end type
+
+on m_horz.create
+call super::create
+this.text = "Horizontal"
+this.menuimage = "Horizontal!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_horz.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_edit from menu within m_test
+m_cut m_cut
+m_copy m_copy
+m_paste m_paste
+end type
+
+on m_edit.create
+call super::create
+this.text = "编辑"
+this.mergeoption = editmenu!
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_cut=create m_cut
+this.m_copy=create m_copy
+this.m_paste=create m_paste
+this.Item[UpperBound(this.Item)+1]=this.m_cut
+this.Item[UpperBound(this.Item)+1]=this.m_copy
+this.Item[UpperBound(this.Item)+1]=this.m_paste
+end on
+
+on m_edit.destroy
+call super::destroy
+destroy(this.m_cut)
+destroy(this.m_copy)
+destroy(this.m_paste)
+end on
+
+type m_cut from menu within m_edit
+end type
+
+on m_cut.create
+call super::create
+this.text = "剪切~tCtrl+X"
+this.shortcut = 344
+this.menuimage = "Cut!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_cut.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_copy from menu within m_edit
+end type
+
+on m_copy.create
+call super::create
+this.text = "复制~tCtrl+C"
+this.shortcut = 323
+this.menuimage = "Copy!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_copy.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+
+type m_paste from menu within m_edit
+end type
+
+on m_paste.create
+call super::create
+this.text = "粘贴~tCtrl+V"
+this.shortcut = 342
+this.menuimage = "Paste!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_paste.destroy
+call super::destroy
+end on
+
+event clicked;MessageBox("MENU CLICKED",this.Text)
+end event
+

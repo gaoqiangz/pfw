@@ -1,0 +1,16 @@
+﻿$PBExportHeader$logger.srf
+global type logger from function_object
+end type
+
+forward prototypes
+global function n_logger logger ()
+end prototypes
+
+global function n_logger logger ();if Not IsValidObject(n_logger) then
+	n_logger = Create n_logger
+	n_logger.OpenFile("pfw.log",false)
+	n_logger.SetHeaderPattern("[%s] %d-%02d-%02d %02d:%02d:%02d ")
+end if
+return n_logger
+end function
+

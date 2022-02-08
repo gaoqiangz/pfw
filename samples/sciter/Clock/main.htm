@@ -1,0 +1,78 @@
+<html role="window-caption" window-frame="transparent" window-width="350px" window-height="350px">
+<head>
+<title>Sciter clock</title>
+<style>
+   html  { background:transparent; } 
+   body  
+   { 
+     prototype: Clock url(analog-clock.js); // will draw clock in between background and content layers
+     border-radius:50%; border:3dip solid brown; 
+     background:gold; 
+     margin:*; // flex margins will move the body in the mddle of the root
+     size:300dip; 
+     flow:vertical;
+     transform:scale(0.1); // initially it is collapsed to center
+     overflow:hidden;
+     font-size:10pt;
+     font-family: "Segoe UI", Tahoma, Helvetica, sans-serif;
+  }
+        
+  body.shown 
+  {
+    transform:scale(1);
+    transition: transform back-out 600ms; 
+  }
+   
+  body 
+  {
+    transform:scale(0.1);
+    transition: transform back-in 600ms; 
+  }
+  
+  body > header { text-align:center; color:brown; margin-top:36dip; font-weight:bold; }
+   
+  body > footer { flow:vertical; margin-top:*; margin-bottom:20dip; }
+  body > footer > button { display:block; background:transparent; margin:8dip *; border: 1px solid brown; border-radius:4dip; font-rendering-mode:sub-pixel; /*for better font scaling*/ }
+  body > footer > button:hover { background-color:white; transition: background-color(linear,300ms);  }
+  body > footer > input { display:block; margin:8dip *; }
+</style>
+<script type="module">
+	import {$} from "@sciter";
+	import * as env from "@env";
+
+  const body = document.body;
+
+  document.on("ready",function() // html loaded - DOM ready
+  {
+    Window.this.caption = "Sciter Clock";
+  
+    body.timer(40, function() { body.classList.add("shown") });
+    $("span#platform").innerText = env.PLATFORM;
+    $("span#arch").innerText = Window.this.xcall("architecture"); // calling native function defined in ulayered.cpp
+  });
+
+  // <button #close> click handler 
+  $("#close").on("click",function()
+  {
+    //transitionend has BUG
+    //body.on("transitionend",function() { Window.this.close() });
+    body.timer(600,function() { Window.this.close() });
+    body.classList.remove("shown");
+  });
+
+  // <button #minimize> click handler
+  $("#minimize").on("click",function()
+  {
+    Window.this.state = Window.WINDOW_MINIMIZED;
+  });
+</script>
+</head>
+<body>
+  <header><span #platform /> <span #arch />bit time</header>
+  <footer>
+    <input|text value="PowerFramework">
+    <button #minimize>Minimize Window</button>
+    <button #close>Close Window</button>
+  </footer>
+</body>
+</html>

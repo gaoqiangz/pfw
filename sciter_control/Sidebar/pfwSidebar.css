@@ -1,0 +1,201 @@
+@import url(../common/theme.css);
+
+sidebar {
+	style-set: pfw-sidebar;
+}
+
+sidebar option>caption>popup[role="tooltip"] {
+	style-set: pfw-tooltip;
+}
+
+@set pfw-sidebar {
+
+	/* 定义CSS变量 */
+	:root {
+		var(font_size): 12pt;
+		var(group_icon_size): 24dip;
+		var(item_icon_size): 16dip;
+		var(min_group_height): 40dip;
+		var(min_item_height): 30dip;
+		var(min_popup_width): 100dip;
+		var(min_popup_height): 100%;
+		var(max_popup_width): 600dip;
+		var(max_popup_height): 700dip;
+		var(group_bar_width): 4dip;
+		var(child_group_offset): 14dip;
+		var(clr_bkgnd): #1a202c;
+		var(clr_group_bkgnd): #344058;
+		var(clr_group_bar): #009688;
+		var(clr_child_group_bkgnd): #252d3e;
+		var(clr_item_selected): #1e9fff;
+		var(clr_text): #bec0c5;
+		var(clr_text_hover): #fff;
+		var(clr_icon): #fff;
+		var(clr_icon_hover): #fff;
+		var(clr_arrow): #fff;
+		var(tooltip_bkgnd): var(clr_group_bkgnd);
+		var(tooltip_text): var(clr_text);
+		var(tooltip_border): tint(var(tooltip_bkgnd), -0.2);
+	}
+
+	:root {
+		prototype: pfwSidebar url(pfwSidebar.js);
+		behavior: pfwSidebar;
+		display: inline-block;
+		font-size: var(font_size);
+		background-color: var(clr_bkgnd);
+		flow: vertical;
+		overflow-y: pfw-scroll-indicator;
+		vertical-scrollbar: pfw-scroll-indicator;
+		horizontal-scrollbar: pfw-scroll-indicator;
+	}
+
+	options {
+		display: block;
+		background-color: var(clr_bkgnd);
+		flow: vertical;
+	}
+
+	option {
+		width: *;
+		height: max-content;
+		flow: vertical;
+	}
+
+	/* 分组标题 */
+
+	option>caption {
+		padding: 4dip;
+		width: *;
+		color: var(clr_text);
+		vertical-align: middle;
+		flow: horizontal;
+		cursor: pointer;
+	}
+
+	option>caption>text {
+		width: *;
+		min-width: 0;
+		word-wrap: break-word;
+	}
+
+	option>caption:hover,
+	option:has-child-of-type(options):expanded>caption {
+		color: var(clr_text_hover);
+	}
+
+	option:has-child-of-type(options)>caption {
+		min-height: var(min_group_height);
+		background-color: var(clr_child_group_bkgnd);
+	}
+
+	:root>option:has-child-of-type(options)>caption {
+		padding: 4dip 4dip 4dip 2dip;
+		border-left: var(group_bar_width) solid transparent;
+		background-color: var(clr_group_bkgnd);
+	}
+
+	:root>option:has-child-of-type(options):hover>caption {
+		border-left: var(group_bar_width) solid var(clr_group_bar);
+	}
+
+	option:not(:has-child-of-type(options))>caption {
+		min-height: var(min_item_height);
+		background-color: transparent;
+	}
+
+	option:not(:has-child-of-type(options)):current>caption {
+		background-color: var(clr_item_selected);
+	}
+
+	option:has-child-of-type(options)>caption {
+		transition: border-left linear 150ms,
+			foreground-image linear 150ms;
+	}
+
+	/* 分组右侧的箭头 */
+
+	option:has-child-of-type(options)>caption {
+		padding-right: 30dip;
+		foreground-image: url(stock:arrow-down);
+		foreground-size: 12dip 8dip;
+		foreground-repeat: no-repeat;
+		foreground-position-top: 50%;
+		foreground-position-right: 10dip;
+		fill: var(clr_arrow);
+	}
+
+	option:has-child-of-type(options):expanded>caption {
+		foreground-image: url(stock:arrow-up);
+	}
+
+	/* 分组折叠显示控制 */
+
+	option>options {
+		visibility: none;
+	}
+
+	option:expanded>options {
+		visibility: visible;
+	}
+
+	/* 图标 */
+
+	.sb-img {
+		margin-right: 4dip;
+		size: var(group_icon_size);
+		font-size: var(group_icon_size);
+		fill: var(clr_icon);
+		color: var(clr_icon);
+	}
+
+	options .sb-img {
+		size: var(item_icon_size);
+		font-size: var(item_icon_size);
+	}
+
+	option>caption:hover>.sb-img,
+	option:has-child-of-type(options):expanded>caption>.sb-img {
+		fill: var(clr_icon_hover);
+		color: var(clr_icon_hover);
+	}
+
+	/* 子分组后代偏移量的设置 */
+
+	options {
+		margin-left: var(child_group_offset);
+	}
+
+	:root>option>options {
+		margin-left: 0dip;
+	}
+
+	/* 导航栏折叠显示控制 */
+
+	:root:collapsed>option>options {
+		visibility: none;
+	}
+
+	:root:collapsed>option>caption>*:not(.sb-img) {
+		visibility: none;
+	}
+
+	:root:collapsed>option>caption {
+		padding-right: 0;
+		foreground-size: 0dip;
+		cursor: default;
+	}
+
+	options:popup {
+		size: max-content;
+		min-width: var(min_popup_width);
+		min-height: var(min_popup_height);
+		max-width: var(max_popup_width);
+		max-height: var(max_popup_height);
+		box-shadow: 2dip 0 10dip 2dip rgba(4, 4, 4, 0.5);
+		overflow: scroll-indicator;
+		vertical-scrollbar: scroll-indicator;
+		horizontal-scrollbar: scroll-indicator;
+	}
+
+}

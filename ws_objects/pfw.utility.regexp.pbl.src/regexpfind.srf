@@ -1,0 +1,17 @@
+﻿$PBExportHeader$regexpfind.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type RegExpFind from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function string RegExpFind (readonly string str, readonly string pattern)
+global function string RegExpFind (readonly string str, readonly string pattern, readonly boolean matchcase)
+global function string RegExpFind (readonly string str, readonly string pattern, readonly boolean matchcase, readonly unsignedlong flags)
+global function string RegExpFind (readonly string str, readonly string pattern, readonly int index)
+global function string RegExpFind (readonly string str, readonly string pattern, readonly int index, readonly boolean matchcase)
+global function string RegExpFind (readonly string str, readonly string pattern, readonly int index, readonly boolean matchcase, readonly unsignedlong flags)
+global function int RegExpFind (readonly string str, readonly string pattern, ref string subs[])
+global function int RegExpFind (readonly string str, readonly string pattern, ref string subs[], readonly boolean matchcase)
+global function int RegExpFind (readonly string str, readonly string pattern, ref string subs[], readonly boolean matchcase, readonly unsignedlong flags)
+end prototypes
+

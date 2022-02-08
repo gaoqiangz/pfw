@@ -1,0 +1,32 @@
+﻿$PBExportHeader$f_dwdrawbarcode.srf
+global type f_dwdrawbarcode from function_object
+end type
+
+forward prototypes
+global subroutine f_dwdrawbarcode (readonly string text, readonly string stype, readonly long showtext, readonly unsignedlong hdc, readonly long x, readonly long y, readonly long width, readonly long height)
+end prototypes
+
+global subroutine f_dwdrawbarcode (readonly string text, readonly string stype, readonly long showtext, readonly unsignedlong hdc, readonly long x, readonly long y, readonly long width, readonly long height);real fWidth,fHeight
+
+if text = "" or IsNull(text) then return
+
+/*--- 填充白色背景 ---*/
+Painter.FillRect( hdc, P2DX(x), P2DY(y), P2DX(x + width), P2DY(y + height), ARGB(255,255,255,255), ARGB(255,255,255,255), 0, false, false, 0)
+/*----------------------------------------------*/
+
+if Not IsValidObject(n_barcode) then
+	n_barcode = Create n_barcode
+end if
+
+n_barcode.SetType(sType)
+n_barcode.ShowText(showText = 1)
+n_barcode.SetUnit(Enums.QRCODE_UNIT_PIXEL)
+n_barcode.SetSize(width,height)
+
+n_barcode.Encode(Text)
+
+n_barcode.GetSize(ref fWidth,ref fHeight,true /*获取编码后的真实大小，可能与建议的大小会有误差（缩放和某些类型的一唯码的限制）*/)
+
+n_barcode.Draw(hdc,x + (width - fWidth) / 2,y + (height - fHeight) / 2)
+end subroutine
+

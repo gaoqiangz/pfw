@@ -1,0 +1,45 @@
+﻿$PBExportHeader$ftpdownload.srf
+$PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
+global type ftpdownload from function_object
+end type
+
+forward prototypes
+global function long ftpdownload (readonly string url, readonly string filename)
+global function long ftpdownload (readonly string url, readonly string filename, readonly string user, readonly string psw)
+end prototypes
+
+global function long ftpdownload (readonly string url, readonly string filename);return FtpDownload(url,fileName,"","")
+end function
+
+global function long ftpdownload (readonly string url, readonly string filename, readonly string user, readonly string psw);long nPos,rtCode
+string sRoot,sResName
+n_ftpclient ftpClient
+
+nPos = LastPos(url,"/")
+if nPos <= 0 then return RetCode.E_INVALID_ARGUMENT
+sRoot = Left(url,nPos - 1)
+sResName = Mid(url,nPos + 1)
+if sRoot = "" or sResName = "" then return RetCode.E_INVALID_ARGUMENT
+if fileName = "" then return RetCode.E_INVALID_ARGUMENT
+
+ftpClient = Create n_ftpclient
+
+try
+	rtCode = ftpClient.SetRoot(sRoot)
+	if rtCode <> RetCode.OK then return rtCode
+	
+	if user <> "" then
+		rtCode = ftpClient.SetCredential(user,psw)
+		if rtCode <> RetCode.OK then return rtCode
+	end if
+	
+	rtCode = ftpClient.ConnectRoot()
+	if rtCode <> RetCode.OK then return rtCode
+	
+	return ftpClient.DownloadFile(sResName,fileName)
+finally
+	ftpClient.DisconnectRoot()
+	Destroy ftpClient
+end try
+end function
+

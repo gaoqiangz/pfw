@@ -1,0 +1,43 @@
+﻿$PBExportHeader$p_pfw.srj
+EXE:pfw.exe,,0,1,1
+CMP:0,0,0,2,0,0,1
+COM:Sybase, Inc.
+DES:Sybase, Inc. Product File
+CPY:
+PRD:PowerBuilder Enterprise Series
+PVS:1.0.0.1
+PVN:1,0,0,1
+FVS:1.0.0.1
+FVN:1,0,0,1
+MAN:0,asInvoker,0
+PBD:pfw.pbl,res.pbr,1
+PBD:pfw.demos.pbl,,1
+PBD:pfw.datawindow.services.pbl,,1
+PBD:pfw.common.pbl,,1
+PBD:pfw.ui.controls.ext.pbl,,1
+PBD:pfw.ui.controls.pbl,,1
+PBD:pfw.ui.objects.pbl,,1
+PBD:pfw.ui.pbl,,1
+PBD:pfw.ui.sciter.ext.pbl,,1
+PBD:pfw.ui.sciter.pbl,,1
+PBD:pfw.ui.blink.pbl,,1
+PBD:pfw.net.http.ext.pbl,,1
+PBD:pfw.net.http.pbl,,1
+PBD:pfw.net.websocket.pbl,,1
+PBD:pfw.net.ftp.pbl,,1
+PBD:pfw.thread.ext.pbl,,1
+PBD:pfw.thread.pbl,,1
+PBD:pfw.crypto.pbl,,1
+PBD:pfw.utility.pbl,,1
+PBD:pfw.utility.parser.pbl,,1
+PBD:pfw.utility.container.pbl,,1
+PBD:pfw.utility.regexp.pbl,,1
+PBD:pfw.utility.invoker.pbl,,1
+PBD:pfw.utility.compiler.pbl,,1
+PBD:pfw.utility.devinfo.pbl,,1
+PBD:pfw.utility.zip.pbl,,1
+PBD:pfw.utility.barcode.pbl,,1
+PBD:pfw.utility.imgcodec.pbl,,1
+OBJ:F:\pfw\pfw.pbl,pfw,a
+OBJ:F:\pfw\pfwUtils.pbl,n_compiler,u
+OBJ:F:\pfw\pfw.pbl,w_test_compiler,w

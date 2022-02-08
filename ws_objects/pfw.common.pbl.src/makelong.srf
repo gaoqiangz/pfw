@@ -1,0 +1,9 @@
+﻿$PBExportHeader$makelong.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type makelong from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  ulong makelong(readonly uint low,readonly uint high)
+end prototypes
+

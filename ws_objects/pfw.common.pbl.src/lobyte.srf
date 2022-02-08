@@ -1,0 +1,9 @@
+﻿$PBExportHeader$lobyte.srf
+$PBExportComments$PowerBuilder Extension~r~nBy gaoqiangz@msn.com
+global type lobyte from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function  uint lobyte(readonly uint num)
+end prototypes
+
