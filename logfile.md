@@ -2,6 +2,8 @@
 
 从3.0版本开始Sciter引擎将采用[Sciter.JS](https://github.com/c-smile/sciter-js-sdk)版本不再兼容TIScript版本
 
+:warning: 从此版本开始不再支持XP
+
 ### 新增
 
 * [pfw.utility]
