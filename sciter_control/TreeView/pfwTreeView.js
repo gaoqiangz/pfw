@@ -1515,17 +1515,20 @@ class DragDropHandler {
 				switch (this._drop_where) {
 					case DD_DROP_WHERE_BEFORE:
 						{
-							this._drop_target.parentElement.insertBefore(this._drag_source, this._drop_target);
+							if (this._drag_source !== this._drop_target.previousElementSibling)
+								this._drop_target.parentElement.insertBefore(this._drag_source, this._drop_target);
 							break;
 						}
 					case DD_DROP_WHERE_AFTER:
 						{
-							this._drop_target.parentElement.insertAfter(this._drag_source, this._drop_target);
+							if (this._drag_source !== this._drop_target.nextElementSibling)
+								this._drop_target.parentElement.insertAfter(this._drag_source, this._drop_target);
 							break;
 						}
 					case DD_DROP_WHERE_INSIDE:
 						{
-							this._drop_target.appendChild(this._drag_source);
+							if (this._drag_source.parentElement !== this._drop_target)
+								this._drop_target.appendChild(this._drag_source);
 							this.tree.expandOption(this._drop_target, true);
 							break;
 						}
