@@ -1,1328 +1,1315 @@
 ## 3.0.1.2032(2022-02-08)
 
-´Ó3.0°æ±¾¿ªÊ¼SciterÒıÇæ½«²ÉÓÃ[Sciter.JS](https://github.com/c-smile/sciter-js-sdk)°æ±¾²»ÔÙ¼æÈİTIScript°æ±¾
+ä»3.0ç‰ˆæœ¬å¼€å§‹Sciterå¼•æ“å°†é‡‡ç”¨[Sciter.JS](https://github.com/c-smile/sciter-js-sdk)ç‰ˆæœ¬ä¸å†å…¼å®¹TIScriptç‰ˆæœ¬
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility]
-  - `n_logger`Ôö¼Ó`SetHead`º¯Êı(Ã¿´ÎÊä³ö¸½¼ÓµÄÍ·²¿ĞÅÏ¢)
-> ÔöÇ¿Header¸ñÊ½»¯¹¦ÄÜ£¬Ö§³Ö£º{L}¼¶±ğ£¬{Y}Äê£¬{M}ÔÂ£¬{D}ÈÕ£¬{h}Ê±£¬{m}·Ö£¬{s}Ãë£¬{ms}ºÁÃë
+  - `n_logger`å¢åŠ `SetHead`å‡½æ•°(æ¯æ¬¡è¾“å‡ºé™„åŠ çš„å¤´éƒ¨ä¿¡æ¯)
+> å¢å¼ºHeaderæ ¼å¼åŒ–åŠŸèƒ½ï¼Œæ”¯æŒï¼š{L}çº§åˆ«ï¼Œ{Y}å¹´ï¼Œ{M}æœˆï¼Œ{D}æ—¥ï¼Œ{h}æ—¶ï¼Œ{m}åˆ†ï¼Œ{s}ç§’ï¼Œ{ms}æ¯«ç§’
 * [pfw.utility.parser]
-  - `n_json`Ôö¼Ó`FindItemString`/`FindItemLong`/`FindItemLongLong`/`FindItemDouble`/`FindItemBoolean`
+  - `n_json`å¢åŠ `FindItemString`/`FindItemLong`/`FindItemLongLong`/`FindItemDouble`/`FindItemBoolean`
 * [pfw.net.websocket]
-  - `n_wsclient::Publish`Ö§³Ö·¢ËÍ`blob`Êı¾İ
+  - `n_wsclient::Publish`æ”¯æŒå‘é€`blob`æ•°æ®
 * [pfw.thread]
-  - taskÔö¼Ó`of_SetDelayFor`º¯Êı£¬ÉèÖÃÈÎÎñÔÚÖ¸¶¨ÑÓ³Ùºó£¨Ãë£©²ÅÖ´ĞĞ
-  - `n_cst_threading::of_Stop`Ôö¼Óexitcode²ÎÊı£¬Ö¸¶¨Ïß³ÌÖĞÖ¹È¡ÏûµÄÍË³ö´úÂë
-  - `n_cst_thread`Ôö¼Ó`OnPrepareTask`ÊÂ¼ş
+  - taskå¢åŠ `of_SetDelayFor`å‡½æ•°ï¼Œè®¾ç½®ä»»åŠ¡åœ¨æŒ‡å®šå»¶è¿Ÿåï¼ˆç§’ï¼‰æ‰æ‰§è¡Œ
+  - `n_cst_threading::of_Stop`å¢åŠ exitcodeå‚æ•°ï¼ŒæŒ‡å®šçº¿ç¨‹ä¸­æ­¢å–æ¶ˆçš„é€€å‡ºä»£ç 
+  - `n_cst_thread`å¢åŠ `OnPrepareTask`äº‹ä»¶
 * [pfw.thread.ext]
-  - `sqlquery`Ôö¼Ó`#PageNative`ÊôĞÔ£¬Ê¹ÓÃÔ­ÉúÓï·¨ÊµÏÖ·ÖÒ³(ÈçMSSQLµÄ`LIMIT`Óï·¨)
-  - `sqlquery`Ôö¼Ó`of_SetPagedUniqueIndexColumns`º¯Êı£¬Ö§³ÖÎ¨Ò»Ë÷ÒıÁĞ·ÖÒ³ÓÅ»¯
-  - `sqlquery`/`sqlupdate`/`sqlcommand`Ôö¼Ó`of_GetParam`/`of_GetParamName`/`of_GetParamCount`º¯Êı
-> Ä¿Ç°½ö°üº¬MSSQLÊµÏÖ
-  - `sqlquery`Ôö¼Ó`of_SetReceiver`º¯Êı£¬ÉèÖÃÖ±½Ó½ÓÊÕÊı¾İµÄ¶ÔÏó£¬¼õÉÙÄÚ´æ¿½±´Ìá¸ßĞÔÄÜ
-  - `sqlcommand`Ö§³Ö°ó¶¨²ÎÊı
-  - `sqlquery`Ôö¼Ó¹³×Ó»úÖÆ£¬¼Ì³Ğ`n_cst_thread_task_sqlbase_hook`À¹½ØÄ¬ÈÏ²éÑ¯·½Ê½
-  - `n_cst_thread_trans::of_GetTransData`Ö§³Ö·µ»Ø´íÎóĞÅÏ¢
+  - `sqlquery`å¢åŠ `#PageNative`å±æ€§ï¼Œä½¿ç”¨åŸç”Ÿè¯­æ³•å®ç°åˆ†é¡µ(å¦‚MSSQLçš„`LIMIT`è¯­æ³•)
+  - `sqlquery`å¢åŠ `of_SetPagedUniqueIndexColumns`å‡½æ•°ï¼Œæ”¯æŒå”¯ä¸€ç´¢å¼•åˆ—åˆ†é¡µä¼˜åŒ–
+  - `sqlquery`/`sqlupdate`/`sqlcommand`å¢åŠ `of_GetParam`/`of_GetParamName`/`of_GetParamCount`å‡½æ•°
+> ç›®å‰ä»…åŒ…å«MSSQLå®ç°
+  - `sqlquery`å¢åŠ `of_SetReceiver`å‡½æ•°ï¼Œè®¾ç½®ç›´æ¥æ¥æ”¶æ•°æ®çš„å¯¹è±¡ï¼Œå‡å°‘å†…å­˜æ‹·è´æé«˜æ€§èƒ½
+  - `sqlcommand`æ”¯æŒç»‘å®šå‚æ•°
+  - `sqlquery`å¢åŠ é’©å­æœºåˆ¶ï¼Œç»§æ‰¿`n_cst_thread_task_sqlbase_hook`æ‹¦æˆªé»˜è®¤æŸ¥è¯¢æ–¹å¼
+  - `n_cst_thread_trans::of_GetTransData`æ”¯æŒè¿”å›é”™è¯¯ä¿¡æ¯
 * [pfw.ui.controls]
-  - `n_cst_popupmenu`Ôö¼Ó`of_GetTag`/`of_SetTag`º¯Êı
-  - `n_cst_ribbonbar_panel`/`n_cst_taskpanelbar_panel`Ôö¼Ó`of_FindCheckedRadio`º¯Êı
+  - `n_cst_popupmenu`å¢åŠ `of_GetTag`/`of_SetTag`å‡½æ•°
+  - `n_cst_ribbonbar_panel`/`n_cst_taskpanelbar_panel`å¢åŠ `of_FindCheckedRadio`å‡½æ•°
 * [pfw.ui.objects]
-  - `n_cst_splitcontainer_panel`Ôö¼Ó`of_Replace`º¯Êı
-  - `n_cst_splitcontainer_panel`Ôö¼Ó`#Collapsed`ÊôĞÔ£¬Ö§³ÖÍ¨¹ı´úÂëÕÛµşÃæ°å
+  - `n_cst_splitcontainer_panel`å¢åŠ `of_Replace`å‡½æ•°
+  - `n_cst_splitcontainer_panel`å¢åŠ `#Collapsed`å±æ€§ï¼Œæ”¯æŒé€šè¿‡ä»£ç æŠ˜å é¢æ¿
 * [pfw.ui]
-  - `win32`Ôö¼Ó`IsWin10`º¯Êı
+  - `win32`å¢åŠ `IsWin10`å‡½æ•°
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.utility.sqlite]
-  - `n_sqlite::IsOpenned` -> `IsOpened`
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: `n_sqlite::IsOpenned` -> `IsOpened`
 * [pfw.thread.ext]
-  - `sqlupdate`Ã»ÓĞ¸üĞÂÊı¾İÊ±·µ»Ø³É¹¦
-  - `sqlcommand::#AutoCommit`Ê¹ÓÃÃ¶¾Ù³£Á¿Çø·ÖÊÂÎñºÍÎŞÊÂÎñÌá½»
-  - `sqlquery::#ChunkSize`Ä¬ÈÏÖµĞŞ¸ÄÎª`10000`
+  - `sqlupdate`æ²¡æœ‰æ›´æ–°æ•°æ®æ—¶è¿”å›æˆåŠŸ
+  - `sqlcommand::#AutoCommit`ä½¿ç”¨æšä¸¾å¸¸é‡åŒºåˆ†äº‹åŠ¡å’Œæ— äº‹åŠ¡æäº¤
+  - `sqlquery::#ChunkSize`é»˜è®¤å€¼ä¿®æ”¹ä¸º`10000`
 * [pfw.utility.parser]
-  - `n_json::GetValue`/`GetItemValue`/`FindItemValue`µ±JSONÎŞĞ§»òÀàĞÍ²»Æ¥Åä»òÔªËØ²»´æÔÚ»òÖµÎªNULLÊ±Í³Ò»·µ»ØNULL
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: `n_json::GetValue`/`GetItemValue`/`FindItemValue`å½“JSONæ— æ•ˆæˆ–ç±»å‹ä¸åŒ¹é…æˆ–å…ƒç´ ä¸å­˜åœ¨æˆ–å€¼ä¸ºNULLæ—¶ç»Ÿä¸€è¿”å›NULL
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.thread.ext]
-  - ÓÅ»¯`sqlquery`/`sqlupdate`/`sqlcommand`ÊÂÎñ¹ÜÀí
-  - `sqlupdate`ÍêÉÆ¶à±í¸üĞÂ¶Ô`UpdateKeyInPlace`µÄ´¦Àí
-  - `sqlupdate`Ö§³Ö`NChar`×Ö·û´®°ó¶¨Óï·¨
-> ĞèÒªDBParm¿ªÆôDisableBind=1²¢ÇÒNCharBind=1
-  - `sqlquery`/`sqlupdate`Ôö¼Ó¶ÔÏó»º´æ£¬´ó·ùÓÅ»¯²éÑ¯¡¢¸üĞÂ¹¹½¨ĞÔÄÜ
-  - ÊôĞÔÉèÖÃ±£´æÔÚ¹¤×÷ÈÎÎñÄÚ£¬¼õÉÙÏß³ÌÍ¬²½¿ªÏú
-  - `n_cst_thread_trans`Á¬½ÓÒÑ¾­ÒâÍâ¶Ï¿ª£¬²»ÄÜÊ¹ÓÃ`DISCONNECT`±ÜÃâ·¢Éú±ÀÀ£
+  - ä¼˜åŒ–`sqlquery`/`sqlupdate`/`sqlcommand`äº‹åŠ¡ç®¡ç†
+  - `sqlupdate`å®Œå–„å¤šè¡¨æ›´æ–°å¯¹`UpdateKeyInPlace`çš„å¤„ç†
+  - `sqlupdate`æ”¯æŒ`NChar`å­—ç¬¦ä¸²ç»‘å®šè¯­æ³•
+> éœ€è¦DBParmå¼€å¯DisableBind=1å¹¶ä¸”NCharBind=1
+  - `sqlquery`/`sqlupdate`å¢åŠ å¯¹è±¡ç¼“å­˜ï¼Œå¤§å¹…ä¼˜åŒ–æŸ¥è¯¢ã€æ›´æ–°æ„å»ºæ€§èƒ½
+  - å±æ€§è®¾ç½®ä¿å­˜åœ¨å·¥ä½œä»»åŠ¡å†…ï¼Œå‡å°‘çº¿ç¨‹åŒæ­¥å¼€é”€
+  - `n_cst_thread_trans`è¿æ¥å·²ç»æ„å¤–æ–­å¼€ï¼Œä¸èƒ½ä½¿ç”¨`DISCONNECT`é¿å…å‘ç”Ÿå´©æºƒ
 * [pfw.ui.sciter.ext]
-  - `treeview`ÊôĞÔÖ§³Ö´æ´¢NULLÖµ£¬×ªÒåÎª'(null)'
-  - `treeview`ÍÏ·ÅÓÅ»¯
+  - `treeview`å±æ€§æ”¯æŒå­˜å‚¨NULLå€¼ï¼Œè½¬ä¹‰ä¸º'(null)'
+  - `treeview`æ‹–æ”¾ä¼˜åŒ–
 * [pfw.ui.controls]
-  - ½«Òş²ØµÄ¿Ø¼şÒÆµ½ÆÁÄ»Íâ£¬·ÀÖ¹±»ÒâÍâÏÔÊ¾³öÀ´
-  - `s_cst_datawindow`Ïò¸¸¿Ø¼ş×ª·¢ÌØÊâ·ûºÅ°´¼üÏûÏ¢
-  - `toolbarstrip`ÓÅ»¯Êó±êµ¥»÷
+  - å°†éšè—çš„æ§ä»¶ç§»åˆ°å±å¹•å¤–ï¼Œé˜²æ­¢è¢«æ„å¤–æ˜¾ç¤ºå‡ºæ¥
+  - `s_cst_datawindow`å‘çˆ¶æ§ä»¶è½¬å‘ç‰¹æ®Šç¬¦å·æŒ‰é”®æ¶ˆæ¯
+  - `toolbarstrip`ä¼˜åŒ–é¼ æ ‡å•å‡»
 * [pfw.utility.parser]
-  - `n_sql::ModifyClause` `SCT_TABLE MS_APPEND`¼æÈİ±íÁ¬½ÓµÄÓï¾ä
+  - `n_sql::ModifyClause` `SCT_TABLE MS_APPEND`å…¼å®¹è¡¨è¿æ¥çš„è¯­å¥
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.thread]
-  - `n_cst_threading`Ôö¼Ó`#IgnoreTaskCancel`ÊôĞÔ£¬Ä¬ÈÏÎª`true`£¬Îª`false`Ê±µ±ÈÎÎñ±»È¡ÏûºóÏß³ÌºÍºóĞøµÄÈÎÎñ¶¼½«±»È¡Ïû
-  - ĞŞ¸´ÊÂ¼ş·Ö·¢µİ¹éÊ±×èÖ¹µ÷ÓÃÁ´×´Ì¬²»ÕıÈ·µÄÎÊÌâ£¨`of_Prevent`ºóÁ¢¼´`of_Trigger`£©
+  - `n_cst_threading`å¢åŠ `#IgnoreTaskCancel`å±æ€§ï¼Œé»˜è®¤ä¸º`true`ï¼Œä¸º`false`æ—¶å½“ä»»åŠ¡è¢«å–æ¶ˆåçº¿ç¨‹å’Œåç»­çš„ä»»åŠ¡éƒ½å°†è¢«å–æ¶ˆ
+  - ä¿®å¤äº‹ä»¶åˆ†å‘é€’å½’æ—¶é˜»æ­¢è°ƒç”¨é“¾çŠ¶æ€ä¸æ­£ç¡®çš„é—®é¢˜ï¼ˆ`of_Prevent`åç«‹å³`of_Trigger`ï¼‰
 * [pfw.thread.ext]
-  - `sqlupdate`ĞŞ¸´`KeyColumns`Ã»ÓĞÖ¸¶¨µÄÎÊÌâ
-  - `sqlquery`ĞŞ¸´´øÅÅĞòµÄDWÊı¾İ´óÓÚ1¿éÊ±Ê¹ÓÃ`SetChanges`¿ÉÄÜ»á¶ªÊ§ĞĞµÄÎÊÌâ
-  - `sqlquery`½â¾ö½»²æ±í×Ö¶Î¹ı¶àÊ±¿ÉÄÜ³öÏÖ`SetFullState`±ÀÀ£ÎÊÌâ
+  - `sqlupdate`ä¿®å¤`KeyColumns`æ²¡æœ‰æŒ‡å®šçš„é—®é¢˜
+  - `sqlquery`ä¿®å¤å¸¦æ’åºçš„DWæ•°æ®å¤§äº1å—æ—¶ä½¿ç”¨`SetChanges`å¯èƒ½ä¼šä¸¢å¤±è¡Œçš„é—®é¢˜
+  - `sqlquery`è§£å†³äº¤å‰è¡¨å­—æ®µè¿‡å¤šæ—¶å¯èƒ½å‡ºç°`SetFullState`å´©æºƒé—®é¢˜
 * [pfw.common]
-  - ²¶»ñ`ClassName`¿ÉÄÜ³öÏÖµÄÒì³£
+  - æ•è·`ClassName`å¯èƒ½å‡ºç°çš„å¼‚å¸¸
 * [pfw.ui.controls]
-  - `s_cst_statictext`ĞŞ¸´ÉèÖÃÎÄ±¾Ã»ÓĞË¢ĞÂ»æÖÆ²¼¾ÖµÄÎÊÌâ
-  - `splitcontainer`ÍêÉÆ¶Ô`DeferWindowPos`µÄ´¦Àí£¬·ÀÖ¹¾ä±úÒâÍâ±ä»¯
+  - `s_cst_statictext`ä¿®å¤è®¾ç½®æ–‡æœ¬æ²¡æœ‰åˆ·æ–°ç»˜åˆ¶å¸ƒå±€çš„é—®é¢˜
+  - `splitcontainer`å®Œå–„å¯¹`DeferWindowPos`çš„å¤„ç†ï¼Œé˜²æ­¢å¥æŸ„æ„å¤–å˜åŒ–
 * [pfw.ui]
-  - ĞŞ¸´Ô¶³Ì×ÀÃæÊ±¿ÉÄÜÏÔÊ¾±»Òş²ØµÄ¿Ø¼ş
+  - ä¿®å¤è¿œç¨‹æ¡Œé¢æ—¶å¯èƒ½æ˜¾ç¤ºè¢«éšè—çš„æ§ä»¶
 * [pfw.net.http]
-  - ĞŞ¸´HTTPĞ­ÒéÇëÇó¿ÉÄÜ´íÎóÉèÖÃHTTPSÅäÖÃµ¼ÖÂ±¨´íµÄÎÊÌâ
-  - ĞŞ¸´`UploadFile`²ÎÊıÌáÈ¡ÎŞĞ§µÄÎÊÌâ
+  - ä¿®å¤HTTPåè®®è¯·æ±‚å¯èƒ½é”™è¯¯è®¾ç½®HTTPSé…ç½®å¯¼è‡´æŠ¥é”™çš„é—®é¢˜
+  - ä¿®å¤`UploadFile`å‚æ•°æå–æ— æ•ˆçš„é—®é¢˜
 * [pfw.utility.container]
-  - `n_map`ĞŞ¸´`Add`º¯ÊıÖØ¸´KEYÊ±ÄÚ´æĞ¹Â¶
+  - `n_map`ä¿®å¤`Add`å‡½æ•°é‡å¤KEYæ—¶å†…å­˜æ³„éœ²
 * [pfw.utility.invoker]
-  - `n_objectinvoker`ĞŞ¸´`Detach`Ã»ÓĞÇå¿Õ»º´æµÄÎÊÌâ
+  - `n_objectinvoker`ä¿®å¤`Detach`æ²¡æœ‰æ¸…ç©ºç¼“å­˜çš„é—®é¢˜
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.4.8.26
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.4.8.26
 
 ## 2.3.1.1982(2020-03-19)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility]
-  - n_loggerÔö¼ÓOnLogÊÂ¼şÓÃÓÚ²¶»ñÊä³öµÄÈÕÖ¾ÄÚÈİ£¬¿ÉÒÔÓÃÀ´Í¬²½µ½ÆäËû´æ´¢Î»ÖÃ£¬±ÈÈçÊı¾İ¿â
+  - n_loggerå¢åŠ OnLogäº‹ä»¶ç”¨äºæ•è·è¾“å‡ºçš„æ—¥å¿—å†…å®¹ï¼Œå¯ä»¥ç”¨æ¥åŒæ­¥åˆ°å…¶ä»–å­˜å‚¨ä½ç½®ï¼Œæ¯”å¦‚æ•°æ®åº“
 * [pfw.utility.barcode]
-  - n_barcode/n_qrcodeÔö¼ÓSaveClipboardº¯Êı£¬±£´æÌõÂëÍ¼Æ¬µ½Õ³Ìù°å
+  - n_barcode/n_qrcodeå¢åŠ SaveClipboardå‡½æ•°ï¼Œä¿å­˜æ¡ç å›¾ç‰‡åˆ°ç²˜è´´æ¿
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.utility.barcode]
-  - ĞŞ¸´n_barcodeÏÔÊ¾ÎÄ±¾Ê±µÄ´óĞ¡¿ÉÄÜ¼ÆËã²»ÕıÈ·
+  - ä¿®å¤n_barcodeæ˜¾ç¤ºæ–‡æœ¬æ—¶çš„å¤§å°å¯èƒ½è®¡ç®—ä¸æ­£ç¡®
 * [pfw.utility.barcode]
-  - ĞŞ¸´n_barcode/n_qrcodeÔÚÄ³Ğ©´òÓ¡»ú´òÓ¡²»³öÀ´µÄÎÊÌâ
+  - ä¿®å¤n_barcode/n_qrcodeåœ¨æŸäº›æ‰“å°æœºæ‰“å°ä¸å‡ºæ¥çš„é—®é¢˜
 * [pfw.net.http]
-  - ĞŞ¸´·şÎñ¶ËÏìÓ¦×´Ì¬ÂëÎª401»ò407Ê±GetError²»Îª0µÄÎÊÌâ
+  - ä¿®å¤æœåŠ¡ç«¯å“åº”çŠ¶æ€ç ä¸º401æˆ–407æ—¶GetErrorä¸ä¸º0çš„é—®é¢˜
 
 ## 2.3.1.1982(2020-03-19)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.ui.blink]
-  - ¼¯³ÉVIP°æ±¾µÄblink½Ó¿Ú£¨fastmb/miniblink£©
+  - é›†æˆVIPç‰ˆæœ¬çš„blinkæ¥å£ï¼ˆfastmb/miniblinkï¼‰
   - n_blinkfast/u_blinkfast/w_blinkfast
-> Ö§³ÖÏÂÔØ¡¢´òÓ¡µÈVIP¶¨ÖÆ¹¦ÄÜ
-> ×¢£º
-> Ê¹ÓÃINIT_FLAG_ENABLE_BLINKFAST³õÊ¼»¯£¬²¢ÇÒ²»ÄÜÓëÆÕÍ¨°æ±¾½Ó¿ÚÍ¬Ê±Ê¹ÓÃ
-> VIP°æ±¾µÄ½»»¥ÊÇÒì²½µÄ£¬²»Ö§³ÖÆÕÍ¨°æ±¾µÄJS¼¯³É¹¦ÄÜ£¨½»»¥Ê¾Àı¼û£ºw_test_blinkfast£©
+> æ”¯æŒä¸‹è½½ã€æ‰“å°ç­‰VIPå®šåˆ¶åŠŸèƒ½
+> æ³¨ï¼š
+> ä½¿ç”¨INIT_FLAG_ENABLE_BLINKFASTåˆå§‹åŒ–ï¼Œå¹¶ä¸”ä¸èƒ½ä¸æ™®é€šç‰ˆæœ¬æ¥å£åŒæ—¶ä½¿ç”¨
+> VIPç‰ˆæœ¬çš„äº¤äº’æ˜¯å¼‚æ­¥çš„ï¼Œä¸æ”¯æŒæ™®é€šç‰ˆæœ¬çš„JSé›†æˆåŠŸèƒ½ï¼ˆäº¤äº’ç¤ºä¾‹è§ï¼šw_test_blinkfastï¼‰
 * [pfw.ui.blink]
-  - n_blink/u_blink/w_blinkÔö¼ÓShowDevToolsº¯Êıµ÷³öÒ³Ãæµ÷ÊÔ´°¿Ú
-> ShowDevTools([inspectorPath]),insepctorÄ¬ÈÏÖµÎª: blink\devtools\inspector.html
+  - n_blink/u_blink/w_blinkå¢åŠ ShowDevToolså‡½æ•°è°ƒå‡ºé¡µé¢è°ƒè¯•çª—å£
+> ShowDevTools([inspectorPath]),insepctoré»˜è®¤å€¼ä¸º: blink\devtools\inspector.html
 * [pfw.ui.controls]
-  - s_cst_datawindowÔö¼Óof_Reattachº¯Êı£¬ÓÃÓÚĞŞ¸ÄÈçDataObjectÊôĞÔÊ±µ¼ÖÂ´°¿Ú±»ÖØ½¨£¬Á¢¼´ÊÖ¶¯ÈÃpfw½Ó¹Ü»æÖÆ
+  - s_cst_datawindowå¢åŠ of_Reattachå‡½æ•°ï¼Œç”¨äºä¿®æ”¹å¦‚DataObjectå±æ€§æ—¶å¯¼è‡´çª—å£è¢«é‡å»ºï¼Œç«‹å³æ‰‹åŠ¨è®©pfwæ¥ç®¡ç»˜åˆ¶
 * [pfw.utility.invoker]
-  - n_cst_eventful::of_PreventÔö¼Ó[deep]²ÎÊı£¬Ö§³Ö×èÖ¹Õû¸ö·Ö·¢Á´£¨Õû¸öµ÷ÓÃÉî¶È£©
+  - n_cst_eventful::of_Preventå¢åŠ [deep]å‚æ•°ï¼Œæ”¯æŒé˜»æ­¢æ•´ä¸ªåˆ†å‘é“¾ï¼ˆæ•´ä¸ªè°ƒç”¨æ·±åº¦ï¼‰
 * [pfw.thread]
-  - n_cst_threading/n_cst_threading_taskÔö¼Óof_PreventEventÈ¡Ïûµ±Ç°µÄÊÂ¼ş·Ö·¢Á´
+  - n_cst_threading/n_cst_threading_taskå¢åŠ of_PreventEventå–æ¶ˆå½“å‰çš„äº‹ä»¶åˆ†å‘é“¾
 * [pfw]
-  - ¼ÓÔØ×ÊÔ´Ö§³Ö´Ó´øÖ¤ÊéµÄEXE/DLLÖĞ¼ÓÔØ£¨°üÀ¨LoadUriº¯Êı£©
+  - åŠ è½½èµ„æºæ”¯æŒä»å¸¦è¯ä¹¦çš„EXE/DLLä¸­åŠ è½½ï¼ˆåŒ…æ‹¬LoadUriå‡½æ•°ï¼‰
 * [pfw.ui.sciter.ext]
-  - u_cst_sciter_treeview::of_LoadÖ§³Öchecked²ÎÊıÉèÖÃ½ÚµãµÄ¹´Ñ¡×´Ì¬£¨{..,checked:true,...}£©
+  - u_cst_sciter_treeview::of_Loadæ”¯æŒcheckedå‚æ•°è®¾ç½®èŠ‚ç‚¹çš„å‹¾é€‰çŠ¶æ€ï¼ˆ{..,checked:true,...}ï¼‰
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.datawindow.services]
-  - ÓÅ»¯n_cst_dwsvc_columnsortÅÅĞò²ßÂÔ£¬ÌáÉıĞÔÄÜ
+  - ä¼˜åŒ–n_cst_dwsvc_columnsortæ’åºç­–ç•¥ï¼Œæå‡æ€§èƒ½
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.thread.ext]
-  - ÔÙ´ÎĞŞ¸´n_cst_threading_task_sqlqueryĞŞ¸ÄSQLÊ±ÒòSQL´ø"ÒıºÅµ¼ÖÂModify SELECTÊ§°ÜµÄÎÊÌâ
+  - å†æ¬¡ä¿®å¤n_cst_threading_task_sqlqueryä¿®æ”¹SQLæ—¶å› SQLå¸¦"å¼•å·å¯¼è‡´Modify SELECTå¤±è´¥çš„é—®é¢˜
 * [pfw.thread]
-  - n_cst_threading_pool::of_Release/of_ReleaseAllÍ¬Ê±È¡ÏûÏß³ÌµÄµ±Ç°µÄÊÂ¼ş·Ö·¢Á´
+  - n_cst_threading_pool::of_Release/of_ReleaseAllåŒæ—¶å–æ¶ˆçº¿ç¨‹çš„å½“å‰çš„äº‹ä»¶åˆ†å‘é“¾
 * [pfw.ui]
-  - ĞŞ¸´XPÏÂ¿ÉÄÜÓöµ½SVGäÖÈ¾Ê±±ÀÀ£µÄÎÊÌâ
+  - ä¿®å¤XPä¸‹å¯èƒ½é‡åˆ°SVGæ¸²æŸ“æ—¶å´©æºƒçš„é—®é¢˜
 * [pfw.net.http]
-  - ĞŞ¸´ÏìÓ¦Êı¾İÎªÑ¹Ëõ¸ñÊ½Ê±¿ÉÄÜ³öÏÖ¸ñÊ½´íÎóµÄÎÊÌâ
+  - ä¿®å¤å“åº”æ•°æ®ä¸ºå‹ç¼©æ ¼å¼æ—¶å¯èƒ½å‡ºç°æ ¼å¼é”™è¯¯çš„é—®é¢˜
 * [pfw.ui]
-  - ĞŞ¸´·ÇÕæ²ÊÉ«Ä£Ê½ÏÂSVGÍ¼±êäÖÈ¾ÏÔÊ¾²»ÁËµÄÎÊÌâ
+  - ä¿®å¤éçœŸå½©è‰²æ¨¡å¼ä¸‹SVGå›¾æ ‡æ¸²æŸ“æ˜¾ç¤ºä¸äº†çš„é—®é¢˜
 * [pfw.ui.blink]
-  - ĞŞ¸´×ÊÔ´Â·¾¶°üº¬ÖĞÎÄ¿ÉÄÜ¼ÓÔØÊ§°ÜµÄÎÊÌâ
+  - ä¿®å¤èµ„æºè·¯å¾„åŒ…å«ä¸­æ–‡å¯èƒ½åŠ è½½å¤±è´¥çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´´°¿Ú×î´ó»¯Ä£Ê½ĞŞ¸ÄÆÁÄ»·Ö±æÂÊºó´°¿Ú´óĞ¡²»ÕıÈ·µÄÎÊÌâ£¨ÊÊÅäWIN10µÄÆ½°åÄ£Ê½·­×ª£©
+  - ä¿®å¤çª—å£æœ€å¤§åŒ–æ¨¡å¼ä¿®æ”¹å±å¹•åˆ†è¾¨ç‡åçª—å£å¤§å°ä¸æ­£ç¡®çš„é—®é¢˜ï¼ˆé€‚é…WIN10çš„å¹³æ¿æ¨¡å¼ç¿»è½¬ï¼‰
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.4.1.4
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.4.1.4
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½200319
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°200319
 
 ## 2.2.1.1923(2019-08-16)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.ui.objects]
-  - n_cst_window_titlebar(s_cst_window::CaptionBar)Ôö¼Óof_AddSplitButton/of_InsertSplitButtonº¯Êı
+  - n_cst_window_titlebar(s_cst_window::CaptionBar)å¢åŠ of_AddSplitButton/of_InsertSplitButtonå‡½æ•°
 * [pfw.thread]
-  - Ö§³Ö°²È«µÄÔÚÏß³ÌÔËĞĞ¹ı³Ì²åÈëºÍÉ¾³ıÈÎÎñ£¨¿ÉÒÔÔÚÈÎÎñµÄStopÊÂ¼şÖĞÉ¾³ıÈÎÎñ×ÔÉí£©
+  - æ”¯æŒå®‰å…¨çš„åœ¨çº¿ç¨‹è¿è¡Œè¿‡ç¨‹æ’å…¥å’Œåˆ é™¤ä»»åŠ¡ï¼ˆå¯ä»¥åœ¨ä»»åŠ¡çš„Stopäº‹ä»¶ä¸­åˆ é™¤ä»»åŠ¡è‡ªèº«ï¼‰
 * [pfw.thread]
-  - n_cst_threadingÔö¼ÓOnThreadCreateÊÂ¼ş£¬ÔÊĞí×Ô¶¨Òå´´½¨Ïß³Ì
-> Ê¹ÓÃ¸ÃÊÂ¼ş¿ÉÒÔÊµÏÖµ¥Ïß³ÌÄ£Äâ¶àÏß³Ì»úÖÆ£¬¹²ÏíÍ¬Ò»Ì×´úÂë£¬·½±ãÅÅ²éÎÊÌâ£¬²¢ÇÒÔÚµ¥Ïß³ÌÄ£Ê½ÏÂSQLÈÎÎñµÄ²éÑ¯²»»á·¢ÉúÄÚ´æ¿½±´£¬»¹¿ÉÒÔ¹²ÏíÍ¬Ò»¸öÊÂÎñÁ¬½Ó£¨ĞèÒª×Ô¶¨ÒåÁ¬½Ó³Ø£©
+  - n_cst_threadingå¢åŠ OnThreadCreateäº‹ä»¶ï¼Œå…è®¸è‡ªå®šä¹‰åˆ›å»ºçº¿ç¨‹
+> ä½¿ç”¨è¯¥äº‹ä»¶å¯ä»¥å®ç°å•çº¿ç¨‹æ¨¡æ‹Ÿå¤šçº¿ç¨‹æœºåˆ¶ï¼Œå…±äº«åŒä¸€å¥—ä»£ç ï¼Œæ–¹ä¾¿æ’æŸ¥é—®é¢˜ï¼Œå¹¶ä¸”åœ¨å•çº¿ç¨‹æ¨¡å¼ä¸‹SQLä»»åŠ¡çš„æŸ¥è¯¢ä¸ä¼šå‘ç”Ÿå†…å­˜æ‹·è´ï¼Œè¿˜å¯ä»¥å…±äº«åŒä¸€ä¸ªäº‹åŠ¡è¿æ¥ï¼ˆéœ€è¦è‡ªå®šä¹‰è¿æ¥æ± ï¼‰
 ```
 onThreadCreate(string clsname,ref n_cst_thread thread,ref string instancename):
-	thread = Create Using clsName //Ö±½ÓCreate£¬²»Ê¹ÓÃSharedObjectRegister
-	return 1 //×èÖ¹Ä¬ÈÏĞĞÎª
+	thread = Create Using clsName //ç›´æ¥Createï¼Œä¸ä½¿ç”¨SharedObjectRegister
+	return 1 //é˜»æ­¢é»˜è®¤è¡Œä¸º
 ```
 * [pfw.thread.ext]
-  - n_cst_threading_task_sqlqueryÔö¼Óof_MoveDataº¯Êı×ªÒÆDataÊµÀı±äÁ¿µÄËùÓĞÈ¨£¬±ÜÃâÄÚ´æ¿½±´
+  - n_cst_threading_task_sqlqueryå¢åŠ of_MoveDataå‡½æ•°è½¬ç§»Dataå®ä¾‹å˜é‡çš„æ‰€æœ‰æƒï¼Œé¿å…å†…å­˜æ‹·è´
 * [pfw.thread.ext]
-  - SQLÈÎÎñ£¨¼Ì³Ğ×Ôn_cst_thread_task_sqlbaseµÄÈÎÎñ£©Ö§³ÖÏß³ÌµÄ$SQL.TransPool.Class²ÎÊı£¬Ö§³Ö×Ô¶¨ÒåÁ¬½Ó³Ø£¨¼Ì³Ğ×Ôn_cst_thread_trans_pool£©
+  - SQLä»»åŠ¡ï¼ˆç»§æ‰¿è‡ªn_cst_thread_task_sqlbaseçš„ä»»åŠ¡ï¼‰æ”¯æŒçº¿ç¨‹çš„$SQL.TransPool.Classå‚æ•°ï¼Œæ”¯æŒè‡ªå®šä¹‰è¿æ¥æ± ï¼ˆç»§æ‰¿è‡ªn_cst_thread_trans_poolï¼‰
 * [pfw.http]
-  - n_httpclientÔö¼ÓAddHeaderº¯Êı£¬Ö§³Ö½ÓÊÕºÍ·¢ËÍÏàÍ¬Ãû³ÆµÄ¶à¸öHeader £¨RFC£ºhttps://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2£©
+  - n_httpclientå¢åŠ AddHeaderå‡½æ•°ï¼Œæ”¯æŒæ¥æ”¶å’Œå‘é€ç›¸åŒåç§°çš„å¤šä¸ªHeader ï¼ˆRFCï¼šhttps://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2ï¼‰
 * [pfw.utility]
-  - n_loggerÔö¼ÓGetTraceLevel/SetTraceLevelº¯Êı£¬ÓÃÓÚ¿ØÖÆÖ¸¶¨ÈÕÖ¾¼¶±ğÊÇ·ñÍ¬Ê±Êä³öµ÷ÓÃÕ»ĞÅÏ¢£¨¼û£ºw_test_logger£©
+  - n_loggerå¢åŠ GetTraceLevel/SetTraceLevelå‡½æ•°ï¼Œç”¨äºæ§åˆ¶æŒ‡å®šæ—¥å¿—çº§åˆ«æ˜¯å¦åŒæ—¶è¾“å‡ºè°ƒç”¨æ ˆä¿¡æ¯ï¼ˆè§ï¼šw_test_loggerï¼‰
 * [pfw.common]
-  - SprintfÖ§³Ö'{}'×Ô¶¯Ë÷Òı±àºÅ£¨n_logger¸ñÊ½»¯Êä³öÍ¬ÑùÖ§³Ö£©
+  - Sprintfæ”¯æŒ'{}'è‡ªåŠ¨ç´¢å¼•ç¼–å·ï¼ˆn_loggeræ ¼å¼åŒ–è¾“å‡ºåŒæ ·æ”¯æŒï¼‰
 ```
 	Sprintf("{}-{}-{}",123,"abcd",true) -> 123-abcd-true
 ```
 * [pfw.common]
-  - SprintfÖ§³ÖÖ±½ÓÊä³öÊı×éºÍn_json/n_xmldoc£¨n_logger¸ñÊ½»¯Êä³öÍ¬ÑùÖ§³Ö£©
+  - Sprintfæ”¯æŒç›´æ¥è¾“å‡ºæ•°ç»„å’Œn_json/n_xmldocï¼ˆn_loggeræ ¼å¼åŒ–è¾“å‡ºåŒæ ·æ”¯æŒï¼‰
 * [pfw.net.ftp]
-  - n_ftpclientÔö¼ÓGetLastError/GetLastErrorInfo/Listº¯Êı
-> List»ñÈ¡ÎÄ¼şÁĞ±í
+  - n_ftpclientå¢åŠ GetLastError/GetLastErrorInfo/Listå‡½æ•°
+> Listè·å–æ–‡ä»¶åˆ—è¡¨
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.datawindow.services]
-  - ÓÅ»¯n_cst_dwsvc_contextmenu×Ô¶¯ÁĞ¿í¼ÆËã°üº¬ÏÂÀ­¼ıÍ·
+  - ä¼˜åŒ–n_cst_dwsvc_contextmenuè‡ªåŠ¨åˆ—å®½è®¡ç®—åŒ…å«ä¸‹æ‹‰ç®­å¤´
 * [pfw.utility.invoker]
-  - ÓÅ»¯n_cst_eventfulÖ§³ÖÊÂ¼ş·Ö·¢½×¶Î¶©ÔÄÊÂ¼şµÄÊµÏÖ£¨of_On£©£¬ÏÖÔÚ»áÁ¢¼´ÉúĞ§
+  - ä¼˜åŒ–n_cst_eventfulæ”¯æŒäº‹ä»¶åˆ†å‘é˜¶æ®µè®¢é˜…äº‹ä»¶çš„å®ç°ï¼ˆof_Onï¼‰ï¼Œç°åœ¨ä¼šç«‹å³ç”Ÿæ•ˆ
 * [pfw.utility.invoker]
-  - ÓÅ»¯n_cst_eventfulµÄ²éÕÒĞÔÄÜ
+  - ä¼˜åŒ–n_cst_eventfulçš„æŸ¥æ‰¾æ€§èƒ½
 * [pfw.http]
-  - n_httpclient::DownloadFileÖ»ÓĞÔÚ½ÓÊÕµ½Êı¾İÊ±²Å´´½¨ÎÄ¼ş
+  - n_httpclient::DownloadFileåªæœ‰åœ¨æ¥æ”¶åˆ°æ•°æ®æ—¶æ‰åˆ›å»ºæ–‡ä»¶
 * [pfw.http]
-  - ×Ô¶¯¾¡Á¿Ñ¡Ôñ¸ß°æ±¾SSL£¨WIN7°²×°²¹¶¡Ö®ºó¿ÉÒÔÖ§³ÖTLS1.2£©
+  - è‡ªåŠ¨å°½é‡é€‰æ‹©é«˜ç‰ˆæœ¬SSLï¼ˆWIN7å®‰è£…è¡¥ä¸ä¹‹åå¯ä»¥æ”¯æŒTLS1.2ï¼‰
 * [pfw.ui.controls]
-  - n_cst_i18n_cht/n_cst_i18n_enÊ¹ÓÃXML·­ÒëÎÄ¼ş
+  - n_cst_i18n_cht/n_cst_i18n_enä½¿ç”¨XMLç¿»è¯‘æ–‡ä»¶
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.thread]
-  - pfwÊ¹ÓÃµÄ²ÎÊıÒÔ'$'¿ªÍ·£¬±ÜÃâÓëÓÃ»§²ÎÊı»ìÏı£¨ÔÚÊ¹ÓÃÏß³Ì³ØÊ±of_ReleaseÒÔºó±»Çå³ı£©
-> *** ¼æÈİĞÔÌáÊ¾ ***
-> ÏÖÓĞ²ÎÊı±ä¶¯£º
+  - :warning: pfwä½¿ç”¨çš„å‚æ•°ä»¥'$'å¼€å¤´ï¼Œé¿å…ä¸ç”¨æˆ·å‚æ•°æ··æ·†ï¼ˆåœ¨ä½¿ç”¨çº¿ç¨‹æ± æ—¶of_Releaseä»¥åè¢«æ¸…é™¤ï¼‰
+> ç°æœ‰å‚æ•°å˜åŠ¨ï¼š
 > SQL.TransPool.TransClass -> $SQL.TransPool.TransClass
 > SQL.TransPool.KeepAlive -> $SQL.TransPool.KeepAlive
 > SQL.TransPool.KeepAliveExpireTime -> $SQL.TransPool.KeepAliveExpireTime
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.net.websocket]
-  - ĞŞ¸´n_wsclientÊ¹ÓÃMQTTĞ­ÒéÊ±µÄ[resubscribe]¹¦ÄÜ¿ÉÄÜÊ§Ğ§µÄÎÊÌâ
+  - ä¿®å¤n_wsclientä½¿ç”¨MQTTåè®®æ—¶çš„[resubscribe]åŠŸèƒ½å¯èƒ½å¤±æ•ˆçš„é—®é¢˜
 * [pfw.utility.sqlite]
-  - ĞŞ¸´Exec/Query°ó¶¨²ÎÊıÎªNULLÊ±·µ»ØNULLµÄÎÊÌâ
+  - ä¿®å¤Exec/Queryç»‘å®šå‚æ•°ä¸ºNULLæ—¶è¿”å›NULLçš„é—®é¢˜
 * [pfw.utility.invoker]
-  - ĞŞ¸´n_cst_eventfulÊÂ¼ş·Ö·¢¹ı³ÌÖĞ´ò¿ª[Response]´°¿Ú£¬ÔÙµ÷ÓÃof_On¶©ÔÄĞÂÊÂ¼şÊ±µ¼ÖÂÕ»Òç³öµÄÎÊÌâ
+  - ä¿®å¤n_cst_eventfuläº‹ä»¶åˆ†å‘è¿‡ç¨‹ä¸­æ‰“å¼€[Response]çª—å£ï¼Œå†è°ƒç”¨of_Onè®¢é˜…æ–°äº‹ä»¶æ—¶å¯¼è‡´æ ˆæº¢å‡ºçš„é—®é¢˜
 * [pfw.ui]
-  - ĞŞ¸´n_timer¿ÉÄÜ³öÏÖµÄÄÚ´æÒì³£
+  - ä¿®å¤n_timerå¯èƒ½å‡ºç°çš„å†…å­˜å¼‚å¸¸
 * [pfw.demos]
-  - ĞŞ¸´sciterµÄalipay/wxpayµÄSDKÊ¹ÓÃµÄObject.removeº¯Êı±»·ÏÆúµÄÎÊÌâ
+  - ä¿®å¤sciterçš„alipay/wxpayçš„SDKä½¿ç”¨çš„Object.removeå‡½æ•°è¢«åºŸå¼ƒçš„é—®é¢˜
 * [pfw.utility.devinfo]
-  - ĞŞ¸´u_cameracapture::ShowSettingWindowº¯Êı¿ÉÄÜÒıÆğµÄÄÚ´æÒì³£ÎÊÌâ£¨ÉãÏñÍ·ÉèÖÃ£©
+  - ä¿®å¤u_cameracapture::ShowSettingWindowå‡½æ•°å¯èƒ½å¼•èµ·çš„å†…å­˜å¼‚å¸¸é—®é¢˜ï¼ˆæ‘„åƒå¤´è®¾ç½®ï¼‰
 * [pfw.ui.controls]
-  - ĞŞ¸´n_cst_popupmenu::OnMenuSelectÊÂ¼şÖĞµ¯³ö´°¿Ú¿ÉÄÜÒıÆğÄÚ´æÒì³£µÄÎÊÌâ
+  - ä¿®å¤n_cst_popupmenu::OnMenuSelectäº‹ä»¶ä¸­å¼¹å‡ºçª—å£å¯èƒ½å¼•èµ·å†…å­˜å¼‚å¸¸çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´u_cst_tabcontrol¸¡¶¯´°¿ÚÃ»ÓĞ´¥·¢OnRepositionÊÂ¼şµÄÎÊÌâ
+  - ä¿®å¤u_cst_tabcontrolæµ®åŠ¨çª—å£æ²¡æœ‰è§¦å‘OnRepositionäº‹ä»¶çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´s_cst_vprogressbar/s_cst_hprogressbar::OnPaintÊÂ¼şÒòÎªMaxPosition=MinPositionÔì³É³ı0Òì³£µÄÎÊÌâ
+  - ä¿®å¤s_cst_vprogressbar/s_cst_hprogressbar::OnPaintäº‹ä»¶å› ä¸ºMaxPosition=MinPositioné€ æˆé™¤0å¼‚å¸¸çš„é—®é¢˜
 * [pfw.ui.blink]
-  - ĞŞ¸´n_blinkelement::AddChild²åÈëµ½¸¸½ÚµãµÄÎÊÌâ
+  - ä¿®å¤n_blinkelement::AddChildæ’å…¥åˆ°çˆ¶èŠ‚ç‚¹çš„é—®é¢˜
 * [pfw.thread.ext]
-  - ĞŞ¸´n_cst_threading_task_sqlqueryĞŞ¸ÄSQLÊ±ÒòSQL´ø"ÒıºÅµ¼ÖÂModify SELECTÊ§°ÜµÄÎÊÌâ
+  - ä¿®å¤n_cst_threading_task_sqlqueryä¿®æ”¹SQLæ—¶å› SQLå¸¦"å¼•å·å¯¼è‡´Modify SELECTå¤±è´¥çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´u_cst_ribbonbarÄÚÈİ¹ö¶¯Î»ÖÃË¢ĞÂ¿ÉÄÜ²»ÕıÈ·µÄÎÊÌâ
+  - ä¿®å¤u_cst_ribbonbarå†…å®¹æ»šåŠ¨ä½ç½®åˆ·æ–°å¯èƒ½ä¸æ­£ç¡®çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´¹ö¶¯Ìõ´óĞ¡²»ÄÜĞŞ¸ÄµÄÎÊÌâ
+  - ä¿®å¤æ»šåŠ¨æ¡å¤§å°ä¸èƒ½ä¿®æ”¹çš„é—®é¢˜
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.3.0.10
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.3.0.10
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½190812
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°190812
 
 ## 2.1.7.1797(2019-06-20)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility.sqlite]
-  - n_sqliteÔö¼ÓAutoCommitº¯Êı´úÌæÔ­À´Commit(true)µÄÓÃ·¨£¬Ê¹ÓïÒå¸üÃ÷È·£¨[SQLCode=0]Ê±[COMMIT],·ñÔò[ROLLBACK],[COMMIT]Ê§°ÜÊ±Ò²×Ô¶¯[ROLLBACK]£©
+  - n_sqliteå¢åŠ AutoCommitå‡½æ•°ä»£æ›¿åŸæ¥Commit(true)çš„ç”¨æ³•ï¼Œä½¿è¯­ä¹‰æ›´æ˜ç¡®ï¼ˆ[SQLCode=0]æ—¶[COMMIT],å¦åˆ™[ROLLBACK],[COMMIT]å¤±è´¥æ—¶ä¹Ÿè‡ªåŠ¨[ROLLBACK]ï¼‰
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.utility.sqlite]
-  - n_sqlite::Commit[auto]²ÎÊı¸ÄÎª[autorollback] £¨[COMMIT]Ê§°ÜÊ±×Ô¶¯[ROLLBACK],Ä¬ÈÏÎªtrue£©
-> ¸ÃÖØÔØº¯ÊıÓÉ2.1.6.1791ÒıÈë
+  - n_sqlite::Commit[auto]å‚æ•°æ”¹ä¸º[autorollback] ï¼ˆ[COMMIT]å¤±è´¥æ—¶è‡ªåŠ¨[ROLLBACK],é»˜è®¤ä¸ºtrueï¼‰
+> è¯¥é‡è½½å‡½æ•°ç”±2.1.6.1791å¼•å…¥
 
 ## 2.1.6.1791(2019-06-19)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility.sqlite]
-  - n_sqlite::CommitÔö¼Ó[auto]²ÎÊıµÄÖØÔØ°æ±¾£¨[SQLCode=0]Ê±[COMMIT],·ñÔò[ROLLBACK],[COMMIT]Ê§°ÜÊ±Ò²×Ô¶¯[ROLLBACK]£©
+  - n_sqlite::Commitå¢åŠ [auto]å‚æ•°çš„é‡è½½ç‰ˆæœ¬ï¼ˆ[SQLCode=0]æ—¶[COMMIT],å¦åˆ™[ROLLBACK],[COMMIT]å¤±è´¥æ—¶ä¹Ÿè‡ªåŠ¨[ROLLBACK]ï¼‰
 * [pfw.ui.sciter]
-  - TIS¼¯³ÉSQLite£¬ÒÆÖ²×ÔSciter SDK SQLite²å¼ş£¬²¢½«DB¸üÃûÎªSQLite£¨ÓÃ·¨¼û£ºsciter-sdk\samples\sqlite£©
+  - TISé›†æˆSQLiteï¼Œç§»æ¤è‡ªSciter SDK SQLiteæ’ä»¶ï¼Œå¹¶å°†DBæ›´åä¸ºSQLiteï¼ˆç”¨æ³•è§ï¼šsciter-sdk\samples\sqliteï¼‰
 ```
 var db = SQLite.open(":memory:"); //SQLite.open("c:/test.db"[,password]);
-//openº¯ÊıÍ¬Ê±Ö§³Ö[password]²ÎÊı
+//openå‡½æ•°åŒæ—¶æ”¯æŒ[password]å‚æ•°
 ```
 * [pfw.net.websocket]
-  - n_wsmessageÔö¼ÓIsRetainedº¯ÊıÅĞ¶ÏMQTTÏûÏ¢ÊÇ·ñÎª[Retained]ÏûÏ¢
+  - n_wsmessageå¢åŠ IsRetainedå‡½æ•°åˆ¤æ–­MQTTæ¶ˆæ¯æ˜¯å¦ä¸º[Retained]æ¶ˆæ¯
 * [pfw.ui.sciter]
-  - n_sciterÔö¼ÓÍË³öPopup×´Ì¬Ê±´¥·¢view.closingPopup([reason])»òself.closingPopup([reason])»Øµ÷º¯Êı
-> reasonÖµ¿ÉÄÜÎª£º
-> #by-code, µ÷ÓÃn_sciter::ClosePopup»òview.closePopupº¯ÊıÍË³ö
-> #by-mouse, Êó±êµã»÷ÆäËû´°¿ÚÇøÓòÊ±ÍË³ö
-> #by-key, °´ÏÂVK_ESCAPE°´¼üÍË³ö
-> #by-deactivation, ÇĞ»»µ½ÆäËû½ø³Ì½øÈë·Ç¼¤»î×´Ì¬
+  - n_sciterå¢åŠ é€€å‡ºPopupçŠ¶æ€æ—¶è§¦å‘view.closingPopup([reason])æˆ–self.closingPopup([reason])å›è°ƒå‡½æ•°
+> reasonå€¼å¯èƒ½ä¸ºï¼š
+> #by-code, è°ƒç”¨n_sciter::ClosePopupæˆ–view.closePopupå‡½æ•°é€€å‡º
+> #by-mouse, é¼ æ ‡ç‚¹å‡»å…¶ä»–çª—å£åŒºåŸŸæ—¶é€€å‡º
+> #by-key, æŒ‰ä¸‹VK_ESCAPEæŒ‰é”®é€€å‡º
+> #by-deactivation, åˆ‡æ¢åˆ°å…¶ä»–è¿›ç¨‹è¿›å…¥éæ¿€æ´»çŠ¶æ€
 * [pfw.utility]
-  - Ôö¼ÓPinyinFirstLetterLikeÈ«¾Öº¯Êı£¬Æ´ÒôÊ××ÖÄ¸Ä£ºıÆ¥Åä£¬Ö§³Ö¶àÒô×Ö¡¢Ä£ºıÒôÆ¥Åä
+  - å¢åŠ PinyinFirstLetterLikeå…¨å±€å‡½æ•°ï¼Œæ‹¼éŸ³é¦–å­—æ¯æ¨¡ç³ŠåŒ¹é…ï¼Œæ”¯æŒå¤šéŸ³å­—ã€æ¨¡ç³ŠéŸ³åŒ¹é…
 * [pfw.common]
-  - Ôö¼ÓClassNameExÈ«¾Öº¯Êı£¬¿ÉÒÔ»ñµÃ°üÀ¨Ã¶¾ÙÀàĞÍÔÚÄÚµÄÈÎºÎ±äÁ¿µÄÀàĞÍ
+  - å¢åŠ ClassNameExå…¨å±€å‡½æ•°ï¼Œå¯ä»¥è·å¾—åŒ…æ‹¬æšä¸¾ç±»å‹åœ¨å†…çš„ä»»ä½•å˜é‡çš„ç±»å‹
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.utility.sqlite]
-  - Exec¶ÔÓÚÖ»¶ÁÖ¸Áî£¬²»×Ô¶¯¿ªÆôÊÂÎñ£¬±ÈÈç[SELECT]Óï¾ä
+  - Execå¯¹äºåªè¯»æŒ‡ä»¤ï¼Œä¸è‡ªåŠ¨å¼€å¯äº‹åŠ¡ï¼Œæ¯”å¦‚[SELECT]è¯­å¥
 * [pfw.utility.sqlite]
-  - Commit/Rollbackº¯Êı²»Ó°ÏìSQNRowsÖµ
+  - Commit/Rollbackå‡½æ•°ä¸å½±å“SQNRowså€¼
 * [pfw.datawindow.services]
-  - ÓÅ»¯n_cst_dwsvc_dropdownsearchÆ´Òô¼ìË÷ĞÔÄÜ
+  - ä¼˜åŒ–n_cst_dwsvc_dropdownsearchæ‹¼éŸ³æ£€ç´¢æ€§èƒ½
 * [pfw.thread]
-  - ÖØ¹¹Ïß³ÌÊÍ·Å»úÖÆ
+  - é‡æ„çº¿ç¨‹é‡Šæ”¾æœºåˆ¶
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.datawindow.services]
-  - ÒÆ³ıDDSPYFirstLetterLike£¨Ê¹ÓÃpfw.utility::PinyinFirstLetterLike£©
+  - ç§»é™¤DDSPYFirstLetterLikeï¼ˆä½¿ç”¨pfw.utility::PinyinFirstLetterLikeï¼‰
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.net.websocket]
-  - ĞŞ¸´n_wsmessage::GetDataJSON/GetDataXML/GetDataÈ¡²»µ½Êı¾İµÄÎÊÌâ
+  - ä¿®å¤n_wsmessage::GetDataJSON/GetDataXML/GetDataå–ä¸åˆ°æ•°æ®çš„é—®é¢˜
 * [pfw]
-  - ĞŞ¸´¶àÏß³Ì»·¾³ÏÂÊ¹ÓÃpfw²»¿ÉÊÓ¶ÔÏóÔÚÏß³ÌÏú»Ù¿ÉÄÜÒıÆğ±ÀÀ£µÄÎÊÌâ
+  - ä¿®å¤å¤šçº¿ç¨‹ç¯å¢ƒä¸‹ä½¿ç”¨pfwä¸å¯è§†å¯¹è±¡åœ¨çº¿ç¨‹é”€æ¯å¯èƒ½å¼•èµ·å´©æºƒçš„é—®é¢˜
 * [pfw.net.websocket]
-  - ĞŞ¸´n_wsclientÊ¹ÓÃMQTTĞ­ÒéÊ±¿ÉÄÜ¶ÔÄ³Ğ©broker²»¼æÈİµÄÎÊÌâ
+  - ä¿®å¤n_wsclientä½¿ç”¨MQTTåè®®æ—¶å¯èƒ½å¯¹æŸäº›brokerä¸å…¼å®¹çš„é—®é¢˜
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½190613
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°190613
 * [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.3.0.6
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.3.0.6
 
 ## 2.1.5.1728(2019-05-17)
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.utility.sqlite]
-  - ĞŞ¸´QueryÃ»ÓĞÌá¹©²ÎÊıÊ±¼ìË÷Ê§°ÜµÄÎÊÌâ£¨ÓÉ2.1.5.1724°æ±¾ÒıÈë£©
+  - ä¿®å¤Queryæ²¡æœ‰æä¾›å‚æ•°æ—¶æ£€ç´¢å¤±è´¥çš„é—®é¢˜ï¼ˆç”±2.1.5.1724ç‰ˆæœ¬å¼•å…¥ï¼‰
 
 ## 2.1.5.1724(2019-05-17)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility.sqlite]
-  - n_sqlite::QueryÖ§³ÖÌá¹©DS/DWÄÚÖÃSQLµÄ¼ìË÷²ÎÊı£¬Èçdb.Query(dw_1,""/*²»Ö¸¶¨sqlÊ±Ê¹ÓÃdwÄÚ²¿µÄsql*/,arg1,arg2,...)
+  - n_sqlite::Queryæ”¯æŒæä¾›DS/DWå†…ç½®SQLçš„æ£€ç´¢å‚æ•°ï¼Œå¦‚db.Query(dw_1,""/*ä¸æŒ‡å®šsqlæ—¶ä½¿ç”¨dwå†…éƒ¨çš„sql*/,arg1,arg2,...)
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.datawindow.services]
-  - n_cst_dwsvc_columnsort/n_cst_dwsvc_contextmenuÖ§³Ö¸÷ÖÖµ¥Î»£¨PBU/CM/INCH/PX£©
+  - n_cst_dwsvc_columnsort/n_cst_dwsvc_contextmenuæ”¯æŒå„ç§å•ä½ï¼ˆPBU/CM/INCH/PXï¼‰
 
 ## 2.1.4.1719(2019-05-16)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility.sqlite]
-  - ¼¯³Ésqlite£¨¼ûpfw.pbl::w_test_sqlite£©
+  - é›†æˆsqliteï¼ˆè§pfw.pbl::w_test_sqliteï¼‰
 * [pfw.thread.ext]
-  - n_cst_threading_task_sqlqueryÔÊĞíSQLÊµ²ÎÊı±È²ÎÊı¶à
+  - n_cst_threading_task_sqlqueryå…è®¸SQLå®å‚æ•°æ¯”å‚æ•°å¤š
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.ui.sciter.ext]
-  - ĞŞ¸´u_cst_sciter_treeviewË«»÷×Ó½Úµã±»¸ü¸ÄÎª×é×´Ì¬µÄÎÊÌâ
+  - ä¿®å¤u_cst_sciter_treeviewåŒå‡»å­èŠ‚ç‚¹è¢«æ›´æ”¹ä¸ºç»„çŠ¶æ€çš„é—®é¢˜
 * [pfw.ui.sciter.ext]
-  - ĞŞ¸´u_cst_sciter_sidebar¶¯»­¿¨¶Ù²¢ÓÅ»¯ÕÛµşÏÔÊ¾Ğ§¹û
+  - ä¿®å¤u_cst_sciter_sidebaråŠ¨ç”»å¡é¡¿å¹¶ä¼˜åŒ–æŠ˜å æ˜¾ç¤ºæ•ˆæœ
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.2.8.4
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.2.8.4
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½190515
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°190515
 
 ## 2.1.3.1662(2019-05-05)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.ui.sciter.ext]
-  - Ôö¼Óu_cst_sciter_sidebar²à±ßµ¼º½²Ëµ¥£¨¼ûpfw.demos.pbl::u_cst_tabpage_sciter_sidebar£©
+  - å¢åŠ u_cst_sciter_sidebarä¾§è¾¹å¯¼èˆªèœå•ï¼ˆè§pfw.demos.pbl::u_cst_tabpage_sciter_sidebarï¼‰
 * [pfw.utility]
-  - n_loggerÔö¼ÓSetLevelº¯ÊıÉèÖÃÔÊĞíÊä³öµÄ¼¶±ğµÄÑÚÂë×éºÏ£¨¼ûEnums.LOG_LEVEL_XXX£©
-  - n_logger::Info/Warning/Error/Debugº¯ÊıÔö¼Ó[level]²ÎÊıÖØÔØ°æ±¾£¬Ö¸¶¨Êä³ö¼¶±ğ
+  - n_loggerå¢åŠ SetLevelå‡½æ•°è®¾ç½®å…è®¸è¾“å‡ºçš„çº§åˆ«çš„æ©ç ç»„åˆï¼ˆè§Enums.LOG_LEVEL_XXXï¼‰
+  - n_logger::Info/Warning/Error/Debugå‡½æ•°å¢åŠ [level]å‚æ•°é‡è½½ç‰ˆæœ¬ï¼ŒæŒ‡å®šè¾“å‡ºçº§åˆ«
 * [pfw.utility]
-  - n_loggerÔö¼ÓCustomº¯ÊıÊä³ö×Ô¶¨ÒåÍ·²¿ÄÚÈİ
+  - n_loggerå¢åŠ Customå‡½æ•°è¾“å‡ºè‡ªå®šä¹‰å¤´éƒ¨å†…å®¹
 
-### ÍêÉÆ
+### å®Œå–„
 
 * [pfw.net.http]
-  - n_httpformdata::AddFile°üº¬filelength²ÎÊı
+  - n_httpformdata::AddFileåŒ…å«filelengthå‚æ•°
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.utility]
-  - n_loggerÒÆ³ıSetDebugModeº¯Êı£¨Ê¹ÓÃSetLevelº¯ÊıÌæ´ú£©
+  - n_loggerç§»é™¤SetDebugModeå‡½æ•°ï¼ˆä½¿ç”¨SetLevelå‡½æ•°æ›¿ä»£ï¼‰
 * [pfw.thread]
-  - n_cst_threading_poolÒÆ³ıOnIdleÊÂ¼ş
-> ²»ÔÙĞèÒªÊÖ¶¯µ÷ÓÃn_cst_threading::OnIdleÊÂ¼ş
+  - n_cst_threading_poolç§»é™¤OnIdleäº‹ä»¶
+> ä¸å†éœ€è¦æ‰‹åŠ¨è°ƒç”¨n_cst_threading::OnIdleäº‹ä»¶
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.2.8.3
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.2.8.3
 
 ## 2.1.2.1602(2019-04-12)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.net.http]
-  - Ôö¼Ón_httpformdata£¬ÓÃÓÚform±íµ¥Êı¾İÇëÇó
+  - å¢åŠ n_httpformdataï¼Œç”¨äºformè¡¨å•æ•°æ®è¯·æ±‚
 * [pfw.ui.controls]
-  - n_cst_ribbonbar_themeÔö¼Ó#TabPadding²ÎÊıÉèÖÃTabÄÚ¼ä¾à´óĞ¡£¨±êÇ©×óÓÒÁ½²àµÄÌî³ä´óĞ¡£©
+  - n_cst_ribbonbar_themeå¢åŠ #TabPaddingå‚æ•°è®¾ç½®Tabå†…é—´è·å¤§å°ï¼ˆæ ‡ç­¾å·¦å³ä¸¤ä¾§çš„å¡«å……å¤§å°ï¼‰
 * [pfw.utility.regexp]
-  - RegExpFindÈ«¾Öº¯ÊıÔö¼Ó·µ»Øsubs[]Êı×éµÄÖØÔØ°æ±¾
+  - RegExpFindå…¨å±€å‡½æ•°å¢åŠ è¿”å›subs[]æ•°ç»„çš„é‡è½½ç‰ˆæœ¬
 * [pfw.common]
-  - EnumsÔö¼ÓREGEXP_MATCH_GLOBAL±êÖ¾£¬ÓÃÓÚ¿ªÆôRegExp::Findº¯Êı·µ»Øsubs[]Êı×éÊ±µÄÈ«¾Ö²éÕÒ¹¦ÄÜ
+  - Enumså¢åŠ REGEXP_MATCH_GLOBALæ ‡å¿—ï¼Œç”¨äºå¼€å¯RegExp::Findå‡½æ•°è¿”å›subs[]æ•°ç»„æ—¶çš„å…¨å±€æŸ¥æ‰¾åŠŸèƒ½
 * [pfw.thread]
-  - n_cst_thread/n_cst_thread_task/n_cst_threading/n_cst_threading_taskÔö¼Óof_SetData/of_GetData/of_HasData/of_RemoveDataº¯Êı°ó¶¨Ë½ÓĞÊı¾İ
+  - n_cst_thread/n_cst_thread_task/n_cst_threading/n_cst_threading_taskå¢åŠ of_SetData/of_GetData/of_HasData/of_RemoveDataå‡½æ•°ç»‘å®šç§æœ‰æ•°æ®
 * [pfw.thread.ext]
-  - n_cst_threading_task_sqlcommand/n_cst_threading_task_sqlquery/n_cst_threading_task_sqlupdateÒÆ³ıof_SetTransClassº¯Êı
+  - n_cst_threading_task_sqlcommand/n_cst_threading_task_sqlquery/n_cst_threading_task_sqlupdateç§»é™¤of_SetTransClasså‡½æ•°
 * [pfw.thread]
-  - µ±Ê¹ÓÃSQLÈÎÎñ£¨¼Ì³Ğ×Ôn_cst_thread_task_sqlbaseµÄÈÎÎñ£©Ê±£¬Ïß³Ì´úÀí¶ÔÏóÖ§³ÖÉèÖÃÈ«¾ÖÊÂ¼ş¿ØÖÆ²ÎÊı£º
+  - å½“ä½¿ç”¨SQLä»»åŠ¡ï¼ˆç»§æ‰¿è‡ªn_cst_thread_task_sqlbaseçš„ä»»åŠ¡ï¼‰æ—¶ï¼Œçº¿ç¨‹ä»£ç†å¯¹è±¡æ”¯æŒè®¾ç½®å…¨å±€äº‹ä»¶æ§åˆ¶å‚æ•°ï¼š
 ```
-Threading.of_SetData("SQL.TransPool.TransClass","ne_cst_thread_trans") //ÉèÖÃÊÂÎñÁ¬½Ó³ØÊ¹ÓÃµÄÊÂÎñÀàÃû£¨ÒªÇó¼Ì³Ğ×Ôn_cst_thread_trans£©
-Threading.of_SetData("SQL.TransPool.KeepAlive",true) //¿ªÆôÊÂÎñÁ¬½Ó±£³Ö»úÖÆ£¨Ã»ÓĞÈÎÎñÒıÓÃµÄÊÂÎñ½«±£³ÖÁ¬½Ó£¬ÒÔ±ãÏß³Ì¸´ÓÃÊ±ĞÂµÄSQLÈÎÎñÄÜÖ±½Ó¸´ÓÃÁ¬½Ó£©
-Threading.of_SetData("SQL.TransPool.KeepAliveExpireTime",15) //Á¬½Ó±£³ÖµÄ×î³¤Ê±¼ä(s)£¬Ä¬ÈÏ30
-×¢£º
-ÊÂÎñÁ¬½Ó±£³Ö»úÖÆĞèÒªÅäºÏOnIdleÊÂ¼ş£¬·ñÔò±£³Ö³¬Ê±ºó²»ÄÜ¶Ï¿ªÁ¬½Ó
+Threading.of_SetData("SQL.TransPool.TransClass","ne_cst_thread_trans") //è®¾ç½®äº‹åŠ¡è¿æ¥æ± ä½¿ç”¨çš„äº‹åŠ¡ç±»åï¼ˆè¦æ±‚ç»§æ‰¿è‡ªn_cst_thread_transï¼‰
+Threading.of_SetData("SQL.TransPool.KeepAlive",true) //å¼€å¯äº‹åŠ¡è¿æ¥ä¿æŒæœºåˆ¶ï¼ˆæ²¡æœ‰ä»»åŠ¡å¼•ç”¨çš„äº‹åŠ¡å°†ä¿æŒè¿æ¥ï¼Œä»¥ä¾¿çº¿ç¨‹å¤ç”¨æ—¶æ–°çš„SQLä»»åŠ¡èƒ½ç›´æ¥å¤ç”¨è¿æ¥ï¼‰
+Threading.of_SetData("SQL.TransPool.KeepAliveExpireTime",15) //è¿æ¥ä¿æŒçš„æœ€é•¿æ—¶é—´(s)ï¼Œé»˜è®¤30
+æ³¨ï¼š
+äº‹åŠ¡è¿æ¥ä¿æŒæœºåˆ¶éœ€è¦é…åˆOnIdleäº‹ä»¶ï¼Œå¦åˆ™ä¿æŒè¶…æ—¶åä¸èƒ½æ–­å¼€è¿æ¥
 Threading.Event OnIdle()
-»ò
+æˆ–
 ThreadPool.Event OnIdle()
 ```
 * [pfw.thread]
-  - n_cst_threading/n_cst_threading_poolÔö¼ÓOnIdleÊÂ¼ş£¬ÓÃÓÚ¶¨ÆÚÍ¨Öª¿ÕÏĞÏß³ÌÖ´ĞĞÒ»Ğ©Î¬»¤´úÂë£¬±ÈÈçÉÏÃæÌáµ½µÄÊÂÎñÁ¬½Ó±£³Ö³¬Ê±µÄÇåÀí
+  - n_cst_threading/n_cst_threading_poolå¢åŠ OnIdleäº‹ä»¶ï¼Œç”¨äºå®šæœŸé€šçŸ¥ç©ºé—²çº¿ç¨‹æ‰§è¡Œä¸€äº›ç»´æŠ¤ä»£ç ï¼Œæ¯”å¦‚ä¸Šé¢æåˆ°çš„äº‹åŠ¡è¿æ¥ä¿æŒè¶…æ—¶çš„æ¸…ç†
 * [pfw.thread]
-  - n_cst_threading_poolÔö¼Óof_Createº¯Êı£¬ÓÃÓÚÇ¿ÖÆ´´½¨Ïß³Ì³ØÏß³Ì
+  - n_cst_threading_poolå¢åŠ of_Createå‡½æ•°ï¼Œç”¨äºå¼ºåˆ¶åˆ›å»ºçº¿ç¨‹æ± çº¿ç¨‹
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.datawindow.services]
-  - ÍêÉÆDDSPYFirstLetterLikeÆ¥ÅäËã·¨£¬Èç£ºKKW LIKE KW = true
+  - å®Œå–„DDSPYFirstLetterLikeåŒ¹é…ç®—æ³•ï¼Œå¦‚ï¼šKKW LIKE KW = true
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.ui.controls]
-  - ĞŞ¸´s_cst_hprogressbar/s_cst_vprogressbarÔÚ¾­µäÖ÷ÌâµÄË¢ĞÂÏÔÊ¾ÎÊÌâ
+  - ä¿®å¤s_cst_hprogressbar/s_cst_vprogressbaråœ¨ç»å…¸ä¸»é¢˜çš„åˆ·æ–°æ˜¾ç¤ºé—®é¢˜
 * [pfw.utility.container]
-  - ĞŞ¸´n_vector/n_list::SortÄ¬ÈÏÅÅĞò
+  - ä¿®å¤n_vector/n_list::Sorté»˜è®¤æ’åº
 * [pfw.utility.regexp]
-  - ĞŞ¸´n_regexp::FindÄÚ´æÒì³£µÄÎÊÌâ
+  - ä¿®å¤n_regexp::Findå†…å­˜å¼‚å¸¸çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´u_cst_tabpage::OnOpenedÊÂ¼şÔÚOnActivatedÖ®ºó´¥·¢µÄÎÊÌâ
+  - ä¿®å¤u_cst_tabpage::OnOpenedäº‹ä»¶åœ¨OnActivatedä¹‹åè§¦å‘çš„é—®é¢˜
 * [pfw.ui.controls]
-  - u_cst_toolbarstrip°ó¶¨¿Ø¼şÅ¼¶ûÃ»ÓĞÍ¬²½Òş²ØµÄÎÊÌâ
+  - u_cst_toolbarstripç»‘å®šæ§ä»¶å¶å°”æ²¡æœ‰åŒæ­¥éšè—çš„é—®é¢˜
 * [pfw.ui.controls.ext]
-  - ĞŞ¸´w_cst_msgboxµ¹¼ÆÊ±°´Å¥ÎÄ±¾¿ÉÄÜÏÔÊ¾²»È«µÄÎÊÌâ
+  - ä¿®å¤w_cst_msgboxå€’è®¡æ—¶æŒ‰é’®æ–‡æœ¬å¯èƒ½æ˜¾ç¤ºä¸å…¨çš„é—®é¢˜
 * [pfw.thread.ext]
-  - ĞŞ¸´n_cst_threading_task_sqlquery¼ìË÷ºó²éÑ¯Ìõ¼ş±»Çå¿ÕµÄÎÊÌâ
+  - ä¿®å¤n_cst_threading_task_sqlqueryæ£€ç´¢åæŸ¥è¯¢æ¡ä»¶è¢«æ¸…ç©ºçš„é—®é¢˜
 * [pfw.ui.controls]
-  - n_cst_popupmenuÊ¹ÓÃPostµ÷ÓÃÊÂ¼ş¿ÉÄÜÒıÆğµÄÄÚ´æÒì³£
+  - n_cst_popupmenuä½¿ç”¨Postè°ƒç”¨äº‹ä»¶å¯èƒ½å¼•èµ·çš„å†…å­˜å¼‚å¸¸
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½190329
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°190329
 
 ## 2.1.1.1530(2019-03-01)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.demos]
-  - n_cst_sciter_traynotification::of_NotifyÔö¼ÓdelayÑÓ³ÙÊ±¼ä²ÎÊı£¨µ¥Î»Ãë£©
+  - n_cst_sciter_traynotification::of_Notifyå¢åŠ delayå»¶è¿Ÿæ—¶é—´å‚æ•°ï¼ˆå•ä½ç§’ï¼‰
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.utility]
-  - n_loggerÈÕÆÚÊä³ö¾«È·µ½ºÁÃë
+  - n_loggeræ—¥æœŸè¾“å‡ºç²¾ç¡®åˆ°æ¯«ç§’
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.utility.regexp]
-  - ĞŞ¸´RegExpFind²»ÄÜ»ñÈ¡·Ö×éµÄÎÊÌâ
+  - ä¿®å¤RegExpFindä¸èƒ½è·å–åˆ†ç»„çš„é—®é¢˜
 * [pfw.utility.parser]
-  - n_sqlĞŞ¸´Ò»Ğ©BUG£¬²¢ÇÒ¼æÈİÃ»ÓĞ[FROM]µÄÓï¾ä
+  - n_sqlä¿®å¤ä¸€äº›BUGï¼Œå¹¶ä¸”å…¼å®¹æ²¡æœ‰[FROM]çš„è¯­å¥
 * [pfw.net.http]
-  - ĞŞ¸´¿ÉÄÜ³öÏÖÊı¾İ½âÑ¹Ê§°ÜµÄÎÊÌâ
+  - ä¿®å¤å¯èƒ½å‡ºç°æ•°æ®è§£å‹å¤±è´¥çš„é—®é¢˜
 
 ## 2.1.0.1491(2019-02-25)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.common]
-  - Ôö¼ÓGetCurrentScriptÈ«¾Öº¯Êı£¬»ñÈ¡µ±Ç°Ö´ĞĞµÄ´úÂëÎ»ÖÃ
+  - å¢åŠ GetCurrentScriptå…¨å±€å‡½æ•°ï¼Œè·å–å½“å‰æ‰§è¡Œçš„ä»£ç ä½ç½®
 * [pfw.utility.parser]
-  - n_xmldoc/n_xmlnodeÔö¼ÓGetChildren/FindChildrenº¯Êı
+  - n_xmldoc/n_xmlnodeå¢åŠ GetChildren/FindChildrenå‡½æ•°
 * [pfw.ui.sciter.ext]
-  - u_cst_sciter_treeview/n_cst_sciter_treeview_optionÔö¼Ó¸ù¾İÊôĞÔ²éÕÒ½ÚµãµÄÖØÔØº¯Êıof_FindChild/of_FindChildren/of_FindOption/of_FindOptions
+  - u_cst_sciter_treeview/n_cst_sciter_treeview_optionå¢åŠ æ ¹æ®å±æ€§æŸ¥æ‰¾èŠ‚ç‚¹çš„é‡è½½å‡½æ•°of_FindChild/of_FindChildren/of_FindOption/of_FindOptions
 * [pfw.ui.sciter.ext]
-  - u_cst_sciter_treeviewÔö¼Óof_Load¼ÓÔØº¯Êı£¬´óÁ¿½Úµã¹¹½¨Ê±Ìá¸ßĞÔÄÜ£¬¼ûpfw.demos.pbl::u_cst_tabpage_sciter_treeview
+  - u_cst_sciter_treeviewå¢åŠ of_LoadåŠ è½½å‡½æ•°ï¼Œå¤§é‡èŠ‚ç‚¹æ„å»ºæ—¶æé«˜æ€§èƒ½ï¼Œè§pfw.demos.pbl::u_cst_tabpage_sciter_treeview
 * [pfw.utility]
-  - Ôö¼ÓGetTimestampÈ«¾Öº¯Êı»ñÈ¡µ±Ç°Ê±¼ä´Á
-  - ÍêÉÆDateTimeToTimestamp/TimestampToDateTimeÊµÏÖ
+  - å¢åŠ GetTimestampå…¨å±€å‡½æ•°è·å–å½“å‰æ—¶é—´æˆ³
+  - å®Œå–„DateTimeToTimestamp/TimestampToDateTimeå®ç°
 * [pfw.utility]
-  - Ôö¼ÓParseDateTimeÈ«¾Öº¯Êı£¬½âÎöÈÕÆÚ×Ö·û´®£¬Ö§³ÖRFC822/RFC850/ANSI C¸ñÊ½£¬Í¬Ê±¼æÈİPB¸ñÊ½
+  - å¢åŠ ParseDateTimeå…¨å±€å‡½æ•°ï¼Œè§£ææ—¥æœŸå­—ç¬¦ä¸²ï¼Œæ”¯æŒRFC822/RFC850/ANSI Cæ ¼å¼ï¼ŒåŒæ—¶å…¼å®¹PBæ ¼å¼
 ```
 Wed, 21 Oct 2015 07:28:00 GMT
 Wed, 21 Oct 2015 15:28:00 UTC+0800
-//·µ»ØµÄÈÕÆÚÊ¼ÖÕÎª±¾µØÊ±Çø
+//è¿”å›çš„æ—¥æœŸå§‹ç»ˆä¸ºæœ¬åœ°æ—¶åŒº
 ```
 * [pfw.thread]
-  - n_cst_threadÔö¼Óof_GetExecCountº¯Êı»ñÈ¡Ö´ĞĞ´ÎÊı
+  - n_cst_threadå¢åŠ of_GetExecCountå‡½æ•°è·å–æ‰§è¡Œæ¬¡æ•°
 * [pfw.thread.ext]
-  - Ôö¼Ó×Ô¶¨ÒåÊÂÎñ¶ÔÏón_cst_thread_trans
-  - n_cst_threading_task_sqlquery/n_cst_threading_task_sqlupdate/n_cst_threading_task_sqlcmd¿ÉÒÔÍ¨¹ıof_SetTransClassº¯ÊıÀ´Ö¸¶¨×Ô¼ºµÄÊÂÎñ¶ÔÏóÀàĞÍ£¨´Ón_cst_thread_trans¼Ì³Ğ£©
+  - å¢åŠ è‡ªå®šä¹‰äº‹åŠ¡å¯¹è±¡n_cst_thread_trans
+  - n_cst_threading_task_sqlquery/n_cst_threading_task_sqlupdate/n_cst_threading_task_sqlcmdå¯ä»¥é€šè¿‡of_SetTransClasså‡½æ•°æ¥æŒ‡å®šè‡ªå·±çš„äº‹åŠ¡å¯¹è±¡ç±»å‹ï¼ˆä»n_cst_thread_transç»§æ‰¿ï¼‰
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.ui.controls]
-  - u_cst_tabcontrol::OnTabSelectionChangedÊÂ¼ş¸ÄÎªÍ¬²½´¥·¢£¨Ô­À´ÊÇPost´¥·¢£©
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: u_cst_tabcontrol::OnTabSelectionChangedäº‹ä»¶æ”¹ä¸ºåŒæ­¥è§¦å‘ï¼ˆåŸæ¥æ˜¯Postè§¦å‘ï¼‰
 * [pfw.utility.regexp]
-  - ÖØ¹¹n_regexp£¬Ôö¼ÓCompileº¯Êı£¬Ê¹ÓÃ¸Ã¶ÔÏó½øĞĞ´óÁ¿µÄÕıÔò±í´ïÊ½Æ¥Åä¿ÉÌá¸ßĞÔÄÜ
+  - é‡æ„n_regexpï¼Œå¢åŠ Compileå‡½æ•°ï¼Œä½¿ç”¨è¯¥å¯¹è±¡è¿›è¡Œå¤§é‡çš„æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…å¯æé«˜æ€§èƒ½
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.net.http]
-  - ÓÅ»¯n_httpresponse::GetDataJSON/GetDataXMLĞÔÄÜ
+  - ä¼˜åŒ–n_httpresponse::GetDataJSON/GetDataXMLæ€§èƒ½
 * [pfw.net.websocket]
-  - ÓÅ»¯n_wsmessage::GetDataJSON/GetDataXMLĞÔÄÜ
+  - ä¼˜åŒ–n_wsmessage::GetDataJSON/GetDataXMLæ€§èƒ½
 * [pfw.net.http]
-  - Ôö¼ÓÄ¬ÈÏÍ·£ºAccept-Encoding: gzip, deflate
+  - å¢åŠ é»˜è®¤å¤´ï¼šAccept-Encoding: gzip, deflate
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½190225
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°190225
 * [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.2.6.10
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.2.6.10
 
 ## 2.0.9.1403(2019-01-23)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.net.http]
-  - URLEncodeÔö¼Óuppercase²ÎÊı
+  - URLEncodeå¢åŠ uppercaseå‚æ•°
 * [pfw.common]
-  - Ôö¼ÓAssert¶ÏÑÔ²âÊÔÈ«¾Öº¯Êı£¨¼ûpfw.pbl::w_test_assert£©
+  - å¢åŠ Assertæ–­è¨€æµ‹è¯•å…¨å±€å‡½æ•°ï¼ˆè§pfw.pbl::w_test_assertï¼‰
 * [pfw.common]
-  - Ôö¼ÓStackTrace/StackTraceInfoÈ«¾Öº¯Êı»ñÈ¡µ±Ç°µ÷ÓÃÕ»ĞÅÏ¢
+  - å¢åŠ StackTrace/StackTraceInfoå…¨å±€å‡½æ•°è·å–å½“å‰è°ƒç”¨æ ˆä¿¡æ¯
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.utility.invoker]
-  - n_cst_eventfulÍêÉÆÒì³£²¶×½
+  - n_cst_eventfulå®Œå–„å¼‚å¸¸æ•æ‰
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½190123
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°190123
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.net.websocket]
-  - ĞŞ¸´n_wsclient::SubscribeÅúÁ¿¶©ÔÄµÄBUG
+  - ä¿®å¤n_wsclient::Subscribeæ‰¹é‡è®¢é˜…çš„BUG
 * [pfw.ui.sciter.ext]
-  - ĞŞ¸´n_cst_sciter_treeview_option::of_InsertAfter/of_InsertBefore
+  - ä¿®å¤n_cst_sciter_treeview_option::of_InsertAfter/of_InsertBefore
 * [pfw.datawindow.services]
-  - ĞŞ¸´se_cst_dw::Filter/DeleteRow
+  - ä¿®å¤se_cst_dw::Filter/DeleteRow
 * [pfw.ui.blink]
-  - ĞŞ¸´n_blinkvalue::RemoveAllÎŞĞ§µÄÎÊÌâ
+  - ä¿®å¤n_blinkvalue::RemoveAllæ— æ•ˆçš„é—®é¢˜
 * [pfw.utility.parser]
-  - ĞŞ¸´n_jsonµÄÒ»´¦±ÀÀ££¨ÓÉ2.0.8ÒıÈë£©
+  - ä¿®å¤n_jsonçš„ä¸€å¤„å´©æºƒï¼ˆç”±2.0.8å¼•å…¥ï¼‰
 
 ## 2.0.8.1352(2019-01-04)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.ui.sciter]
-  - Ôö¼ÓSciterSetOptionÈ«¾Öº¯Êı£¬ÓÃÓÚÉèÖÃÈ«¾ÖµÄSciterÔËĞĞÊ±²ÎÊı
+  - å¢åŠ SciterSetOptionå…¨å±€å‡½æ•°ï¼Œç”¨äºè®¾ç½®å…¨å±€çš„Sciterè¿è¡Œæ—¶å‚æ•°
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.utility.parser]
-  - n_json KEY¸Ä»Ø²»Çø·Ö´óĞ¡Ğ´
+  - n_json KEYæ”¹å›ä¸åŒºåˆ†å¤§å°å†™
 * [pfw.ui.sciter]
-  - ¸½´øSkia°æ±¾µÄsciter.dll £¨XPÏÂ½«²ÉÓÃSkiaäÖÈ¾£©
+  - é™„å¸¦Skiaç‰ˆæœ¬çš„sciter.dll ï¼ˆXPä¸‹å°†é‡‡ç”¨Skiaæ¸²æŸ“ï¼‰
 * [pfw.datawindow.services]
-  - Ê¹ÓÃn_cst_eventfulÖØ¹¹
+  - ä½¿ç”¨n_cst_eventfulé‡æ„
 
-### ÆäËü
-
-* [pfw.ui.sciter]
-  - ¸üĞÂsciter°æ±¾µ½4.2.6.8
-
-### ĞŞ¸´
+### å…¶å®ƒ
 
 * [pfw.ui.sciter]
-  - Óë4.2.6.3Ö®ºó°æ±¾µÄsciter×ö¸öÆæ¹ÖµÄ¼æÈİ
+  - æ›´æ–°sciterç‰ˆæœ¬åˆ°4.2.6.8
+
+### ä¿®å¤
+
+* [pfw.ui.sciter]
+  - ä¸4.2.6.3ä¹‹åç‰ˆæœ¬çš„sciteråšä¸ªå¥‡æ€ªçš„å…¼å®¹
 
 ## 2.0.7.1341(2019-01-03)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility.parser]
-  - n_jsonÍêÕûÊµÏÖFindº¯Êı£¬Ö§³ÖË÷Òı²éÕÒÔªËØ
+  - n_jsonå®Œæ•´å®ç°Findå‡½æ•°ï¼Œæ”¯æŒç´¢å¼•æŸ¥æ‰¾å…ƒç´ 
 ```
-Óï·¨£º
+è¯­æ³•ï¼š
     key/#index/key
-    Â·¾¶ÓÉ'/'·Ö¸ô£¬'#'¿ªÍ·ÎªË÷Òı£¨ÏÂ±ê´Ó1¿ªÊ¼£©
-    *Ê¹ÓÃ'\'×ªÒå×Ö·û
+    è·¯å¾„ç”±'/'åˆ†éš”ï¼Œ'#'å¼€å¤´ä¸ºç´¢å¼•ï¼ˆä¸‹æ ‡ä»1å¼€å§‹ï¼‰
+    *ä½¿ç”¨'\'è½¬ä¹‰å­—ç¬¦
 
-Èç£º
+å¦‚ï¼š
 {"key1":[{"subKey1":"abcd"},{"subKey2":"efgh"}],
 "key2":[{"subKey1":"ijkl"},{"subKey2":"mnop"}]}
 
     json.Find("key2/#2/subKey2") ==> "efgh"
-µÈ¼Û:
+ç­‰ä»·:
     json.Find("#2/#2/#2") ==> "efgh"
 ```
 * [pfw.utility.parser]
-  - n_jsonÔö¼ÓFromObject£¨PB¶ÔÏó×ª»»ÎªJSON£©/ToObject£¨JSON¸³Öµ¸øPB¶ÔÏó£©º¯Êı£¬¼ûpfw.pbl::w_test_json
-> ½á¹¹×ª»»ÎªJSON,JSON×ª»»Îª½á¹¹
+  - n_jsonå¢åŠ FromObjectï¼ˆPBå¯¹è±¡è½¬æ¢ä¸ºJSONï¼‰/ToObjectï¼ˆJSONèµ‹å€¼ç»™PBå¯¹è±¡ï¼‰å‡½æ•°ï¼Œè§pfw.pbl::w_test_json
+> ç»“æ„è½¬æ¢ä¸ºJSON,JSONè½¬æ¢ä¸ºç»“æ„
 * [pfw]
-  - Ôö¼Ón_cst_appargs(³ÌĞòÆô¶¯ÃüÁîĞĞ²ÎÊı½âÎö)/n_cst_appconfig(³ÌĞòXMLÅäÖÃÎÄ¼ş½âÎö)¹¤¾ßÀà£¬¼ûpfw.pbl::w_test_appargs/w_test_appconfig
+  - å¢åŠ n_cst_appargs(ç¨‹åºå¯åŠ¨å‘½ä»¤è¡Œå‚æ•°è§£æ)/n_cst_appconfig(ç¨‹åºXMLé…ç½®æ–‡ä»¶è§£æ)å·¥å…·ç±»ï¼Œè§pfw.pbl::w_test_appargs/w_test_appconfig
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.ui.sciter]
-  - ÍêÉÆTIS·ÃÎÊ¶ÔÏóÃ¶¾ÙÊôĞÔµÄÖ§³Ö£¨ÎÄµµÒÑ¸üĞÂ£©
+  - å®Œå–„TISè®¿é—®å¯¹è±¡æšä¸¾å±æ€§çš„æ”¯æŒï¼ˆæ–‡æ¡£å·²æ›´æ–°ï¼‰
 * [pfw.ui.blink]
-  - ÍêÉÆJS·ÃÎÊ¶ÔÏóÃ¶¾ÙÊôĞÔµÄÖ§³Ö£¨ÎÄµµÒÑ¸üĞÂ£©
+  - å®Œå–„JSè®¿é—®å¯¹è±¡æšä¸¾å±æ€§çš„æ”¯æŒï¼ˆæ–‡æ¡£å·²æ›´æ–°ï¼‰
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½181228
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°181228
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.utility.invoker]
-  - ĞŞ¸´n_cst_eventful::of_OnÖØ¸´×¢²á¼ì²é´úÂëÃ»ÓĞºöÂÔ¹ıÆÚÊÂ¼şµÄÎÊÌâ
+  - ä¿®å¤n_cst_eventful::of_Oné‡å¤æ³¨å†Œæ£€æŸ¥ä»£ç æ²¡æœ‰å¿½ç•¥è¿‡æœŸäº‹ä»¶çš„é—®é¢˜
 * [pfw.net.websocket]
-  - ĞŞ¸´n_wsclient::Sendº¯ÊıµÄJSON/XMLÖØÔØ°æ±¾µ÷ÓÃÒì³£µÄÎÊÌâ
+  - ä¿®å¤n_wsclient::Sendå‡½æ•°çš„JSON/XMLé‡è½½ç‰ˆæœ¬è°ƒç”¨å¼‚å¸¸çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´s_cst_window¹Ø±ÕÊ±Ã»ÓĞÍ£Ö¹ËùÓĞtimer¶øÔì³ÉNULLÒıÓÃÒì³£µÄÎÊÌâ
+  - ä¿®å¤s_cst_windowå…³é—­æ—¶æ²¡æœ‰åœæ­¢æ‰€æœ‰timerè€Œé€ æˆNULLå¼•ç”¨å¼‚å¸¸çš„é—®é¢˜
 * [pfw.utility]
-  - ĞŞ¸´n_logger¿ØÖÆÌ¨Êä³öÖĞÎÄÂÒÂëµÄÎÊÌâ
+  - ä¿®å¤n_loggeræ§åˆ¶å°è¾“å‡ºä¸­æ–‡ä¹±ç çš„é—®é¢˜
 
 ## 2.0.6.1297(2018-12-11)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.sciter]
-  - Ôö¼ÓSciterSetMasterScriptº¯Êı£¨ÉèÖÃtisÈ«¾Ö½Å±¾£©
+  - å¢åŠ SciterSetMasterScriptå‡½æ•°ï¼ˆè®¾ç½®tiså…¨å±€è„šæœ¬ï¼‰
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.ui.sciter.ext]
-  - ÓÅ»¯Ìí¼Ó½ÚµãµÄĞÔÄÜ
+  - ä¼˜åŒ–æ·»åŠ èŠ‚ç‚¹çš„æ€§èƒ½
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.ui.blink]
-  - ·Ï³ıIsLoadFailed/IsLoadSucceeded/IsLoadCompleteº¯Êı
+  - åºŸé™¤IsLoadFailed/IsLoadSucceeded/IsLoadCompleteå‡½æ•°
 
-### ÆäËü
+### å…¶å®ƒ
 
 * [pfw.ui.sciter]
-  - Éı¼¶sciterµ½4.2.6.6°æ±¾£¨ÒªÔÚXPÏÂÊ¹ÓÃ±ØĞëÓÃpfw´øµÄdll£¬²»ÄÜÊ¹ÓÃ¹Ù·½¹«¿ª·¢²¼µÄ°æ±¾£©
+  - å‡çº§sciteråˆ°4.2.6.6ç‰ˆæœ¬ï¼ˆè¦åœ¨XPä¸‹ä½¿ç”¨å¿…é¡»ç”¨pfwå¸¦çš„dllï¼Œä¸èƒ½ä½¿ç”¨å®˜æ–¹å…¬å¼€å‘å¸ƒçš„ç‰ˆæœ¬ï¼‰
 * [pfw.ui.blink]
-  - ¸üĞÂblink°æ±¾µ½181205
+  - æ›´æ–°blinkç‰ˆæœ¬åˆ°181205
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.ui.sciter.ext]
-  - ĞŞ¸´½ÚµãÃû³Æ´øÌØÊâ×Ö·ûµÄÎÊÌâ
+  - ä¿®å¤èŠ‚ç‚¹åç§°å¸¦ç‰¹æ®Šå­—ç¬¦çš„é—®é¢˜
 * [pfw.utility]
-  - ĞŞ¸´n_loggerÊä³öÌØÊâÎÄ×ÖÂÒÂëµÄÎÊÌâ£¨ÏÖÔÚ²ÉÓÃUTF-8±àÂë£¬ÏÖÓĞµÄÈÕÖ¾ÎÄ¼şÈç¹û²»ÊÇUTF-8+BOMÔò»á±»Çå¿Õ£©
+  - ä¿®å¤n_loggerè¾“å‡ºç‰¹æ®Šæ–‡å­—ä¹±ç çš„é—®é¢˜ï¼ˆç°åœ¨é‡‡ç”¨UTF-8ç¼–ç ï¼Œç°æœ‰çš„æ—¥å¿—æ–‡ä»¶å¦‚æœä¸æ˜¯UTF-8+BOMåˆ™ä¼šè¢«æ¸…ç©ºï¼‰
 * [pfw.datawindow.services]
-  - ĞŞ¸´n_cst_dwsvc_dropdownsearchÔÚ¼ìË÷Êı¾İºó¿ÉÄÜÊ§Ğ§µÄÎÊÌâ
+  - ä¿®å¤n_cst_dwsvc_dropdownsearchåœ¨æ£€ç´¢æ•°æ®åå¯èƒ½å¤±æ•ˆçš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´s_cst_dropdownlistÊäÈë[Backspace]¼üÊ±¿ÉÄÜµ¼ÖÂ±ÀÀ£µÄÎÊÌâ
+  - ä¿®å¤s_cst_dropdownlistè¾“å…¥[Backspace]é”®æ—¶å¯èƒ½å¯¼è‡´å´©æºƒçš„é—®é¢˜
 
 ## 2.0.5.1233(2018-10-17)
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.utility.parser]
-  - n_json KEYÇø·Ö´óĞ¡Ğ´
+  - n_json KEYåŒºåˆ†å¤§å°å†™
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw]
-  - ĞŞ¸´w_packager[Thread Extensions]ÒÀÀµ¶ÔÏóÈ±Ê§µÄÎÊÌâ
+  - ä¿®å¤w_packager[Thread Extensions]ä¾èµ–å¯¹è±¡ç¼ºå¤±çš„é—®é¢˜
 * [pfw]
-  - ĞŞ¸´w_packager[Camera Capture]ÒÀÀµ¶ÔÏóÈ±Ê§µÄÎÊÌâ
+  - ä¿®å¤w_packager[Camera Capture]ä¾èµ–å¯¹è±¡ç¼ºå¤±çš„é—®é¢˜
 * [pfw.utility.invoker]
-  - ĞŞ¸´n_cst_eventful»º´æ¿ÉÄÜÒıÆğµÄVM±ÀÀ£µÄÎÊÌâ
+  - ä¿®å¤n_cst_eventfulç¼“å­˜å¯èƒ½å¼•èµ·çš„VMå´©æºƒçš„é—®é¢˜
 * [pfw.ui.blink]
-  - ĞŞ¸´LoadFile¼ÓÔØzip×ÊÔ´Ê±ÒıÓÃ×ÊÔ´¿ÉÄÜ»áÊ§°ÜµÄÎÊÌâ
+  - ä¿®å¤LoadFileåŠ è½½zipèµ„æºæ—¶å¼•ç”¨èµ„æºå¯èƒ½ä¼šå¤±è´¥çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´´°¿Ú[MaxBox]ÎªfalseÊ±×î´ó»¯Ã»ÓĞ¸²¸ÇÈ«ÆÁµÄÎÊÌâ
+  - ä¿®å¤çª—å£[MaxBox]ä¸ºfalseæ—¶æœ€å¤§åŒ–æ²¡æœ‰è¦†ç›–å…¨å±çš„é—®é¢˜
 * [pfw.ui.blink]
-  - ĞŞ¸´ÖĞÎÄÎŞ·¨ÊäÈëµÄÎÊÌâ
+  - ä¿®å¤ä¸­æ–‡æ— æ³•è¾“å…¥çš„é—®é¢˜
 
 ## 2.0.4.1198(2018-09-18)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw]
-  - Ôö¼Ó×Ô¶¨Òå´ò°ü¹¤¾ß£¬¿ÉÒÔ¸ù¾İ×Ô¼ºµÄĞèÒª´ò°üÀà¿âµ½Ò»¸öPBLÖĞ£¨¼ûpfw.pbl::w_packager£©
+  - å¢åŠ è‡ªå®šä¹‰æ‰“åŒ…å·¥å…·ï¼Œå¯ä»¥æ ¹æ®è‡ªå·±çš„éœ€è¦æ‰“åŒ…ç±»åº“åˆ°ä¸€ä¸ªPBLä¸­ï¼ˆè§pfw.pbl::w_packagerï¼‰
 * [pfw.net.websocket]
-  - n_wsclientÔö¼Ó¸ü¶àPublish£¨Ö±½Ó·¢ËÍJSON/XML¶ÔÏó£©/Subscribe/UnsubscribeÖØÔØ
+  - n_wsclientå¢åŠ æ›´å¤šPublishï¼ˆç›´æ¥å‘é€JSON/XMLå¯¹è±¡ï¼‰/Subscribe/Unsubscribeé‡è½½
 * [pfw.net.websocket]
-  - MQTTÁ¬½Ó²ÎÊıÔö¼Ó[offlinePublish]ºÍ[offlineSize]²ÎÊı£¨¼ûpfw.pbl::w_test_websocket_mqtt£©
+  - MQTTè¿æ¥å‚æ•°å¢åŠ [offlinePublish]å’Œ[offlineSize]å‚æ•°ï¼ˆè§pfw.pbl::w_test_websocket_mqttï¼‰
 * [pfw.thread]
-  - Ö§³ÖÃ»ÓĞÈÎÎñ¶ÓÁĞÊ±Ò²ÄÜÔËĞĞÏß³Ì£¨of_Run£©£¬²¢ÇÒÔÊĞíÔÚÏß³ÌÔËĞĞÊ±¶¯Ì¬Ìí¼ÓÈÎÎñ
+  - æ”¯æŒæ²¡æœ‰ä»»åŠ¡é˜Ÿåˆ—æ—¶ä¹Ÿèƒ½è¿è¡Œçº¿ç¨‹ï¼ˆof_Runï¼‰ï¼Œå¹¶ä¸”å…è®¸åœ¨çº¿ç¨‹è¿è¡Œæ—¶åŠ¨æ€æ·»åŠ ä»»åŠ¡
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.net.websocket]
-  - ĞŞ¸´MQTTÖØÁ¬ÖØĞÂ¶©ÔÄÖ÷Ìâ°üº¬ÒÑÈ¡ÏûµÄÖ÷ÌâµÄÎÊÌâ
+  - ä¿®å¤MQTTé‡è¿é‡æ–°è®¢é˜…ä¸»é¢˜åŒ…å«å·²å–æ¶ˆçš„ä¸»é¢˜çš„é—®é¢˜
 
 ## 2.0.3.1163(2018-09-10)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.net.websocket]
-  - n_wsclientÔö¼ÓMQTTĞ­ÒéÖ§³Ö£¨mqtt://£¬mqtts:// for SSL£©£¬ĞèÒªBroker(MQTT·şÎñ£©Ö§³ÖWebSocketÁ¬½Ó£¨¼ûpfw.pbl::w_test_websocket_mqtt£©
-  - n_wsclientÔö¼Ó×Ô¶¯ÖØÁ¬»úÖÆ
-  - Ôö¼ÓSetAutoReconnectº¯Êı¿ªÆô×Ô¶¯ÖØÁ¬
-  - Ôö¼ÓIsReconnectingº¯ÊıÅĞ¶Ïµ±Ç°ÊÇ·ñÕıÔÚÖ´ĞĞ×Ô¶¯ÖØÁ¬
-  - OnOpenÊÂ¼şÔö¼Ó[reconnect]²ÎÊıÓÃÓÚÅĞ¶ÏÊÇ·ñÎªÖØĞÂÁ¬½Ó
-  - OnOpenÊÂ¼şÔö¼Ó[sessionPresent]²ÎÊıÓÃÓÚMQTTĞ­Òé
-  - n_wsmessageÔö¼ÓGetTopic/GetQoSº¯Êı£¨ÓÃÓÚMQTTĞ­Òé£©
+  - n_wsclientå¢åŠ MQTTåè®®æ”¯æŒï¼ˆmqtt://ï¼Œmqtts:// for SSLï¼‰ï¼Œéœ€è¦Broker(MQTTæœåŠ¡ï¼‰æ”¯æŒWebSocketè¿æ¥ï¼ˆè§pfw.pbl::w_test_websocket_mqttï¼‰
+  - n_wsclientå¢åŠ è‡ªåŠ¨é‡è¿æœºåˆ¶
+  - å¢åŠ SetAutoReconnectå‡½æ•°å¼€å¯è‡ªåŠ¨é‡è¿
+  - å¢åŠ IsReconnectingå‡½æ•°åˆ¤æ–­å½“å‰æ˜¯å¦æ­£åœ¨æ‰§è¡Œè‡ªåŠ¨é‡è¿
+  - OnOpenäº‹ä»¶å¢åŠ [reconnect]å‚æ•°ç”¨äºåˆ¤æ–­æ˜¯å¦ä¸ºé‡æ–°è¿æ¥
+  - OnOpenäº‹ä»¶å¢åŠ [sessionPresent]å‚æ•°ç”¨äºMQTTåè®®
+  - n_wsmessageå¢åŠ GetTopic/GetQoSå‡½æ•°ï¼ˆç”¨äºMQTTåè®®ï¼‰
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfw.utility]
-  - n_loggerÓÅ»¯Êä³ö¸ñÊ½
+  - n_loggerä¼˜åŒ–è¾“å‡ºæ ¼å¼
 
-### µ÷Õû
-
-* [pfw.ui.blink]
-  - Ä¬ÈÏ½ûÓÃDebugÊä³ö(Ê¹ÓÃSetDebugOutput(true)¿ªÆô)
-
-### ĞŞ¸´
+### è°ƒæ•´
 
 * [pfw.ui.blink]
-  - ĞŞ¸´n_blinkvalueº¯Êı·µ»ØÖµÉùÃ÷´íÎó
+  - é»˜è®¤ç¦ç”¨Debugè¾“å‡º(ä½¿ç”¨SetDebugOutput(true)å¼€å¯)
+
+### ä¿®å¤
+
 * [pfw.ui.blink]
-  - ĞŞ¸´n_blinkvalue::GetItemCountÊ¼ÖÕ·µ»Ø0µÄÎÊÌâ
+  - ä¿®å¤n_blinkvalueå‡½æ•°è¿”å›å€¼å£°æ˜é”™è¯¯
 * [pfw.ui.blink]
-  - ĞŞ¸´n_blinkvalue::GetItemBooleanÊ¼ÖÕ·µ»ØfalseµÄÎÊÌâ
+  - ä¿®å¤n_blinkvalue::GetItemCountå§‹ç»ˆè¿”å›0çš„é—®é¢˜
 * [pfw.ui.blink]
-  - ĞŞ¸´ÊäÈë·¨ÊäÈë²¿·İ×Ö·û¿ÉÄÜµ¼ÖÂ½¹µã±»ÇĞ»»µÄÎÊÌâ
+  - ä¿®å¤n_blinkvalue::GetItemBooleanå§‹ç»ˆè¿”å›falseçš„é—®é¢˜
+* [pfw.ui.blink]
+  - ä¿®å¤è¾“å…¥æ³•è¾“å…¥éƒ¨ä»½å­—ç¬¦å¯èƒ½å¯¼è‡´ç„¦ç‚¹è¢«åˆ‡æ¢çš„é—®é¢˜
 * [pfw.utility.zip]
-  - ĞŞ¸´ZipCompress/ZipUncompress¸ñÊ½Îªgzip/zlibÊ±Ê§°ÜµÄÎÊÌâ
+  - ä¿®å¤ZipCompress/ZipUncompressæ ¼å¼ä¸ºgzip/zlibæ—¶å¤±è´¥çš„é—®é¢˜
 * [pfw.utility.parser]
-  - ĞŞ¸´n_json±äÁ¿Ñ­»·ÒıÓÃÊ±GCÊÍ·Å¶ÔÏóµÄÎÊÌâ
+  - ä¿®å¤n_jsonå˜é‡å¾ªç¯å¼•ç”¨æ—¶GCé‡Šæ”¾å¯¹è±¡çš„é—®é¢˜
 * [pfw.net.http]
-  - ĞŞ¸´»Øµ÷ÊÂ¼ş²ÎÊı¿ÉÄÜ»á¸³ÖµÊ§°Ü¶øÒıÆğ¿Õ¶ÔÏóÒì³£µÄÎÊÌâ
+  - ä¿®å¤å›è°ƒäº‹ä»¶å‚æ•°å¯èƒ½ä¼šèµ‹å€¼å¤±è´¥è€Œå¼•èµ·ç©ºå¯¹è±¡å¼‚å¸¸çš„é—®é¢˜
 * [pfw.net.http]
-  - ĞŞ¸´ÉèÖÃx509 private keyÖ®ºó¿ÉÄÜ³öÏÖÊÍ·ÅÄÚ´æÒì³£µÄÎÊÌâ
+  - ä¿®å¤è®¾ç½®x509 private keyä¹‹åå¯èƒ½å‡ºç°é‡Šæ”¾å†…å­˜å¼‚å¸¸çš„é—®é¢˜
 * [pfw.thread.ext]
-  - n_cst_threading_task_sqlqueryĞŞ¸´¼ìË÷²ÎÊıÎªNULLÊ±¿ÉÄÜÊ§°ÜµÄÎÊÌâ
+  - n_cst_threading_task_sqlqueryä¿®å¤æ£€ç´¢å‚æ•°ä¸ºNULLæ—¶å¯èƒ½å¤±è´¥çš„é—®é¢˜
 
 ## 2.0.2.1073(2018-07-31)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.ui.blink]
-  - Ö§³ÖHigh DPI
+  - æ”¯æŒHigh DPI
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.ui.blink]
-  - ĞŞ¸´¿ª·¢Ä£Ê½ÏÂ¿ÉÄÜ³öÏÖ±ÀÀ£µÄÎÊÌâ
+  - ä¿®å¤å¼€å‘æ¨¡å¼ä¸‹å¯èƒ½å‡ºç°å´©æºƒçš„é—®é¢˜
 
 ## 2.0.1.1068(2018-07-30)
 
-´Ó2.0¿ªÊ¼±ØĞë³õÊ¼»¯ºó²ÅÄÜÊ¹ÓÃ
+ä»2.0å¼€å§‹å¿…é¡»åˆå§‹åŒ–åæ‰èƒ½ä½¿ç”¨
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.ui.blink]
-  - ¼¯³ÉblinkäÖÈ¾ÒıÇæ£¨MiniBlink£©£¬Ìá¹©ÓësciterÒ»ÖÂµÄ½»»¥·½Ê½
+  - é›†æˆblinkæ¸²æŸ“å¼•æ“ï¼ˆMiniBlinkï¼‰ï¼Œæä¾›ä¸sciterä¸€è‡´çš„äº¤äº’æ–¹å¼
 * [pfw.utility.devinfo]
-  - Ôö¼Óu_cameracapture£¨USBÉãÏñÍ·²¶»ñ¿Ø¼ş£¬Ö§³Ö¶àÉãÏñÍ·£¬¼ûpfw.pbl::w_test_camera_capture£©
+  - å¢åŠ u_cameracaptureï¼ˆUSBæ‘„åƒå¤´æ•è·æ§ä»¶ï¼Œæ”¯æŒå¤šæ‘„åƒå¤´ï¼Œè§pfw.pbl::w_test_camera_captureï¼‰
 * [pfw.net.ftp]
-  - Ôö¼Ón_ftpclient¶ÔÏó£¨¼ûpfw.pbl::w_test_ftpclient£©
+  - å¢åŠ n_ftpclientå¯¹è±¡ï¼ˆè§pfw.pbl::w_test_ftpclientï¼‰
 * [pfw.net.ftp]
-  - Ôö¼ÓFtpDownload/FtpUploadÈ«¾Ö¸¨Öúº¯Êı£¬º¯Êı¿ÉÄÜÓĞ¶à¸öÖØÔØ°æ±¾£¨·â×°µ÷ÓÃn_ftpclient£©
+  - å¢åŠ FtpDownload/FtpUploadå…¨å±€è¾…åŠ©å‡½æ•°ï¼Œå‡½æ•°å¯èƒ½æœ‰å¤šä¸ªé‡è½½ç‰ˆæœ¬ï¼ˆå°è£…è°ƒç”¨n_ftpclientï¼‰
 * [pfw.ui]
-  - Ôö¼Ó½ø¶ÈÌõ¿Ø¼ş£¨¼û£ºpfw.pbl::w_test_progressbar£©
+  - å¢åŠ è¿›åº¦æ¡æ§ä»¶ï¼ˆè§ï¼špfw.pbl::w_test_progressbarï¼‰
 * [pfw.utility]
-  - Ôö¼ÓGetPinyinFirstLetter»ñÈ¡ºº×ÖÆ´ÒôÊ××ÖÄ¸È«¾Öº¯Êı£¨GetPinyinFirstLettersÖ§³Ö¶àÒô×Ö×éºÏ£©
+  - å¢åŠ GetPinyinFirstLetterè·å–æ±‰å­—æ‹¼éŸ³é¦–å­—æ¯å…¨å±€å‡½æ•°ï¼ˆGetPinyinFirstLettersæ”¯æŒå¤šéŸ³å­—ç»„åˆï¼‰
 * [pfw.ui.sciter]
-  - n_sciterelementÔö¼ÓGetTagName/SetName/SetID/HasAttributeº¯Êı(GetTagNameµÈÓÚÔ­À´µÄGetNameº¯Êı£¬ÏÖÔÚµÄGetNameº¯Êı·µ»Ø"name"ÊôĞÔµÄÖµ)
+  - n_sciterelementå¢åŠ GetTagName/SetName/SetID/HasAttributeå‡½æ•°(GetTagNameç­‰äºåŸæ¥çš„GetNameå‡½æ•°ï¼Œç°åœ¨çš„GetNameå‡½æ•°è¿”å›"name"å±æ€§çš„å€¼)
 * [pfw.ui.sciter]
-  - u_sciter/n_sciterÔö¼ÓGetElementsByName/GetElementsByTagName/GetElementsByClassNameº¯Êı
+  - u_sciter/n_sciterå¢åŠ GetElementsByName/GetElementsByTagName/GetElementsByClassNameå‡½æ•°
 * [pfw.ui.sciter]
-  - n_scitervalueÔö¼ÓInvokeMethodº¯Êı
+  - n_scitervalueå¢åŠ InvokeMethodå‡½æ•°
 * [pfw.net.http]
-  - Ôö¼ÓHttpRequest/HttpGet/HttpPost/HttpDownload/HttpUploadÈ«¾Ö¸¨Öúº¯Êı£¬º¯Êı¿ÉÄÜÓĞ¶à¸öÖØÔØ°æ±¾£¨·â×°µ÷ÓÃn_httpclient£©
+  - å¢åŠ HttpRequest/HttpGet/HttpPost/HttpDownload/HttpUploadå…¨å±€è¾…åŠ©å‡½æ•°ï¼Œå‡½æ•°å¯èƒ½æœ‰å¤šä¸ªé‡è½½ç‰ˆæœ¬ï¼ˆå°è£…è°ƒç”¨n_httpclientï¼‰
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.ui]
-  - win32/painter¶ÔÏóÖØ¹¹ÎªÈ«¾Ö¶ÔÏó£¬ÓÉ³õÊ¼»¯º¯Êı³õÊ¼»¯£¨Enums.INIT_FLAG_ENABLE_UI£©
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: win32/painterå¯¹è±¡é‡æ„ä¸ºå…¨å±€å¯¹è±¡ï¼Œç”±åˆå§‹åŒ–å‡½æ•°åˆå§‹åŒ–ï¼ˆEnums.INIT_FLAG_ENABLE_UIï¼‰
 * [pfw.ui]
-  - ·ÏÆúOnThemeChangingÊÂ¼ş
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: åºŸå¼ƒOnThemeChangingäº‹ä»¶
 * [pfw.ui]
-  - n_cst_base_theme·ÏÆúof_UpdateBegin/of_UpdateEndº¯Êı
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: n_cst_base_themeåºŸå¼ƒof_UpdateBegin/of_UpdateEndå‡½æ•°
 * [pfw]
-  - w_test_static_mapÊ¹ÓÃ°Ù¶ÈµØÍ¼API
+  - w_test_static_mapä½¿ç”¨ç™¾åº¦åœ°å›¾API
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.utility.invoker]
-  - n_scriptinvoker::Init°ó¶¨¶ÔÏóº¯ÊıÊ±°üº¬Ë½ÓĞº¯Êı
+  - n_scriptinvoker::Initç»‘å®šå¯¹è±¡å‡½æ•°æ—¶åŒ…å«ç§æœ‰å‡½æ•°
 * [pfw.datawindow.services]
-  - ĞŞ¸´n_cst_dwsvc_columnexp»º´ædwo¿ÉÄÜÊ§Ğ§µÄÎÊÌâ
+  - ä¿®å¤n_cst_dwsvc_columnexpç¼“å­˜dwoå¯èƒ½å¤±æ•ˆçš„é—®é¢˜
 * [pfw.thread.ext]
-  - n_cst_threading_task_sqlqueryĞŞ¸´½»²æ±¨±íSQL»¹Ô­µÄÎÊÌâ
+  - n_cst_threading_task_sqlqueryä¿®å¤äº¤å‰æŠ¥è¡¨SQLè¿˜åŸçš„é—®é¢˜
 * [pfw.thread.ext]
-  - n_cst_threading_task_sqlqueryĞŞ¸´²éÑ¯²ÎÊı°üº¬Êı×éÊ±¿ÉÄÜ»áÒì³£µÄÎÊÌâ
+  - n_cst_threading_task_sqlqueryä¿®å¤æŸ¥è¯¢å‚æ•°åŒ…å«æ•°ç»„æ—¶å¯èƒ½ä¼šå¼‚å¸¸çš„é—®é¢˜
 * [pfw.datawindow.services]
-  - n_cst_dwsvc_columnsortĞŞ¸´±êÌâ¶ÔÏóÃû³ÆÖĞ¼ä´ø'_t'ÅÅĞò¹¦ÄÜÊ§Ğ§µÄÎÊÌâ
+  - n_cst_dwsvc_columnsortä¿®å¤æ ‡é¢˜å¯¹è±¡åç§°ä¸­é—´å¸¦'_t'æ’åºåŠŸèƒ½å¤±æ•ˆçš„é—®é¢˜
 * [pfw.utility.invoker]
-  - ĞŞ¸´¼¸´¦ÄÚ´æĞ¹Â¶µÄÎÊÌâ
+  - ä¿®å¤å‡ å¤„å†…å­˜æ³„éœ²çš„é—®é¢˜
 * [pfw.datawindow.services]
-  - ĞŞ¸´n_cst_dwsvc_columnexpºê±äÁ¿²¶»ñ½âÎöµÄĞ¡bug£¨Ôö¼Ó·Ö¸ô·ûÊıÁ¿£©
+  - ä¿®å¤n_cst_dwsvc_columnexpå®å˜é‡æ•è·è§£æçš„å°bugï¼ˆå¢åŠ åˆ†éš”ç¬¦æ•°é‡ï¼‰
 * [pfw.datawindow.services]
-  - ĞŞ¸´u_dw GRID·ç¸ñÊó±êµ¥»÷ÇĞ»»ĞĞÊ§°ÜÃ»ÓĞ¼ÌĞø´«µİClickedÊÂ¼şµÄÎÊÌâ
+  - ä¿®å¤u_dw GRIDé£æ ¼é¼ æ ‡å•å‡»åˆ‡æ¢è¡Œå¤±è´¥æ²¡æœ‰ç»§ç»­ä¼ é€’Clickedäº‹ä»¶çš„é—®é¢˜
 
 ## 1.2.4.822(2018-05-28)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.utility.invoker]
-  - Ôö¼Ón_cst_eventful¶ÔÏó£¨ÊÂ¼ş·Ö·¢Æ÷£¬¼ûpfw.pbl::w_test_eventful£©
+  - å¢åŠ n_cst_eventfulå¯¹è±¡ï¼ˆäº‹ä»¶åˆ†å‘å™¨ï¼Œè§pfw.pbl::w_test_eventfulï¼‰
 * [pfw.utility.regexp]
-  - RegExpFindÈ«¾Öº¯ÊıÔö¼Ó·Ö×éindexÖØÔØ°æ±¾
+  - RegExpFindå…¨å±€å‡½æ•°å¢åŠ åˆ†ç»„indexé‡è½½ç‰ˆæœ¬
 * [pfw.thread]
-  - ÖØ¹¹Ïß³ÌÊÂ¼ş·Ö·¢»úÖÆ£¨²ÉÓÃn_cst_eventful£©
-  - n_cst_threading/n_cst_threading_taskÔö¼Óof_On/of_Offº¯Êı¶©ÔÄÊÂ¼ş£¨¼ûpfw.pbl::w_test_thread£©
+  - é‡æ„çº¿ç¨‹äº‹ä»¶åˆ†å‘æœºåˆ¶ï¼ˆé‡‡ç”¨n_cst_eventfulï¼‰
+  - n_cst_threading/n_cst_threading_taskå¢åŠ of_On/of_Offå‡½æ•°è®¢é˜…äº‹ä»¶ï¼ˆè§pfw.pbl::w_test_threadï¼‰
 * [pfw.utility.invoker]
-  - n_scriptinvokerÔö¼ÓSetArgsº¯Êı£¨Í¨¹ıÊı×é´«µİ²ÎÊıÁĞ±í£©
+  - n_scriptinvokerå¢åŠ SetArgså‡½æ•°ï¼ˆé€šè¿‡æ•°ç»„ä¼ é€’å‚æ•°åˆ—è¡¨ï¼‰
 * [pfw.net.http.ext]
-  - n_cst_alipayÔö¼Ó#SignTypeÊôĞÔÖ§³ÖÖ¸¶¨Ç©ÃûËã·¨µÄÀàĞÍ£¨ÏÖÔÚĞÂµÄÖ§¸¶±¦Ó¦ÓÃ¿ªÊ¼²ÉÓÃRSA2£©
+  - n_cst_alipayå¢åŠ #SignTypeå±æ€§æ”¯æŒæŒ‡å®šç­¾åç®—æ³•çš„ç±»å‹ï¼ˆç°åœ¨æ–°çš„æ”¯ä»˜å®åº”ç”¨å¼€å§‹é‡‡ç”¨RSA2ï¼‰
 * [pfw.crypto]
-  - Ôö¼ÓHexEncode/HexDecodeÈ«¾Öº¯Êı£¨¶Ôblob½øĞĞ16½øÖÆ±à½âÂë£©
+  - å¢åŠ HexEncode/HexDecodeå…¨å±€å‡½æ•°ï¼ˆå¯¹blobè¿›è¡Œ16è¿›åˆ¶ç¼–è§£ç ï¼‰
 * [pfw.ui.objects]
-  - n_cst_splitcontainer/n_cst_splitcontainer_panelÔö¼Óof_GetWidth/of_GetHeightº¯Êı
+  - n_cst_splitcontainer/n_cst_splitcontainer_panelå¢åŠ of_GetWidth/of_GetHeightå‡½æ•°
 * [pfw.ui.objects]
-  - n_cst_splitcontainer_panelÔö¼Ó#FixedÊôĞÔºÍof_SetFixedº¯Êı£¬ÉèÖÃpanelÔÚÍÏ¶¯²ğ·ÖÌõÊ±¹Ì¶¨´óĞ¡£¨¼ûpfw.pbl::w_test_splitcontainer_complex£©
+  - n_cst_splitcontainer_panelå¢åŠ #Fixedå±æ€§å’Œof_SetFixedå‡½æ•°ï¼Œè®¾ç½®panelåœ¨æ‹–åŠ¨æ‹†åˆ†æ¡æ—¶å›ºå®šå¤§å°ï¼ˆè§pfw.pbl::w_test_splitcontainer_complexï¼‰
 * [pfw.ui.sciter.ext]
-  - n_cst_sciter_treeview_optionÔö¼Óof_IsPopulatedº¯Êı
+  - n_cst_sciter_treeview_optionå¢åŠ of_IsPopulatedå‡½æ•°
 * [pfw.ui.controls]
-  - s_cst_singlelineedit/s_cst_dropdownlistÖØĞ´[Default Text]¹¦ÄÜ£¨Ä¬ÈÏÌáÊ¾ÎÄ±¾£©
+  - s_cst_singlelineedit/s_cst_dropdownlisté‡å†™[Default Text]åŠŸèƒ½ï¼ˆé»˜è®¤æç¤ºæ–‡æœ¬ï¼‰
 * [pfw.datawindow.services]
-  - n_cst_dwsvc_dropdownsearchÖ§³Ö¶àÒô×Ö¼ìË÷£¬Ôö¼ÓDDSPYFirstLetterLikeÈ«¾Öº¯Êı
+  - n_cst_dwsvc_dropdownsearchæ”¯æŒå¤šéŸ³å­—æ£€ç´¢ï¼Œå¢åŠ DDSPYFirstLetterLikeå…¨å±€å‡½æ•°
 * [pfw.ui.controls]
-  - u_cst_tabpage/s_cst_tabpagewÔö¼ÓOnRepositionÊÂ¼ş
+  - u_cst_tabpage/s_cst_tabpagewå¢åŠ OnRepositionäº‹ä»¶
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfw.thread]
-  - n_cst_threading/n_cst_threading_taskÒÆ³ı#NotifyObjectÊôĞÔºÍof_SetNotifyObjectº¯Êı£¬Ô­OnThreadNotifyÍ¨ÖªÊÂ¼şÇë¶©ÔÄ£º"common-notify"
+  - n_cst_threading/n_cst_threading_taskç§»é™¤#NotifyObjectå±æ€§å’Œof_SetNotifyObjectå‡½æ•°ï¼ŒåŸOnThreadNotifyé€šçŸ¥äº‹ä»¶è¯·è®¢é˜…ï¼š"common-notify"
 * [pfw.thread]
-  - n_cst_threading/n_cst_threading_taskÒÆ³ıOnStarted/onStoppedÊÂ¼ş
+  - n_cst_threading/n_cst_threading_taskç§»é™¤OnStarted/onStoppedäº‹ä»¶
 * [pfw.thread]
-  - n_cst_threading_taskÒÆ³ıOnPreNotify/OnNotifiedÊÂ¼ş
+  - n_cst_threading_taskç§»é™¤OnPreNotify/OnNotifiedäº‹ä»¶
 * [pfw.thread]
-  - n_cst_threading_taskµÄ#TypeÊôĞÔ¸ÄÎªstringÀàĞÍ
+  - n_cst_threading_taskçš„#Typeå±æ€§æ”¹ä¸ºstringç±»å‹
 * [pfw.ui.controls]
-  - u_cst_splitcontainerÉ¾³ıOnSplitBarMovingÊÂ¼ş
+  - u_cst_splitcontaineråˆ é™¤OnSplitBarMovingäº‹ä»¶
 * [pfw.ui.controls]
-  - s_cst_singlelineedit/s_cst_dropdownlistÉ¾³ıof_GetText/of_IsDefaultTextº¯Êı£¨²»ÔÙĞèÒª£©
+  - s_cst_singlelineedit/s_cst_dropdownliståˆ é™¤of_GetText/of_IsDefaultTextå‡½æ•°ï¼ˆä¸å†éœ€è¦ï¼‰
 * [pfw.ui.controls]
-  - s_cst_editmask/s_cst_multilineÒÆ³ı[Default Text]¹¦ÄÜ£¨²»¼æÈİÕâÖÖ·ç¸ñ£©
+  - s_cst_editmask/s_cst_multilineç§»é™¤[Default Text]åŠŸèƒ½ï¼ˆä¸å…¼å®¹è¿™ç§é£æ ¼ï¼‰
 * [pfw.datawindow.services]
-  - É¾³ıDDSGetPYFirstLetterÈ«¾Öº¯Êı
+  - åˆ é™¤DDSGetPYFirstLetterå…¨å±€å‡½æ•°
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.net.http]
-  - ÇëÇóÊ§°ÜÊ±¿ÉÄÜ³öÏÖ»º³åÇøÒç³öµÄÎÊÌâ
+  - è¯·æ±‚å¤±è´¥æ—¶å¯èƒ½å‡ºç°ç¼“å†²åŒºæº¢å‡ºçš„é—®é¢˜
 * [pfw.net.http]
-  - ĞŞ¸´¶ÔSSL 2.0µÄÖ§³Ö£¨²»½¨ÒéÊ¹ÓÃ£¡£©
+  - ä¿®å¤å¯¹SSL 2.0çš„æ”¯æŒï¼ˆä¸å»ºè®®ä½¿ç”¨ï¼ï¼‰
 * [pfw.thread.ext]
-  - ĞŞ¸´n_cst_thread_task_sqlupdate¶Ô×ÔÔöÁĞµÄÅĞ¶Ï
+  - ä¿®å¤n_cst_thread_task_sqlupdateå¯¹è‡ªå¢åˆ—çš„åˆ¤æ–­
 * [pfw.utility.compiler]
-  - ĞŞ¸´ÔÚÁ¬Ğøµ÷ÓÃEvaluateÖ´ĞĞ²»Í¬µÄ½Å±¾Ê±Ã»ÓĞ¸üĞÂ»º´æµÄÎÊÌâ
+  - ä¿®å¤åœ¨è¿ç»­è°ƒç”¨Evaluateæ‰§è¡Œä¸åŒçš„è„šæœ¬æ—¶æ²¡æœ‰æ›´æ–°ç¼“å­˜çš„é—®é¢˜
 
 ## 1.2.3.659(2018-04-09)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.ui.sciter]
-  - n_sciter::ClosePopupº¯ÊıÔö¼ÓÎŞ²ÎÊıÖØÔØ°æ±¾
+  - n_sciter::ClosePopupå‡½æ•°å¢åŠ æ— å‚æ•°é‡è½½ç‰ˆæœ¬
 * [pfw.ui.sciter]
-  - n_sciter¼ÓÔØµÄÒ³Ãæ[view]¶ÔÏóÔö¼ÓclosePopup([exitCode])º¯Êı£¬ÓÃÓÚÍË³öPopupÄ£Ê½
+  - n_sciteråŠ è½½çš„é¡µé¢[view]å¯¹è±¡å¢åŠ closePopup([exitCode])å‡½æ•°ï¼Œç”¨äºé€€å‡ºPopupæ¨¡å¼
 * [pfw]
-  - Ôö¼Ów_test_sciter_dropdowncalendarÊ¾Àı
+  - å¢åŠ w_test_sciter_dropdowncalendarç¤ºä¾‹
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.ui.sciter]
-  - ĞŞ¸´n_sciter::GetMinWidth/GetMinHeightÊ¼ÖÕ·µ»Ø0µÄÎÊÌâ
+  - ä¿®å¤n_sciter::GetMinWidth/GetMinHeightå§‹ç»ˆè¿”å›0çš„é—®é¢˜
 
 ## 1.2.3.654(2018-04-08)
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.ui]
-  - ĞŞ¸´IconFontĞ­ÒéÖ¸¶¨[color]²ÎÊıÎŞĞ§µÄBUG
+  - ä¿®å¤IconFontåè®®æŒ‡å®š[color]å‚æ•°æ— æ•ˆçš„BUG
 * [pfw.utils.zip]
-  - ĞŞ¸´n_unzip::UnzipFile/UnzipFolder²ÎÊıÎªindexÊ±½âÑ¹¿ÉÄÜÊ§°ÜµÄÎÊÌâ
+  - ä¿®å¤n_unzip::UnzipFile/UnzipFolderå‚æ•°ä¸ºindexæ—¶è§£å‹å¯èƒ½å¤±è´¥çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´ÈÎÎñÀ¸²»ÔÚµ×²¿Ê±´°¿Ú×î´ó»¯×ù±ê²»ÕıÈ·µÄÎÊÌâ£¨Win10£©
+  - ä¿®å¤ä»»åŠ¡æ ä¸åœ¨åº•éƒ¨æ—¶çª—å£æœ€å¤§åŒ–åº§æ ‡ä¸æ­£ç¡®çš„é—®é¢˜ï¼ˆWin10ï¼‰
 
 ## 1.2.3.650(2018-04-04)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw.datawindow.services]
-  - n_cst_dwsvc_columnexpÔö¼Óof_SetCacheableº¯Êı£¬¿ªÆô±í´ïÊ¾»º´æÒÔÌá¸ßĞÔÄÜ
+  - n_cst_dwsvc_columnexpå¢åŠ of_SetCacheableå‡½æ•°ï¼Œå¼€å¯è¡¨è¾¾ç¤ºç¼“å­˜ä»¥æé«˜æ€§èƒ½
 * [pfw.thread.ext]
-  - n_cst_threading_task_sqlqueryÔö¼Ó#PageCountingÊôĞÔºÍof_SetPageCountingº¯ÊıÓÃÓÚÉèÖÃ·ÖÒ³¼ÆËãµÄ¿ª¹Ø£¨Ä¬ÈÏ¿ªÆô£¬Ö»ÓĞ¿ªÆôÖ®ºó²ÅÄÜ»ñÈ¡of_GetPageCount/of_GetRecordCount£©
+  - n_cst_threading_task_sqlqueryå¢åŠ #PageCountingå±æ€§å’Œof_SetPageCountingå‡½æ•°ç”¨äºè®¾ç½®åˆ†é¡µè®¡ç®—çš„å¼€å…³ï¼ˆé»˜è®¤å¼€å¯ï¼Œåªæœ‰å¼€å¯ä¹‹åæ‰èƒ½è·å–of_GetPageCount/of_GetRecordCountï¼‰
 * [pfw.net.http]
-  - n_httputility::UrlEncode/UrlDecodeÖ§³Ö¸ü¶à±àÂë
+  - n_httputility::UrlEncode/UrlDecodeæ”¯æŒæ›´å¤šç¼–ç 
 * [pfw.net.http]
-  - GetDataString/GetDataJSON/GetDataXMLÔö¼Óencoding²ÎÊıÖØÔØ
+  - GetDataString/GetDataJSON/GetDataXMLå¢åŠ encodingå‚æ•°é‡è½½
 * [pfw.thread]
-  - Ôö¼Óof_GetIDº¯Êı»ñÈ¡¹¤×÷Ïß³ÌµÄID£¨Ô­of_GetID¸üÃûÎªof_GetSID£©
+  - å¢åŠ of_GetIDå‡½æ•°è·å–å·¥ä½œçº¿ç¨‹çš„IDï¼ˆåŸof_GetIDæ›´åä¸ºof_GetSIDï¼‰
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pft.net.http]
-  - ²»ÔÙ×ªÒåURL×Ö·û£¬ÓÉÓÃ»§×ªÒå
+  - ä¸å†è½¬ä¹‰URLå­—ç¬¦ï¼Œç”±ç”¨æˆ·è½¬ä¹‰
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw]
-  - ĞŞ¸´×ÊÔ´¼ÓÔØzip[path]·½Ê½´øÖĞÎÄÃû³ÆÊ±¿ÉÄÜ»áÊ§°ÜµÄÎÊÌâ
+  - ä¿®å¤èµ„æºåŠ è½½zip[path]æ–¹å¼å¸¦ä¸­æ–‡åç§°æ—¶å¯èƒ½ä¼šå¤±è´¥çš„é—®é¢˜
 * [pfw.utility.zip]
-  - ZipCompress/ZipUncompress×Ö·û´®Ñ¹Ëõ²»Í¬Æ½Ì¨½»»»Êı¾İÊ±ÖĞÎÄ¿ÉÄÜ³öÏÖÂÒÂëµÄÎÊÌâ£¨Ö®Ç°°æ±¾Ñ¹ËõµÄ×Ö·û´®Èç¹û´øÖĞÎÄ¿ÉÄÜ³öÏÖÂÒÂë£¬ĞèÒªÖØĞÂÑ¹Ëõ£©
+  - ZipCompress/ZipUncompresså­—ç¬¦ä¸²å‹ç¼©ä¸åŒå¹³å°äº¤æ¢æ•°æ®æ—¶ä¸­æ–‡å¯èƒ½å‡ºç°ä¹±ç çš„é—®é¢˜ï¼ˆä¹‹å‰ç‰ˆæœ¬å‹ç¼©çš„å­—ç¬¦ä¸²å¦‚æœå¸¦ä¸­æ–‡å¯èƒ½å‡ºç°ä¹±ç ï¼Œéœ€è¦é‡æ–°å‹ç¼©ï¼‰
 * [pfw]
-  - ĞŞ¸´ÔÚÄ³Ğ©¿Ø¼şÉÏÊ¹ÓÃÊó±ê¹ö¶¯Ê±¿ÉÄÜ»áÏİÈëËÀÑ­»·µÄÎÊÌâ£¨ÈçÄ³Ğ©OLE¿Ø¼ş£©
+  - ä¿®å¤åœ¨æŸäº›æ§ä»¶ä¸Šä½¿ç”¨é¼ æ ‡æ»šåŠ¨æ—¶å¯èƒ½ä¼šé™·å…¥æ­»å¾ªç¯çš„é—®é¢˜ï¼ˆå¦‚æŸäº›OLEæ§ä»¶ï¼‰
 * [pfw.ui.sciter.ext]
-  - u_cst_sciter_treeviewÑ¡ÔñoptionÊ±²»¹ö¶¯µ½ÊÓÍ¼µÄÎÊÌâ
+  - u_cst_sciter_treeviewé€‰æ‹©optionæ—¶ä¸æ»šåŠ¨åˆ°è§†å›¾çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´u_cst_tabcontrol¸¡¶¯´°¿ÚµÚ¶ş´ÎÏÔÊ¾Ê±Ò³Ãæ´óĞ¡¼ÆËã²»ÕıÈ·µÄÎÊÌâ
+  - ä¿®å¤u_cst_tabcontrolæµ®åŠ¨çª—å£ç¬¬äºŒæ¬¡æ˜¾ç¤ºæ—¶é¡µé¢å¤§å°è®¡ç®—ä¸æ­£ç¡®çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´ÈÎÎñÀ¸²»ÔÚµ×²¿Ê±´°¿Ú×î´ó»¯×ù±ê²»ÕıÈ·µÄÎÊÌâ
+  - ä¿®å¤ä»»åŠ¡æ ä¸åœ¨åº•éƒ¨æ—¶çª—å£æœ€å¤§åŒ–åº§æ ‡ä¸æ­£ç¡®çš„é—®é¢˜
 
 ## 1.2.2.598(2018-03-14)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfw]
-  - Ö§³ÖPBÏà¶ÔÂ·¾¶×ÊÔ´±àÒëºó´ÓEXE¼ÓÔØ£¨¼æÈİPBÔ­À´µÄ×ÊÔ´Ê¹ÓÃ·½Ê½£©
+  - æ”¯æŒPBç›¸å¯¹è·¯å¾„èµ„æºç¼–è¯‘åä»EXEåŠ è½½ï¼ˆå…¼å®¹PBåŸæ¥çš„èµ„æºä½¿ç”¨æ–¹å¼ï¼‰
 * [pfw.utility.barcode]
-  - Ôö¼ÓEANX_CHK,UPCA_CHK,UPCE_CHKÌõÂëÀàĞÍ
+  - å¢åŠ EANX_CHK,UPCA_CHK,UPCE_CHKæ¡ç ç±»å‹
 * [pfw.datawindow.services]
-  - n_cst_dwsvc_columnsort¶àÁĞÅÅĞòÊ±ÏÔÊ¾Ë³ĞòºÅ
+  - n_cst_dwsvc_columnsortå¤šåˆ—æ’åºæ—¶æ˜¾ç¤ºé¡ºåºå·
 * [pfw.crypto]
-  - n_cryptoÔö¼ÓÖ§³ÖblobÀàĞÍµÄkeyºÍiv²ÎÊı
+  - n_cryptoå¢åŠ æ”¯æŒblobç±»å‹çš„keyå’Œivå‚æ•°
 * [pfw.utility]
-  - n_filescanner±éÀúÎÄ¼şºÍÄ¿Â¼£¨¼ûpfw.pbl::w_test_filescanner£©
+  - n_filescanneréå†æ–‡ä»¶å’Œç›®å½•ï¼ˆè§pfw.pbl::w_test_filescannerï¼‰
 * [pfw.utility.devinfo]
-  - n_devinfoÔö¼Ó»ñÈ¡±¾»úIPµØÖ·µÄ¹¦ÄÜ£¨¼ûpfw.pbl::w_test_devinfo£©
+  - n_devinfoå¢åŠ è·å–æœ¬æœºIPåœ°å€çš„åŠŸèƒ½ï¼ˆè§pfw.pbl::w_test_devinfoï¼‰
 * [pfw.net.http]
-  - n_httpclient::UploadFileÔö¼Óparams²ÎÊı£¨Õë¶ÔMultiPart·½Ê½£¬¸ñÊ½Îªjson:{"name":"name","filename":"filename"}£©
+  - n_httpclient::UploadFileå¢åŠ paramså‚æ•°ï¼ˆé’ˆå¯¹MultiPartæ–¹å¼ï¼Œæ ¼å¼ä¸ºjson:{"name":"name","filename":"filename"}ï¼‰
 
-### µ÷Õû
+### è°ƒæ•´
 
-  - ÖØÃüÁîPBL
+  - é‡å‘½ä»¤PBL
 
-### ÍêÉÆ
+### å®Œå–„
 
 * [pfw.datawindow.services]
-  - n_cst_dwsvc_columnexp¸Ä½ø×Ô¶¯¹ØÁªÁĞºÍÕ¹¿ª±äÁ¿µÄËã·¨
+  - n_cst_dwsvc_columnexpæ”¹è¿›è‡ªåŠ¨å…³è”åˆ—å’Œå±•å¼€å˜é‡çš„ç®—æ³•
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw.utility.barcode]
-  - ĞŞ¸´²¿·ÖÀàĞÍµÄÌõÂëĞı×ªÏÔÊ¾²»ÕıÈ·µÄÎÊÌâ
+  - ä¿®å¤éƒ¨åˆ†ç±»å‹çš„æ¡ç æ—‹è½¬æ˜¾ç¤ºä¸æ­£ç¡®çš„é—®é¢˜
 * [pfw.ui.controls]
-  - ĞŞ¸´s_cst_datawindow Border=falseÊ±²»ÏÔÊ¾±êÌâÀ¸µÄÎÊÌâ
+  - ä¿®å¤s_cst_datawindow Border=falseæ—¶ä¸æ˜¾ç¤ºæ ‡é¢˜æ çš„é—®é¢˜
 * [pfw]
-  - ĞŞ¸´sciter.dllÒÀÀµÎÊÌâ£¨Ã»Ê¹ÓÃSciter¿Ø¼şÊ±²»ĞèÒª¸½´ø¸ÃdllºÍpbl£©
+  - ä¿®å¤sciter.dllä¾èµ–é—®é¢˜ï¼ˆæ²¡ä½¿ç”¨Sciteræ§ä»¶æ—¶ä¸éœ€è¦é™„å¸¦è¯¥dllå’Œpblï¼‰
 * [pfw]
-  - ĞŞ¸´´ÓEXE¼ÓÔØ×ÊÔ´Ê±¿ÉÄÜ»áÊ§°ÜµÄÎÊÌâ£¨pbrĞ­Òé£©
+  - ä¿®å¤ä»EXEåŠ è½½èµ„æºæ—¶å¯èƒ½ä¼šå¤±è´¥çš„é—®é¢˜ï¼ˆpbråè®®ï¼‰
 * [pfw.utility]
-  - ĞŞ¸´Sprintf²ÎÊı¶ÔÆë·ûºÅ½âÎöµÄBUG
+  - ä¿®å¤Sprintfå‚æ•°å¯¹é½ç¬¦å·è§£æçš„BUG
 * [pfw.demos]
-  - ĞŞ¸´n_cst_sciter_traynotification»»ĞĞ·ûÏÔÊ¾µÄÎÊÌâ
+  - ä¿®å¤n_cst_sciter_traynotificationæ¢è¡Œç¬¦æ˜¾ç¤ºçš„é—®é¢˜
 
 ## 1.2.1.455(2018-01-22)
 
-### ĞÂÔö
+### æ–°å¢
 
 * [pfwUI]
-  - Ôö¼Ó¶ÔÖ§³ÖsvgºÍicon-fontµÄÖ§³Ö£¨¼ûpfw.pbl::w_test_svg/w_test_iconfont£©
-> *** ¼æÈİĞÔÌáÊ¾ ***
-* [¶ÔÏó,pfwBarcode]
-  - Ôö¼Ón_barcode¶ÔÏó£¬Ö§³Ö¸÷ÖÖÒ»Î¬Âë£¨¼ûpfw.pbl::w_test_barcode£©
-* [¶ÔÏó,pfwBarcode]
-  - Ôö¼Ón_qrcode¶ÔÏó£¬×¨ÃÅÎªQR¶şÎ¬ÂëÓÅ»¯£¨¼ûpfw.pbl::w_test_qrcode£©
-* [·ç¸ñ,pfwUIControls]
-  - n_cst_tabcontrol_themeÔö¼ÓTBS_OFFICE2013·ç¸ñ
-* [¶ÔÏó,pfwDemos]
-  - Ôö¼Ón_cst_sciter_traynotificationÍĞÅÌÌáÊ¾Ê¾Àı£¨¼ûpfwDemos.pbl::w_main£©
+  - :warning: å¢åŠ å¯¹æ”¯æŒsvgå’Œicon-fontçš„æ”¯æŒï¼ˆè§pfw.pbl::w_test_svg/w_test_iconfontï¼‰
+* [å¯¹è±¡,pfwBarcode]
+  - å¢åŠ n_barcodeå¯¹è±¡ï¼Œæ”¯æŒå„ç§ä¸€ç»´ç ï¼ˆè§pfw.pbl::w_test_barcodeï¼‰
+* [å¯¹è±¡,pfwBarcode]
+  - å¢åŠ n_qrcodeå¯¹è±¡ï¼Œä¸“é—¨ä¸ºQRäºŒç»´ç ä¼˜åŒ–ï¼ˆè§pfw.pbl::w_test_qrcodeï¼‰
+* [é£æ ¼,pfwUIControls]
+  - n_cst_tabcontrol_themeå¢åŠ TBS_OFFICE2013é£æ ¼
+* [å¯¹è±¡,pfwDemos]
+  - å¢åŠ n_cst_sciter_traynotificationæ‰˜ç›˜æç¤ºç¤ºä¾‹ï¼ˆè§pfwDemos.pbl::w_mainï¼‰
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfwThread]
-  - ĞŞ¸´ÓÉ1.2.0.1211°æ±¾´øÀ´µÄÏß³ÌÈÎÎñ½áÊøÊ±µÄÍ¬²½ĞÅºÅµÄBUG
+  - ä¿®å¤ç”±1.2.0.1211ç‰ˆæœ¬å¸¦æ¥çš„çº¿ç¨‹ä»»åŠ¡ç»“æŸæ—¶çš„åŒæ­¥ä¿¡å·çš„BUG
 * [pfwUtils]
-  - ĞŞ¸´n_logger::ConnectToConsole¿ÉÄÜ»áÊ§°ÜµÄÎÊÌâ
+  - ä¿®å¤n_logger::ConnectToConsoleå¯èƒ½ä¼šå¤±è´¥çš„é—®é¢˜
 * [pfwUtils]
-  - ĞŞ¸´n_logger¿ÉÄÜ»áÔì³ÉÒì³£µÄÎÊÌâ
+  - ä¿®å¤n_loggerå¯èƒ½ä¼šé€ æˆå¼‚å¸¸çš„é—®é¢˜
 * [pfwUIControls]
-  - ĞŞ¸´AnimatedImageÖ»ÓĞÒ»Ö¡Ê±µ¼ÖÂ²¼¾Ö¼ÆËã´íÎóµÄÎÊÌâ
+  - ä¿®å¤AnimatedImageåªæœ‰ä¸€å¸§æ—¶å¯¼è‡´å¸ƒå±€è®¡ç®—é”™è¯¯çš„é—®é¢˜
 * [pfwUIControls]
-  - ĞŞ¸´²¿·Ö¿Ø¼şOnPreConstructorÊÂ¼şÖ´ĞĞÁ½´ÎµÄÎÊÌâ
+  - ä¿®å¤éƒ¨åˆ†æ§ä»¶OnPreConstructoräº‹ä»¶æ‰§è¡Œä¸¤æ¬¡çš„é—®é¢˜
 
 ## 1.2.0.1214(2017-12-14)
 
-### ĞÂÔö
+### æ–°å¢
 
-* [ÊÂ¼ş,pfwUIControls]
-  - u_cst_tabpage/u_cst_tabpagewÔö¼ÓOnGetFloatMinSizeÊÂ¼ş£¬ÓÃÓÚÉèÖÃ¸¡¶¯´°¿ÚµÄ×îĞ¡´óĞ¡
+* [äº‹ä»¶,pfwUIControls]
+  - u_cst_tabpage/u_cst_tabpagewå¢åŠ OnGetFloatMinSizeäº‹ä»¶ï¼Œç”¨äºè®¾ç½®æµ®åŠ¨çª—å£çš„æœ€å°å¤§å°
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfwUIControls]
-  - ĞŞ¸´u_cst_tabcontrol±êÇ©¸¡¶¯ºóÔÙÍ£¿¿»ØÈ¥Ö®ºó£¬µ±Ö÷´°¿Ú×îĞ¡»¯ÔÙ»¹Ô­Ê±±êÇ©´°¿ÚÒ²ÏÔÊ¾³öÀ´µÄÎÊÌâ
+  - ä¿®å¤u_cst_tabcontrolæ ‡ç­¾æµ®åŠ¨åå†åœé å›å»ä¹‹åï¼Œå½“ä¸»çª—å£æœ€å°åŒ–å†è¿˜åŸæ—¶æ ‡ç­¾çª—å£ä¹Ÿæ˜¾ç¤ºå‡ºæ¥çš„é—®é¢˜
 * [pfwThread]
-  - ĞŞ¸´ÓÉ1.2.0.1211°æ±¾´øÀ´µÄÏß³ÌÊÍ·ÅµÄBUG
+  - ä¿®å¤ç”±1.2.0.1211ç‰ˆæœ¬å¸¦æ¥çš„çº¿ç¨‹é‡Šæ”¾çš„BUG
 
 ## 1.2.0.1211(2017-12-11)
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfwDWServices]
-  - n_cst_dwsvc_columnsortÔö¼Ó¶ÔcomputeÁĞµÄÖ§³Ö£¬Í¬Ê±ÓÅ»¯ÁË¼ıÍ··ûºÅ
+  - n_cst_dwsvc_columnsortå¢åŠ å¯¹computeåˆ—çš„æ”¯æŒï¼ŒåŒæ—¶ä¼˜åŒ–äº†ç®­å¤´ç¬¦å·
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw]
-  - ĞŞ¸´XP¼æÈİĞÔÎÊÌâ£¨±¨GetThreadIDÎŞ·¨¶¨Î»µ½º¯Êı£©
+  - ä¿®å¤XPå…¼å®¹æ€§é—®é¢˜ï¼ˆæŠ¥GetThreadIDæ— æ³•å®šä½åˆ°å‡½æ•°ï¼‰
 * [pfwHttp]
-  - ĞŞ¸´httpclient·¢ËÍxml¶ÔÏóÊ±Ê¹ÓÃÁËjsonµÄcontent-typeµ¼ÖÂµÄ´íÎó
+  - ä¿®å¤httpclientå‘é€xmlå¯¹è±¡æ—¶ä½¿ç”¨äº†jsonçš„content-typeå¯¼è‡´çš„é”™è¯¯
 * [pfwDWServices]
-  - ĞŞ¸´n_cst_dwsvc_columnsortÅÅĞò²»ÕıÈ·µÄBUG
+  - ä¿®å¤n_cst_dwsvc_columnsortæ’åºä¸æ­£ç¡®çš„BUG
 
 ## 1.2.0.1204(2017-12-04)
 
-### ĞÂÔö
+### æ–°å¢
 
-* [ÌØĞÔ,pfwSciter]
-  - PBÓëSciter´«Öµ²ÉÓÃany£¬ÎŞ·ìÓëtiscript½»»¥£¨²»ÔÙÒªÇóÊ¹ÓÃn_scitervalue·â×°PBÖµ£¬ÓÉPFW×Ô¶¯Æ¥ÅäÏàÓ¦µÄtisÖµ£¬Í¬Ê±¼æÈİn_scitervalue´«Öµ£©
-> *** ¼æÈİĞÔÌáÊ¾ ***
-* [ÌØĞÔ,pfwHttp]
-  - n_httpclientÔö¼ÓÊı¾İ´«Êä»Øµ÷ÊÂ¼şOnTransData£¨·µ»Ø1È¡Ïû´«Êä£©£¬ÓÉRequest/DownloadFile/UploadFileº¯ÊıµÄ[transcallback]¿ªÆô
-* [¿Ø¼ş,pfwUIControls]
-  - Ôö¼Ó±ê×¼¿Ø¼şs_cst_statictext
-* [¶ÔÏó,pfwSciter]
-  - Ôö¼Ón_scitervm¶ÔÏó£¬ÓÃÓÚ¼ÓÔØÖ´ĞĞtis½Å±¾
-* [º¯Êı,pfwSciterExt]
-  - n_cst_sciter_treeview_optionÔö¼Óof_FindChildByTag/of_GetChildrenº¯Êı
-* [º¯Êı,pfwParser]
-  - n_jsonÔö¼ÓIsObject/IsArray/MakeObject/MakeArray/RemoveAllº¯Êı
-* [º¯Êı,pfwSciter]
-  - n_scitervalueÔö¼ÓIsObject/IsArray/MakeObject/MakeArray/RemoveAllº¯Êı
-* [º¯Êı,pfwHttp]
-  - n_httpclientÔö¼ÓDownloadFile/UploadFileº¯Êı
-* [º¯Êı,pfwRegExp]
-  - n_regexpÔö¼ÓVerifyº¯ÊıÓÃÓÚĞ£ÑéÕıÔò±í´ïÊ¾£¬Í¬Ê±Ôö¼ÓRegExpVerifyÈ«¾Öº¯Êı
+* [ç‰¹æ€§,pfwSciter]
+  - :warning: PBä¸Sciterä¼ å€¼é‡‡ç”¨anyï¼Œæ— ç¼ä¸tiscriptäº¤äº’ï¼ˆä¸å†è¦æ±‚ä½¿ç”¨n_scitervalueå°è£…PBå€¼ï¼Œç”±PFWè‡ªåŠ¨åŒ¹é…ç›¸åº”çš„tiså€¼ï¼ŒåŒæ—¶å…¼å®¹n_scitervalueä¼ å€¼ï¼‰
+* [ç‰¹æ€§,pfwHttp]
+  - n_httpclientå¢åŠ æ•°æ®ä¼ è¾“å›è°ƒäº‹ä»¶OnTransDataï¼ˆè¿”å›1å–æ¶ˆä¼ è¾“ï¼‰ï¼Œç”±Request/DownloadFile/UploadFileå‡½æ•°çš„[transcallback]å¼€å¯
+* [æ§ä»¶,pfwUIControls]
+  - å¢åŠ æ ‡å‡†æ§ä»¶s_cst_statictext
+* [å¯¹è±¡,pfwSciter]
+  - å¢åŠ n_scitervmå¯¹è±¡ï¼Œç”¨äºåŠ è½½æ‰§è¡Œtisè„šæœ¬
+* [å‡½æ•°,pfwSciterExt]
+  - n_cst_sciter_treeview_optionå¢åŠ of_FindChildByTag/of_GetChildrenå‡½æ•°
+* [å‡½æ•°,pfwParser]
+  - n_jsonå¢åŠ IsObject/IsArray/MakeObject/MakeArray/RemoveAllå‡½æ•°
+* [å‡½æ•°,pfwSciter]
+  - n_scitervalueå¢åŠ IsObject/IsArray/MakeObject/MakeArray/RemoveAllå‡½æ•°
+* [å‡½æ•°,pfwHttp]
+  - n_httpclientå¢åŠ DownloadFile/UploadFileå‡½æ•°
+* [å‡½æ•°,pfwRegExp]
+  - n_regexpå¢åŠ Verifyå‡½æ•°ç”¨äºæ ¡éªŒæ­£åˆ™è¡¨è¾¾ç¤ºï¼ŒåŒæ—¶å¢åŠ RegExpVerifyå…¨å±€å‡½æ•°
 
-### µ÷Õû
+### è°ƒæ•´
 
-* [ÌØĞÔ,pfwUIControls]
-u_cst_tabcontrol.of_Dockº¯Êı²»ÔÙÏú»Ù¸¡¶¯´°¿Ú£¬Ö»ÓĞ±êÇ©±»ÒÆ³ıÊ±²ÅÏú»Ù£¬±ÜÃâÄ³Ğ©ÌØ¶¨Çé¿öÏÂÏú»Ù¸¡¶¯´°¿ÚÒıÆğµÄÒì³£
+* [ç‰¹æ€§,pfwUIControls]
+u_cst_tabcontrol.of_Dockå‡½æ•°ä¸å†é”€æ¯æµ®åŠ¨çª—å£ï¼Œåªæœ‰æ ‡ç­¾è¢«ç§»é™¤æ—¶æ‰é”€æ¯ï¼Œé¿å…æŸäº›ç‰¹å®šæƒ…å†µä¸‹é”€æ¯æµ®åŠ¨çª—å£å¼•èµ·çš„å¼‚å¸¸
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
-* [¿Ø¼ş,pfwUIControlsExt]
-  - MessageBoxExÓÅ»¯´°¿Ú´óĞ¡ÏŞÖÆ
+* [æ§ä»¶,pfwUIControlsExt]
+  - MessageBoxExä¼˜åŒ–çª—å£å¤§å°é™åˆ¶
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfwZip]
-  - ĞŞ¸´½âÑ¹¼ÓÃÜµÄzipÎÄ¼şÊ±¿¨ËÀµÄÎÊÌâ
+  - ä¿®å¤è§£å‹åŠ å¯†çš„zipæ–‡ä»¶æ—¶å¡æ­»çš„é—®é¢˜
 * [pfwDWServices]
-  - ĞŞ¸´DDSGetPYFirstLetterÖĞÓ¢»ìºÏÈ¡Öµ²»ÕıÈ·µÄBUG
+  - ä¿®å¤DDSGetPYFirstLetterä¸­è‹±æ··åˆå–å€¼ä¸æ­£ç¡®çš„BUG
 * [pfwUtils]
-  - ¸ÄÉÆÓÉPBVMµÄBUGµ¼ÖÂµ÷ÓÃn_logger±ä²Îº¯ÊıÊ±¿ÉÄÜ»áÒì³£µÄÎÊÌâ
+  - æ”¹å–„ç”±PBVMçš„BUGå¯¼è‡´è°ƒç”¨n_loggerå˜å‚å‡½æ•°æ—¶å¯èƒ½ä¼šå¼‚å¸¸çš„é—®é¢˜
 * [pfwInvoker]
-  - ¸ÄÉÆÓÉPBVMµÄBUGµ¼ÖÂµ÷ÓÃn_objectinvoker±ä²Îº¯ÊıÊ±¿ÉÄÜ»áÒì³£µÄÎÊÌâ
+  - æ”¹å–„ç”±PBVMçš„BUGå¯¼è‡´è°ƒç”¨n_objectinvokerå˜å‚å‡½æ•°æ—¶å¯èƒ½ä¼šå¼‚å¸¸çš„é—®é¢˜
 * [pfwUIControls]
-  - s_cst_window popup/child·ç¸ñµÄ´°¿Ú×îĞ¡»¯ºóÏµÍ³²Ëµ¥ÏÔÊ¾ÎÊÌâ
+  - s_cst_window popup/childé£æ ¼çš„çª—å£æœ€å°åŒ–åç³»ç»Ÿèœå•æ˜¾ç¤ºé—®é¢˜
 * [pfw]
-  - ĞŞ¸´GetSysColor²ÎÊıÎª¸ºÊ±±ÀÀ£µÄ´íÎó
+  - ä¿®å¤GetSysColorå‚æ•°ä¸ºè´Ÿæ—¶å´©æºƒçš„é”™è¯¯
 * [pfwThreadExt]
-  - ĞŞ¸´n_cst_threading_task_sqlquery¿ÉÄÜ»á¶ªÊ§filter»º³åÇøÊı¾İµÄÎÊÌâ
+  - ä¿®å¤n_cst_threading_task_sqlqueryå¯èƒ½ä¼šä¸¢å¤±filterç¼“å†²åŒºæ•°æ®çš„é—®é¢˜
 * [pfwUIControls]
-  - u_cst_splitcontainerÎª¸½¼Ó¶¨Î»Ä£Ê½(#AttachMode=true)Ê±µÄÎ»ÖÃË¢ĞÂÎÊÌâ
+  - u_cst_splitcontainerä¸ºé™„åŠ å®šä½æ¨¡å¼(#AttachMode=true)æ—¶çš„ä½ç½®åˆ·æ–°é—®é¢˜
 
 ## 1.1.1.0911(2017-09-11)
 
-### ĞÂÔö
+### æ–°å¢
 
-* [º¯Êı,pfwSciter]
-  - n_sciterelementÔö¼ÓDetachObjectº¯Êı£¬ÓÃÓÚ½â³ıÔªËØÓëPB¿Ø¼şµÄ°ó¶¨
-* [º¯Êı,pfwSciter]
-  - TISÖĞÔö¼ÓU2PX/U2PY/P2DX/P2DY/D2UX/D2UY/U2DX/U2DYÈ«¾Öº¯Êı
+* [å‡½æ•°,pfwSciter]
+  - n_sciterelementå¢åŠ DetachObjectå‡½æ•°ï¼Œç”¨äºè§£é™¤å…ƒç´ ä¸PBæ§ä»¶çš„ç»‘å®š
+* [å‡½æ•°,pfwSciter]
+  - TISä¸­å¢åŠ U2PX/U2PY/P2DX/P2DY/D2UX/D2UY/U2DX/U2DYå…¨å±€å‡½æ•°
 
-### ÓÅ»¯
+### ä¼˜åŒ–
 
 * [pfwThread]
-  - ÓÅ»¯Ïß³ÌÊÍ·Å
+  - ä¼˜åŒ–çº¿ç¨‹é‡Šæ”¾
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfwHttp]
-  - ĞŞ¸´httpclient::SetValidateHost(false)Ê§Ğ§
+  - ä¿®å¤httpclient::SetValidateHost(false)å¤±æ•ˆ
 * [pfwDWServices]
-  - ĞŞ¸´n_cst_dwsvc_contextmenu¸´ÖÆÁĞµÄÊı¾İÊ±Èç¹û×îºóÒ»ĞĞÎª¿ÕÊ±»áÉÙÒ»ĞĞ
+  - ä¿®å¤n_cst_dwsvc_contextmenuå¤åˆ¶åˆ—çš„æ•°æ®æ—¶å¦‚æœæœ€åä¸€è¡Œä¸ºç©ºæ—¶ä¼šå°‘ä¸€è¡Œ
 * [pfwDWServices]
-  - ĞŞ¸´n_cst_dwsvc_contextmenu¸´ÖÆµ¥Ôª¸ñÓÒ¼ü²Ëµ¥¼ì²âµÄÂß¼­²¢ÇÒÖ§³Ö¸´ÖÆ¼ÆËãÁĞµÄÄÚÈİ
+  - ä¿®å¤n_cst_dwsvc_contextmenuå¤åˆ¶å•å…ƒæ ¼å³é”®èœå•æ£€æµ‹çš„é€»è¾‘å¹¶ä¸”æ”¯æŒå¤åˆ¶è®¡ç®—åˆ—çš„å†…å®¹
 * [pfwSciterExt]
-  - u_cst_sciter_treeviewÔÚDPIÎª125%µÄÆÁÄ»ÉÏÏÔÊ¾checkbox²»Õı³£
+  - u_cst_sciter_treeviewåœ¨DPIä¸º125%çš„å±å¹•ä¸Šæ˜¾ç¤ºcheckboxä¸æ­£å¸¸
 
 ## 1.1.0.0904(2017-09-04)
 
-### ĞÂÔö
+### æ–°å¢
 
-* [ÌØĞÔ,pfwUI]
-  - Ö§³Ö¸ß·ÖÆÁ(High DPI),´ÓÕâ¸ö°æ±¾¿ªÊ¼,pfwµÄËùÓĞUIµ¥Î»¶¼ÓÉpx¸ÄÎªdip
-> *** ¼æÈİĞÔÌáÊ¾ ***
-> DIP:Éè±¸ÎŞ¹ØÏñËØ,ÔÚDPIÎª96µÄÆÁÄ»ÉÏ1dipµÈÓÚ1px,DPIÎª192µÄÆÁÄ»ÉÏ1dipµÈÓÚ2px
-* [ÌØĞÔ,pfwUI]
-  - Ôö¼Ó×ÊÔ´Ğ­Òédata:[resType,]base64,´Óbase64×Ö·û´®¼ÓÔØ×ÊÔ´,²¢ÇÒËùÓĞµÄ×ÊÔ´Ğ­Òé¶¼Ö§³Özip[path]
-* [ÌØĞÔ,pfwSciter]
-  - TIS¿ÉÒÔÖ±½Ó´«µİElement¶ÔÏóµ½PBµÄn_sciterelement¶ÔÏó
-* [ÌØĞÔ,pfwUI]
-  - Ôö¼Ó¶ÔI18N(¹ú¼Ê»¯¶àÓïÑÔ)¹¦ÄÜµÄÖ§³Ö
-* [¶ÔÏó,pfwDWServices]
-  - Ôö¼ÓÒ»Ğ©DW·şÎñ:ÓÒ¼ü²Ëµ¥·şÎñ/ĞĞÑ¡·şÎñ/ÅÅĞò·şÎñ/ÏÂÀ­¼ìË÷·şÎñ/ÁĞ±í´ïÊ¾·şÎñ(¼ûpfw.pbl::w_cst_dwsvc_xxx)
-* [º¯Êı,pfwUI]
-  - Ôö¼ÓÓë¸ß·ÖÆÁÌØĞÔÏàÅäºÏµÄÒ»Ğ©º¯Êı:U2PX/U2PY/P2DX/P2DY/D2UX/D2UY/U2DX/U2DY/EnableDPIAware
-* [º¯Êı,pfwUIControls]
-  - s_cst_windowÔö¼Ówf_ChangeMenuº¯Êı
-* [º¯Êı,pfwUIObjects]
-  - n_cst_window_themeÔö¼Ó#TitleBarÊôĞÔºÍof_SetTitleBarº¯Êı,ÓÃÓÚ¿ØÖÆ´°¿Ú±êÌâÀ¸ÏÔÊ¾/Òş²Ø
-* [º¯Êı,pfwThreadExt]
-  - n_cst_threading_task_sqlqueryÔö¼Óof_AddParamº¯ÊıÓÃÓÚÌí¼Ó°ó¶¨Ãû³ÆµÄ²ÎÊı
-* [º¯Êı,pfwThreadExt]
-  - n_cst_threading_task_sqlqueryÔö¼Óof_SetMaxRowsº¯ÊıÓÃÓÚÉèÖÃ×î´óĞĞÊı(µ±´ïµ½¸ÃĞĞÊıÊ±»á·¢ÆğNCD_MAXROWSÍ¨Öª,·µ»Ø1ÔÊĞí¼ÌĞø²éÑ¯,·ñÔò»á±¨OUT_OF_RANGE´íÎó)
-* [º¯Êı,pfwHttpExt]
-  - n_cst_alipayÔö¼Óof_Precreate/of_PrecreateAsync½Ó¿Ú£ºÍ³Ò»ÊÕµ¥ÏßÏÂ½»Ò×Ô¤´´½¨
-  - n_cst_wxpayÔö¼Óof_UnifiedOrder/of_UnifiedOrderAsync½Ó¿Ú£ºÍ³Ò»ÏÂµ¥
-  - n_cst_wxpayÔö¼Óof_CloseOrder/of_CloseOrderAsync½Ó¿Ú£º¹Ø±Õ¶©µ¥
+* [ç‰¹æ€§,pfwUI]
+  - :warning: æ”¯æŒé«˜åˆ†å±(High DPI),ä»è¿™ä¸ªç‰ˆæœ¬å¼€å§‹,pfwçš„æ‰€æœ‰UIå•ä½éƒ½ç”±pxæ”¹ä¸ºdip
+> DIP:è®¾å¤‡æ— å…³åƒç´ ,åœ¨DPIä¸º96çš„å±å¹•ä¸Š1dipç­‰äº1px,DPIä¸º192çš„å±å¹•ä¸Š1dipç­‰äº2px
+* [ç‰¹æ€§,pfwUI]
+  - å¢åŠ èµ„æºåè®®data:[resType,]base64,ä»base64å­—ç¬¦ä¸²åŠ è½½èµ„æº,å¹¶ä¸”æ‰€æœ‰çš„èµ„æºåè®®éƒ½æ”¯æŒzip[path]
+* [ç‰¹æ€§,pfwSciter]
+  - TISå¯ä»¥ç›´æ¥ä¼ é€’Elementå¯¹è±¡åˆ°PBçš„n_sciterelementå¯¹è±¡
+* [ç‰¹æ€§,pfwUI]
+  - å¢åŠ å¯¹I18N(å›½é™…åŒ–å¤šè¯­è¨€)åŠŸèƒ½çš„æ”¯æŒ
+* [å¯¹è±¡,pfwDWServices]
+  - å¢åŠ ä¸€äº›DWæœåŠ¡:å³é”®èœå•æœåŠ¡/è¡Œé€‰æœåŠ¡/æ’åºæœåŠ¡/ä¸‹æ‹‰æ£€ç´¢æœåŠ¡/åˆ—è¡¨è¾¾ç¤ºæœåŠ¡(è§pfw.pbl::w_cst_dwsvc_xxx)
+* [å‡½æ•°,pfwUI]
+  - å¢åŠ ä¸é«˜åˆ†å±ç‰¹æ€§ç›¸é…åˆçš„ä¸€äº›å‡½æ•°:U2PX/U2PY/P2DX/P2DY/D2UX/D2UY/U2DX/U2DY/EnableDPIAware
+* [å‡½æ•°,pfwUIControls]
+  - s_cst_windowå¢åŠ wf_ChangeMenuå‡½æ•°
+* [å‡½æ•°,pfwUIObjects]
+  - n_cst_window_themeå¢åŠ #TitleBarå±æ€§å’Œof_SetTitleBarå‡½æ•°,ç”¨äºæ§åˆ¶çª—å£æ ‡é¢˜æ æ˜¾ç¤º/éšè—
+* [å‡½æ•°,pfwThreadExt]
+  - n_cst_threading_task_sqlqueryå¢åŠ of_AddParamå‡½æ•°ç”¨äºæ·»åŠ ç»‘å®šåç§°çš„å‚æ•°
+* [å‡½æ•°,pfwThreadExt]
+  - n_cst_threading_task_sqlqueryå¢åŠ of_SetMaxRowså‡½æ•°ç”¨äºè®¾ç½®æœ€å¤§è¡Œæ•°(å½“è¾¾åˆ°è¯¥è¡Œæ•°æ—¶ä¼šå‘èµ·NCD_MAXROWSé€šçŸ¥,è¿”å›1å…è®¸ç»§ç»­æŸ¥è¯¢,å¦åˆ™ä¼šæŠ¥OUT_OF_RANGEé”™è¯¯)
+* [å‡½æ•°,pfwHttpExt]
+  - n_cst_alipayå¢åŠ of_Precreate/of_PrecreateAsyncæ¥å£ï¼šç»Ÿä¸€æ”¶å•çº¿ä¸‹äº¤æ˜“é¢„åˆ›å»º
+  - n_cst_wxpayå¢åŠ of_UnifiedOrder/of_UnifiedOrderAsyncæ¥å£ï¼šç»Ÿä¸€ä¸‹å•
+  - n_cst_wxpayå¢åŠ of_CloseOrder/of_CloseOrderAsyncæ¥å£ï¼šå…³é—­è®¢å•
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfwHttpExt]
-  - ¸ÃpfwDemos.pblÄÚµÄn_cst_alipay/n_cst_wxpayÁ½¸öÖ§¸¶¶ÔÏóÒÆÖÁ´ËPBLÖĞ
+  - è¯¥pfwDemos.pblå†…çš„n_cst_alipay/n_cst_wxpayä¸¤ä¸ªæ”¯ä»˜å¯¹è±¡ç§»è‡³æ­¤PBLä¸­
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfwParser]
-  - ĞŞ¸´n_xmldoc::RemoveChildrenÖ»ÄÜÒÆ³ıµÚÒ»¸ö×Ó½ÚµãµÄBUG
+  - ä¿®å¤n_xmldoc::RemoveChildrenåªèƒ½ç§»é™¤ç¬¬ä¸€ä¸ªå­èŠ‚ç‚¹çš„BUG
 * [pfwUIControlExt]
-  - ĞŞ¸´Ò»Ğ©ÓëMessageBoxEx/MessageBoxTimoutÓĞ¹ØµÄBUG
-* [¹¦ÄÜ,pfwThreadExt]
-  - n_cst_threading_task_sqlqueryĞŞ¸´DWÖĞÍ¬Ò»¸ö²ÎÊı¶à´¦Ê¹ÓÃ±¨°ó¶¨²ÎÊıÊ§°ÜµÄ´íÎó
+  - ä¿®å¤ä¸€äº›ä¸MessageBoxEx/MessageBoxTimoutæœ‰å…³çš„BUG
+* [åŠŸèƒ½,pfwThreadExt]
+  - n_cst_threading_task_sqlqueryä¿®å¤DWä¸­åŒä¸€ä¸ªå‚æ•°å¤šå¤„ä½¿ç”¨æŠ¥ç»‘å®šå‚æ•°å¤±è´¥çš„é”™è¯¯
 * [pfwHttpExt]
-  - n_cst_wxpayĞŞ¸´½ğ¶î´íÎóµÄÎÊÌâ
+  - n_cst_wxpayä¿®å¤é‡‘é¢é”™è¯¯çš„é—®é¢˜
 * [pfwControls]
-  - ĞŞ¸´´°¿ÚÉÏ°´Å¥¿ì½İ¼üÊ§Ğ§µÄÎÊÌâ
+  - ä¿®å¤çª—å£ä¸ŠæŒ‰é’®å¿«æ·é”®å¤±æ•ˆçš„é—®é¢˜
 * [pfw]
-  - ĞŞ¸´¼¸´¦pfw.dllÄÚ´æ·ÃÎÊ´íÎó
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: ä¿®å¤å‡ å¤„pfw.dllå†…å­˜è®¿é—®é”™è¯¯
 
 ## 1.0.2.0517(2017-05-17)
 
-### ĞÂÔö
+### æ–°å¢
 
-* [Ê¾Àı]
-  - Ôö¼ÓGOOGLE¾²Ì¬µØÍ¼DEMO(¼û:pfw.pbl::w_test_static_map)
-* [ÌØĞÔ]
-  - Êó±êÔÚÖ»ÓĞË®Æ½¹ö¶¯Ìõ¶øÃ»ÓĞ´¹Ö±¹ö¶¯ÌõµÄ¿Ø¼şÉÏ´¹Ö±¹ö¶¯Ê±»á×ª»»ÎªË®Æ½¹ö¶¯ÏûÏ¢(²»Ö§³ÖDataWindowµÄHSplitÊôĞÔ) [ÊµÑé]
+* [ç¤ºä¾‹]
+  - å¢åŠ GOOGLEé™æ€åœ°å›¾DEMO(è§:pfw.pbl::w_test_static_map)
+* [ç‰¹æ€§]
+  - é¼ æ ‡åœ¨åªæœ‰æ°´å¹³æ»šåŠ¨æ¡è€Œæ²¡æœ‰å‚ç›´æ»šåŠ¨æ¡çš„æ§ä»¶ä¸Šå‚ç›´æ»šåŠ¨æ—¶ä¼šè½¬æ¢ä¸ºæ°´å¹³æ»šåŠ¨æ¶ˆæ¯(ä¸æ”¯æŒDataWindowçš„HSplitå±æ€§) [å®éªŒ]
 
-### ĞŞ¸´
+### ä¿®å¤
 
 * [pfw]
-  - XP/2003±ÀÀ£µÄÎÊÌâ
+  - XP/2003å´©æºƒçš„é—®é¢˜
 
 ## 1.0.1.0509(2017-05-09)
 
-pfw·¢²¼µÄµÚÒ»¸ö°æ±¾,ÒÔÏÂÊÇÏà¶ÔÓÚPowerUIµÄ¸Ä±ä
+pfwå‘å¸ƒçš„ç¬¬ä¸€ä¸ªç‰ˆæœ¬,ä»¥ä¸‹æ˜¯ç›¸å¯¹äºPowerUIçš„æ”¹å˜
 
-### ĞÂÔö
+### æ–°å¢
 
-* [ÌØĞÔ,pfwSciter]
-  - Ö§³ÖÔÚTIS½Å±¾ÀïÖ±½ÓÊ¹ÓÃPB¶ÔÏóºÍº¯ÊıµÈ,ÎŞ·ì½»»¥
-* [ÌØĞÔ,pfwHttp]
-  - httpclientÖ§³Ö·şÎñ¶ËÑ¹ËõµÄÏìÓ¦Êı¾İContent-Encoding:gzip/deflate
-Ê¾Àı:httpClient.SetHeader("Accept-Encoding","gzip")
-* [¶ÔÏó,pfwWebSocket]
-  - n_wsclient/n_wsmessage,WebSocket¿Í»§¶ËÍøÂç¿â,Ö§³ÖWS/WSSĞ­Òé,½Ó¿Ú¿É²Î¿¼HttpClient
-* [¶ÔÏó,pfwRegExp]
-  - n_regexp,ÕıÔò±í´ïÊ¾¿â,Ö§³ÖÆ¥Åä¡¢²éÕÒºÍÌæ»»
-* [¶ÔÏó,pfwZip]
-  - n_zip/n_unzip,ZipÑ¹ËõËã·¨¿â,²Ù×÷zipÎÄ¼şµÈ
-* [¶ÔÏó,pfwDevInfo]
-  - Éè±¸Ö¸ÎÆ»ñÈ¡¿ân_devinfo,Ö§³Ö»ñÈ¡CPUID,Ó²ÅÌĞòÁĞºÅ,MACµØÖ·µÈ
-* [¶ÔÏó,pfwInvoker]
-  - PB¶ÔÏó¶¯Ì¬µ÷ÓÃ¿ân_objectinvokder/n_scriptinvoker,Ö§³Ö¶¯Ì¬µ÷ÓÃ¶ÔÏóº¯Êı¡¢ÊÂ¼ş,»ñÈ¡¶ÔÏóÊµÀı¡¢¾²Ì¬±äÁ¿(¹²Ïí±äÁ¿)µÈ
-* [¶ÔÏó,pfwCompiler]
-  - PB¶¯Ì¬±àÒëPowerScript¿â,¿ÉÒÔÔËĞĞÊ±µ¼ÈëÈ«¾Öº¯Êı»ò¶ÔÏóµÈµÈ
-* [¶ÔÏó,pfwThread]
-  - n_cst_thread/n_cst_thread_task/n_cst_threading/n_cst_threading_task/n_cst_threading_pool,PB¶àÏß³Ì¿â(°üÀ¨Ïß³Ì³Ø¶ÔÏó)
-* [¶ÔÏó,pfwThreadExt]
-  - n_cst_threading_task_sqlcommand/n_cst_threading_task_sqlquery/n_cst_threading_sqlupdate,»ùÓÚpfwÏß³Ì¿âÊµÏÖµÄÊı¾İ¿âÍ¨ÓÃ²éÑ¯ºÍ¸üĞÂÈÎÎñ,Ö§³Ö·ÖÒ³²éÑ¯,¶¯Ì¬°ó¶¨²ÎÊı,¶¯Ì¬SQL,¶à±í¸üĞÂµÈ.
-* [¶ÔÏó,pfwSciter]
-  - w_cst_sciter,PB´°¿ÚÀàĞÍµÄSciter
-* [¶ÔÏó,pfwUtils]
-  - n_loggerÈÕÖ¾¼ÇÂ¼¶ÔÏó,Ö§³ÖÎÄ¼şºÍ¿ØÖÆÌ¨Êä³ö,¿ÉÒÔÊä³ö¸ñÊ½»¯×Ö·û´®,ÀàËÆC#µÄConsole.Write,Ö§³Ö²ÎÊıË÷ÒıºÍ¶ÔÆë({index[,alignment][:format]})
-* [º¯Êı,pfwInvoker]
-  - HasGlobalFunction/InvokeGlobalFunction/HasGlobalVar/GetGlobalVar/SetGlobalVarº¯Êı,ÓÃÓÚ¶¯Ì¬µ÷ÓÃÈ«¾Öº¯Êı,»ñÈ¡È«¾Ö±äÁ¿µÈ
-* [º¯Êı,pfwCompiler]
-  - Evaluate¶¯Ì¬½âÎö²¢Ö´ĞĞPowerScript,Ö§³Ö¶¨Òå²ÎÊıÁĞ±íºÍ´«ÈëÈÎÒâ²ÎÊıµ½º¯ÊıÌå
-* [º¯Êı,pfwRegExp]
-  - RegExpMatch/RegExpFind/RegExpReplaceº¯Êı(·â×°µ÷ÓÃn_regexp)
-* [º¯Êı,pfwZip]
-  - ZipCompress/ZipUncompressº¯Êı,×Ö·û´®Ñ¹Ëõ,blobÑ¹Ëõ
-* [º¯Êı,pfwUtils]
-  - ½øÖÆ×ª»»È«¾Öº¯Êı,DecToHex/HexToDecÊ®½øÖÆÓëÊ®Áù½øÖÆ»¥×ª,DecToString/StringToDecÊ®½øÖÆÓëÈÎÒâ2~36½øÖÆ»¥×ª
-* [º¯Êı,pfwUtils]
-  - LoadUri,´Ópfw×ÊÔ´Ğ­Òé¼ÓÔØÊı¾İ
-* [º¯Êı,pfwUIControls]
-  - u_cst_tabpage/s_cst_tabpagewÔö¼Óº¯Êıof_GetTabIndex/of_GetTabText/of_GetTabTag/of_GetTabData/of_IsTabSelected/of_IsTabFloated/of_SelectTab/of_ShowTabFloatWindow/of_CloseTab
-* [º¯Êı,pfwUIControls]
-  - s_cst_singlelineedit/s_cst_multilineedit/s_cst_editmaskÔö¼Óof_GetTextº¯Êı
-* [º¯Êı,pfwContainer]
-  - n_mapÔö¼ÓGet(index)/GetKey(index)º¯Êı
-* [º¯Êı,pfwParser]
-  - n_jsonÔö¼ÓFindº¯Êı(Find("key/key2/key3[/..]"))
-* [º¯Êı,pfwSciter]
-  - n_sciterelementÔö¼ÓGetData/SetDataº¯ÊıÓÃÓÚ°ó¶¨ÈÎÒâPB±äÁ¿
-* [º¯Êı,pfwSciter]
-  - n_sciterelementÔö¼ÓGetExpandoº¯ÊıÓÃÓÚ»ñÈ¡ElementµÄTISÀ©Õ¹¶ÔÏó
-* [º¯Êı,pfwSciter]
-  - n_scitervalueÔö¼ÓGetValueObject/SetValue(powerboject)/GetItemObject/SetItem(powerobject)º¯Êı,¿ÉÒÔ½«PB¶ÔÏó´«ÈëTIS
-* [º¯Êı,pfwSciter]
-  - u_sciter/n_sciter/w_cst_sciterÔö¼ÓSetDebugOutputº¯ÊıºÍOnDebugOutputÊÂ¼ş,ÓÃÓÚÊä³öµ÷ÊÔĞÅÏ¢
-* [º¯Êı,pfwSciter]
-  - n_sciterÔö¼ÓPopup/ClosePopupº¯Êı,ÓÃÓÚÄ£Äâµ¯³ö²Ëµ¥µÄ·½Ê½ÏÔÊ¾Sciter´°¿Ú
-* [º¯Êı,pfwUIObjects]
-  - n_cst_sciter_treeview_optionÔö¼Óof_GetData/of_SetDataº¯ÊıÓÃÓÚ°ó¶¨ÈÎÒâPB±äÁ¿
-* [º¯Êı,pfwCrypto]
-  - n_crypto::SymEncrypt/SymDecryptÌá¹©²ÎÊı³õÊ¼»¯IV
-* [º¯Êı,pfwUtils]
-  - BitTestº¯Êı(µÈÓÚBitAND(num,bits)=bits),BitClearº¯Êı(µÈÓÚBitAND(num,BitNOT(bits)))
-* [º¯Êı,pfwUtils]
-  - Sprintfº¯Êı,ÓÃÓÚÊä³ö¸ñÊ½»¯×Ö·û´®,ÀàËÆC#µÄConsole.Write,Ö§³Ö²ÎÊıË÷ÒıºÍ¶ÔÆë({index[,alignment][:format]})
-* [º¯Êı,pfwUtils]
-  - DateTimeToTimestamp/TimestampToDateTimeÓÃÓÚPBÈÕÆÚºÍÊ±¼ä´ÁÖ®¼ä×ª»»(¾«¶ÈÎªÃë),Ö§³ÖUTCºÍ±¾µØÊ±¼ä(Ä¬ÈÏÎªUTC)
-* [º¯Êı,pfwCrypto]
-  - Base64Encode/Base64Decode/GUID/MD5/RandomString/SHA1/SHA256º¯Êı(·â×°µ÷ÓÃn_crypto)
-* [º¯Êı,pfwHttp]
-  - SetCA/GetCAÉèÖÃ·şÎñ¶ËÖ¤ÊéµÄÇ©·¢Ö¤Êé,ÓÃÓÚÑéÖ¤·şÎñ¶ËÖ¤Êé
-* [º¯Êı,pfwHttp]
-  - SetValidateHost/IsValidateHostÉèÖÃ·şÎñ¶ËÖ¤ÊéÓòÃûÑéÖ¤¿ª¹Ø(ValidateServer¿ªÆôÊ±ÓĞĞ§)
-* [º¯Êı,pfwHttp]
-  - n_httpclientÔö¼ÓSetAcceptException/IsAcceptExceptionº¯ÊıÓÃÓÚ¿ªÆô½ÓÊÕHTTPÒì³£×´Ì¬ĞÅÏ¢µÄ¹¦ÄÜ(Ä¬ÈÏÖ»½ÓÊÕHTTP OKµÄĞÅÏ¢)
-* [º¯Êı,pfwHttp]
-  - CancelAllÈ¡ÏûËùÓĞµÄÒì²½ÇëÇó
-* [º¯Êı,pfwHttp]
-  - URLEncode/URLDecode/StringToUTF8/StringToUTF16/StringToGBK/StringToBig5/StringToANSI/UTF8ToString/UTF16ToString/GBKToString/Big5ToString/ANSIToStringº¯Êı(·â×°µ÷ÓÃn_httputility)
-* [º¯Êı,pfwHttp]
-  - n_httpclient/n_httpresponseÔö¼ÓÖ±½Ó·¢ËÍXML¶ÔÏóµÄ½Ó¿Ú,Ä¬ÈÏContent-TypeÎªtext/xml;utf-8
-* [º¯Êı,pfwParser]
+* [ç‰¹æ€§,pfwSciter]
+  - æ”¯æŒåœ¨TISè„šæœ¬é‡Œç›´æ¥ä½¿ç”¨PBå¯¹è±¡å’Œå‡½æ•°ç­‰,æ— ç¼äº¤äº’
+* [ç‰¹æ€§,pfwHttp]
+  - httpclientæ”¯æŒæœåŠ¡ç«¯å‹ç¼©çš„å“åº”æ•°æ®Content-Encoding:gzip/deflate
+ç¤ºä¾‹:httpClient.SetHeader("Accept-Encoding","gzip")
+* [å¯¹è±¡,pfwWebSocket]
+  - n_wsclient/n_wsmessage,WebSocketå®¢æˆ·ç«¯ç½‘ç»œåº“,æ”¯æŒWS/WSSåè®®,æ¥å£å¯å‚è€ƒHttpClient
+* [å¯¹è±¡,pfwRegExp]
+  - n_regexp,æ­£åˆ™è¡¨è¾¾ç¤ºåº“,æ”¯æŒåŒ¹é…ã€æŸ¥æ‰¾å’Œæ›¿æ¢
+* [å¯¹è±¡,pfwZip]
+  - n_zip/n_unzip,Zipå‹ç¼©ç®—æ³•åº“,æ“ä½œzipæ–‡ä»¶ç­‰
+* [å¯¹è±¡,pfwDevInfo]
+  - è®¾å¤‡æŒ‡çº¹è·å–åº“n_devinfo,æ”¯æŒè·å–CPUID,ç¡¬ç›˜åºåˆ—å·,MACåœ°å€ç­‰
+* [å¯¹è±¡,pfwInvoker]
+  - PBå¯¹è±¡åŠ¨æ€è°ƒç”¨åº“n_objectinvokder/n_scriptinvoker,æ”¯æŒåŠ¨æ€è°ƒç”¨å¯¹è±¡å‡½æ•°ã€äº‹ä»¶,è·å–å¯¹è±¡å®ä¾‹ã€é™æ€å˜é‡(å…±äº«å˜é‡)ç­‰
+* [å¯¹è±¡,pfwCompiler]
+  - PBåŠ¨æ€ç¼–è¯‘PowerScriptåº“,å¯ä»¥è¿è¡Œæ—¶å¯¼å…¥å…¨å±€å‡½æ•°æˆ–å¯¹è±¡ç­‰ç­‰
+* [å¯¹è±¡,pfwThread]
+  - n_cst_thread/n_cst_thread_task/n_cst_threading/n_cst_threading_task/n_cst_threading_pool,PBå¤šçº¿ç¨‹åº“(åŒ…æ‹¬çº¿ç¨‹æ± å¯¹è±¡)
+* [å¯¹è±¡,pfwThreadExt]
+  - n_cst_threading_task_sqlcommand/n_cst_threading_task_sqlquery/n_cst_threading_sqlupdate,åŸºäºpfwçº¿ç¨‹åº“å®ç°çš„æ•°æ®åº“é€šç”¨æŸ¥è¯¢å’Œæ›´æ–°ä»»åŠ¡,æ”¯æŒåˆ†é¡µæŸ¥è¯¢,åŠ¨æ€ç»‘å®šå‚æ•°,åŠ¨æ€SQL,å¤šè¡¨æ›´æ–°ç­‰.
+* [å¯¹è±¡,pfwSciter]
+  - w_cst_sciter,PBçª—å£ç±»å‹çš„Sciter
+* [å¯¹è±¡,pfwUtils]
+  - n_loggeræ—¥å¿—è®°å½•å¯¹è±¡,æ”¯æŒæ–‡ä»¶å’Œæ§åˆ¶å°è¾“å‡º,å¯ä»¥è¾“å‡ºæ ¼å¼åŒ–å­—ç¬¦ä¸²,ç±»ä¼¼C#çš„Console.Write,æ”¯æŒå‚æ•°ç´¢å¼•å’Œå¯¹é½({index[,alignment][:format]})
+* [å‡½æ•°,pfwInvoker]
+  - HasGlobalFunction/InvokeGlobalFunction/HasGlobalVar/GetGlobalVar/SetGlobalVarå‡½æ•°,ç”¨äºåŠ¨æ€è°ƒç”¨å…¨å±€å‡½æ•°,è·å–å…¨å±€å˜é‡ç­‰
+* [å‡½æ•°,pfwCompiler]
+  - EvaluateåŠ¨æ€è§£æå¹¶æ‰§è¡ŒPowerScript,æ”¯æŒå®šä¹‰å‚æ•°åˆ—è¡¨å’Œä¼ å…¥ä»»æ„å‚æ•°åˆ°å‡½æ•°ä½“
+* [å‡½æ•°,pfwRegExp]
+  - RegExpMatch/RegExpFind/RegExpReplaceå‡½æ•°(å°è£…è°ƒç”¨n_regexp)
+* [å‡½æ•°,pfwZip]
+  - ZipCompress/ZipUncompresså‡½æ•°,å­—ç¬¦ä¸²å‹ç¼©,blobå‹ç¼©
+* [å‡½æ•°,pfwUtils]
+  - è¿›åˆ¶è½¬æ¢å…¨å±€å‡½æ•°,DecToHex/HexToDecåè¿›åˆ¶ä¸åå…­è¿›åˆ¶äº’è½¬,DecToString/StringToDecåè¿›åˆ¶ä¸ä»»æ„2~36è¿›åˆ¶äº’è½¬
+* [å‡½æ•°,pfwUtils]
+  - LoadUri,ä»pfwèµ„æºåè®®åŠ è½½æ•°æ®
+* [å‡½æ•°,pfwUIControls]
+  - u_cst_tabpage/s_cst_tabpagewå¢åŠ å‡½æ•°of_GetTabIndex/of_GetTabText/of_GetTabTag/of_GetTabData/of_IsTabSelected/of_IsTabFloated/of_SelectTab/of_ShowTabFloatWindow/of_CloseTab
+* [å‡½æ•°,pfwUIControls]
+  - s_cst_singlelineedit/s_cst_multilineedit/s_cst_editmaskå¢åŠ of_GetTextå‡½æ•°
+* [å‡½æ•°,pfwContainer]
+  - n_mapå¢åŠ Get(index)/GetKey(index)å‡½æ•°
+* [å‡½æ•°,pfwParser]
+  - n_jsonå¢åŠ Findå‡½æ•°(Find("key/key2/key3[/..]"))
+* [å‡½æ•°,pfwSciter]
+  - n_sciterelementå¢åŠ GetData/SetDataå‡½æ•°ç”¨äºç»‘å®šä»»æ„PBå˜é‡
+* [å‡½æ•°,pfwSciter]
+  - n_sciterelementå¢åŠ GetExpandoå‡½æ•°ç”¨äºè·å–Elementçš„TISæ‰©å±•å¯¹è±¡
+* [å‡½æ•°,pfwSciter]
+  - n_scitervalueå¢åŠ GetValueObject/SetValue(powerboject)/GetItemObject/SetItem(powerobject)å‡½æ•°,å¯ä»¥å°†PBå¯¹è±¡ä¼ å…¥TIS
+* [å‡½æ•°,pfwSciter]
+  - u_sciter/n_sciter/w_cst_sciterå¢åŠ SetDebugOutputå‡½æ•°å’ŒOnDebugOutputäº‹ä»¶,ç”¨äºè¾“å‡ºè°ƒè¯•ä¿¡æ¯
+* [å‡½æ•°,pfwSciter]
+  - n_sciterå¢åŠ Popup/ClosePopupå‡½æ•°,ç”¨äºæ¨¡æ‹Ÿå¼¹å‡ºèœå•çš„æ–¹å¼æ˜¾ç¤ºSciterçª—å£
+* [å‡½æ•°,pfwUIObjects]
+  - n_cst_sciter_treeview_optionå¢åŠ of_GetData/of_SetDataå‡½æ•°ç”¨äºç»‘å®šä»»æ„PBå˜é‡
+* [å‡½æ•°,pfwCrypto]
+  - n_crypto::SymEncrypt/SymDecryptæä¾›å‚æ•°åˆå§‹åŒ–IV
+* [å‡½æ•°,pfwUtils]
+  - BitTestå‡½æ•°(ç­‰äºBitAND(num,bits)=bits),BitClearå‡½æ•°(ç­‰äºBitAND(num,BitNOT(bits)))
+* [å‡½æ•°,pfwUtils]
+  - Sprintfå‡½æ•°,ç”¨äºè¾“å‡ºæ ¼å¼åŒ–å­—ç¬¦ä¸²,ç±»ä¼¼C#çš„Console.Write,æ”¯æŒå‚æ•°ç´¢å¼•å’Œå¯¹é½({index[,alignment][:format]})
+* [å‡½æ•°,pfwUtils]
+  - DateTimeToTimestamp/TimestampToDateTimeç”¨äºPBæ—¥æœŸå’Œæ—¶é—´æˆ³ä¹‹é—´è½¬æ¢(ç²¾åº¦ä¸ºç§’),æ”¯æŒUTCå’Œæœ¬åœ°æ—¶é—´(é»˜è®¤ä¸ºUTC)
+* [å‡½æ•°,pfwCrypto]
+  - Base64Encode/Base64Decode/GUID/MD5/RandomString/SHA1/SHA256å‡½æ•°(å°è£…è°ƒç”¨n_crypto)
+* [å‡½æ•°,pfwHttp]
+  - SetCA/GetCAè®¾ç½®æœåŠ¡ç«¯è¯ä¹¦çš„ç­¾å‘è¯ä¹¦,ç”¨äºéªŒè¯æœåŠ¡ç«¯è¯ä¹¦
+* [å‡½æ•°,pfwHttp]
+  - SetValidateHost/IsValidateHostè®¾ç½®æœåŠ¡ç«¯è¯ä¹¦åŸŸåéªŒè¯å¼€å…³(ValidateServerå¼€å¯æ—¶æœ‰æ•ˆ)
+* [å‡½æ•°,pfwHttp]
+  - n_httpclientå¢åŠ SetAcceptException/IsAcceptExceptionå‡½æ•°ç”¨äºå¼€å¯æ¥æ”¶HTTPå¼‚å¸¸çŠ¶æ€ä¿¡æ¯çš„åŠŸèƒ½(é»˜è®¤åªæ¥æ”¶HTTP OKçš„ä¿¡æ¯)
+* [å‡½æ•°,pfwHttp]
+  - CancelAllå–æ¶ˆæ‰€æœ‰çš„å¼‚æ­¥è¯·æ±‚
+* [å‡½æ•°,pfwHttp]
+  - URLEncode/URLDecode/StringToUTF8/StringToUTF16/StringToGBK/StringToBig5/StringToANSI/UTF8ToString/UTF16ToString/GBKToString/Big5ToString/ANSIToStringå‡½æ•°(å°è£…è°ƒç”¨n_httputility)
+* [å‡½æ•°,pfwHttp]
+  - n_httpclient/n_httpresponseå¢åŠ ç›´æ¥å‘é€XMLå¯¹è±¡çš„æ¥å£,é»˜è®¤Content-Typeä¸ºtext/xml;utf-8
+* [å‡½æ•°,pfwParser]
   - ParseJSON/ParseXML
-* [º¯Êı,pfwUIObjects]
-  - n_cst_splitcontainer_panelÔö¼Óof_AttachObjectº¯Êı,u_cst_splitcontainerÔö¼Óof_TemplateAttachº¯Êı,ÓÃÓÚ°ó¶¨Ê¹ÓÃÏà¶Ô¶¨Î»µÄ¶ÔÏó,Óëof_BindObjectµÄÇø±ğÔÚÓÚ¸Ãº¯Êı°ó¶¨µÄ¶ÔÏó²»»á¸Ä±äÈİÆ÷µÄ¸¸×Ó¹ØÏµ
-* [³£Á¿,pfwUIObjects]
-  - u_cst_shortcutbar_themeÔö¼ÓCLR_SPLITBARBORDER
-* Ïë²»ÆğÀ´ÁË..
+* [å‡½æ•°,pfwUIObjects]
+  - n_cst_splitcontainer_panelå¢åŠ of_AttachObjectå‡½æ•°,u_cst_splitcontainerå¢åŠ of_TemplateAttachå‡½æ•°,ç”¨äºç»‘å®šä½¿ç”¨ç›¸å¯¹å®šä½çš„å¯¹è±¡,ä¸of_BindObjectçš„åŒºåˆ«åœ¨äºè¯¥å‡½æ•°ç»‘å®šçš„å¯¹è±¡ä¸ä¼šæ”¹å˜å®¹å™¨çš„çˆ¶å­å…³ç³»
+* [å¸¸é‡,pfwUIObjects]
+  - u_cst_shortcutbar_themeå¢åŠ CLR_SPLITBARBORDER
+* æƒ³ä¸èµ·æ¥äº†..
 
-### µ÷Õû
+### è°ƒæ•´
 
 * [pfwHttp]
-  - n_httpclientµÄÖ¤ÊéºÍÃÜÔ¿ÉèÖÃº¯Êı×öÁËĞŞ¸Ä,É¾³ıÁËSetCertType/GetCertTypeº¯Êı
+  - n_httpclientçš„è¯ä¹¦å’Œå¯†é’¥è®¾ç½®å‡½æ•°åšäº†ä¿®æ”¹,åˆ é™¤äº†SetCertType/GetCertTypeå‡½æ•°
 * [pfwCrypto]
-  - n_crypto¶Ô³Æ¼ÓÃÜÓëHMACµ÷ÕûÁËËã·¨(²»¼æÈİÖ®Ç°µÄ°æ±¾),Îª¿çÓïÑÔ(¿â)¶Ô³Æ¼ÓÃÜÍ¨Ñ¶Ìá¹©¿ÉÄÜ(×¢:SymEncrypt/SymDecrypt½öÖ§³ÖPKCS5 PADDING)
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: n_cryptoå¯¹ç§°åŠ å¯†ä¸HMACè°ƒæ•´äº†ç®—æ³•(ä¸å…¼å®¹ä¹‹å‰çš„ç‰ˆæœ¬),ä¸ºè·¨è¯­è¨€(åº“)å¯¹ç§°åŠ å¯†é€šè®¯æä¾›å¯èƒ½(æ³¨:SymEncrypt/SymDecryptä»…æ”¯æŒPKCS5 PADDING)
 * [pfwUIControlsExt]
-  - pfwUIControlsExt.pbl°üÀïµÄ¿Ø¼ş²»ÔÙ¸ù¾İ²Ù×÷ÏµÍ³°æ±¾ÉèÖÃÎ¢ÈíÑÅºÚ×ÖÌå,Ä¬ÈÏ¶¼ÎªArial
+  - pfwUIControlsExt.pblåŒ…é‡Œçš„æ§ä»¶ä¸å†æ ¹æ®æ“ä½œç³»ç»Ÿç‰ˆæœ¬è®¾ç½®å¾®è½¯é›…é»‘å­—ä½“,é»˜è®¤éƒ½ä¸ºArial
 * [pfwUI]
-  - ÖØĞÂÉè¼ÆÁËÑÕÉ«È¡ÖµµÄ»úÖÆ,Éæ¼°ËùÓĞOnGetColor/OnGetItemColorÊÂ¼ş
-> *** ¼æÈİĞÔÌáÊ¾ ***
+  - :warning: é‡æ–°è®¾è®¡äº†é¢œè‰²å–å€¼çš„æœºåˆ¶,æ¶‰åŠæ‰€æœ‰OnGetColor/OnGetItemColoräº‹ä»¶
 
-### ÓÅ»¯
-
-* [pfwUIControls]
-  - ÓÅ»¯MDI´°¿Ú²Ëµ¥¿ì½İ¼ü
-
-### ĞŞ¸´
+### ä¼˜åŒ–
 
 * [pfwUIControls]
-  - PB9Ê¹ÓÃSplitContainerÊ±±àÒëºó±¨R0025Òì³£
+  - ä¼˜åŒ–MDIçª—å£èœå•å¿«æ·é”®
+
+### ä¿®å¤
+
 * [pfwUIControls]
-  - s_cst_singlelineedit/s_cst_multilineedit/s_cst_editmask/s_cst_dropdownlist¿Ø¼şÏà¹ØµÄBUG
+  - PB9ä½¿ç”¨SplitContaineræ—¶ç¼–è¯‘åæŠ¥R0025å¼‚å¸¸
+* [pfwUIControls]
+  - s_cst_singlelineedit/s_cst_multilineedit/s_cst_editmask/s_cst_dropdownlistæ§ä»¶ç›¸å…³çš„BUG
