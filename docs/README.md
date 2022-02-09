@@ -35,7 +35,7 @@ pfwInitialize(Enums.INIT_FLAG_ENABLE_SCITER)
 
 从3.0开始pfw不再保证继续支持XP
 
-2. 连接`ORACLE`之后在开发模式（IDE）下运行第二次可能出现加载pfw.dll报错
+2. 连接ORACLE之后在开发模式（IDE）下运行第二次可能出现加载pfw.dll报错
 
 解决方法为将pfw.dll所在目录加入到环境变量`PATH`中
 
