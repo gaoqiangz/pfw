@@ -103,7 +103,7 @@ dw_1.ColumnExp.of_Calc(1)
 
 ## 宏函数
 
-可以将函数定义在数据窗口的OnClumnExpInvokeMethod中，然后在表达式中进行调用
+可以将函数定义在数据窗口的`OnColumnExpInvokeMethod`中，然后在表达式中进行调用
 
 ### 1. 直接调用
 
@@ -117,7 +117,7 @@ dw_1.ColumnExp.of_SetVar("精度", 1)
 dw_1.ColumnExp.of_SetExp("n1", "$FormatPrice(n2, $精度)")
 ```
 
-- 实现`oncolumnexpinvokemethod`事件
+- 实现`OnColumnExpInvokeMethod`事件
 
 ```
 //表达式服务请求执行函数
@@ -141,7 +141,7 @@ dw_1.ColumnExp.of_SetVar("单价格式化", "FormatPrice")
 dw_1.ColumnExp.of_SetExp("n1", "$$Invoke($单价格式化, n2, $精度)")
 ```
 
-- 实现`oncolumnexpinvokemethod`事件
+- 实现`OnColumnExpInvokeMethod`事件
 ```
 //表达式服务请求执行函数
 choose case name
