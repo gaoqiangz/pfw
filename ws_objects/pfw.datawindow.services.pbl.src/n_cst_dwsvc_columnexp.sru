@@ -13,6 +13,10 @@ type funcdata from structure within n_cst_dwsvc_columnexp
 end type
 type globalvardata from structure within n_cst_dwsvc_columnexp
 end type
+type localvardata from structure within n_cst_dwsvc_columnexp
+end type
+type foreignvardata from structure within n_cst_dwsvc_columnexp
+end type
 end forward
 
 type columnexpdata from structure
@@ -40,12 +44,15 @@ end type
 type columndata from structure
 	long		flag		
 	integer		indexes[]		
+	integer		varindexes[]		
 end type
 
 type vardata from structure
 	string		name		
 	string		fullname		
 	integer		index		
+	boolean		isctx		
+	boolean		ismacro		
 end type
 
 type funcdata from structure
@@ -57,15 +64,28 @@ end type
 
 type globalvardata from structure
 	string		name		
+	long		vartype		
+	localvardata		local		
+	foreignvardata		foreign		
+	foreignvardata		links[]		
+end type
+
+type localvardata from structure
 	string		exp		
 	vardata		vars[]		
 	funcdata		fns[]		
 	boolean		hasmacro		
 end type
 
+type foreignvardata from structure
+	integer		index		
+	n_cst_dwsvc_columnexp		expsvc		
+end type
+
 global type n_cst_dwsvc_columnexp from n_cst_dwsvc
 event onitemchanged ( long row,  dwobject dwo )
 event ondoitemchanged ( long row,  string colname,  long colid,  boolean frominput )
+event onvarchanged ( integer index,  boolean forcecalc )
 end type
 global n_cst_dwsvc_columnexp n_cst_dwsvc_columnexp
 
@@ -74,22 +94,28 @@ public:
 //compute suffix
 constant string DWOSUFFIX = "_columnexp"
 
+public:
+privatewrite boolean #Trace
+
 private:
-COLUMNDATA		ColDatas[]
-COLUMNEXPDATA	ColExpDatas[]
-GLOBALVARDATA	GlobalVars[]
+COLUMNDATA		ColDatas[]		
+COLUMNEXPDATA	ColExpDatas[]	
+GLOBALVARDATA	GlobalVars[]	
 
 boolean _bRowCalcing
 boolean _bRowCalcingEmpty
 
-long _nCachedID
+long _nCachedID 
 
-n_vector _vecCalcStack
+n_vector _vecCalcStack 
 
 //Column calc flags
 constant long CLC_UNKNOWN	= 0
 constant long CLC_YES		= 1
 constant long CLC_NO			= 2
+//Var types
+constant long VAR_LOCAL		= 0
+constant long VAR_FOREIGN	= 1
 //Global functions
 constant string FUNC_VAR	 = ""
 constant string FUNC_INVOKE = "Invoke"
@@ -123,7 +149,6 @@ public function long of_settriggerevent (readonly integer index, readonly boolea
 public function long of_settriggerevent (readonly string colname, readonly boolean btrigger)
 private function integer _of_findvarindex (readonly string name)
 private function integer _of_findvardepends (readonly integer index, ref integer colexps[], readonly boolean excluderels)
-public function string of_getvarexp (readonly integer index)
 public function string of_getvarexp (string name)
 public function long of_addvar (readonly string name, readonly time value)
 public function long of_addvar (readonly string name, readonly string value)
@@ -146,7 +171,6 @@ public function long of_calcall (readonly boolean force)
 private function long _of_parseexp (ref string exp, ref vardata vars[], ref funcdata fns[])
 public function integer of_addexp (string colname, string exp)
 public function long of_addvarexp (readonly string name, string exp)
-private function string _of_preprocessexp (readonly long row, readonly dwobject dwo, string exp, readonly vardata vars[], funcdata fns[])
 public function long of_setexp (readonly integer index, string exp, readonly boolean recalc)
 public function long of_setexp (readonly string colname, readonly string exp, readonly boolean recalc)
 public function long of_setexp (readonly integer index, readonly string exp)
@@ -174,9 +198,17 @@ public function long of_setcacheable (readonly string colname, readonly boolean 
 private function boolean _of_createcompute (readonly string name, readonly string exp, ref string errinfo)
 public function long of_calcempty (readonly long row)
 public function long of_calcempty ()
+public function long of_addforeignvar (readonly string name, readonly se_cst_dw dw)
+private function string _of_preprocessexp (readonly long row, readonly dwobject dwo, string exp, readonly vardata vars[], funcdata fns[], readonly long ctx_row, readonly dwobject ctx_dwo, readonly n_cst_dwsvc_columnexp ctx_expsvc)
+private function string _of_getitemexpvalue (readonly long row, readonly string colname)
+private function string _of_calcvarexpvalue (readonly long row, readonly dwobject dwo, readonly integer index, readonly long ctx_row, readonly dwobject ctx_dwo, readonly n_cst_dwsvc_columnexp ctx_expsvc)
+private function string _of_calcvarexpvalue (readonly integer index, readonly long ctx_row, readonly dwobject ctx_dwo, readonly n_cst_dwsvc_columnexp ctx_expsvc)
+private function string _of_buildparseerror (readonly string syntax, readonly long pos, string errinfo)
+private function string _of_buildparseerror (readonly string syntax, readonly long pos)
+public function long of_settrace (readonly boolean trace)
 end prototypes
 
-event onitemchanged(long row, dwobject dwo);long nColID
+event onitemchanged(long row, dwobject dwo);long nColID,nRowCnt
 string sColName
 
 if Not #Enabled then return
@@ -187,7 +219,10 @@ if nColID > UpperBound(ColDatas) then
 	ColDatas[nColID].flag = CLC_UNKNOWN
 end if
 if ColDatas[nColID].flag <> CLC_NO then
+	nRowCnt = #DataWindow.RowCount()
+	if nRowCnt > 200 then #DataWindow.SetRedraw(false)
 	Event OnDoItemChanged(row,sColName,nColID,true)
+	if nRowCnt > 200 then #DataWindow.SetRedraw(true)
 end if
 end event
 
@@ -203,7 +238,6 @@ end if
 if ColDatas[colID].flag = CLC_UNKNOWN then
 	ColDatas[colID].flag = CLC_NO
 	nCount = UpperBound(ColExpDatas)
-	if nCount = 0 then return
 	for nIndex = 1 to nCount
 		bMatched = false
 		bHasRelative = false
@@ -243,16 +277,19 @@ if ColDatas[colID].flag = CLC_UNKNOWN then
 			ColDatas[colID].Indexes[UpperBound(ColDatas[colID].Indexes) + 1] = nIndex
 		end if
 	next
-	if UpperBound(ColDatas[colID].Indexes) <> nCount then
-		nCount = UpperBound(GlobalVars)
-		for nIndex = 1 to nCount
-			if _of_HasRef(GlobalVars[nIndex].exp,colName) then
-				if _of_FindVarDepends(nIndex,ref ColDatas[colID].Indexes,true) > 0 then
-					ColDatas[colID].flag = CLC_YES
-				end if
+	nCount = UpperBound(GlobalVars)
+	for nIndex = 1 to nCount
+		if GlobalVars[nIndex].varType = VAR_FOREIGN then continue
+		if _of_HasRef(GlobalVars[nIndex].local.exp,colName) then
+			if UpperBound(GlobalVars[nIndex].links) > 0 then
+				ColDatas[colID].varIndexes[UpperBound(ColDatas[colID].varIndexes) + 1] = nIndex
+				ColDatas[colID].flag = CLC_YES
 			end if
-		next
-	end if
+			if _of_FindVarDepends(nIndex,ref ColDatas[colID].Indexes,true) > 0 then
+				ColDatas[colID].flag = CLC_YES
+			end if
+		end if
+	next
 end if
 
 if ColDatas[colID].flag = CLC_YES then
@@ -279,7 +316,46 @@ if ColDatas[colID].flag = CLC_YES then
 		_of_CalcItem(row,n)
 	next
 	_vecCalcStack.RemoveAt(k)
+	nCount = UpperBound(ColDatas[colID].varIndexes)
+	for nIndex = 1 to nCount
+		i = ColDatas[colID].varIndexes[nIndex]
+		c = UpperBound(GlobalVars[i].links)
+		for n = 1 to c
+			GlobalVars[i].links[n].expSvc.Event OnVarChanged(GlobalVars[i].links[n].index,true)
+		next
+	next
 end if
+end event
+
+event onvarchanged(integer index, boolean forcecalc);long nRow,nRowCnt
+int nIndex,nCount
+int nColExps[]
+
+if Not #Enabled then return
+if _bRowCalcing then return
+
+nRowCnt = #DataWindow.RowCount()
+if nRowCnt <= 0 then return
+
+nCount = _of_FindVarDepends(index,ref nColExps,false)
+if nCount > 0 then
+	_bRowCalcing = true
+	for nRow = 1 to nRowCnt
+		_of_MakeDirty()
+		for nIndex = 1 to nCount
+			if Not forceCalc then
+				if UpperBound(ColExpDatas[nColExps[nIndex]].relativeInputColIDs) > 0 then continue
+			end if
+			_of_CalcItem(nRow,nColExps[nIndex])
+		next
+	next
+	_bRowCalcing = false
+end if
+
+nCount = UpperBound(GlobalVars[index].links)
+for nIndex = 1 to nCount
+	GlobalVars[index].links[nIndex].expSvc.Event OnVarChanged(GlobalVars[index].links[nIndex].index,true)
+next
 end event
 
 public function long of_removeall ();//====================================================================
@@ -581,8 +657,26 @@ next
 return 0
 end function
 
-public function boolean _of_calcitem (readonly long row, readonly integer index);int nIndex,nCount
-string sVal,sExp,sErrInfo
+public function boolean _of_calcitem (readonly long row, readonly integer index);//====================================================================
+// Function: _of_calcitem()
+//--------------------------------------------------------------------
+// Description: 计算指定单元格的表达式
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly	long   	row  	
+// 	readonly	integer	index	
+//--------------------------------------------------------------------
+// Returns:  boolean
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2016-11-10
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+int nIndex,nCount
+string sVal,sExp,sErrInfo,sCallStack
 boolean bDwoValid,bUseCache
 
 if _bRowCalcingEmpty and Not ColExpDatas[index].empty then return false
@@ -618,7 +712,7 @@ if Not bDwoValid then
 	if bUseCache then
 		if Not _of_HasDWObject(ColExpDatas[index].computeName) then
 			if Not _of_CreateCompute(ColExpDatas[index].computeName,ColExpDatas[index].exp,ref sErrInfo) then
-				MessageBoxEx("ColumnExp Error","[" + String(ColExpDatas[index].name) + "]创建表达式缓存失败:~nExpression:" + ColExpDatas[index].exp + "~nError:" + sErrInfo,StopSign!)
+				MessageBox("错误","[" + String(ColExpDatas[index].name) + "]创建表达式缓存失败:~nExpression:" + ColExpDatas[index].exp + "~nError:" + sErrInfo,StopSign!)
 				return false
 			end if
 		end if
@@ -644,19 +738,30 @@ if bUseCache then
 				return false
 		end choose
 	catch(throwable ex2)
-		MessageBoxEx("ColumnExp Error","[" + String(ColExpDatas[index].name) + "]表达式缓存错误:~nExpression:" + ColExpDatas[index].exp + "~nError:" + ex.text,StopSign!)
+		MessageBox("错误","[" + String(ColExpDatas[index].name) + "]表达式缓存错误:~nExpression:" + ColExpDatas[index].exp + "~nError:" + ex.text,StopSign!)
 		return false
 	end try
 else
 	if ColExpDatas[index].hasMacro then
-		sExp = _of_PreprocessExp(row,ColExpDatas[index].dwo,ColExpDatas[index].exp,ColExpDatas[index].vars,ColExpDatas[index].fns)
+		sExp = _of_PreprocessExp(row,ColExpDatas[index].dwo,ColExpDatas[index].exp,ColExpDatas[index].vars,ColExpDatas[index].fns,row,ColExpDatas[index].dwo,this)
 		if sExp = "" then return false
 	else
 		sExp = ColExpDatas[index].exp
 	end if
+	
 	sVal = _of_Evaluate(sExp,row)
+	
+	if #Trace then
+		nCount = _vecCalcStack.Count()
+		for nIndex = 1 to nCount
+			sCallStack += _vecCalcStack.GetAt(nIndex) + ">"
+		next
+		sCallStack += ColExpDatas[index].dwo.name
+		#DataWindow.Event OnColumnExpTrace(row,ColExpDatas[index].dwo,sCallStack,sExp,iif(sVal = "" and (ColExpDatas[index].emptyStringIsNull or ColExpDatas[index].colType <> COL_TYPE_STRING),"(null)",sVal))
+	end if
+
 	if sVal = "?" or sVal = "!" then
-		MessageBoxEx("ColumnExp Error","[" + String(ColExpDatas[index].name) + "]表达式错误:~nExpression:" + sExp,StopSign!)
+		MessageBox("错误","[" + String(ColExpDatas[index].name) + "]表达式错误:~nExpression:" + sExp,StopSign!)
 		return false
 	end if
 end if
@@ -897,9 +1002,30 @@ next
 return 0
 end function
 
-private function integer _of_findvardepends (readonly integer index, ref integer colexps[], readonly boolean excluderels);int nIndex,nCount,nVarIndex,nVarCnt,i,c
+private function integer _of_findvardepends (readonly integer index, ref integer colexps[], readonly boolean excluderels);//====================================================================
+// Function: _of_findvardepends()
+//--------------------------------------------------------------------
+// Description: 查找依赖指定全局变量的列表达式列表
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly 	integer	index      	
+// 	reference	integer	colexps[]  	
+// 	readonly 	boolean	excluderels	
+//--------------------------------------------------------------------
+// Returns:  integer
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2017-06-20
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+int nIndex,nCount,nVarIndex,nVarCnt,i,c
 
 nCount = UpperBound(ColExpDatas)
+if nCount = UpperBound(colExps) then return nCount
+
 for nIndex = 1 to nCount
 	if Not ColExpDatas[nIndex].hasMacro then continue
 	if excludeRels then
@@ -924,10 +1050,11 @@ next
 nCount = UpperBound(GlobalVars)
 for nIndex = 1 to nCount
 	if nIndex = index then continue
-	if Not GlobalVars[nIndex].hasMacro then continue
-	nVarCnt = UpperBound(GlobalVars[nIndex].vars)
+	if GlobalVars[nIndex].varType = VAR_FOREIGN then continue
+	if Not GlobalVars[nIndex].local.hasMacro then continue
+	nVarCnt = UpperBound(GlobalVars[nIndex].local.vars)
 	for nVarIndex = 1 to nVarCnt
-		if GlobalVars[nIndex].vars[nVarIndex].name = GlobalVars[index].name then
+		if GlobalVars[nIndex].local.vars[nVarIndex].name = GlobalVars[index].name then
 			_of_FindVarDepends(nIndex,ref colExps,excludeRels)
 			exit
 		end if
@@ -938,13 +1065,13 @@ next
 return UpperBound(colExps)
 end function
 
-public function string of_getvarexp (readonly integer index);//====================================================================
+public function string of_getvarexp (string name);//====================================================================
 // Function: of_getvarexp()
 //--------------------------------------------------------------------
 // Description: 获取指定全局变量的表达式
 //--------------------------------------------------------------------
 // Arguments:
-// 	readonly	integer	index	
+// 	readonly	string	name	
 //--------------------------------------------------------------------
 // Returns:  string
 //--------------------------------------------------------------------
@@ -955,12 +1082,12 @@ public function string of_getvarexp (readonly integer index);//=================
 // Modify History:
 //
 //====================================================================
-if index < 1 or index > UpperBound(GlobalVars) then return ""
+int index
 
-return GlobalVars[index].exp
-end function
+index = _of_FindVarIndex(name)
+if index < 1 then return ""
 
-public function string of_getvarexp (string name);return of_GetVarExp(_of_FindVarIndex(name))
+return GlobalVars[index].local.exp
 end function
 
 public function long of_addvar (readonly string name, readonly time value);return of_AddVarExp(name,"Time('" + String(value) + "')")
@@ -1083,37 +1210,70 @@ next
 return RetCode.OK
 end function
 
-private function long _of_parseexp (ref string exp, ref vardata vars[], ref funcdata fns[]);long nPos,nLen
-long nMacFlag,nMacPos
+private function long _of_parseexp (ref string exp, ref vardata vars[], ref funcdata fns[]);//====================================================================
+// Function: _of_parsesexp()
+//--------------------------------------------------------------------
+// Description: 解析变量宏和函数宏列表
+//	*$变量名(静态展开)/$$变量名(动态展开)
+//	*$函数名({表达式参数列表})/$$内置函数名({表达式参数列表})
+// *内置函数：
+//		expression $$('变量名') - 获取变量
+//		any $$Invoke('函数名'[,参数1[,参数2[,...]]]) - 调用函数
+// *上下文数据引用('@'开头)
+//		@$$变量名	- 只支持动态展开
+//		@列名			- 直接引用列名
+//	*变量和函数名称区分大小写
+//	*该函数不校验表达式的合法性!
+//--------------------------------------------------------------------
+// Arguments:
+// 	reference 	string	sExp 	
+// 	reference	vardata	vars[]	
+// 	reference	funcdata	fns[]	
+//--------------------------------------------------------------------
+// Returns:  integer
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2017-06-12
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+long nPos,nLen
+long nMacFlag,nMacPos,nQuotePos
 int nIndex,nVarIdx,nVarCnt,nFnIdx,nFnCnt,nFnArgIdx,nFnArgCnt,nGVarIdx,nGVarCnt,nGFnIdx,nGFnCnt
-string sExp,sVarExp,sWord,sQuote
+string sExp,sVarExp,sChar,sQuote
 boolean bQuoted
 long nFnPos,nFnArgPos,nFnBrCnt
 string sFnWord,sFnQuote,sEmptyArray[]
 boolean bFnQuoted
-boolean bDD
+boolean bDD,bIsCtx,bIsMacro
 VARDATA varData,varDatas[]
 FUNCDATA fnData,fnDatas[]
-constant string	TRAILER 				= ";"
-constant string	MACRO_FLAG			= "$"
+constant string	TRAILER 				= ";"	
+constant string	MACRO_FLAG			= "$" 
+constant string	MACRO_CONTEXT		= "@"
 constant long		MACRO_PHASE_NONE	= 0
 constant long		MACRO_PHASE_FIND	= 1
 constant long		MACRO_PHASE_PARSE	= 2
 
-if Pos(exp,MACRO_FLAG) = 0 then return RetCode.OK
+if Pos(exp,MACRO_FLAG) = 0 then
+	if Pos(exp,MACRO_CONTEXT) = 0 then return RetCode.OK
+end if
 
 sExp = exp + TRAILER
 nMacFlag = MACRO_PHASE_FIND
 
 nLen = Len(sExp)
 for nPos = 1 to nLen
-	sWord = Mid(sExp,nPos,1)
-	choose case sWord
+	sChar = Mid(sExp,nPos,1)
+	choose case sChar
 		case "'","~""
-			if sQuote = sWord or sQuote = "" then
+			if sQuote = sChar or sQuote = "" then
 				bQuoted = Not bQuoted
 				if bQuoted then
-					sQuote = sWord
+					sQuote = sChar
+					nQuotePos = nPos
 				else
 					sQuote = ""
 				end if
@@ -1127,16 +1287,29 @@ for nPos = 1 to nLen
 			if nMacFlag <> MACRO_PHASE_FIND then continue
 			nMacFlag = MACRO_PHASE_PARSE
 			nMacPos = nPos
+			bIsCtx = false
+			bIsMacro = true
 			bDD = (Mid(sExp,nPos + 1,1) = MACRO_FLAG)
-			if bDD then
-				nPos++
-			end if
+			if bDD then nPos++
+		case MACRO_CONTEXT
+			if nMacFlag <> MACRO_PHASE_FIND then continue
+			nMacFlag = MACRO_PHASE_PARSE
+			nMacPos = nPos
+			bIsCtx = true
+			bIsMacro = (Mid(sExp,nPos + 1,1) = MACRO_FLAG)
+			if bIsMacro then nPos++
+			bDD = (Mid(sExp,nPos + 1,1) = MACRO_FLAG)
+			if bDD then nPos++
 		case "=","+","-","*","/","\",">","<","^",",","(",")","[","]","{","}",":",",","?","!","&","|",TRAILER
 			if bQuoted then continue
 			if nMacFlag = MACRO_PHASE_NONE then
 				nMacFlag = MACRO_PHASE_FIND
 			elseif nMacFlag = MACRO_PHASE_PARSE then
-				if sWord = "(" then
+				if sChar = "(" then
+					if bIsCtx then
+						MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析函数宏失败!~n不支持引用上下文的函数宏"),StopSign!)
+						return RetCode.E_INVALID_ARGUMENT
+					end if
 					fnData.builtIn = bDD
 					if fnData.builtIn then
 						fnData.name = Trim(Mid(sExp,nMacPos + 2,nPos - nMacPos - 2))
@@ -1209,74 +1382,86 @@ for nPos = 1 to nLen
 						end choose
 					next
 					if bFnQuoted or nFnBrCnt <> -1 or nFnArgPos <> 0 then
-						MessageBoxEx("错误","解析函数宏失败!~n无效的参数列表",StopSign!)
+						MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析函数宏失败!~n无效的参数列表"),StopSign!)
 						return RetCode.E_INVALID_ARGUMENT
 					end if
 					if fnData.builtIn then
 						choose case fnData.name
 							case FUNC_VAR
 								if UpperBound(fnData.args) <> 1 then
-									MessageBoxEx("错误","解析函数宏失败!~n函数{" + fnData.fullName + "},参数数量不正确",StopSign!)
+									MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析函数宏失败!~n函数[" + fnData.fullName + "],参数数量不正确"),StopSign!)
 									return RetCode.E_INVALID_ARGUMENT
 								end if
 							case FUNC_INVOKE
 								if UpperBound(fnData.args) < 1 then
-									MessageBoxEx("错误","解析函数宏失败!~n函数{" + fnData.name + "},参数数量不正确",StopSign!)
+									MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析函数宏失败!~n函数[" + fnData.name + "],参数数量不正确"),StopSign!)
 									return RetCode.E_INVALID_ARGUMENT
 								end if
 							case else
-								MessageBoxEx("错误","解析函数宏失败!~n函数{" + fnData.name + "},未定义",StopSign!)
+								MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析函数宏失败!~n函数[" + fnData.name + "],未定义"),StopSign!)
 								return RetCode.E_INVALID_ARGUMENT
 						end choose
 					end if
 				else
 					if nPos - nMacPos - 1 > 0 then
+						if bIsCtx and bIsMacro then nMacPos ++
 						if bDD then
 							varData.name = Trim(Mid(sExp,nMacPos + 2,nPos - nMacPos - 2))
 						else
 							varData.name = Trim(Mid(sExp,nMacPos + 1,nPos - nMacPos - 1))
 						end if
+						if bIsCtx and bIsMacro then nMacPos --
 						varData.fullName = RightTrim(Mid(sExp,nMacPos,nPos - nMacPos))
-						if Not bDD then
-							nVarIdx = _of_FindVarIndex(varData.name)
-							if nVarIdx = 0 then
-								MessageBoxEx("错误","解析变量宏失败!~n变量{" + varData.name + "},未定义",StopSign!)
+						varData.isCtx = bIsCtx
+						varData.isMacro = bIsMacro
+						if bIsMacro and Not bDD then
+							if bIsCtx then
+								MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析函数宏失败!~n上下文变量[" + varData.name + "],不支持静态展开"),StopSign!)
 								return RetCode.E_INVALID_ARGUMENT
 							end if
-							sVarExp = GlobalVars[nVarIdx].exp
+							nVarIdx = _of_FindVarIndex(varData.name)
+							if nVarIdx = 0 then
+								MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析变量宏失败!~n变量[" + varData.name + "],未定义"),StopSign!)
+								return RetCode.E_INVALID_ARGUMENT
+							end if
+							if GlobalVars[nVarIdx].varType = VAR_FOREIGN then
+								MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析变量宏失败!~n外部变量[" + varData.name + "],不支持静态展开"),StopSign!)
+								return RetCode.E_INVALID_ARGUMENT
+							end if
+							sVarExp = GlobalVars[nVarIdx].local.exp
 							if sVarExp = "" then
-								MessageBoxEx("错误","解析变量宏失败!~n变量{" + varData.name + "},值无效",StopSign!)
+								MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析变量宏失败!~n变量[" + varData.name + "],值无效"),StopSign!)
 								return RetCode.FAILED
 							end if
 							sVarExp = "(" + sVarExp + ")"
 							sExp = ReplaceAll(sExp,varData.fullName,sVarExp,true,true)
 							nLen = Len(sExp)
 							nPos += Len(sVarExp) - (nPos - nMacPos)
-							if GlobalVars[nVarIdx].hasMacro then
-								nGVarCnt = UpperBound(GlobalVars[nVarIdx].vars)
+							if GlobalVars[nVarIdx].local.hasMacro then
+								nGVarCnt = UpperBound(GlobalVars[nVarIdx].local.vars)
 								for nGVarIdx = 1 to nGVarCnt
 									for nIndex = 1 to nVarCnt
-										if varDatas[nIndex] = GlobalVars[nVarIdx].vars[nGVarIdx] then exit
+										if varDatas[nIndex] = GlobalVars[nVarIdx].local.vars[nGVarIdx] then exit
 									next
 									if nIndex > nVarCnt then
 										nVarCnt = UpperBound(varDatas) + 1
-										varDatas[nVarCnt] = GlobalVars[nVarIdx].vars[nGVarIdx]
+										varDatas[nVarCnt] = GlobalVars[nVarIdx].local.vars[nGVarIdx]
 									end if
 								next
-								nGFnCnt = UpperBound(GlobalVars[nVarIdx].fns)
+								nGFnCnt = UpperBound(GlobalVars[nVarIdx].local.fns)
 								for nGFnIdx = 1 to nGFnCnt
 									for nIndex = 1 to nFnCnt
-										if fnDatas[nIndex].fullName = GlobalVars[nVarIdx].fns[nGFnIdx].fullName then exit
+										if fnDatas[nIndex].fullName = GlobalVars[nVarIdx].local.fns[nGFnIdx].fullName then exit
 									next
 									if nIndex > nFnCnt then
 										nFnCnt = UpperBound(fnDatas) + 1
-										fnDatas[nFnCnt] = GlobalVars[nVarIdx].fns[nGFnIdx]
+										fnDatas[nFnCnt] = GlobalVars[nVarIdx].local.fns[nGFnIdx]
 									else
 										do while nIndex < nFnCnt
 											fnDatas[nIndex] = fnDatas[nIndex + 1]
 											nIndex++
 										loop
-										fnDatas[nFnCnt] = GlobalVars[nVarIdx].fns[nGFnIdx]
+										fnDatas[nFnCnt] = GlobalVars[nVarIdx].local.fns[nGFnIdx]
 									end if
 								next
 							end if
@@ -1300,7 +1485,7 @@ for nPos = 1 to nLen
 							end if
 						end if
 					else
-						MessageBoxEx("错误","解析变量宏失败!~n无效的名称",StopSign!)
+						MessageBox("错误",_of_BuildParseError(sExp,nMacPos + (nPos - nMacPos) / 2,"解析变量宏失败!~n无效的名称"),StopSign!)
 						return RetCode.E_INVALID_ARGUMENT
 					end if
 				end if
@@ -1308,16 +1493,20 @@ for nPos = 1 to nLen
 			end if
 		case else
 			if nMacFlag = MACRO_PHASE_FIND then
-				if sWord <> " " and sWord <> "~t" /*and sWord <> "~n"*/ then
+				if sChar <> " " and sChar <> "~t" /*and sChar <> "~n"*/ then
 					nMacFlag = MACRO_PHASE_NONE
 				end if
 			elseif nMacFlag = MACRO_PHASE_NONE then
-				if sWord = " " or sWord = "~t" /*or sWord = "~n"*/ then
+				if sChar = " " or sChar = "~t" /*or sChar = "~n"*/ then
 					nMacFlag = MACRO_PHASE_FIND
 				end if
 			end if
 	end choose
 next
+if bQuoted then
+	MessageBox("错误",_of_BuildParseError(sExp,nQuotePos,"解析变量宏失败!~n引号未关闭"),StopSign!)
+	return RetCode.E_INVALID_ARGUMENT
+end if
 
 exp = Left(sExp,nLen - 1)
 vars = varDatas
@@ -1416,7 +1605,10 @@ long nPos,nLen
 GLOBALVARDATA varData
 
 if name = "" or exp = "" then return RetCode.E_INVALID_ARGUMENT
-if _of_FindVarIndex(name) > 0 then return RetCode.FAILED
+if _of_FindVarIndex(name) > 0 then
+	MessageBox("错误","变量[" + name + "],重复定义",StopSign!)
+	return RetCode.FAILED
+end if
 
 nLen = Len(name)
 for nPos = 1 to nLen
@@ -1426,155 +1618,17 @@ for nPos = 1 to nLen
 	end choose
 next
 
-if IsFailed(_of_ParseExp(ref exp,ref varData.vars,ref varData.fns)) then return RetCode.E_INVALID_ARGUMENT
+if IsFailed(_of_ParseExp(ref exp,ref varData.local.vars,ref varData.local.fns)) then return RetCode.E_INVALID_ARGUMENT
 
 varData.name = name
-varData.exp = exp
-varData.hasMacro = (UpperBound(varData.vars) > 0 or UpperBound(varData.fns) > 0)
+varData.local.exp = exp
+varData.local.hasMacro = (UpperBound(varData.local.vars) > 0 or UpperBound(varData.local.fns) > 0)
 
 GlobalVars[UpperBound(GlobalVars) + 1] = varData
 
 _of_ResetColumns()
 
 return RetCode.OK
-end function
-
-private function string _of_preprocessexp (readonly long row, readonly dwobject dwo, string exp, readonly vardata vars[], funcdata fns[]);int nIndex,nVarIdx,nVarCount,nGVarIdx,nFnIdx,nFnCnt,nFnArgIdx,nFnArgCnt
-string sVal,sArgs[],sArgs2[],sEmptyArray[]
-any aVal
-
-nFnCnt = UpperBound(fns)
-nVarCount = UpperBound(vars)
-
-for nVarIdx = 1 to nVarCount
-	if vars[nVarIdx].index = 0 then
-		nGVarIdx = _of_FindVarIndex(vars[nVarIdx].name)
-		if nGVarIdx = 0 then
-			MessageBoxEx("ColumnExp Error","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量{" + vars[nVarIdx].name + "},未定义",StopSign!)
-			return ""
-		end if
-		vars[nVarIdx].index = nGVarIdx
-	else
-		nGVarIdx = vars[nVarIdx].index
-	end if
-	if GlobalVars[nGVarIdx].hasMacro then
-		sVal = _of_PreprocessExp(row,dwo,GlobalVars[nGVarIdx].exp,GlobalVars[nGVarIdx].vars,GlobalVars[nGVarIdx].fns)
-		if sVal = "" then return ""
-	else
-		sVal = GlobalVars[nGVarIdx].exp
-		if sVal = "" then
-			MessageBoxEx("ColumnExp Error","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量{" + vars[nVarIdx].name + "},值无效",StopSign!)
-			return ""
-		end if
-	end if
-	sVal = "(" + sVal + ")"
-	exp = ReplaceAll(exp,vars[nVarIdx].fullName,sVal,true,true)
-	for nFnIdx = 1 to nFnCnt
-		if Pos(fns[nFnIdx].fullName,vars[nVarIdx].fullName) > 0 then
-			fns[nFnIdx].fullName = ReplaceAll(fns[nFnIdx].fullName,vars[nVarIdx].fullName,sVal,true,true)
-			nFnArgCnt = UpperBound(fns[nFnIdx].args)
-			for nFnArgIdx = 1 to nFnArgCnt
-				fns[nFnIdx].args[nFnArgIdx] = ReplaceAll(fns[nFnIdx].args[nFnArgIdx],vars[nVarIdx].fullName,sVal,true,true)
-			next
-		end if
-	next
-next
-
-for nFnIdx = nFnCnt to 1 step -1
-	sArgs = sEmptyArray
-	nFnArgCnt = UpperBound(fns[nFnIdx].args)
-	for nFnArgIdx = 1 to nFnArgCnt
-		sVal = _of_Evaluate(fns[nFnIdx].args[nFnArgIdx],row)
-		if sVal = "!" or sVal = "?" then
-			MessageBoxEx("ColumnExp Error","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~nExpression:" + fns[nFnIdx].fullName + "~nSub Expression:" + fns[nFnIdx].args[nFnArgIdx],StopSign!)
-			return ""
-		end if
-		sArgs[nFnArgIdx] = sVal
-	next
-	if fns[nFnIdx].builtIn then
-		choose case fns[nFnIdx].name
-			case FUNC_VAR
-				nGVarIdx = _of_FindVarIndex(sArgs[1])
-				if nGVarIdx = 0 then
-					MessageBoxEx("ColumnExp Error","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量{" + sArgs[1] + "},未定义",StopSign!)
-					return ""
-				end if
-				if GlobalVars[nGVarIdx].hasMacro then
-					sVal = _of_PreprocessExp(row,dwo,GlobalVars[nGVarIdx].exp,GlobalVars[nGVarIdx].vars,GlobalVars[nGVarIdx].fns)
-					if sVal = "" then return ""
-				else
-					sVal = GlobalVars[nGVarIdx].exp
-					if sVal = "" then
-						MessageBoxEx("ColumnExp Error","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量{" + sArgs[1] + "},值无效",StopSign!)
-						return ""
-					end if
-				end if
-			case FUNC_INVOKE
-				sArgs2 = sEmptyArray
-				for nFnArgIdx = 2 to nFnArgCnt
-					sArgs2[nFnArgIdx - 1] = sArgs[nFnArgIdx]
-				next
-				aVal = #DataWindow.Event OnColumnExpInvokeMethod(row,dwo,sArgs[1],sArgs2)
-				choose case ClassName(aVal)
-					case "string"
-						sVal = "'" + String(aVal) + "'"
-					case "long","integer","unsignedlong","usignedinteger","double","real","decimal"
-						sVal = String(aVal)
-					case "boolean"
-						if aVal = true then
-							sVal = "1=1"
-						else
-							sVal = "1=0"
-						end if
-					case "datetime"
-						sVal = "DateTime('" + String(aVal) + "')"
-					case "date"
-						sVal = "Date('" + String(aVal) + "')"
-					case "time"
-						sVal = "Time('" + String(aVal) + "')"
-					case else
-						MessageBoxEx("ColumnExp Error","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n函数{" + sArgs[1] + "},返回值无效",StopSign!)
-						return ""
-				end choose
-		end choose
-	else
-		aVal = #DataWindow.Event OnColumnExpInvokeMethod(row,dwo,fns[nFnIdx].name,sArgs)
-		choose case ClassName(aVal)
-			case "string"
-				sVal = "'" + String(aVal) + "'"
-			case "long","integer","unsignedlong","usignedinteger","double","real","decimal"
-				sVal = String(aVal)
-			case "boolean"
-				if aVal = true then
-					sVal = "1=1"
-				else
-					sVal = "1=0"
-				end if
-			case "datetime"
-				sVal = "DateTime('" + String(aVal) + "')"
-			case "date"
-				sVal = "Date('" + String(aVal) + "')"
-			case "time"
-				sVal = "Time('" + String(aVal) + "')"
-			case else
-				MessageBoxEx("ColumnExp Error","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n函数{" + fns[nFnIdx].name + "},返回值无效",StopSign!)
-				return ""
-		end choose
-	end if
-	sVal = "(" + sVal + ")"
-	exp = ReplaceAll(exp,fns[nFnIdx].fullName,sVal,true,true)
-	for nIndex = 1 to nFnIdx - 1
-		if Pos(fns[nIndex].fullName,fns[nFnIdx].fullName) > 0 then
-			fns[nIndex].fullName = ReplaceAll(fns[nIndex].fullName,fns[nFnIdx].fullName,sVal,true,true)
-			nFnArgCnt = UpperBound(fns[nIndex].args)
-			for nFnArgIdx = 1 to nFnArgCnt
-				fns[nIndex].args[nFnArgIdx] = ReplaceAll(fns[nIndex].args[nFnArgIdx],fns[nFnIdx].fullName,sVal,true,true)
-			next
-		end if
-	next
-next
-
-return exp
 end function
 
 public function long of_setexp (readonly integer index, string exp, readonly boolean recalc);//====================================================================
@@ -1616,7 +1670,7 @@ if ColExpDatas[index].cacheable then
 			_of_CreateCompute(ColExpDatas[index].computeName,exp,ref sErrInfo)
 		end if
 		if sErrInfo <> "" then
-			MessageBoxEx("ColumnExp Error","[" + String(ColExpDatas[index].name) + "]更新表达式缓存失败:~nExpression:" + exp + "~nError:" + sErrInfo,StopSign!)
+			MessageBox("错误","[" + String(ColExpDatas[index].name) + "]更新表达式缓存失败:~nExpression:" + exp + "~nError:" + sErrInfo,StopSign!)
 		end if
 	end if
 end if
@@ -1704,36 +1758,18 @@ int index
 index = _of_FindVarIndex(name)
 if index = 0 then return of_AddVarExp(name,exp)
 if exp = "" then return RetCode.E_INVALID_ARGUMENT
-if GlobalVars[index].exp = exp then return RetCode.OK
+if GlobalVars[index].varType = VAR_FOREIGN then return RetCode.E_NO_SUPPORT
+if GlobalVars[index].local.exp = exp then return RetCode.OK
 
-if IsFailed(_of_ParseExp(ref exp,ref GlobalVars[index].vars,ref GlobalVars[index].fns)) then return RetCode.E_INVALID_ARGUMENT
+if IsFailed(_of_ParseExp(ref exp,ref GlobalVars[index].local.vars,ref GlobalVars[index].local.fns)) then return RetCode.E_INVALID_ARGUMENT
 
-GlobalVars[index].exp = exp
-GlobalVars[index].hasMacro = (UpperBound(GlobalVars[index].vars) > 0 or UpperBound(GlobalVars[index].fns) > 0)
+GlobalVars[index].local.exp = exp
+GlobalVars[index].local.hasMacro = (UpperBound(GlobalVars[index].local.vars) > 0 or UpperBound(GlobalVars[index].local.fns) > 0)
 
 _of_ResetColumns()
 
-if #Enabled and Not _bRowCalcing and recalc then
-	long nRow,nRowCnt
-	int nIndex,nCount
-	int nColExps[]
-	nRowCnt = #DataWindow.RowCount()
-	if nRowCnt > 0 then
-		nCount = _of_FindVarDepends(index,ref nColExps,false)
-		if nCount > 0 then
-			_bRowCalcing = true
-			for nRow = 1 to nRowCnt
-				_of_MakeDirty()
-				for nIndex = 1 to nCount
-					if Not force then
-						if UpperBound(ColExpDatas[nColExps[nIndex]].relativeInputColIDs) > 0 then continue
-					end if
-					_of_CalcItem(nRow,nColExps[nIndex])
-				next
-			next
-			_bRowCalcing = false
-		end if
-	end if
+if recalc then
+	Event OnVarChanged(index,force)
 end if
 
 return RetCode.OK
@@ -1763,7 +1799,25 @@ end function
 public function long of_setvar (readonly string name, readonly string value, readonly boolean recalc, readonly boolean force);return of_SetVarExp(name,"'" + value + "'",recalc,force)
 end function
 
-private function boolean _of_hasref (string exp, readonly string colname);long nPos,nLen,nPosBegin
+private function boolean _of_hasref (string exp, readonly string colname);//====================================================================
+// Function: _of_hasref()
+//--------------------------------------------------------------------
+// Description: 检查表达式是否引用了指定列
+//--------------------------------------------------------------------
+// Arguments:
+// 	value   	string	exp    	
+// 	readonly	string	colname	
+//--------------------------------------------------------------------
+// Returns:  boolean
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2018-03-09
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+long nPos,nLen,nPosBegin
 string sWord,sQuote
 boolean bQuoted
 constant string TRAILER = ";"
@@ -1785,7 +1839,7 @@ for nPos = 1 to nLen
 				end if
 				nPosBegin = 0
 			end if
-		case " ","~t","~n","~r","+","-","*","/","\",">","<","=","(",")","{","}","[","]",",",".",":",";","?","!","&","|"
+		case " ","~t","~n","~r","+","-","*","/","\",">","<","=","(",")","{","}","[","]",",",".",":",";","?","!","&","|"		//Word delimiters
 			if bQuoted then continue
 			if nPosBegin > 0 then
 				if Mid(exp,nPosBegin,nPos - nPosBegin) = colName then return true
@@ -1826,11 +1880,14 @@ if index < 1 or index > UpperBound(ColExpDatas) then return RetCode.E_OUT_OF_BOU
 if ColExpDatas[index].cacheable = cache then return RetCode.OK
 
 if cache then
-	if ColExpDatas[index].hasMacro then return RetCode.E_NO_SUPPORT
+	if ColExpDatas[index].hasMacro then
+		MessageBox("错误","[" + String(ColExpDatas[index].name) + "]创建表达式缓存失败,不支持宏扩展",StopSign!)
+		return RetCode.E_NO_SUPPORT
+	end if
 	_nCachedID ++
 	ColExpDatas[index].computeName = ColExpDatas[index].name + "_" + String(_nCachedID) + "_" + DWOSUFFIX
 	if Not _of_CreateCompute(ColExpDatas[index].computeName,ColExpDatas[index].exp,ref sErrInfo) then
-		MessageBoxEx("ColumnExp Error","[" + String(ColExpDatas[index].name) + "]创建表达式缓存失败:~nExpression:" + ColExpDatas[index].exp + "~nError:" + sErrInfo,StopSign!)
+		MessageBox("错误","[" + String(ColExpDatas[index].name) + "]创建表达式缓存失败:~nExpression:" + ColExpDatas[index].exp + "~nError:" + sErrInfo,StopSign!)
 	end if
 else
 	#DataWindow.Modify("Destroy " + ColExpDatas[index].computeName)
@@ -1863,7 +1920,26 @@ public function long of_setcacheable (readonly string colname, readonly boolean 
 return of_SetCacheable(_of_FindExpIndex(colName),cache)
 end function
 
-private function boolean _of_createcompute (readonly string name, readonly string exp, ref string errinfo);string sSyntax
+private function boolean _of_createcompute (readonly string name, readonly string exp, ref string errinfo);//====================================================================
+// Function: _of_createcompute()
+//--------------------------------------------------------------------
+// Description: 创建缓存表达式的计算列对象
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly 	string	name   	
+// 	readonly 	string	exp    	
+// 	reference	string	errinfo	
+//--------------------------------------------------------------------
+// Returns:  boolean
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2018-03-16
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+string sSyntax
 
 sSyntax  = 'create compute(band=detail alignment="1" expression="' + exp + '" border="0" '
 sSyntax += 'color="0" x="0" y="0" height="0" width="0" '
@@ -1910,17 +1986,33 @@ for nIndex = 1 to nCount
 	ColExpDatas[nIndex].dirty = true
 	choose case ColExpDatas[nIndex].colType
 		case COL_TYPE_DECIMAL
-			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemDecimal(row,ColExpDatas[nIndex].id))
+			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemDecimal(row,ColExpDatas[nIndex].id)) //IsEmptyOrNull(#DataWindow.GetItemDecimal(row,ColExpDatas[nIndex].id))
 		case COL_TYPE_INTEGER
-			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemNumber(row,ColExpDatas[nIndex].id))
+			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemNumber(row,ColExpDatas[nIndex].id)) //IsEmptyOrNull(#DataWindow.GetItemNumber(row,ColExpDatas[nIndex].id))
 		case COL_TYPE_STRING
-			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemString(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemString(row,ColExpDatas[nIndex].id) <> "" then
+				ColExpDatas[nIndex].empty = false
+			else
+				ColExpDatas[nIndex].empty = true
+			end if
 		case COL_TYPE_DATETIME
-			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemDateTime(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemDateTime(row,ColExpDatas[nIndex].id) <> DateTime("") then
+				ColExpDatas[nIndex].empty = false
+			else
+				ColExpDatas[nIndex].empty = true
+			end if
 		case COL_TYPE_DATE
-			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemDate(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemDate(row,ColExpDatas[nIndex].id) <> Date("") then
+				ColExpDatas[nIndex].empty = false
+			else
+				ColExpDatas[nIndex].empty = true
+			end if
 		case COL_TYPE_TIME
-			ColExpDatas[nIndex].empty = IsNull(#DataWindow.GetItemTime(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemTime(row,ColExpDatas[nIndex].id) <> Time("") then
+				ColExpDatas[nIndex].empty = false
+			else
+				ColExpDatas[nIndex].empty = true
+			end if
 		case else
 			ColExpDatas[nIndex].empty = false
 	end choose
@@ -1934,17 +2026,33 @@ for nIndex = 1 to nCount
 	if nCount2 = 0 then continue
 	choose case ColExpDatas[nIndex].colType
 		case COL_TYPE_DECIMAL
-			bEmpty = IsNull(#DataWindow.GetItemDecimal(row,ColExpDatas[nIndex].id))
+			bEmpty = IsNull(#DataWindow.GetItemDecimal(row,ColExpDatas[nIndex].id)) //IsEmptyOrNull(#DataWindow.GetItemDecimal(row,ColExpDatas[nIndex].id))
 		case COL_TYPE_INTEGER
-			bEmpty = IsNull(#DataWindow.GetItemNumber(row,ColExpDatas[nIndex].id))
+			bEmpty = IsNull(#DataWindow.GetItemNumber(row,ColExpDatas[nIndex].id)) //IsEmptyOrNull(#DataWindow.GetItemNumber(row,ColExpDatas[nIndex].id))
 		case COL_TYPE_STRING
-			bEmpty = IsNull(#DataWindow.GetItemString(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemString(row,ColExpDatas[nIndex].id) <> "" then
+				bEmpty = false
+			else
+				bEmpty = true
+			end if
 		case COL_TYPE_DATETIME
-			bEmpty = IsNull(#DataWindow.GetItemDateTime(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemDateTime(row,ColExpDatas[nIndex].id) <> DateTime("") then
+				bEmpty = false
+			else
+				bEmpty = true
+			end if
 		case COL_TYPE_DATE
-			bEmpty = IsNull(#DataWindow.GetItemDate(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemDate(row,ColExpDatas[nIndex].id) <> Date("") then
+				bEmpty = false
+			else
+				bEmpty = true
+			end if
 		case COL_TYPE_TIME
-			bEmpty = IsNull(#DataWindow.GetItemTime(row,ColExpDatas[nIndex].id))
+			if #DataWindow.GetItemTime(row,ColExpDatas[nIndex].id) <> Time("") then
+				bEmpty = false
+			else
+				bEmpty = true
+			end if
 		case else
 			bEmpty = true
 	end choose
@@ -1985,6 +2093,322 @@ for nRow = 1 to nRowCnt
 	of_CalcEmpty(nRow)
 next
 
+return RetCode.OK
+end function
+
+public function long of_addforeignvar (readonly string name, readonly se_cst_dw dw);//====================================================================
+// Function: of_addforeignvar()
+//--------------------------------------------------------------------
+// Description: 添加外部变量
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly	string	name	
+// 	readonly	se_cst_dw		dw    	
+//--------------------------------------------------------------------
+// Returns:  long
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2020-06-13
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+int nIndex
+n_cst_dwsvc_columnexp expSvc
+GLOBALVARDATA varData
+
+if name = "" then return RetCode.E_INVALID_ARGUMENT
+if Not IsValidObject(dw) then return RetCode.E_INVALID_OBJECT
+if _of_FindVarIndex(name) > 0 then
+	MessageBox("错误","变量[" + name + "],重复定义",StopSign!)
+	return RetCode.FAILED
+end if
+
+expSvc = dw.ColumnExp
+
+varData.name = name
+varData.varType = VAR_FOREIGN
+varData.foreign.expSvc = expSvc
+varData.foreign.index = expSvc._of_FindVarIndex(name)
+if varData.foreign.index <= 0 then
+	MessageBox("错误","外部变量[" + name + "],未定义",StopSign!)
+	return RetCode.E_VAR_NOT_FOUND
+end if
+
+GlobalVars[UpperBound(GlobalVars) + 1] = varData
+
+nIndex = UpperBound(expSvc.GlobalVars[varData.foreign.index].links) + 1
+expSvc.GlobalVars[varData.foreign.index].links[nIndex].index = UpperBound(GlobalVars)
+expSvc.GlobalVars[varData.foreign.index].links[nIndex].expSvc = this
+
+_of_ResetColumns()
+
+return RetCode.OK
+end function
+
+private function string _of_preprocessexp (readonly long row, readonly dwobject dwo, string exp, readonly vardata vars[], funcdata fns[], readonly long ctx_row, readonly dwobject ctx_dwo, readonly n_cst_dwsvc_columnexp ctx_expsvc);//====================================================================
+// Function: _of_preprocessexp()
+//--------------------------------------------------------------------
+// Description: 预处理表达式
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly	long							row   	
+// 	readonly	dwobject						dwo   	
+// 	value		string						exp   	
+// 	readonly	vardata						vars[]	
+// 	value		funcdata						fns[] 	
+// 	readonly	long							ctx_row	
+// 	readonly	dwobject						ctx_dwo	
+// 	readonly	n_cst_dwsvc_columnexp	ctx_expsvc	
+//--------------------------------------------------------------------
+// Returns:  string
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2017-06-20
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+int nIndex,nVarIdx,nVarCount,nGVarIdx,nFnIdx,nFnCnt,nFnArgIdx,nFnArgCnt
+string sVal,sArgs[],sArgs2[],sEmptyArray[]
+any aVal
+
+nFnCnt = UpperBound(fns)
+nVarCount = UpperBound(vars)
+
+for nVarIdx = 1 to nVarCount
+	if vars[nVarIdx].isCtx then
+		if vars[nVarIdx].isMacro then
+			sVal = ctx_expSvc._of_CalcVarExpValue(ctx_row,ctx_dwo,ctx_expSvc._of_FindVarIndex(vars[nVarIdx].name),row,dwo,this)
+			if sVal = "" then return ""
+		else
+			sVal = ctx_expsvc._of_GetItemExpValue(ctx_row,vars[nVarIdx].name)
+			if sVal = "" then return ""
+		end if
+	else
+		if vars[nVarIdx].index = 0 then
+			nGVarIdx = _of_FindVarIndex(vars[nVarIdx].name)
+			if nGVarIdx = 0 then
+				MessageBox("错误","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量[" + vars[nVarIdx].name + "],未定义",StopSign!)
+				return ""
+			end if
+			vars[nVarIdx].index = nGVarIdx
+		else
+			nGVarIdx = vars[nVarIdx].index
+		end if
+		if GlobalVars[nGVarIdx].varType = VAR_FOREIGN then
+			sVal = GlobalVars[nGVarIdx].foreign.expSvc._of_CalcVarExpValue(GlobalVars[nGVarIdx].foreign.index,row,dwo,this)
+			if sVal = "" then return ""
+		elseif GlobalVars[nGVarIdx].local.hasMacro then
+			sVal = _of_PreprocessExp(row,dwo,GlobalVars[nGVarIdx].local.exp,GlobalVars[nGVarIdx].local.vars,GlobalVars[nGVarIdx].local.fns,ctx_row,ctx_dwo,ctx_expsvc)
+			if sVal = "" then return ""
+		else
+			sVal = GlobalVars[nGVarIdx].local.exp
+			if sVal = "" then
+				MessageBox("错误","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量[" + vars[nVarIdx].name + "],值无效",StopSign!)
+				return ""
+			end if
+		end if
+	end if
+	sVal = "(" + sVal + ")"
+	exp = ReplaceAll(exp,vars[nVarIdx].fullName,sVal,true,true)
+	for nFnIdx = 1 to nFnCnt
+		if Pos(fns[nFnIdx].fullName,vars[nVarIdx].fullName) > 0 then
+			fns[nFnIdx].fullName = ReplaceAll(fns[nFnIdx].fullName,vars[nVarIdx].fullName,sVal,true,true)
+			nFnArgCnt = UpperBound(fns[nFnIdx].args)
+			for nFnArgIdx = 1 to nFnArgCnt
+				fns[nFnIdx].args[nFnArgIdx] = ReplaceAll(fns[nFnIdx].args[nFnArgIdx],vars[nVarIdx].fullName,sVal,true,true)
+			next
+		end if
+	next
+next
+
+for nFnIdx = nFnCnt to 1 step -1
+	sArgs = sEmptyArray
+	nFnArgCnt = UpperBound(fns[nFnIdx].args)
+	for nFnArgIdx = 1 to nFnArgCnt
+		sVal = _of_Evaluate(fns[nFnIdx].args[nFnArgIdx],row)
+		if sVal = "!" or sVal = "?" then
+			MessageBox("错误","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~nExpression:" + fns[nFnIdx].fullName + "~nSub Expression:" + fns[nFnIdx].args[nFnArgIdx],StopSign!)
+			return ""
+		end if
+		sArgs[nFnArgIdx] = sVal
+	next
+	if fns[nFnIdx].builtIn then
+		choose case fns[nFnIdx].name
+			case FUNC_VAR
+				nGVarIdx = _of_FindVarIndex(sArgs[1])
+				if nGVarIdx = 0 then
+					MessageBox("错误","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量[" + sArgs[1] + "],未定义",StopSign!)
+					return ""
+				end if
+				if GlobalVars[nGVarIdx].varType = VAR_FOREIGN then
+					sVal = GlobalVars[nGVarIdx].foreign.expSvc._of_CalcVarExpValue(GlobalVars[nGVarIdx].foreign.index,row,dwo,this)
+					if sVal = "" then return ""
+				elseif GlobalVars[nGVarIdx].local.hasMacro then
+					sVal = _of_PreprocessExp(row,dwo,GlobalVars[nGVarIdx].local.exp,GlobalVars[nGVarIdx].local.vars,GlobalVars[nGVarIdx].local.fns,ctx_row,ctx_dwo,ctx_expsvc)
+					if sVal = "" then return ""
+				else
+					sVal = GlobalVars[nGVarIdx].local.exp
+					if sVal = "" then
+						MessageBox("错误","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n变量[" + sArgs[1] + "],值无效",StopSign!)
+						return ""
+					end if
+				end if
+			case FUNC_INVOKE
+				sArgs2 = sEmptyArray
+				for nFnArgIdx = 2 to nFnArgCnt
+					sArgs2[nFnArgIdx - 1] = sArgs[nFnArgIdx]
+				next
+				aVal = #DataWindow.Event OnColumnExpInvokeMethod(row,dwo,sArgs[1],sArgs2)
+				choose case ClassName(aVal)
+					case "string"
+						sVal = "'" + String(aVal) + "'"
+					case "long","integer","unsignedlong","usignedinteger","double","real","decimal"
+						sVal = String(aVal)
+					case "boolean"
+						if aVal = true then
+							sVal = "1=1"
+						else
+							sVal = "1=0"
+						end if
+					case "datetime"
+						sVal = "DateTime('" + String(aVal) + "')"
+					case "date"
+						sVal = "Date('" + String(aVal) + "')"
+					case "time"
+						sVal = "Time('" + String(aVal) + "')"
+					case else
+						MessageBox("错误","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n函数[" + sArgs[1] + "],返回值无效",StopSign!)
+						return ""
+				end choose
+		end choose
+	else
+		aVal = #DataWindow.Event OnColumnExpInvokeMethod(row,dwo,fns[nFnIdx].name,sArgs)
+		choose case ClassName(aVal)
+			case "string"
+				sVal = "'" + String(aVal) + "'"
+			case "long","integer","unsignedlong","usignedinteger","double","real","decimal"
+				sVal = String(aVal)
+			case "boolean"
+				if aVal = true then
+					sVal = "1=1"
+				else
+					sVal = "1=0"
+				end if
+			case "datetime"
+				sVal = "DateTime('" + String(aVal) + "')"
+			case "date"
+				sVal = "Date('" + String(aVal) + "')"
+			case "time"
+				sVal = "Time('" + String(aVal) + "')"
+			case else
+				MessageBox("错误","预处理表达式发生错误!~n[" + String(dwo.name) + "]表达式错误:~n函数[" + fns[nFnIdx].name + "],返回值无效",StopSign!)
+				return ""
+		end choose
+	end if
+	sVal = "(" + sVal + ")"
+	exp = ReplaceAll(exp,fns[nFnIdx].fullName,sVal,true,true)
+	for nIndex = 1 to nFnIdx - 1
+		if Pos(fns[nIndex].fullName,fns[nFnIdx].fullName) > 0 then
+			fns[nIndex].fullName = ReplaceAll(fns[nIndex].fullName,fns[nFnIdx].fullName,sVal,true,true)
+			nFnArgCnt = UpperBound(fns[nIndex].args)
+			for nFnArgIdx = 1 to nFnArgCnt
+				fns[nIndex].args[nFnArgIdx] = ReplaceAll(fns[nIndex].args[nFnArgIdx],fns[nFnIdx].fullName,sVal,true,true)
+			next
+		end if
+	next
+next
+
+return exp
+end function
+
+private function string _of_getitemexpvalue (readonly long row, readonly string colname);//====================================================================
+// Function: _of_getitemexpvalue()
+//--------------------------------------------------------------------
+// Description: 计算指定单元格的值 （返回值为表达式格式）
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly	long    	row	
+// 	readonly	string	colname	
+//--------------------------------------------------------------------
+// Returns:  string
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2020-06-13
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+choose case _of_GetColumnType(colName)
+	case COL_TYPE_DECIMAL
+		return dwValueToExp(#DataWindow.GetItemDecimal(row,colName))
+	case COL_TYPE_INTEGER
+		return dwValueToExp(#DataWindow.GetItemNumber(row,colName))
+	case COL_TYPE_STRING
+		return dwValueToExp(#DataWindow.GetItemString(row,colName))
+	case COL_TYPE_DATETIME
+		return dwValueToExp(#DataWindow.GetItemDateTime(row,colName))
+	case COL_TYPE_DATE
+		return dwValueToExp(#DataWindow.GetItemDate(row,colName))
+	case COL_TYPE_TIME
+		return dwValueToExp(#DataWindow.GetItemTime(row,colName))
+	case else
+		return ""
+end choose
+end function
+
+private function string _of_calcvarexpvalue (readonly long row, readonly dwobject dwo, readonly integer index, readonly long ctx_row, readonly dwobject ctx_dwo, readonly n_cst_dwsvc_columnexp ctx_expsvc);//====================================================================
+// Function: _of_calcvarexpvalue()
+//--------------------------------------------------------------------
+// Description: 计算指定全局变量的值 （返回值为表达式格式，始终为字符串类型: 'value'）
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly	integer						index	
+// 	readonly	long							ctx_row	
+// 	readonly	dwobject						ctx_dwo	
+// 	readonly	n_cst_dwsvc_columnexp	ctx_expsvc	
+//--------------------------------------------------------------------
+// Returns:  string
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2020-06-13
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+string sExp,sVal
+
+if GlobalVars[index].varType = VAR_FOREIGN then
+	return GlobalVars[index].foreign.expSvc._of_CalcVarExpValue(GlobalVars[index].foreign.index,row,dwo,this)
+end if
+
+sExp = _of_PreprocessExp(row,dwo,GlobalVars[index].local.exp,GlobalVars[index].local.vars,GlobalVars[index].local.fns,ctx_row,ctx_dwo,ctx_expsvc)
+
+sVal = _of_Evaluate("dwValueToExp(" + sExp + ")",row)
+if sVal = "?" or sVal = "!" then
+	MessageBox("错误","变量[" + GlobalVars[index].name + "]表达式错误:~nExpression:" + sExp,StopSign!)
+	return ""
+end if
+
+return sVal
+end function
+
+private function string _of_calcvarexpvalue (readonly integer index, readonly long ctx_row, readonly dwobject ctx_dwo, readonly n_cst_dwsvc_columnexp ctx_expsvc);return _of_CalcVarExpValue(#DataWindow.GetRow(),#DataWindow.Object.DataWindow,index,ctx_row,ctx_dwo,ctx_expsvc)
+end function
+
+private function string _of_buildparseerror (readonly string syntax, readonly long pos, string errinfo);if errInfo <> "" then errInfo += "~n~n"
+return errInfo + syntax + "~n" + Fill("_",LenA(Left(syntax,pos)) - 1) + "^ (" + String(pos) + ")"
+end function
+
+private function string _of_buildparseerror (readonly string syntax, readonly long pos);return _of_BuildParseError(syntax,pos,"")
+end function
+
+public function long of_settrace (readonly boolean trace);#Trace = trace
 return RetCode.OK
 end function
 

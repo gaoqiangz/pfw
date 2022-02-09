@@ -1,0 +1,13 @@
+﻿$PBExportHeader$dwnvltime.srf
+global type dwnvltime from function_object
+end type
+
+forward prototypes
+global function time dwnvltime ()
+end prototypes
+
+global function time dwnvltime ();time nvl
+SetNull(nvl)
+return nvl
+end function
+
