@@ -1,0 +1,70 @@
+﻿$PBExportHeader$dwvaluetoexp.srf
+global type dwvaluetoexp from function_object
+end type
+
+forward prototypes
+global function string dwvaluetoexp (readonly decimal val)
+global function string dwvaluetoexp (readonly int val)
+global function string dwvaluetoexp (readonly long val)
+global function string dwvaluetoexp (readonly double val)
+global function string dwvaluetoexp (readonly real val)
+global function string dwvaluetoexp (readonly string val)
+global function string dwvaluetoexp (readonly datetime val)
+global function string dwvaluetoexp (readonly date val)
+global function string dwvaluetoexp (readonly time val)
+end prototypes
+
+global function string dwvaluetoexp (readonly decimal val);string sVal
+sVal = String(val)
+if IsNull(sVal) then sVal = "dwNvlNumber()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly int val);string sVal
+sVal = String(val)
+if IsNull(sVal) then sVal = "dwNvlNumber()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly long val);string sVal
+sVal = String(val)
+if IsNull(sVal) then sVal = "dwNvlNumber()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly double val);string sVal
+sVal = String(val)
+if IsNull(sVal) then sVal = "dwNvlNumber()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly real val);string sVal
+sVal = String(val)
+if IsNull(sVal) then sVal = "dwNvlNumber()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly string val);string sVal
+sVal = "'" + val + "'"
+if IsNull(sVal) then sVal = "dwNvlString()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly datetime val);string sVal
+sVal = "DateTime('" + String(val) + "')"
+if IsNull(sVal) then sVal = "dwNvlDateTime()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly date val);string sVal
+sVal = "Date('" + String(val) + "')"
+if IsNull(sVal) then sVal = "dwNvlDate()"
+return sVal
+end function
+
+global function string dwvaluetoexp (readonly time val);string sVal
+sVal = "Time('" + String(val) + "')"
+if IsNull(sVal) then sVal = "dwNvlTime()"
+return sVal
+end function
+

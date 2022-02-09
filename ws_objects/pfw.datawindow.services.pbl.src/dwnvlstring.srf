@@ -1,0 +1,13 @@
+﻿$PBExportHeader$dwnvlstring.srf
+global type dwnvlstring from function_object
+end type
+
+forward prototypes
+global function string dwnvlstring ()
+end prototypes
+
+global function string dwnvlstring ();string nvl
+SetNull(nvl)
+return nvl
+end function
+

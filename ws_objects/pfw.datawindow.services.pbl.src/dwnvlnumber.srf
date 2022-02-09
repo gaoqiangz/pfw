@@ -1,0 +1,13 @@
+﻿$PBExportHeader$dwnvlnumber.srf
+global type dwnvlnumber from function_object
+end type
+
+forward prototypes
+global function integer dwnvlnumber ()
+end prototypes
+
+global function integer dwnvlnumber ();int nvl
+SetNull(nvl)
+return nvl
+end function
+
