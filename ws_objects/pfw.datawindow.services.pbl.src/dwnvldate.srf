@@ -1,0 +1,13 @@
+﻿$PBExportHeader$dwnvldate.srf
+global type dwnvldate from function_object
+end type
+
+forward prototypes
+global function date dwnvldate ()
+end prototypes
+
+global function date dwnvldate ();date nvl
+SetNull(nvl)
+return nvl
+end function
+

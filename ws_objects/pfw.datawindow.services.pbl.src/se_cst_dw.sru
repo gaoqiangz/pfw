@@ -29,6 +29,7 @@ event onddsfiltered ( long row,  dwobject dwo,  long rowcount,  long filteredcou
 event ondwnkillfocus pbm_dwnkillfocus
 event ondwnlbuttonup pbm_dwnlbuttonup
 event ondwnsetfocus pbm_dwnsetfocus
+event oncolumnexptrace ( long row,  dwobject dwo,  string stack,  string expr,  string value )
 eventful eventful
 end type
 global se_cst_dw se_cst_dw
