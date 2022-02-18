@@ -18,7 +18,7 @@ shared variables
 end variables
 
 global type n_cst_thread_task_sqlquery from n_cst_thread_task_sqlbase
-event type long ondatareceived ( n_cst_thread_task_sqlbase_ds data,  long rowcount )
+event type long ondatareceived ( ref n_cst_thread_task_sqlbase_ds data,  long rowcount )
 end type
 global n_cst_thread_task_sqlquery n_cst_thread_task_sqlquery
 
@@ -66,7 +66,7 @@ public function long of_setsql (readonly string sql)
 public function long of_setsqlsyntax (readonly string sqlsyntax)
 end prototypes
 
-event type long ondatareceived(n_cst_thread_task_sqlbase_ds data, long rowcount);string sProp,sColName
+event type long ondatareceived(ref n_cst_thread_task_sqlbase_ds data, long rowcount);string sProp,sColName
 int nIndex,nCount,nChunkIdx,nChunkCnt
 long nRow,nRowCnt,nFilterCnt
 blob blbData
@@ -81,6 +81,7 @@ tasking.Event OnDataReceived(rowCount)
 if #ParentThread.of_IsMainThread() then
 	if Not tasking._of_HasReceiver() and Not _bCache then
 		tasking.Event OnDataMove(data)
+		SetNull(data)
 		return RetCode.OK
 	end if
 end if
@@ -738,7 +739,7 @@ try
 	end if
 	
 	//*OnDataReceived执行后Data可能将变得无效！
-	rtCode = Event OnDataReceived(data,nRowCnt)
+	rtCode = Event OnDataReceived(ref data,nRowCnt)
 	if rtCode <> RetCode.OK then return rtCode
 	
 	//统计页数
