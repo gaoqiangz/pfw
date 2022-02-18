@@ -184,6 +184,7 @@ public function integer of_getindexbytag (readonly string stag)
 private subroutine _of_adjustrect (ref rectf adjrect, readonly unsignedlong flags)
 public function integer of_indexfrompoint (readonly real xpos, readonly real ypos)
 private subroutine _of_scrollposition (readonly real scrollsize)
+public function integer of_getindexbytip (string tip)
 end prototypes
 
 event Onmouseleave();if _mouseOverIndex>0 then
@@ -2105,6 +2106,15 @@ if scrollPosition <> _ScrollPosition then
 	end if
 end if
 end subroutine
+
+public function integer of_getindexbytip (string tip);int index
+
+for index = 1 to UpperBound(Items)
+	if Items[index].tiptext = tip then return index
+next
+
+return 0
+end function
 
 on u_cst_buttonlistbar.create
 call super::create
