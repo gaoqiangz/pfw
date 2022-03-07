@@ -1,3 +1,14 @@
+## 3.0.2.2039(2022-03-07)
+
+### 修复
+
+* [pfw.ui.sciter]
+  - 修复SQLite::Recordset迭代器死循环的问题
+  - `pb`对象属性可读写
+  - `n_sciter`关闭`Popup`显示时给`document`发送`closingPopup`事件
+* [pfw.ui]
+  - 窗口在多屏环境最大化显示问题
+
 ## 3.0.1.2034(2022-02-11)
 
 ### 修复
