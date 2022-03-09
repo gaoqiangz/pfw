@@ -54,7 +54,7 @@ ProtectedWrite Boolean 			#AllowDrag 	= false	//开启节点拖拽功能
 
 /*--- Implementation ---*/
 Private:
-Constant String IMPL_HTML = "pfw://zip/sciter[treeview/main.html]"
+Constant String IMPL_HTML = "pfw://arch/sciter[treeview/main.html]"
 
 end variables
 forward prototypes

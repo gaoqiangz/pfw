@@ -30,7 +30,7 @@ protectedwrite boolean			#ItemSelect 	= false	//开启节点选择功能
 
 /*--- Implementation ---*/
 private:
-constant string IMPL_HTML = "pfw://zip/sciter[sidebar/main.html]"
+constant string IMPL_HTML = "pfw://arch/sciter[sidebar/main.html]"
 end variables
 forward prototypes
 public function long of_setcollapsed (readonly boolean collapse)
