@@ -37,6 +37,7 @@ const DD_DROP_WHERE_AFTER = 2;	//拖放到目标节点后面
 const DD_DROP_WHERE_INSIDE = 3;	//拖放到目标节点里面
 
 export class pfwTreeView extends Element {
+	/** @type {EventHandler} */
 	_handler = null;
 	_elSelected = null;
 
@@ -47,9 +48,9 @@ export class pfwTreeView extends Element {
 	/**
 	 * 同步事件派发
 	 * @private
-	 * @param {string} name 
-	 * @param {any} params 
-	 * @returns {bool}
+	 * @param {String} name 
+	 * @param {*} params 
+	 * @returns {Boolean}
 	 */
 	_sendEvent(name, params) {
 		return this.dispatchEvent(new CustomEvent(name, { detail: params }));
@@ -58,9 +59,9 @@ export class pfwTreeView extends Element {
 	/**
 	 * 异步事件派发
 	 * @private
-	 * @param {string} name 
-	 * @param {any} params 
-	 * @returns {bool}
+	 * @param {String} name 
+	 * @param {*} params 
+	 * @returns {Boolean}
 	 */
 	_postEvent(name, params) {
 		return this.post(new CustomEvent(name, { detail: params }));
@@ -68,7 +69,7 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 构建节点图标`VNode`
-	 * @param {string} image 
+	 * @param {String} image 
 	 * @returns {VNode}
 	 */
 	_buildVIcon(image) {
@@ -90,12 +91,12 @@ export class pfwTreeView extends Element {
 
 	/** 构建节点`VNode`
 	 * @private
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
 	 * @param {int} imagePosition 图标的位置 (left:0/top:1/right:2/bottom:3)
-	 * @param {string} tipText 提示
-	 * @param {bool} disabledLook 显示为不可用外观
+	 * @param {String} tipText 提示
+	 * @param {Boolean} disabledLook 显示为不可用外观
 	 * @returns {VNode<option>}
 	 */
 	_buildVOption(text, textIsHtml, image, imagePosition, tipText, disabledLook) {
@@ -117,8 +118,8 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 标准化URL路径
-	 * @param {string} url 
-	 * @returns {string}
+	 * @param {String} url 
+	 * @returns {String}
 	 */
 	onNormalizeUrl(url) {
 		return url;
@@ -126,9 +127,9 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 设置icon-font字体
-	 * @param {string} path
-	 * @param {string} [name=""] 指定名称
-	 * @returns {bool}
+	 * @param {String} path
+	 * @param {String} [name=""] 指定名称
+	 * @returns {Boolean}
 	 */
 	setIconFont(path, name = "") {
 		return iconfont.Manager.addFont({
@@ -139,8 +140,8 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 设置是否具有节点拖拽功能
-	 * @param {bool} enable
-	 * @returns {bool}
+	 * @param {Boolean} enable
+	 * @returns {Boolean}
 	 */
 	enableDragDrop(enable) {
 		return this._handler.enableDragDrop(enable);
@@ -148,7 +149,7 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 是否开启了勾选功能
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	isCheckBoxEnabled() {
 		return (this.attributes["multiple"] === "checkmarks");
@@ -157,7 +158,7 @@ export class pfwTreeView extends Element {
 	/** 
 	 * 设置CSS变量
 	 * @param {object} vars
-	 * @return {bool}
+	 * @return {Boolean}
 	 */
 	setCSSVars(vars) {
 		if (!vars instanceof Object) return false;
@@ -187,7 +188,7 @@ export class pfwTreeView extends Element {
 	 * 	children:[{...}]
 	 * },...]
 	 * ```
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	load(data) {
 		if (!data instanceof Array) return false;
@@ -220,12 +221,12 @@ export class pfwTreeView extends Element {
 	 * 添加节点
 	 * @param {Element<option>} elOwner
 	 * @param {long} place 插入位置 (`PLACE_BEFORE`/`PLACE_AFTER`/`PLACE_APPEND`)
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
 	 * @param {int} imagePosition 图标的位置 (left:0/top:1/right:2/bottom:3)
-	 * @param {string} tipText 提示
-	 * @param {bool} disabledLook 显示为不可用外观
+	 * @param {String} tipText 提示
+	 * @param {Boolean} disabledLook 显示为不可用外观
 	 * @returns {Element<option>}
 	 */
 	insertOption(elOwner, place, text, textIsHtml, image, imagePosition, tipText, disabledLook) {
@@ -265,12 +266,12 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 添加节点
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标 
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标 
 	 * @param {int} imagePosition 图标的位置
-	 * @param {string} tipText 提示
-	 * @param {bool} disabledLook 显示为不可用外观
+	 * @param {String} tipText 提示
+	 * @param {Boolean} disabledLook 显示为不可用外观
 	 * @returns {Element<option>}
 	 */
 	addOption(text, textIsHtml, image, imagePosition, tipText, disabledLook) {
@@ -280,12 +281,12 @@ export class pfwTreeView extends Element {
 	/**
 	 * 添加子节点
 	 * @param {Element<option>} elOwner
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标 
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标 
 	 * @param {int} imagePosition 图标的位置
-	 * @param {string} tipText 提示
-	 * @param {bool} disabledLook 显示为不可用外观
+	 * @param {String} tipText 提示
+	 * @param {Boolean} disabledLook 显示为不可用外观
 	 * @returns {Element<option>}
 	 */
 	addChildOption(elOwner, text, textIsHtml, image, imagePosition, tipText, disabledLook) {
@@ -295,7 +296,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 判断指定节点是否为组节点
 	 * @param {Element<option>} elOption 
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	isNode(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -305,7 +306,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 判断指定节点是否为叶子
 	 * @param {Element<option>} elOption 
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	isLeaf(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -315,7 +316,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 判断指定节点是否被选中
 	 * @param {Element<option>} elOption 
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	isSelected(elOption) {
 		return (elOption === this._elSelected);
@@ -324,7 +325,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 判断指定节点是否被勾选
 	 * @param {Element<option>} elOption 
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	isChecked(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -334,7 +335,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 判断指定节点是否被折叠
 	 * @param {Element<option>} elOption 
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	isCollapsed(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -344,7 +345,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 判断指定节点是否被展开
 	 * @param {Element<option>} elOption 
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	isExpanded(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -353,7 +354,7 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 获取当前选中的节点
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	getSelectedOption() {
 		return this._elSelected;
@@ -372,7 +373,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 获取指定节点的文本
 	 * @param {Element<option>} elOption 
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	getText(elOption) {
 		if (!elOption || !elOption.$is("option")) return "";
@@ -382,9 +383,9 @@ export class pfwTreeView extends Element {
 	/**
 	 * 设置指定节点的文本
 	 * @param {Element<option>} elOption 
-	 * @param {string} text 
-	 * @param {bool} textIsHtml text为html格式
-	 * @returns {bool}
+	 * @param {String} text 
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @returns {Boolean}
 	 */
 	setText(elOption, text, textIsHtml) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -406,8 +407,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 编辑节点的文本
 	 * @param {Element<option>} elOption 
-	 * @param {string} newText 
-	 * @returns {bool}
+	 * @param {String} newText 
+	 * @returns {Boolean}
 	 */
 	editText(elOption, newText) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -464,7 +465,7 @@ export class pfwTreeView extends Element {
 
 	/**
 	 * 应用编辑的文本
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	acceptText() {
 		let elInput = this.$('input[role="node-text-editor"]');
@@ -478,7 +479,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 获取菜单项图标
 	 * @param {Element<option>} elOption
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	getImage(elOption) {
 		if (!elOption) return "";
@@ -488,8 +489,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 设置菜单项文本
 	 * @param {Element<option>} elOption
-	 * @param {string} image
-	 * @returns {bool}
+	 * @param {String} image
+	 * @returns {Boolean}
 	 */
 	setImage(elOption, image) {
 		if (!elOption) return false;
@@ -520,7 +521,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 获取菜单项提示文本
 	 * @param {Element<option>} elOption
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	getTipText(elOption) {
 		if (!elOption) return "";
@@ -530,8 +531,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 设置菜单项提示文本
 	 * @param {Element<option>} elOption
-	 * @param {string} tipText
-	 * @returns {bool}
+	 * @param {String} tipText
+	 * @returns {Boolean}
 	 */
 	setTipText(elOption, tipText) {
 		if (!elOption) return false;
@@ -543,8 +544,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 设置不可用外观
 	 * @param {Element<option>} elOption 
-	 * @param {bool} set 
-	 * @returns {bool}
+	 * @param {Boolean} set 
+	 * @returns {Boolean}
 	 */
 	setDisabledLook(elOption, set) {
 		if (!elOption) return false;
@@ -555,8 +556,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 选中指定节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	selectOption(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option") || elOption.state.disabled) return false;
@@ -586,7 +587,7 @@ export class pfwTreeView extends Element {
 	/**
 	 * 使节点显示在可见区域
 	 * @param {Element<option>} elOption 
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	scrollToView(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -597,8 +598,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 展开指定节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	expandOption(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -618,8 +619,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 展开指定节点和所有子节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	expandOptionAll(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -653,8 +654,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 展开指定节点所有父节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	expandParentOption(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -675,8 +676,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 折叠指定节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	collapseOption(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -692,8 +693,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 折叠指定节点和所有子节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	collapseOptionAll(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -723,8 +724,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 勾选指定节点和所有子节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	checkOption(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -790,8 +791,8 @@ export class pfwTreeView extends Element {
 	/**
 	 * 取消勾选指定节点和所有子节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	uncheckOption(elOption, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -856,9 +857,9 @@ export class pfwTreeView extends Element {
 	/**
 	 * 刷新指定节点的所有父节点的勾选状态
 	 * @param {Element<option>} elOption 
-	 * @param {bool} includingThis 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} includingThis 
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	refreshParentCheckState(elOption, includingThis, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -921,9 +922,9 @@ export class pfwTreeView extends Element {
 	/**
 	 * 移除指定节点
 	 * @param {Element<option>} elOption 
-	 * @param {bool} changeSelection 
-	 * @param {bool} fireEvent 
-	 * @returns {bool}
+	 * @param {Boolean} changeSelection 
+	 * @param {Boolean} fireEvent 
+	 * @returns {Boolean}
 	 */
 	removeOption(elOption, changeSelection, fireEvent) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -970,7 +971,9 @@ const HIT_COLLAPSE_BUTTON = 1;
 const HIT_CHECKBOX = 2;
 
 class EventHandler {
+	/** @type {pfwTreeView} */
 	tree = null;
+	/** @type {DragDropHandler} */
 	_dd = null;
 	_lastMouseEvent = null;
 	_lastMouseOpt = null;
@@ -1229,6 +1232,7 @@ const DD_LINE_SIZE = 1;
 const DD_AM_DURATION = 200;
 
 class DragDropHandler {
+	/** @type {pfwTreeView} */
 	tree = null;
 	_dragging = false;
 	_animating = false;

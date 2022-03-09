@@ -56,9 +56,9 @@ export class pfwSidebar extends Element {
 	/**
 	 * 同步事件派发
 	 * @private
-	 * @param {string} name 
-	 * @param {any} param 
-	 * @returns {bool}
+	 * @param {String} name 
+	 * @param {*} param 
+	 * @returns {Boolean}
 	 */
 	_sendEvent(name, param) {
 		return this.dispatchEvent(new CustomEvent(name, { detail: param }));
@@ -68,8 +68,8 @@ export class pfwSidebar extends Element {
 	 * 统一处理鼠标左键点击事件
 	 * @private
 	 * @param {Element} target 
-	 * @param {bool} dbl 
-	 * @returns {bool}
+	 * @param {Boolean} dbl 
+	 * @returns {Boolean}
 	 */
 	_handleLClick(target, dbl) {
 		let elTarget = target.$p("option");
@@ -102,7 +102,7 @@ export class pfwSidebar extends Element {
 
 	/**
 	 * 构建菜单项图标`VNode`
-	 * @param {string} image 
+	 * @param {String} image 
 	 * @returns {VNode}
 	 */
 	_buildVIcon(image) {
@@ -125,10 +125,10 @@ export class pfwSidebar extends Element {
 
 	/** 构建菜单项`VNode`
 	 * @private
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
-	 * @param {string} tipText 提示
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
+	 * @param {String} tipText 提示
 	 * @returns {VNode<option>}
 	 */
 	_buildVOption(text, textIsHtml, image, tipText) {
@@ -146,8 +146,8 @@ export class pfwSidebar extends Element {
 
 	/**
 	 * 标准化URL路径
-	 * @param {string} url 
-	 * @returns {string}
+	 * @param {String} url 
+	 * @returns {String}
 	 */
 	onNormalizeUrl(url) {
 		return url;
@@ -155,9 +155,9 @@ export class pfwSidebar extends Element {
 
 	/**
 	 * 设置icon-font字体
-	 * @param {string} path
-	 * @param {string} [name=""] 指定名称
-	 * @returns {bool}
+	 * @param {String} path
+	 * @param {String} [name=""] 指定名称
+	 * @returns {Boolean}
 	 */
 	setIconFont(path, name = "") {
 		return iconfont.Manager.addFont({
@@ -168,8 +168,8 @@ export class pfwSidebar extends Element {
 
 	/**
 	 * 设置菜单项是否具有选择状态
-	 * @param {bool} enable
-	 * @returns {bool}
+	 * @param {Boolean} enable
+	 * @returns {Boolean}
 	 */
 	enableItemSelect(enable) {
 		this._bItemSelect = enable;
@@ -183,7 +183,7 @@ export class pfwSidebar extends Element {
 	/**
 	 * 设置CSS变量
 	 * @param {object} vars
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	setCSSVars(vars) {
 		if (!vars instanceof Object) return false;
@@ -210,7 +210,7 @@ export class pfwSidebar extends Element {
 	 * 	children:[{...}]
 	 * },...]
 	 * ```
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	load(data) {
 		if (!data instanceof Array) return false;
@@ -241,10 +241,10 @@ export class pfwSidebar extends Element {
 	 * 插入菜单组
 	 * @param {Element<option>} elOwner
 	 * @param {long} place 插入位置 (`PLACE_BEFORE`/`PLACE_AFTER`/`PLACE_APPEND`)
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
-	 * @param {string} tipText 提示
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标 (`#`前缀指示为`icon-font`码点,`@`指定字体名[可选],如:`#f104@myFont`)
+	 * @param {String} tipText 提示
 	 * @returns {Element<option>}
 	 */
 	insertOption(elOwner, place, text, textIsHtml, image, tipText) {
@@ -290,10 +290,10 @@ export class pfwSidebar extends Element {
 
 	/**
 	 * 添加菜单组
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标
-	 * @param {string} tipText 提示
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标
+	 * @param {String} tipText 提示
 	 * @returns {Element<option>}
 	 */
 	addOption(text, textIsHtml, image, tipText) {
@@ -303,10 +303,10 @@ export class pfwSidebar extends Element {
 	/**
 	 * 添加子菜单组
 	 * @param {Element<option>} elOwner
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @param {string} image 图标
-	 * @param {string} tipText 提示
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @param {String} image 图标
+	 * @param {String} tipText 提示
 	 * @returns {Element<option>}
 	 */
 	addChildOption(elOwner, text, textIsHtml, image, tipText) {
@@ -316,7 +316,7 @@ export class pfwSidebar extends Element {
 	/**
 	 * 删除菜单
 	 * @param {Element<option>} elOption
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	removeOption(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -329,7 +329,7 @@ export class pfwSidebar extends Element {
 	/**
 	 * 删除子菜单项
 	 * @param {Element<option>} elOption
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	removeOptionChildren(elOption) {
 		if (!elOption || !elOption.$is("option")) return false;
@@ -340,7 +340,7 @@ export class pfwSidebar extends Element {
 
 	/**
 	 * 删除所有菜单
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	removeOptionAll() {
 		this._elSelected = null;
@@ -352,8 +352,8 @@ export class pfwSidebar extends Element {
 	/**
 	 * 折叠菜单组
 	 * @param {Element<option>} elOption
-	 * @param {bool} [triggerEvent=true]
-	 * @returns {bool}
+	 * @param {Boolean} [triggerEvent=true]
+	 * @returns {Boolean}
 	 */
 	collapseOption(elOption, triggerEvent = false) {
 		if (!elOption) return false;
@@ -371,8 +371,8 @@ export class pfwSidebar extends Element {
 	/**
 	 * 展开菜单组
 	 * @param {Element<option>} elOption
-	 * @param {bool} [triggerEvent=true]
-	 * @returns {bool}
+	 * @param {Boolean} [triggerEvent=true]
+	 * @returns {Boolean}
 	 */
 	expandOption(elOption, triggerEvent = false) {
 		if (!elOption) return false;
@@ -402,8 +402,8 @@ export class pfwSidebar extends Element {
 	/**
 	* 选择菜单项
 	 * @param {Element<option>} elOption
-	 * @param {bool} [triggerEvent=true]
-	 * @returns {bool}
+	 * @param {Boolean} [triggerEvent=true]
+	 * @returns {Boolean}
 	 */
 	selectOption(elOption, triggerEvent = false) {
 		if (this._elSelected === elOption) return true;
@@ -427,7 +427,7 @@ export class pfwSidebar extends Element {
 
 	/**
 	 * 清空选择的菜单项
-	 * @returns {bool}
+	 * @returns {Boolean}
 	 */
 	clearSelection() {
 		return Select(null, false);
@@ -436,7 +436,7 @@ export class pfwSidebar extends Element {
 	/**
 	 * 获取菜单项文本
 	 * @param {Element<option>} elOption
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	getText(elOption) {
 		if (!elOption) return "";
@@ -446,9 +446,9 @@ export class pfwSidebar extends Element {
 	/**
 	 * 设置菜单项文本
 	 * @param {Element<option>} elOption
-	 * @param {string} text
-	 * @param {bool} textIsHtml text为html格式
-	 * @returns {bool}
+	 * @param {String} text
+	 * @param {Boolean} textIsHtml text为html格式
+	 * @returns {Boolean}
 	 */
 	setText(elOption, text, textIsHtml = false) {
 		if (!elOption) return false;
@@ -463,7 +463,7 @@ export class pfwSidebar extends Element {
 	/**
 	 * 获取菜单项图标
 	 * @param {Element<option>} elOption
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	getImage(elOption) {
 		if (!elOption) return "";
@@ -473,8 +473,8 @@ export class pfwSidebar extends Element {
 	/**
 	 * 设置菜单项文本
 	 * @param {Element<option>} elOption
-	 * @param {string} image
-	 * @returns {bool}
+	 * @param {String} image
+	 * @returns {Boolean}
 	 */
 	setImage(elOption, image) {
 		if (!elOption) return false;
@@ -498,7 +498,7 @@ export class pfwSidebar extends Element {
 	/**
 	 * 获取菜单项提示文本
 	 * @param {Element<option>} elOption
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	getTipText(elOption) {
 		if (!elOption) return "";
@@ -508,8 +508,8 @@ export class pfwSidebar extends Element {
 	/**
 	 * 设置菜单项提示文本
 	 * @param {Element<option>} elOption
-	 * @param {string} tipText
-	 * @returns {bool}
+	 * @param {String} tipText
+	 * @returns {Boolean}
 	 */
 	setTipText(elOption, tipText) {
 		if (!elOption) return false;
