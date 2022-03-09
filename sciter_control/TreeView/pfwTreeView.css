@@ -122,6 +122,7 @@ treeview option>caption>popup[role="tooltip"] {
 	option>caption input[role="node-text-editor"] {
 		min-width: 20dip;
 		max-width: max-content;
+		font-size: var(font_size);
 	}
 
 	/* 当前节点 */
