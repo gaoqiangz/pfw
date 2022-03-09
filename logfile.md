@@ -1,3 +1,29 @@
+## 3.0.4.2044(2022-03-09)
+
+### 新增
+
+* [pfw.ui.sciter]
+  - 支持`packfolder`打包的资源文件，后缀为`.arch`，访问方式与zip文件相同
+
+### 修复
+
+* [pfw.ui.sciter.ext]
+  - `treeview`编辑文本时字体大小不统一的问题
+
+## 3.0.3.2042(2022-03-09)
+
+### 新增
+
+* [pfw.ui.sciter]
+  - `n_sciter`增加`OnCreate`事件，在`CreateWindow`后触发
+* [pfw.ui.blink]
+  - `n_blink`/`n_blinkfast`增加`OnCreate`事件，在`CreateWindow`后触发
+
+### 修复
+
+* [pfw.ui.sciter]
+  - 修复重复加载初始化异常问题
+
 ## 3.0.2.2039(2022-03-07)
 
 ### 修复
