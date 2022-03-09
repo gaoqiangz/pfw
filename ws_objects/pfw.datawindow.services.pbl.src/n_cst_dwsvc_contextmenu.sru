@@ -265,14 +265,16 @@ if bHeaderClicked then
 	end if
 end if
 
-if nStyle = STYLE_GRID then
-	of_AddSeparator()
-	if bColClicked then
-		of_AddSubMenu("n_cst_popupmenu",I18N(ne_cst_i18n.CAT_DWSVC,"自动列宽"),"SizeHorizontal!",I18N(ne_cst_i18n.CAT_DWSVC,"自动调整列宽度"),true,MID_COLAUTOWIDTH)
-		of_GetSubMenu(MID_COLAUTOWIDTH,false,ref pmSub)
-		pmSub.of_AddMenu(I18N(ne_cst_i18n.CAT_DWSVC,"所有列"),"",I18N(ne_cst_i18n.CAT_DWSVC,"自动调整所有列宽度"),MID_COLAUTOWIDTH_ALL)
-	elseif bHeaderClicked then
-		of_AddMenu(I18N(ne_cst_i18n.CAT_DWSVC,"自动列宽"),"SizeHorizontal!",I18N(ne_cst_i18n.CAT_DWSVC,"自动调整所有列宽度"),MID_COLAUTOWIDTH_ALL)
+if #ColAutoWidth then
+	if nStyle = STYLE_GRID then
+		of_AddSeparator()
+		if bColClicked then
+			of_AddSubMenu("n_cst_popupmenu",I18N(ne_cst_i18n.CAT_DWSVC,"自动列宽"),"SizeHorizontal!",I18N(ne_cst_i18n.CAT_DWSVC,"自动调整列宽度"),true,MID_COLAUTOWIDTH)
+			of_GetSubMenu(MID_COLAUTOWIDTH,false,ref pmSub)
+			pmSub.of_AddMenu(I18N(ne_cst_i18n.CAT_DWSVC,"所有列"),"",I18N(ne_cst_i18n.CAT_DWSVC,"自动调整所有列宽度"),MID_COLAUTOWIDTH_ALL)
+		elseif bHeaderClicked then
+			of_AddMenu(I18N(ne_cst_i18n.CAT_DWSVC,"自动列宽"),"SizeHorizontal!",I18N(ne_cst_i18n.CAT_DWSVC,"自动调整所有列宽度"),MID_COLAUTOWIDTH_ALL)
+		end if
 	end if
 end if
 
