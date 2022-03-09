@@ -105,10 +105,6 @@ Constant String ICO_LW_USER					= "res\images\loginwnd/user.png"
 Constant String AM_LW_LOWPOLY			= "res\images\loginwnd/lowpoly.gif"
 //Sciter
 //Sciter samples
-/*
-	注:
-		PFW Sciter加载zip资源文件时如果没有指定加载的html路径,其寻找主html的顺序是:main.htm>main.html>index.htm>index.html
-*/
 Constant String SCITER_HTML_TRAYNOTIFICATION	= "samples\sciter\TrayNotification\main.htm" //"samples\sciter.zip[TrayNotification/main.htm]"
 Constant String SCITER_HTML_CHART 				= "samples\sciter\charts\main.htm" //"samples\sciter.zip[charts/main.htm]"
 Constant String SCITER_HTML_CLOCK 				= "samples\sciter\clock\main.htm" //"samples\sciter.zip[clock/main.htm]"
