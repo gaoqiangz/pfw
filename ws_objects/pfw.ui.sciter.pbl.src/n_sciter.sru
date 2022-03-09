@@ -90,6 +90,7 @@ public function any InvokeFunction(readonly string name,readonly any arg1,readon
 public function any InvokeFunction(readonly string name,readonly any arg1,readonly any arg2,readonly any arg3,readonly any arg4,readonly any arg5,readonly any arg6,readonly any arg7,readonly any arg8,readonly any arg9,readonly any arg10)
 public function any InvokeFunction(readonly string name,readonly any arg1,readonly any arg2,readonly any arg3,readonly any arg4,readonly any arg5,readonly any arg6,readonly any arg7,readonly any arg8,readonly any arg9,readonly any arg10,readonly any arg11,...)
 public function any Evaluate(readonly string scripting)
+event type long OnCreate()
 event type long OnAttachBehavior(n_sciterelement element,string name)
 event type long OnMouse(n_sciterelement element,n_sciterelement target,ulong eventflag,real xpos,real ypos,ulong mousebuttons,ulong keyboardstates)
 event type long OnKey(n_sciterelement element,n_sciterelement target,ulong eventflag,ulong code,ulong keyboardstates)

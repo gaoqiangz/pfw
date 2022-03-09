@@ -312,7 +312,7 @@ end event
 event onitemchanged;call super::onitemchanged;//单元格值发生改变后触发（此时数据已经写入缓冲区）
 end event
 
-event oncolumnexptrace;call super::oncolumnexptrace;mle_trace.text += Sprintf("[{}] {}({})>{}: {}, Expr: {}",mle_trace.LineCount() + 1,dwo.name,row,stack,value,expr) + "~r~n"
+event oncolumnexptrace;call super::oncolumnexptrace;mle_trace.text += Sprintf("{,-4} {}({})>{}: {}, Expr: {}",mle_trace.LineCount() + 1,dwo.name,row,stack,value,expr) + "~r~n"
 mle_trace.Scroll(mle_trace.LineCount())
 end event
 
