@@ -1018,7 +1018,7 @@ class EventHandler {
 		switch (where) {
 			case HIT_CAPTION:
 				{
-					const [x1, y1, x2, y2] = elOption.$(">caption").state.box("rect", "border", "window", false);
+					const [x1, y1, x2, y2] = elOption.$(">caption").state.box("rect", "border", "window");
 					return (evt.windowX >= x1 && evt.windowX <= x2 && evt.windowY >= y1 && evt.windowY <= y2);
 				}
 			case HIT_COLLAPSE_BUTTON:
