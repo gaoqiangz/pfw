@@ -2768,7 +2768,7 @@ choose case Items[index].ItemType
 					end if
 				end if
 			case theme.ITS_WIN8,theme.ITS_WIN10																														/*---- Win8/10 ----*/
-				if Not BitTest(nState,Enums.STATE_DISABLED) or Items[index].Toggled or Items[index].ItemType = ITT_CLOSE then
+				if Not BitTest(nState,Enums.STATE_DISABLED) or Items[index].Toggled or (theme.#ItemStyle = theme.ITS_WIN8 and Items[index].ItemType = ITT_CLOSE) then
 					bkColor = theme.of_GetItemColor(index,theme.CLR_BKGND,nState,WOT_TITLEBAR)
 					borderColor	= theme.of_GetItemColor(index,theme.CLR_BORDER,nState,WOT_TITLEBAR)
 					if Items[index].ItemType = ITT_SPLIT then
@@ -2811,7 +2811,7 @@ choose case Items[index].ItemType
 							end if
 						end if
 						if BitAND(nState,Enums.STATE_HOVER + Enums.STATE_PRESSED + Enums.STATE_HIGHLIGHTED) <> 0 or &
-							(Items[index].ItemType = ITT_CLOSE and BitTest(nState,Enums.STATE_ACTIVE)) then
+							(theme.#ItemStyle = theme.ITS_WIN8 and Items[index].ItemType = ITT_CLOSE and BitTest(nState,Enums.STATE_ACTIVE)) then
 							Painter.ThemeFill( hdc, Items[index].rcPaint, bkColor,Enums.VERT,theme.#ItemBkgndStyle,nState,false,&
 																		itemBorderStyle,borderColor,rdBorder)
 						elseif Items[index].Flashing then
