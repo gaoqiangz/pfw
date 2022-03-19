@@ -1274,7 +1274,7 @@ if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Items[index].ItemType = ITT_SEPARATOR then return RetCode.E_NO_SUPPORT
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
 
 if (Items[index].imageIndex > 0) <> (newImgIndex > 0) then
 	dirty = true
@@ -1534,14 +1534,14 @@ Painter.FillTriangle(hdc,pt1,pt2,pt3,arrowColor,arrowColor,Enums.HORZ,false,true
 
 for ll_index = 1 to ARROWSIZE - 1
 	Painter.SetPixel(hdc,ll_x,ll_y,arrowColor)
-	Painter.SetPixel(hdc,ll_x + 1,ll_y,arrowColor)
-	Painter.SetPixel(hdc,ll_x + 3,ll_y,arrowColor)
-	Painter.SetPixel(hdc,ll_x + 4,ll_y,arrowColor)
-	ll_y += 1
+	Painter.SetPixel(hdc,ll_x + P2DX(1),ll_y,arrowColor)
+	Painter.SetPixel(hdc,ll_x + P2DX(3),ll_y,arrowColor)
+	Painter.SetPixel(hdc,ll_x + P2DX(4),ll_y,arrowColor)
+	ll_y += P2DY(1)
 	if ll_index < ARROWSIZE / 2 then
-		ll_x += 1
+		ll_x += P2DX(1)
 	else
-		ll_x -= 1
+		ll_x -= P2DX(1)
 	end if
 next
 end subroutine
@@ -1716,7 +1716,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -1767,7 +1767,7 @@ newItem.PopupMenu = PopupMenu
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -2033,7 +2033,7 @@ for index = 1 to nCount
 		end if
 		if Items[index].Image <> Items[index].menu.ToolBarItemName then
 			Items[index].Image = Items[index].menu.ToolBarItemName
-			Items[index].ImageIndex = _ImageList.AddImage(Trim(Items[index].menu.ToolBarItemName))
+			Items[index].ImageIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,Items[index].menu.ToolBarItemName,0,WOT_TOOLBAR))
 		end if
 		Items[index].tipText = Items[index].menu.MicroHelp
 	end if
@@ -2112,7 +2112,7 @@ newItem.PopupMenu = PopupMenu
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -2278,7 +2278,7 @@ if rtCode > 0 then
 					Items[index].Toggled = Items[index].menu.Checked
 					Items[index].Text = Items[index].menu.ToolBarItemText
 					Items[index].Image = Items[index].menu.ToolBarItemName
-					Items[index].ImageIndex = _ImageList.AddImage(Trim(Items[index].menu.ToolBarItemName))
+					Items[index].ImageIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,Items[index].menu.ToolBarItemName,0,WOT_TOOLBAR))
 					Items[index].tipText = Items[index].menu.MicroHelp
 					_of_UpdateTextSize(index)
 					of_UpdatePoints()
@@ -2404,7 +2404,7 @@ if rtCode > 0 then
 									Items[nSelectIndex].Toggled = Items[nSelectIndex].menu.Checked
 									Items[nSelectIndex].Text = Items[nSelectIndex].menu.ToolBarItemText
 									Items[nSelectIndex].Image = Items[nSelectIndex].menu.ToolBarItemName
-									Items[nSelectIndex].ImageIndex = _ImageList.AddImage(Trim(Items[nSelectIndex].menu.ToolBarItemName))
+									Items[nSelectIndex].ImageIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,Items[nSelectIndex].menu.ToolBarItemName,0,WOT_TOOLBAR))
 									Items[nSelectIndex].tipText = Items[nSelectIndex].menu.MicroHelp
 									_of_UpdateTextSize(nSelectIndex)
 									of_UpdatePoints()

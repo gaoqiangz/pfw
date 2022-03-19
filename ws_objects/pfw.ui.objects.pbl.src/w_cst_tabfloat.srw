@@ -6,8 +6,8 @@ end type
 end forward
 
 global type w_cst_tabfloat from s_cst_window
-integer width = 2409
-integer height = 1596
+integer width = 2408
+integer height = 1597
 string title = ""
 windowtype windowtype = popup!
 boolean center = false
@@ -39,7 +39,7 @@ boolean _inSetPos
 //Indexes
 Constant Uint IDX_PIN = 4
 //System button icon
-Constant String ICO_PIN	= "pfw://zip/images[btn_pin.png]"
+Constant String ICO_PIN	= "pfw://zip/images[win-pin.svg]"
 //System button tiptext
 Constant String TIP_PIN	= "固定"
 end variables
@@ -182,11 +182,7 @@ else
 end if
 end function
 
-event onpreopen;call super::onpreopen;string sTxt
-TABCONTROLITEM item
-
-sTxt = I18N(Enums.I18N_CAT_TABCONTROL,TIP_PIN)
-CaptionBar.of_AddButton(sTxt,ICO_PIN,sTxt,Right!)
+event onpreopen;call super::onpreopen;TABCONTROLITEM item
 
 item = Message.PowerObjectParm
 
@@ -261,7 +257,12 @@ end if
 return 0
 end event
 
-event open;call super::open;Event OnAttach(Message.PowerObjectParm)
+event open;call super::open;string sTxt
+
+sTxt = I18N(Enums.I18N_CAT_TABCONTROL,TIP_PIN)
+CaptionBar.of_AddButton(sTxt,ICO_PIN,sTxt,Right!)
+
+Event OnAttach(Message.PowerObjectParm)
 end event
 
 type menubar from s_cst_window`menubar within w_cst_tabfloat

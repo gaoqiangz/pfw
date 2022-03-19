@@ -576,7 +576,7 @@ _ImageList = Create n_imagelist
 _ImageList.ShareImage(true)
 _ImageList.SetImageSize(theme.#IconSize.cx,theme.#IconSize.cy)
 
-_nImageIndex = _ImageList.AddImage(#Image)
+_nImageIndex = _ImageList.AddImage(theme.of_GetIcon(#Image,0))
 
 //Init tooltip
 _ToolTip = Create n_tooltip
@@ -700,7 +700,7 @@ public function long of_setimage (readonly string imagename);int nOldImageIndex
 if imageName = #Image then return RetCode.OK
 
 nOldImageIndex = _nImageIndex
-_nImageIndex = _ImageList.AddImage(imageName)
+_nImageIndex = _ImageList.AddImage(theme.of_GetIcon(imageName,0))
 
 if (_nImageIndex > 0) <> (nOldImageIndex > 0) then
 	_of_UpdateTextSize()

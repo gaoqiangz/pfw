@@ -36,7 +36,7 @@ if width = 0 or height = 0 then return false
 
 _ImageList.SetImageSize(width,height)
 
-imageIndex = _ImageList.AddImage(image)
+imageIndex = _ImageList.AddImage(theme.of_GetItemIcon(this,Image,0))
 
 if imageIndex = 0 then return false
 
@@ -53,7 +53,7 @@ public function long of_setimage (readonly string image);int newIndex
 
 if #Image= image then return RetCode.OK
 
-newIndex = _ImageList.AddImage(image)
+newIndex = _ImageList.AddImage(theme.of_GetItemIcon(this,Image,0))
 
 if newIndex = 0 then return RetCode.E_INVALID_IMAGE
 

@@ -101,6 +101,21 @@ call super::destroy
 destroy(this.font)
 end on
 
+event _ongetcolor;call super::_ongetcolor;if colorFlag = CLR_ICON then
+	if BitTest(state,Enums.STATE_DISABLED) then
+		color = _themeColorGray
+	elseif BitTest(state,Enums.STATE_PRESSED) then
+		color = ARGB(255,24,90,189)
+	elseif BitTest(state,Enums.STATE_HOVER) then
+		color = ARGB(255,65,165,238)
+	elseif BitTest(state,Enums.STATE_FOCUS) then
+		color = ARGB(255,33,125,204)
+	else
+		color = ARGB(255,80,80,80)
+	end if
+end if
+end event
+
 type font from n_cst_font within n_cst_radiobox_theme descriptor "pb_nvo" = "true" 
 end type
 

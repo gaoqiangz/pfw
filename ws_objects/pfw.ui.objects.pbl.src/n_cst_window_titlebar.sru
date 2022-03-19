@@ -76,6 +76,7 @@ event type long onsystembuttonchanged ( )
 event type long oniconchanged ( unsignedlong hicon )
 event type long onerasebkgnd ( unsignedlong hdc )
 event type long onclose ( )
+event onpreopen ( )
 timer timer
 linkfont linkfont
 font font
@@ -176,10 +177,10 @@ Constant Uint ITF_NONE		= 0
 Constant Uint ITF_BEGIN		= 1
 Constant Uint ITF_END		= 2
 //System button icon
-Constant String ICO_CLOSE 	= "pfw://zip/images[btn_close.png]"
-Constant String ICO_MAX 		= "pfw://zip/images[btn_max.png]"
-Constant String ICO_RESTORE = "pfw://zip/images[btn_restore.png]"
-Constant String ICO_MINI 		= "pfw://zip/images[btn_mini.png]"
+Constant String ICO_CLOSE 	= "pfw://zip/images[win-close.svg]"
+Constant String ICO_MAX 		= "pfw://zip/images[win-maximize.svg]"
+Constant String ICO_RESTORE = "pfw://zip/images[win-restore.svg]"
+Constant String ICO_MINI 		= "pfw://zip/images[win-minimize.svg]"
 //System button tiptext
 Constant String TIP_CLOSE 		= "关闭"
 Constant String TIP_MAX 		= "最大化"
@@ -366,16 +367,12 @@ _HCurHand = Win32.LoadCursor(0,Win32.IDC_HAND)
 _ImageList_Icon.SetImageSize(theme.#IconSize.cx,theme.#IconSize.cy)
 
 /*--- Init system buttons ---*/
-_maxIconIndex = _ImageList.AddImage(ICO_MAX)
-_restoreIconIndex = _ImageList.AddImage(ICO_RESTORE)
-_miniIconIndex = _ImageList.AddImage(ICO_MINI)
 //Add close button
 Items[IDX_CLOSE].ItemType		= ITT_CLOSE
 Items[IDX_CLOSE].Position 			= Right!
 Items[IDX_CLOSE].Enabled			= true
 Items[IDX_CLOSE].Visible			= #ParentWindow.ControlMenu
 Items[IDX_CLOSE].Image			= ICO_CLOSE
-Items[IDX_CLOSE].ImageIndex		= _ImageList.AddImage(ICO_CLOSE)
 Items[IDX_CLOSE].Text			= I18N(Enums.I18N_CAT_WINDOW,TIP_CLOSE)
 Items[IDX_CLOSE].TipText			= Items[IDX_CLOSE].Text
 //Add max button
@@ -385,12 +382,10 @@ Items[IDX_MAX].Enabled			= true
 Items[IDX_MAX].Visible				= (#ParentWindow.MaxBox and #ParentWindow.ControlMenu)
 if Win32.IsZoomed(#ParentWindow.#Handle) then
 	Items[IDX_MAX].Image			= ICO_RESTORE
-	Items[IDX_MAX].ImageIndex	= _restoreIconIndex
 	Items[IDX_MAX].Text			= I18N(Enums.I18N_CAT_WINDOW,TIP_RESTORE)
 	Items[IDX_MAX].TipText			= Items[IDX_MAX].Text
 else
 	Items[IDX_MAX].Image			= ICO_MAX
-	Items[IDX_MAX].ImageIndex	= _maxIconIndex
 	Items[IDX_MAX].Text			= I18N(Enums.I18N_CAT_WINDOW,TIP_MAX)
 	Items[IDX_MAX].TipText			= Items[IDX_MAX].Text
 end if
@@ -400,14 +395,13 @@ Items[IDX_MINI].Position 			= Right!
 Items[IDX_MINI].Enabled			= true
 Items[IDX_MINI].Visible				= (#ParentWindow.MinBox and #ParentWindow.ControlMenu)
 Items[IDX_MINI].Image				= ICO_MINI
-Items[IDX_MINI].ImageIndex		= _miniIconIndex
 Items[IDX_MINI].Text				= I18N(Enums.I18N_CAT_WINDOW,TIP_MINI)
 Items[IDX_MINI].TipText				= Items[IDX_MINI].Text
 /*-------------------------------*/
 //Init window icon
 if Len(#ParentWindow.Icon) > 0 then
 	#Icon = #ParentWindow.Icon
-	IconData.Index = _ImageList_Icon.AddImage(#ParentWindow.Icon)
+	IconData.Index = _ImageList_Icon.AddImage(theme.of_GetIcon(#ParentWindow.Icon,0))
 	if IconData.Index = 0 then
 		IconData.Index = _ImageList_Icon.AddHIcon(Send(#ParentWindow.#Handle,WinMsg.WM_GETICON,1,0))
 	end if
@@ -823,7 +817,7 @@ event type long oniconchanged(unsignedlong hicon);int newIconIndex
 #Icon = #ParentWindow.Icon
 
 if Len(#ParentWindow.Icon) > 0 then
-	newIconIndex = _ImageList_Icon.AddImage(#ParentWindow.Icon)
+	newIconIndex = _ImageList_Icon.AddImage(theme.of_GetIcon(#ParentWindow.Icon,0))
 	if newIconIndex = 0 then
 		newIconIndex = _ImageList_Icon.AddHIcon(hIcon)
 	end if
@@ -853,6 +847,25 @@ event type long onclose();if _TTID > 0 then
 	_ToolTip.DelTool(#ParentWindow.#Handle,_TTID)
 end if
 return 0
+end event
+
+event onpreopen();/*--- Init system buttons ---*/
+_maxIconIndex = _ImageList.AddImage(theme.of_GetItemIcon(IDX_MAX,ICO_MAX,0,WOT_TITLEBAR))
+_restoreIconIndex = _ImageList.AddImage(theme.of_GetItemIcon(IDX_MAX,ICO_RESTORE,0,WOT_TITLEBAR))
+_miniIconIndex = _ImageList.AddImage(theme.of_GetItemIcon(IDX_MINI,ICO_MINI,0,WOT_TITLEBAR))
+//Add close button
+Items[IDX_CLOSE].ImageIndex		= _ImageList.AddImage(theme.of_GetItemIcon(IDX_CLOSE,ICO_CLOSE,0,WOT_TITLEBAR))
+//Add max button
+if Win32.IsZoomed(#ParentWindow.#Handle) then
+	Items[IDX_MAX].ImageIndex	= _restoreIconIndex
+else
+	Items[IDX_MAX].ImageIndex	= _maxIconIndex
+end if
+//Add min button
+Items[IDX_MINI].ImageIndex		= _miniIconIndex
+/*-------------------------------*/
+
+of_UpdatePoints()
 end event
 
 private subroutine _of_updatepoints ();int index,lastRightButtonIndex
@@ -908,6 +921,8 @@ choose case theme.#ItemStyle
 	case theme.ITS_WIN8
 		ll_right -= 4
 		offsetSize = -1
+	case theme.ITS_WIN10
+		itemSize += 4
 	case theme.ITS_QQ
 		ll_leftTop += 4
 end choose
@@ -1275,6 +1290,64 @@ for index = 1 to UpperBound(Items)
 								Painter.OffsetRect(ref Items[index].rcImage,-4,0)
 							end if
 						end if
+					case theme.ITS_WIN10	//Win10 style
+						ll_right += 1
+						//Set chevron
+						if Items[index].Chevron.Visible then
+							Items[index].Chevron.rcPaint.left		= ll_right - ITEMCHEVRONWIDTH
+							Items[index].Chevron.rcPaint.right		= ll_right
+							Items[index].Chevron.rcPaint.top		= ll_rightTop
+							Items[index].Chevron.rcPaint.bottom	= ll_rightTop + itemSize
+							ll_right  = Items[index].Chevron.rcPaint.left
+						end if
+						if _of_HasValidImage(index) then
+							if Items[index].DisplayText and Items[index].szText.cx > 0 then
+								//Set rcText
+								Items[index].rcText.left 		= ll_right - 8 - Items[index].szText.cx
+								Items[index].rcText.right		= Items[index].rcText.left + Items[index].szText.cx
+								Items[index].rcText.top		= ll_rightTop + (itemSize - Items[index].szText.cy) / 2
+								Items[index].rcText.bottom 	= Items[index].rcText.top + Items[index].szText.cy
+								//Set rcImage
+								Items[index].rcImage.left 	= Items[index].rcText.left - 2 - #IconSize.cx
+								Items[index].rcImage.right 	= Items[index].rcImage.left + #IconSize.cx
+								Items[index].rcImage.top 	= ll_rightTop + 4
+								Items[index].rcImage.bottom = Items[index].rcImage.top + #IconSize.cy
+							else
+								Painter.SetRectEmpty(Items[index].rcText)
+								//Set rcImage
+								Items[index].rcImage.left 	= ll_right - 8 - #IconSize.cx
+								Items[index].rcImage.right 	= Items[index].rcImage.left + #IconSize.cx
+								Items[index].rcImage.top 	= ll_rightTop + 4
+								Items[index].rcImage.bottom = Items[index].rcImage.top + #IconSize.cy
+							end if
+						elseif Items[index].DisplayText and Items[index].szText.cx > 0 then
+							Painter.SetRectEmpty(Items[index].rcImage)
+							//Set rcText
+							Items[index].rcText.left 		= ll_right - 8 - Items[index].szText.cx
+							Items[index].rcText.right 	= Items[index].rcText.left + Items[index].szText.cx
+							Items[index].rcText.top 		= ll_rightTop + (itemSize - Items[index].szText.cy) / 2
+							Items[index].rcText.bottom 	= Items[index].rcText.top + Items[index].szText.cy
+						else
+							Painter.SetRectEmpty(Items[index].rcImage)
+							Painter.SetRectEmpty(Items[index].rcText)
+						end if
+						//Set rcPaint
+						if Not Painter.IsRectEmpty(Items[index].rcText) and  Not Painter.IsRectEmpty(Items[index].rcImage) then
+							Items[index].rcPaint.left = Min(Items[index].rcText.left, Items[index].rcImage.left) - 8
+						elseif Not Painter.IsRectEmpty(Items[index].rcText) then
+							Items[index].rcPaint.left = Items[index].rcText.left - 8
+						elseif Not Painter.IsRectEmpty(Items[index].rcImage) then
+							Items[index].rcPaint.left = Items[index].rcImage.left - 8
+						else
+							Items[index].rcPaint.left = ll_right - 8
+						end if
+						if Items[index].Chevron.Visible then
+							Items[index].rcPaint.right	= Items[index].Chevron.rcPaint.right	
+						else
+							Items[index].rcPaint.right 	= ll_right
+						end if
+						Items[index].rcPaint.top 		= ll_rightTop
+						Items[index].rcPaint.bottom	= Items[index].rcPaint.top + itemSize
 					case theme.ITS_QQ	//QQ style
 						if lastItemType <= ITT_SPLIT then	//Priv item
 							ll_right += 1
@@ -1534,7 +1607,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -1638,7 +1711,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
 end if
 
 if newItem.imageindex = 0 then return RetCode.E_INVALID_IMAGE
@@ -2039,7 +2112,7 @@ public function long of_seticon (readonly string iconname);int newIconIndex
 
 if #Icon = iconname then return RetCode.OK
 
-newIconIndex = _ImageList_Icon.AddImage(iconname)
+newIconIndex = _ImageList_Icon.AddImage(theme.of_GetIcon(iconname,0))
 
 #Icon = iconname
 
@@ -2065,7 +2138,7 @@ if (Not _of_IsButton(index) and Items[index].ItemType <> ITT_ICON)  or &
 	Items[index].ItemType = ITT_LINK then return RetCode.E_NO_SUPPORT
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
 
 if Items[index].ItemType = ITT_ICON and newImgIndex = 0 then
 	return RetCode.E_INVALID_IMAGE
@@ -2317,7 +2390,7 @@ if Not Chevron.Visible then return
 nState = of_GetChevronState()
 arrowColor	= theme.of_GetColor(theme.CLR_ARROW,nState)
 
-if  theme.#ItemStyle = theme.ITS_WIN8 then
+if theme.#ItemStyle = theme.ITS_WIN8 or theme.#ItemStyle = theme.ITS_WIN10 then
 	borderStyle = Enums.BS_SOLID
 elseif theme.#ItemStyle = theme.ITS_VISTA then
 	rdBorder.leftTop = 2
@@ -2476,7 +2549,7 @@ newItem.PopupMenu = PopupMenu
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -2572,7 +2645,7 @@ if Not Items[index].Visible or Items[index].Hidden then return
 
 nState = of_GetItemState(index)
 
-if theme.#ItemStyle = theme.ITS_WIN8 then
+if theme.#ItemStyle = theme.ITS_WIN8 or theme.#ItemStyle = theme.ITS_WIN10 then
 	itemBorderStyle = Enums.BS_SOLID
 elseif theme.#ItemStyle = theme.ITS_VISTA then
 	if Items[index].Position = Right! then
@@ -2694,7 +2767,7 @@ choose case Items[index].ItemType
 						end if
 					end if
 				end if
-			case theme.ITS_WIN8																															/*---- Win8 ----*/
+			case theme.ITS_WIN8,theme.ITS_WIN10																														/*---- Win8/10 ----*/
 				if Not BitTest(nState,Enums.STATE_DISABLED) or Items[index].Toggled or Items[index].ItemType = ITT_CLOSE then
 					bkColor = theme.of_GetItemColor(index,theme.CLR_BKGND,nState,WOT_TITLEBAR)
 					borderColor	= theme.of_GetItemColor(index,theme.CLR_BORDER,nState,WOT_TITLEBAR)
@@ -3299,7 +3372,7 @@ newItem.Chevron.Visible = true
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -3383,7 +3456,7 @@ if Items[index].ItemType = ITT_SPLIT and Items[index].Enabled then
 	if (Not Items[index].MouseOver and Not Items[index].MouseDown and &
 			Not Items[index].Chevron.MouseDown and Not Items[index].Toggled) and &
 		(Items[index].HighLighted or ((Items[index].FlashTime = -1 or Items[index].FlashTime > 0) and Items[index].flashing) or &
-			(theme.#ItemStyle <> theme.ITS_WIN8 and Items[index].Position = Right! and BitTest(nState,Enums.STATE_ACTIVE))) or &
+			(theme.#ItemStyle <> theme.ITS_WIN8 and theme.#ItemStyle <> theme.ITS_WIN10 and Items[index].Position = Right! and BitTest(nState,Enums.STATE_ACTIVE))) or &
 			theme.#ItemStyle = theme.ITS_QQ and Items[index].Position = Right! then
 		if theme.#ItemStyle = theme.ITS_QQ and Items[index].Position = Right! then
 			Painter.DrawGradientLine(hdc,&

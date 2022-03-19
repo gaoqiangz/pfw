@@ -125,10 +125,10 @@ Constant String CUR_VSPLIT = "SizeWE!"
 Constant String CUR_HSPLIT = "SizeNS!"
 Constant String CUR_ARROW = "Arrow!"
 //Collapse button icons
-Constant String ICO_EXPANDLEFT			= "pfw://zip/images[expand_left.png]"
-Constant String ICO_EXPANDTOP			= "pfw://zip/images[expand_top.png]"
-Constant String ICO_EXPANDRIGHT		= "pfw://zip/images[expand_right.png]"
-Constant String ICO_EXPANDBOTTOM	= "pfw://zip/images[expand_bottom.png]"
+Constant String ICO_EXPANDLEFT			= "pfw://zip/images[expand-left.svg]"
+Constant String ICO_EXPANDTOP			= "pfw://zip/images[expand-top.svg]"
+Constant String ICO_EXPANDRIGHT		= "pfw://zip/images[expand-right.svg]"
+Constant String ICO_EXPANDBOTTOM	= "pfw://zip/images[expand-bottom.svg]"
 //Collapse button tiptext
 Constant String TIP_DBCLKCOLLAPSELEFT 		= "双击折叠左侧面板"
 Constant String TIP_DBCLKCOLLAPSERIGHT 	= "双击折叠右侧面板"
@@ -157,8 +157,8 @@ Constant Uint TMI_TRACKRESIZE	= 30
 Constant Long	HTNOWHERE	= 0
 Constant Long	HTVALID			= 1
 //Sizes
-Constant real EXPANDBTNSIZE	= 11		//dip
-Constant real ICONSIZE				= 7		//dip
+Constant real EXPANDBTNSIZE	= 16		//dip
+Constant real ICONSIZE				= 16		//dip
 end variables
 
 forward prototypes
@@ -210,6 +210,13 @@ _TTID = _ToolTip.AddTool(#ParentSplitContainer.#Handle,false,Win32.TTF_SUBCLASS 
 
 Panel1.Event OnInit(this,toolTip)
 Panel2.Event OnInit(this,toolTip)
+
+if __RefCount = 1 then
+	__Idx_ExpandLeft 			= __ImageList.AddImage(theme.of_GetIcon(ICO_EXPANDLEFT,0))
+	__Idx_ExpandTop 			= __ImageList.AddImage(theme.of_GetIcon(ICO_EXPANDTOP,0))
+	__Idx_ExpandRight 		= __ImageList.AddImage(theme.of_GetIcon(ICO_EXPANDRIGHT,0))
+	__Idx_ExpandBottom 		= __ImageList.AddImage(theme.of_GetIcon(ICO_EXPANDBOTTOM,0))
+end if
 end event
 
 event type long onreposition(ref unsignedlong hdwp, ref rectf newrect);real splitBarSize
@@ -1640,11 +1647,8 @@ end on
 event constructor;__RefCount ++
 if __RefCount = 1 then
 	__ImageList = Create n_imagelist
+	__ImageList.ShareImage(true)
 	__ImageList.SetImageSize(ICONSIZE,ICONSIZE)
-	__Idx_ExpandLeft 			= __ImageList.AddImage(ICO_EXPANDLEFT)
-	__Idx_ExpandTop 			= __ImageList.AddImage(ICO_EXPANDTOP)
-	__Idx_ExpandRight 		= __ImageList.AddImage(ICO_EXPANDRIGHT)
-	__Idx_ExpandBottom 		= __ImageList.AddImage(ICO_EXPANDBOTTOM)
 end if
 
 SplitBar.Visible = (Panel1.#Visible and Panel2.#Visible)

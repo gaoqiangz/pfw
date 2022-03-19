@@ -204,8 +204,8 @@ Constant Uint TM_FLASH					= 3
 //Timer interval (ms)
 Constant Uint TMI_SCROLL = 15
 //Button icon
-Constant String ICO_COLLAPSE		= "pfw://zip/images[ArrowUp.png]"
-Constant String ICO_EXPAND		= "pfw://zip/images[ArrowDown.png]"
+Constant String ICO_COLLAPSE		= "pfw://zip/images[chevron-up.svg]"
+Constant String ICO_EXPAND		= "pfw://zip/images[chevron-down.svg]"
 //Button tiptext
 Constant String TIP_COLLAPSE 	= "折叠功能区"
 Constant String TIP_EXPAND	 	= "展开功能区"
@@ -218,7 +218,6 @@ Constant Uint ADJ_FIXEDTAB			= 8
 Constant Real SCROLLBARSIZE 	= 10 		//px
 Constant Real ARROWICONSIZE	= 16		//px
 end variables
-
 forward prototypes
 private subroutine _of_updatetextsize ()
 private subroutine _of_trackncmouseleave (readonly boolean track)
@@ -1109,7 +1108,7 @@ newTab.imageindex = 0
 
 if len(image) > 0 then
 	newTab.image = image
-	newTab.imageindex = _ImageList.AddImage(Trim(image))
+	newTab.imageindex = _ImageList.AddImage(theme.of_GetTabIcon(index,image,0))
 end if
 
 newCategory = create n_cst_ribbonbar_category
@@ -1710,7 +1709,7 @@ boolean dirty
 if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetTabIcon(index,image,0))
 if (Items[index].imageIndex > 0) <> (newImgIndex > 0) then
 	dirty = true
 end if
@@ -3010,8 +3009,8 @@ _SmallImageList.SetImageSize(theme.#SmallIconSize.cx,theme.#SmallIconSize.cy)
 _LargeImageList.SetImageSize(theme.#LargeIconSize.cx,theme.#LargeIconSize.cy)
 _ArrowImageList.SetImageSize(ARROWICONSIZE,ARROWICONSIZE)
 
-_ArrowImageList.AddImage(ICO_COLLAPSE)
-_ArrowImageList.AddImage(ICO_EXPAND)
+_ArrowImageList.AddImage(theme.of_GetIcon(ICO_COLLAPSE,0))
+_ArrowImageList.AddImage(theme.of_GetIcon(ICO_EXPAND,0))
 
 Painter.CreatePen(0,1,2,ref _outlinePen)
 

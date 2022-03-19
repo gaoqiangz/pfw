@@ -950,7 +950,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -1182,7 +1182,7 @@ if Not Items[index].Visible or Items[index].Hidden then return
 
 nState = of_GetItemState(index)
 
-if  theme.#ItemStyle = theme.ITS_WIN8 then
+if theme.#ItemStyle = theme.ITS_WIN8 or theme.#ItemStyle = theme.ITS_WIN10 then
 	itemBorderStyle = Enums.BS_SOLID
 elseif theme.#ItemStyle = theme.ITS_VISTA then
 	rdBorder.leftTop = 2
@@ -1447,7 +1447,7 @@ if (Not _of_IsButton(index) and Items[index].ItemType <> ITT_ICON)  or &
 	Items[index].ItemType = ITT_LINK then return RetCode.E_NO_SUPPORT
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
 
 if Items[index].ItemType = ITT_ICON and newImgIndex = 0 then
 	return RetCode.E_INVALID_IMAGE
@@ -1655,7 +1655,7 @@ if Not Chevron.Visible then return
 nState = of_GetChevronState()
 arrowColor	= theme.of_GetColor(theme.CLR_ARROW,nState)
 
-if  theme.#ItemStyle = theme.ITS_WIN8 then
+if theme.#ItemStyle = theme.ITS_WIN8 or theme.#ItemStyle = theme.ITS_WIN10 then
 	borderStyle = Enums.BS_SOLID
 elseif theme.#ItemStyle = theme.ITS_VISTA then
 	rdBorder.leftTop = 2
@@ -1816,7 +1816,7 @@ newItem.PopupMenu = PopupMenu
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -2031,7 +2031,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
 end if
 
 if newItem.imageindex = 0 then return RetCode.E_INVALID_IMAGE

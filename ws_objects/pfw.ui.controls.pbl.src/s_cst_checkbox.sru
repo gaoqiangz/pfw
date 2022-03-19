@@ -12,18 +12,19 @@ n_imagelist __ImageList
 Ulong 			__RefCount = 0
 
 //Image indexes
-int		__Idx_CB_Normal
-int		__Idx_CB_Hover
-int		__Idx_CB_Down
-int		__Idx_CB_Focused
-int		__Idx_CBC_Normal
-int		__Idx_CBC_Hover
-int		__Idx_CBC_Down
-int		__Idx_CBC_Focused
-int		__Idx_CBSC_Normal
-int		__Idx_CBSC_Hover
-int		__Idx_CBSC_Down
-int		__Idx_CBSC_Focused
+int __Idx_CB_Normal
+int __Idx_CB_Hover
+int __Idx_CB_Down
+int __Idx_CB_Focused
+int __Idx_CBC_Normal
+int __Idx_CBC_Hover
+int __Idx_CBC_Down
+int __Idx_CBC_Focused
+int __Idx_CBSC_Normal
+int __Idx_CBSC_Hover
+int __Idx_CBSC_Down
+int __Idx_CBSC_Focused
+
 end variables
 
 global type s_cst_checkbox from checkbox
@@ -128,25 +129,14 @@ Boolean _MouseLeaveTracked	= false
 Boolean _MouseCaptured		= false
 
 //Images
-Constant String	ICO_CB_NORMAL		= "pfw://zip/images[cb_normal.png]"
-Constant String	ICO_CB_HOVER		= "pfw://zip/images[cb_hover.png]"
-Constant String	ICO_CB_DOWN			= "pfw://zip/images[cb_down.png]"
-Constant String	ICO_CB_FOCUSED		= "pfw://zip/images[cb_focused.png]"
-Constant String	ICO_CBC_NORMAL		= "pfw://zip/images[cbc_normal.png]"
-Constant String	ICO_CBC_HOVER		= "pfw://zip/images[cbc_hover.png]"
-Constant String	ICO_CBC_DOWN		= "pfw://zip/images[cbc_down.png]"
-Constant String	ICO_CBC_FOCUSED	= "pfw://zip/images[cbc_focused.png]"
-Constant String	ICO_CBSC_NORMAL	= "pfw://zip/images[cbsc_normal.png]"
-Constant String	ICO_CBSC_HOVER		= "pfw://zip/images[cbsc_hover.png]"
-Constant String	ICO_CBSC_DOWN		= "pfw://zip/images[cbsc_down.png]"
-Constant String	ICO_CBSC_FOCUSED	= "pfw://zip/images[cbsc_focused.png]"
+Constant String	ICO_CHECKBOX		= "pfw://zip/images[checkbox.svg]"
+Constant String	ICO_CHECKBOX_ON	= "pfw://zip/images[checkbox-on.svg]"
+Constant String	ICO_CHECKBOX_DONE	= "pfw://zip/images[checkbox-done.svg]"
 //Sizes
-Constant Real ICONSIZE 	= 13 		//px
+Constant Real ICONSIZE 	= 16 		//px
 end variables
 
 forward prototypes
-private subroutine _of_initial ()
-private subroutine _of_uninitial ()
 public function long of_redraw (readonly boolean fadeanimation)
 private subroutine _of_updatetextsize ()
 private subroutine _of_updatepoints ()
@@ -476,40 +466,16 @@ else
 end if
 end event
 
-event onconstructor;_of_Initial()
-
-Event OnPreConstructor()
-Event Constructor()
-Post Event OnPostConstructor( )
-end event
-
-event ondestructor;Event OnPreDestructor()
-Event Destructor()
-
-_of_Uninitial()
-end event
-
-private subroutine _of_initial ();#Handle = Handle(this)
+event onconstructor;#Handle = Handle(this)
 #ParentWindow = GetParentWindow(this)
 _Canvas = Create n_canvas
 
-//Init _ImageList
+//Init __ImageList
 __RefCount ++
 if __RefCount = 1 then
 	__ImageList = Create n_imagelist
+	__ImageList.ShareImage(true)
 	__ImageList.SetImageSize(ICONSIZE,ICONSIZE)
-	__Idx_CB_Normal 		= __ImageList.AddImage(ICO_CB_NORMAL)
-	__Idx_CB_Hover 		= __ImageList.AddImage(ICO_CB_HOVER)
-	__Idx_CB_Down 		= __ImageList.AddImage(ICO_CB_DOWN)
-	__Idx_CB_Focused		= __ImageList.AddImage(ICO_CB_FOCUSED)
-	__Idx_CBC_Normal 	= __ImageList.AddImage(ICO_CBC_NORMAL)
-	__Idx_CBC_Hover 		= __ImageList.AddImage(ICO_CBC_HOVER)
-	__Idx_CBC_Down 		= __ImageList.AddImage(ICO_CBC_DOWN)
-	__Idx_CBC_Focused	= __ImageList.AddImage(ICO_CBC_FOCUSED)
-	__Idx_CBSC_Normal	= __ImageList.AddImage(ICO_CBSC_NORMAL)
-	__Idx_CBSC_Hover 	= __ImageList.AddImage(ICO_CBSC_HOVER)
-	__Idx_CBSC_Down 	= __ImageList.AddImage(ICO_CBSC_DOWN)
-	__Idx_CBSC_Focused	= __ImageList.AddImage(ICO_CBSC_FOCUSED)
 end if
 
 //Init tooltip
@@ -531,9 +497,32 @@ if LeftText then
 end if
 
 _Canvas.Attach(This)
-end subroutine
 
-private subroutine _of_uninitial ();_Canvas.Detach()
+Event OnPreConstructor()
+
+if __RefCount = 1 then
+	__Idx_CB_Normal 		= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX,0))
+	__Idx_CB_Hover 		= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX,Enums.STATE_HOVER))
+	__Idx_CB_Down 		= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX,Enums.STATE_PRESSED))
+	__Idx_CB_Focused		= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX,Enums.STATE_FOCUS))
+	__Idx_CBSC_Normal	= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_ON,0))
+	__Idx_CBSC_Hover 	= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_ON,Enums.STATE_HOVER))
+	__Idx_CBSC_Down 	= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_ON,Enums.STATE_PRESSED))
+	__Idx_CBSC_Focused	= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_ON,Enums.STATE_FOCUS))
+	__Idx_CBC_Normal 	= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_DONE,0))
+	__Idx_CBC_Hover 		= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_DONE,Enums.STATE_HOVER))
+	__Idx_CBC_Down 		= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_DONE,Enums.STATE_PRESSED))
+	__Idx_CBC_Focused	= __ImageList.AddImage(theme.of_GetIcon(ICO_CHECKBOX_DONE,Enums.STATE_FOCUS))
+end if
+
+Event Constructor()
+Post Event OnPostConstructor( )
+end event
+
+event ondestructor;Event OnPreDestructor()
+Event Destructor()
+
+_Canvas.Detach()
 Destroy _Canvas
 
 if _TTID > 0 then
@@ -546,7 +535,7 @@ __RefCount --
 if __RefCount = 0 then
 	Destroy __ImageList
 end if
-end subroutine
+end event
 
 public function long of_redraw (readonly boolean fadeanimation);ulong safeDC
 

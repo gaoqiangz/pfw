@@ -3247,7 +3247,7 @@ boolean dirty
 if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 if (Items[index].imageIndex > 0) <> (newImgIndex > 0) then
 	dirty = true
 end if
@@ -3735,7 +3735,7 @@ else
 end if
 
 if Len(newItem.image) > 0 then
-	newItem.imageindex = _ImageList.AddImage(Trim(newItem.image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,newItem.image,0))
 end if
 
 Painter.CreatePath(1,ref newItem.PaintPath)
@@ -4575,7 +4575,7 @@ else
 end if
 
 if Len(newItem.image) > 0 then
-	newItem.imageindex = _ImageList.AddImage(Trim(newItem.image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,newItem.image,0))
 end if
 
 Painter.CreatePath(1,ref newItem.PaintPath)

@@ -1554,15 +1554,15 @@ public function long of_setimage (readonly integer index, readonly string image)
 if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 
 if newImgindex = 0 then return RetCode.E_INVALID_IMAGE
 
 Items[index].image = image
 Items[index].imageIndex = newImgIndex
 
-_ImageList_TitleBar.AddImage(Trim(image))
-_ImageList_Icontray.AddImage(Trim(image))
+_ImageList_TitleBar.AddImage(theme.of_GetItemIcon(index,image,0))
+_ImageList_Icontray.AddImage(theme.of_GetItemIcon(index,image,0))
 
 if Items[index].Visible then
 	_of_DrawItem(index,false)
@@ -1909,27 +1909,27 @@ if theme.#IcontrayIconRTL then
 	nX += ARROWSIZE / 2 - 1
 	for nRow = ARROWSIZE - 1 to 1 step -1
 		Painter.SetPixel(hdc,nX,nY,arrowColor)
-		Painter.SetPixel(hdc,nX + 1,nY,arrowColor)
-		Painter.SetPixel(hdc,nX + 3,nY,arrowColor)
-		Painter.SetPixel(hdc,nX + 4,nY,arrowColor)
-		nY += 1
+		Painter.SetPixel(hdc,nX + P2DX(1),nY,arrowColor)
+		Painter.SetPixel(hdc,nX + P2DX(3),nY,arrowColor)
+		Painter.SetPixel(hdc,nX + P2DX(4),nY,arrowColor)
+		nY += P2DY(1)
 		if nRow <= ARROWSIZE / 2 then
-			nX += 1
+			nX += P2DX(1)
 		else
-			nX -= 1
+			nX -= P2DX(1)
 		end if
 	next
 else
 	for nRow = 1 to ARROWSIZE - 1
 		Painter.SetPixel(hdc,nX,nY,arrowColor)
-		Painter.SetPixel(hdc,nX + 1,nY,arrowColor)
-		Painter.SetPixel(hdc,nX + 3,nY,arrowColor)
-		Painter.SetPixel(hdc,nX + 4,nY,arrowColor)
-		nY += 1
+		Painter.SetPixel(hdc,nX + P2DX(1),nY,arrowColor)
+		Painter.SetPixel(hdc,nX + P2DX(3),nY,arrowColor)
+		Painter.SetPixel(hdc,nX + P2DX(4),nY,arrowColor)
+		nY += P2DY(1)
 		if nRow < ARROWSIZE / 2 then
-			nX += 1
+			nX += P2DX(1)
 		else
-			nX -= 1
+			nX -= P2DX(1)
 		end if
 	next
 end if
@@ -2166,10 +2166,10 @@ if itemIndex > 0 then return itemIndex
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 	if newItem.imageIndex > 0 then
-		_ImageList_TitleBar.AddImage(Trim(image))
-		_ImageList_Icontray.AddImage(Trim(image))
+		_ImageList_TitleBar.AddImage(theme.of_GetItemIcon(index,image,0))
+		_ImageList_Icontray.AddImage(theme.of_GetItemIcon(index,image,0))
 	end if
 end if
 if newItem.imageindex = 0 then

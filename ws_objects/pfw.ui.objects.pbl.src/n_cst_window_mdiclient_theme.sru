@@ -81,6 +81,7 @@ public function unsignedlong of_getitemcolor (readonly integer index, readonly u
 public function long of_seticonsize (readonly real width, readonly real height)
 public function long of_setitemminsize (readonly real size)
 public function long of_settabstripsize (readonly real size)
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state)
 end prototypes
 
 event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -333,6 +334,23 @@ Event OnThemeChanged(EVT_TABSTRIPSIZE)
 return RetCode.OK
 end function
 
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
+end function
+
 on n_cst_window_mdiclient_theme.create
 call super::create
 this.font=create font
@@ -375,6 +393,23 @@ event _ongetcolor;call super::_ongetcolor;choose case colorFlag
 			color = _themeColorL1
 		end if
 end choose
+end event
+
+event _onthemecolorchanged;call super::_onthemecolorchanged;Uint a,r,g,b
+
+SplitARGB(_themeColor,ref a,ref r,ref g,ref b)
+
+if r < 100 or g < 100 or b < 100 then
+	_themeColorIcon = ARGB(255,255,255,255)
+	_themeColorIconHover = _themeColorIcon
+	_themeColorIconPressed = _themeColorIcon
+	_themeColorIconFocus = _themeColorIcon
+else
+	_themeColorIcon = ARGB(255,80,80,80)
+	_themeColorIconHover = ARGB(255,120,120,120)
+	_themeColorIconPressed = ARGB(255,60,60,60)
+	_themeColorIconFocus = ARGB(255,50,50,50)
+end if
 end event
 
 type font from n_cst_font within n_cst_window_mdiclient_theme descriptor "pb_nvo" = "true" 

@@ -96,8 +96,8 @@ end prototypes
 
 event type boolean oninitdata(string text, string smallimage, string largeimage, string tiptext);int newSmallIndex,newLargeIndex
 
-newSmallIndex = _SmallImageList.AddImage(smallImage)
-newLargeIndex = _LargeImageList.AddImage(largeImage)
+newSmallIndex = _SmallImageList.AddImage(theme.of_GetItemIcon(this,smallImage,0))
+newLargeIndex = _LargeImageList.AddImage(theme.of_GetItemIcon(this,largeImage,0))
 
 if Len(Text) = 0 and newSmallIndex = 0 and newLargeIndex = 0 then return false
 
@@ -409,8 +409,8 @@ boolean dirty
 
 if #SmallImage= smallImage and #LargeImage = largeImage then return RetCode.OK
 
-newSmallIndex = _SmallImageList.AddImage(smallImage)
-newLargeIndex = _LargeImageList.AddImage(largeImage)
+newSmallIndex = _SmallImageList.AddImage(theme.of_GetItemIcon(this,smallImage,0))
+newLargeIndex = _LargeImageList.AddImage(theme.of_GetItemIcon(this,largeImage,0))
 
 if szText.cx = 0 and newSmallIndex = 0 and newLargeIndex = 0 then return RetCode.E_INVALID_IMAGE
 if newSmallIndex = 0 and ((Not of_HasLargeMode() or newLargeIndex = 0) and Not of_HasIntermediateMode()) then return RetCode.E_INVALID_IMAGE

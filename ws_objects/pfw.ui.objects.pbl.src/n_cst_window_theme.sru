@@ -21,7 +21,8 @@ Public:
 Constant Uint ITS_XP 		= 0
 Constant Uint ITS_VISTA 	= 1
 Constant Uint ITS_WIN8 		= 2
-Constant Uint ITS_QQ 		= 3
+Constant Uint ITS_WIN10 	= 3
+Constant Uint ITS_QQ 		= 4
 //Color flags
 Constant Uint CLR_TITLE						= CLR_CUSTOM + 1
 Constant Uint CLR_MENUBARBKGND		= CLR_CUSTOM + 2
@@ -65,7 +66,7 @@ ProtectedWrite	Boolean		#StatusBar						= false					//显示状态栏
 ProtectedWrite	Boolean		#ToolBar							= false					//显示工具栏
 ProtectedWrite	Boolean		#ClientThemeBkgnd			= false					//开启客户区主题背景
 ProtectedWrite	Alignment	#TitleAlign						= Left!					//标题栏文本对齐方式(Left!,Center!,Right!)
-ProtectedWrite Uint			#ItemStyle						= ITS_WIN8				//标题栏按钮风格(ITS_XP,ITS_VISTA,ITS_WIN8,ITS_QQ)
+ProtectedWrite Uint			#ItemStyle						= ITS_WIN8				//标题栏按钮风格(ITS_XP,ITS_VISTA,ITS_WIN8,ITS_WIN10,ITS_QQ)
 ProtectedWrite Uint			#ItemBkgndStyle				= Enums.SOLID		//标题栏按钮背景风格
 ProtectedWrite Uint			#MenuBarBkgndStyle			= Enums.SOLID		//菜单栏背景风格
 ProtectedWrite Uint			#MenuBarBorderStyle			= Enums.BS_SOLID 	//菜单栏边框风格
@@ -86,7 +87,6 @@ ProtectedWrite real			#ScrollBarArrowSize			= 12						//滚动条箭头大小(px
 ProtectedWrite RADIUSF		#ScrollBarRoundSize										//滚动条圆角大小(px,#ScrollBarBorderStyle=Enums.BS_ROUND时有效)
 ProtectedWrite RECTF			#ScrollBarBorderMargin									//滚动条边框间距(px)
 end variables
-
 forward prototypes
 public function long of_setclientthemebkgnd (readonly boolean enable)
 public function long of_setitembkgndstyle (readonly unsignedinteger style)
@@ -128,9 +128,11 @@ public function long of_setscrollbarsize (readonly real size)
 public function long of_setstatusbarheight (readonly real height)
 public function long of_settitlebarheight (readonly real height)
 public function long of_settoolbarheight (readonly real height)
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state, readonly unsignedinteger objecttype)
 end prototypes
 
-event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, unsignedinteger objecttype, ref unsignedlong color);choose case colorFlag
+event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, unsignedinteger objecttype, ref unsignedlong color);
+choose case colorFlag
 	case CLR_BKGND,CLR_CHEVRONBKGND
 		if BitTest(state,Enums.STATE_PRESSED) then
 			color = _themeColorL1
@@ -202,7 +204,7 @@ end function
 public function long of_setitemstyle (readonly unsignedinteger style);if #ItemStyle = style then return RetCode.OK
 	
 choose case style
-	case ITS_XP,ITS_VISTA,ITS_WIN8,ITS_QQ
+	case ITS_XP,ITS_VISTA,ITS_WIN8,ITS_WIN10,ITS_QQ
 		
 		#ItemStyle = style
 		Event OnThemeChanged(EVT_ITEMSTYLE)
@@ -223,6 +225,8 @@ choose case Upper(style)
 		newStyle = ITS_VISTA
 	case "WIN8"
 		newStyle = ITS_WIN8
+	case "WIN10"
+		newStyle = ITS_WIN10
 	case "QQ"
 		newStyle = ITS_QQ
 	case else
@@ -728,6 +732,23 @@ Event OnThemeChanged(EVT_TOOLBARHEIGHT)
 return RetCode.OK
 end function
 
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state, readonly unsignedinteger objecttype);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state,objectType)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state,objectType)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
+end function
+
 on n_cst_window_theme.create
 call super::create
 this.font=create font
@@ -762,7 +783,7 @@ SetNull(#TitleBar)
 end event
 
 event onsetpopupmenutheme;call super::onsetpopupmenutheme;pmTheme.of_SetItemBkgndStyle(#ItemBkgndStyle)
-if  #ItemStyle = ITS_WIN8 then
+if #ItemStyle = ITS_WIN8 or #ItemStyle = ITS_WIN10 then
 	pmTheme.of_SetItemBorderStyle(Enums.BS_SOLID)
 else
 	pmTheme.of_SetItemBorderStyle(Enums.BS_ROUND)
@@ -794,6 +815,23 @@ event _ongetcolor;call super::_ongetcolor;choose case colorFlag
 	case CLR_TOOLBARBORDER
 		color = _themeColorD4
 end choose
+end event
+
+event _onthemecolorchanged;call super::_onthemecolorchanged;Uint a,r,g,b
+
+SplitARGB(_themeColor,ref a,ref r,ref g,ref b)
+
+if r < 100 or g < 100 or b < 100 then
+	_themeColorIcon = ARGB(255,255,255,255)
+	_themeColorIconHover = _themeColorIcon
+	_themeColorIconPressed = _themeColorIcon
+	_themeColorIconFocus = _themeColorIcon
+else
+	_themeColorIcon = ARGB(255,80,80,80)
+	_themeColorIconHover = ARGB(255,120,120,120)
+	_themeColorIconPressed = ARGB(255,60,60,60)
+	_themeColorIconFocus = ARGB(255,50,50,50)
+end if
 end event
 
 type font from n_cst_font within n_cst_window_theme descriptor "pb_nvo" = "true" 

@@ -52,14 +52,10 @@ Boolean _MouseDown			= false
 Boolean _RightMouseDown	= false
 
 //Images
-Constant String	ICO_RB_NORMAL	= "pfw://zip/images[rb_normal.png]"
-Constant String	ICO_RB_HOVER	= "pfw://zip/images[rb_hover.png]"
-Constant String	ICO_RB_DOWN		= "pfw://zip/images[rb_down.png]"
-Constant String	ICO_RBC_NORMAL	= "pfw://zip/images[rbc_normal.png]"
-Constant String	ICO_RBC_HOVER	= "pfw://zip/images[rbc_hover.png]"
-Constant String	ICO_RBC_DOWN	= "pfw://zip/images[rbc_down.png]"
+Constant String	ICO_RADIOBOX		= "pfw://zip/images[radiobox.svg]"
+Constant String	ICO_RADIOBOX_ON	= "pfw://zip/images[radiobox-on.svg]"
 //Sizes
-Constant real ICONSIZE = 13 		//px
+Constant real ICONSIZE = 16 		//px
 end variables
 
 forward prototypes
@@ -230,13 +226,8 @@ end on
 event constructor;call super::constructor;__RefCount ++
 if __RefCount = 1 then
 	__ImageList = Create n_imagelist
+	__ImageList.ShareImage(true)
 	__ImageList.SetImageSize(ICONSIZE,ICONSIZE)
-	__Idx_RB_Normal 		= __ImageList.AddImage(ICO_RB_NORMAL)
-	__Idx_RB_Hover 		= __ImageList.AddImage(ICO_RB_HOVER)
-	__Idx_RB_Down 		= __ImageList.AddImage(ICO_RB_DOWN)
-	__Idx_RBC_Normal	= __ImageList.AddImage(ICO_RBC_NORMAL)
-	__Idx_RBC_Hover 		= __ImageList.AddImage(ICO_RBC_HOVER)
-	__Idx_RBC_Down 		= __ImageList.AddImage(ICO_RBC_DOWN)
 end if
 end event
 
@@ -423,6 +414,15 @@ event onlbuttondblclk;call super::onlbuttondblclk;return Event OnLButtonDown(vKe
 end event
 
 event oninit;call super::oninit;_TTID = _ToolTip.AddTool(#ParentRibbonBar.#Handle,false,Win32.TTF_TRANSPARENT + Win32.TTF_TRACK + Win32.TTF_ABSOLUTE)
+
+if __RefCount = 1 then
+	__Idx_RB_Normal 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX,0))
+	__Idx_RB_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX,Enums.STATE_HOVER))
+	__Idx_RB_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX,Enums.STATE_PRESSED))
+	__Idx_RBC_Normal 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,0))
+	__Idx_RBC_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,Enums.STATE_HOVER))
+	__Idx_RBC_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,Enums.STATE_PRESSED))
+end if
 end event
 
 event oncalclayout;call super::oncalclayout;szLayouts[DPM_LARGE].cx = ICONSIZE

@@ -138,10 +138,10 @@ Constant Uint ITT_CLOSE 		= 0
 Constant Uint ITT_MAX			= 1
 Constant Uint ITT_MINI 			= 2
 //System button icon
-Constant String ICO_CLOSE 	= "pfw://zip/images[btn_close.png]"
-Constant String ICO_MAX 		= "pfw://zip/images[btn_max.png]"
-Constant String ICO_RESTORE = "pfw://zip/images[btn_restore.png]"
-Constant String ICO_MINI 		= "pfw://zip/images[btn_mini.png]"
+Constant String ICO_CLOSE 	= "pfw://zip/images[win-close.svg]"
+Constant String ICO_MAX 		= "pfw://zip/images[win-maximize.svg]"
+Constant String ICO_RESTORE = "pfw://zip/images[win-restore.svg]"
+Constant String ICO_MINI 		= "pfw://zip/images[win-minimize.svg]"
 //System button tiptext
 Constant String TIP_CLOSE 		= "关闭"
 Constant String TIP_MAX 		= "最大化"
@@ -154,8 +154,6 @@ end variables
 
 forward prototypes
 public function long of_redraw (readonly boolean fadeanimation)
-private subroutine _of_initial ()
-private subroutine _of_uninitial ()
 public function long of_settransparent (readonly boolean transparent, readonly boolean bredraw)
 public function long of_settransparent (readonly boolean transparent)
 public function long of_updateparentbkgnd (readonly boolean bredraw)
@@ -299,9 +297,67 @@ Win32.CopyScrollBarCreateInfo(lpsbci,ref sbCreateInfo,Win32.SIZEOF_SCROLLBARCREA
 return 1
 end event
 
-event onconstructor;_of_Initial()
+event onconstructor;#Handle = Handle(this)
+#ParentWindow = GetParentWindow(this)
+_Canvas = Create n_canvas
+_ImageList = Create n_imagelist
+_ImageList.ShareImage(true)
+_ImageList.SetImageSize(theme.#SysIconSize.cx,theme.#SysIconSize.cy)
+
+_ImageList_Icon = Create n_imagelist
+_ImageList_Icon.ShareImage(true)
+_ImageList_Icon.SetImageSize(theme.#IconSize.cx,theme.#IconSize.cy)
+
+_ToolTip = Create n_tooltip
+_ToolTip.CreateToolTip(#Handle)
+_TTID = _ToolTip.AddTool(#Handle,false,/*Win32.TTF_IDISHWND +*/ Win32.TTF_TRANSPARENT + Win32.TTF_TRACK + Win32.TTF_ABSOLUTE)
+
+/*--- Init system buttons ---*/
+//Add close button
+Items[IDX_CLOSE].ItemType		= ITT_CLOSE
+Items[IDX_CLOSE].Visible			= ControlMenu
+Items[IDX_CLOSE].Image			= ICO_CLOSE
+Items[IDX_CLOSE].TipText			= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_CLOSE)
+//Add max button
+Items[IDX_MAX].ItemType			= ITT_MAX
+Items[IDX_MAX].Visible				= (MaxBox and ControlMenu)
+if Win32.IsZoomed(#Handle) then
+	Items[IDX_MAX].Image			= ICO_RESTORE
+	Items[IDX_MAX].TipText			= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_RESTORE)
+else
+	Items[IDX_MAX].Image			= ICO_MAX
+	Items[IDX_MAX].TipText			= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_MAX)
+end if
+//Add min button
+Items[IDX_MINI].ItemType			= ITT_MINI
+Items[IDX_MINI].Visible				= (MinBox and ControlMenu)
+Items[IDX_MINI].Image				= ICO_MINI
+Items[IDX_MINI].TipText				= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_MINI)
+/*-------------------------------*/
+//Init window icon
+if Len(Icon) > 0 then
+	IconData.Index = _ImageList_Icon.AddImage(theme.of_GetIcon(Icon,0))
+	if IconData.Index = 0 then
+		IconData.Index = _ImageList_Icon.AddHIcon(Send(#Handle,WinMsg.WM_GETICON,1,0))
+	end if
+end if
+
+_Canvas.Attach(This)
 
 Event OnPreConstructor()
+
+_maxIconIndex = _ImageList.AddImage(theme.of_GetSystemButtonIcon(IDX_MAX,ICO_MAX,0))
+_restoreIconIndex = _ImageList.AddImage(theme.of_GetSystemButtonIcon(IDX_MAX,ICO_RESTORE,0))
+_miniIconIndex = _ImageList.AddImage(theme.of_GetSystemButtonIcon(IDX_MINI,ICO_MINI,0))
+
+Items[IDX_CLOSE].ImageIndex = _ImageList.AddImage(theme.of_GetSystemButtonIcon(IDX_CLOSE,ICO_CLOSE,0))
+if Win32.IsZoomed(#Handle) then
+	Items[IDX_MAX].ImageIndex	= _restoreIconIndex
+else
+	Items[IDX_MAX].ImageIndex	= _maxIconIndex
+end if
+Items[IDX_MINI].ImageIndex		= _miniIconIndex
+
 Event Constructor()
 Post Event OnPostConstructor( )
 end event
@@ -309,7 +365,16 @@ end event
 event ondestructor;Event OnPreDestructor()
 Event Destructor()
 
-_of_Uninitial()
+_Canvas.Detach()
+Destroy _Canvas
+Destroy _ImageList
+Destroy _ImageList_Icon
+
+if _TTID > 0 then
+	_ToolTip.DelTool(#Handle,_TTID)
+end if
+
+Destroy _ToolTip
 end event
 
 event type unsignedlong ongetwindowrgn(real newwidth, real newheight);if Not TitleBar then return 0
@@ -508,7 +573,7 @@ end event
 event type long oniconchanged(unsignedlong hicon);int newIconIndex
 
 if Len(Icon) > 0 then
-	newIconIndex = _ImageList_Icon.AddImage(Icon)
+	newIconIndex = _ImageList_Icon.AddImage(theme.of_GetIcon(Icon,0))
 	if newIconIndex = 0 then
 		newIconIndex = _ImageList_Icon.AddHIcon(hIcon)
 	end if
@@ -577,73 +642,6 @@ end if
 
 return RetCode.OK
 end function
-
-private subroutine _of_initial ();#Handle = Handle(this)
-#ParentWindow = GetParentWindow(this)
-_Canvas = Create n_canvas
-_ImageList = Create n_imagelist
-_ImageList.ShareImage(true)
-_ImageList.SetImageSize(theme.#SysIconSize.cx,theme.#SysIconSize.cy)
-
-_ImageList_Icon = Create n_imagelist
-_ImageList_Icon.ShareImage(true)
-_ImageList_Icon.SetImageSize(theme.#IconSize.cx,theme.#IconSize.cy)
-
-_ToolTip = Create n_tooltip
-_ToolTip.CreateToolTip(#Handle)
-_TTID = _ToolTip.AddTool(#Handle,false,/*Win32.TTF_IDISHWND +*/ Win32.TTF_TRANSPARENT + Win32.TTF_TRACK + Win32.TTF_ABSOLUTE)
-
-/*--- Init system buttons ---*/
-_maxIconIndex = _ImageList.AddImage(ICO_MAX)
-_restoreIconIndex = _ImageList.AddImage(ICO_RESTORE)
-_miniIconIndex = _ImageList.AddImage(ICO_MINI)
-//Add close button
-Items[IDX_CLOSE].ItemType		= ITT_CLOSE
-Items[IDX_CLOSE].Visible			= ControlMenu
-Items[IDX_CLOSE].Image			= ICO_CLOSE
-Items[IDX_CLOSE].ImageIndex		= _ImageList.AddImage(ICO_CLOSE)
-Items[IDX_CLOSE].TipText			= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_CLOSE)
-//Add max button
-Items[IDX_MAX].ItemType			= ITT_MAX
-Items[IDX_MAX].Visible				= (MaxBox and ControlMenu)
-if Win32.IsZoomed(#Handle) then
-	Items[IDX_MAX].Image			= ICO_RESTORE
-	Items[IDX_MAX].ImageIndex	= _restoreIconIndex
-	Items[IDX_MAX].TipText			= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_RESTORE)
-else
-	Items[IDX_MAX].Image			= ICO_MAX
-	Items[IDX_MAX].ImageIndex	= _maxIconIndex
-	Items[IDX_MAX].TipText			= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_MAX)
-end if
-//Add min button
-Items[IDX_MINI].ItemType			= ITT_MINI
-Items[IDX_MINI].Visible				= (MinBox and ControlMenu)
-Items[IDX_MINI].Image				= ICO_MINI
-Items[IDX_MINI].ImageIndex		= _miniIconIndex
-Items[IDX_MINI].TipText				= I18N(Enums.I18N_CAT_DATAWINDOW,TIP_MINI)
-/*-------------------------------*/
-//Init window icon
-if Len(Icon) > 0 then
-	IconData.Index = _ImageList_Icon.AddImage(Icon)
-	if IconData.Index = 0 then
-		IconData.Index = _ImageList_Icon.AddHIcon(Send(#Handle,WinMsg.WM_GETICON,1,0))
-	end if
-end if
-
-_Canvas.Attach(This)
-end subroutine
-
-private subroutine _of_uninitial ();_Canvas.Detach()
-Destroy _Canvas
-Destroy _ImageList
-Destroy _ImageList_Icon
-
-if _TTID > 0 then
-	_ToolTip.DelTool(#Handle,_TTID)
-end if
-
-Destroy _ToolTip
-end subroutine
 
 public function long of_settransparent (readonly boolean transparent, readonly boolean bredraw);if #Transparent = transparent then return RetCode.OK
 

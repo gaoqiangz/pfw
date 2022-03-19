@@ -987,7 +987,7 @@ public function long of_setimage (readonly string imagename);int oldImageIndex
 if imageName = #Image then return RetCode.OK
 
 oldImageIndex = IconData.Index
-IconData.Index = _ImageList.AddImage(imageName)
+IconData.Index = _ImageList.AddImage(theme.of_GetIcon(imageName,0))
 
 if (IconData.Index > 0) <> (oldImageIndex > 0) then
 	_Canvas.UpdateFrame()

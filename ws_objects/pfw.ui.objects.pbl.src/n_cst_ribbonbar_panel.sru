@@ -159,13 +159,13 @@ Constant Long	NCD_CUSTOM					= 6
 Constant Long	HTNOWHERE	= 0
 Constant Long	HTVALID			= 1
 //Icons
-Constant String ICO_LAUNCH	= "pfw://zip/images[LaunchIcon.png]"
+Constant String ICO_LAUNCH	= "pfw://zip/images[launch.svg]"
 //Adjust flags
 Constant Uint ADJ_BORDER 				= 1
 Constant Uint ADJ_BORDERMARGIN 	= 2
 Constant Uint ADJ_CAPTION			 	= 4
 //Sizes
-Constant real LAUNCHICONSIZE		= 8		//px
+Constant real LAUNCHICONSIZE		= 10		//px
 Constant real ARROWSIZE				= 6		//px
 end variables
 
@@ -714,10 +714,14 @@ _SmallImageList = smallimagelist
 _LargeImageList = largeimagelist
 
 _PopupPanel.Event OnInit(this,__LaunchImageList,_ToolTip,_TTID)
+
+if __RefCount = 1 then
+	__LaunchImageList.AddImage(theme.of_GetPanelIcon(this,ICO_LAUNCH,0))
+end if
 end event
 
 event type boolean oninitdata(string caption, string image, string tiptext);#Image = image
-_ImageIndex = _PanelImageList.AddImage(image)
+_ImageIndex = _PanelImageList.AddImage(theme.of_GetPanelIcon(this,image,0))
 
 #Caption= caption
 #TipText = tiptext
@@ -1916,7 +1920,7 @@ boolean dirty
 
 if #Image= image then return RetCode.OK
 
-newIndex = _PanelImageList.AddImage(image)
+newIndex = _PanelImageList.AddImage(theme.of_GetPanelIcon(this,image,0))
 
 if newIndex = 0 and szCollapsedCaption.cx = 0 then return RetCode.E_INVALID_IMAGE
 
@@ -2526,8 +2530,8 @@ end on
 event constructor;__RefCount ++
 if __RefCount = 1 then
 	__LaunchImageList = Create n_imagelist
+	__LaunchImageList.ShareImage(true)
 	__LaunchImageList.SetImageSize(LAUNCHICONSIZE,LAUNCHICONSIZE)
-	__LaunchImageList.AddImage(ICO_LAUNCH)
 end if
 
 #BorderMargin.left = 2

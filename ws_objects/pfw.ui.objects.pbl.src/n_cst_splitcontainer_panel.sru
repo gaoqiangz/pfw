@@ -768,7 +768,7 @@ boolean dirty
 
 if #Image= image then return RetCode.OK
 
-newIndex = _ImageList.AddImage(image)
+newIndex = _ImageList.AddImage(theme.of_GetPanelIcon(this,image,0))
 
 if (TitleBar.ImageIndex > 0) <> (newIndex > 0) then
 	dirty = true
@@ -1333,7 +1333,6 @@ event constructor;#IconSize.cx = Enums.SMALL
 #IconSize.cy = Enums.SMALL
 
 _ImageList = Create n_imagelist
-
 _ImageList.ShareImage(true)
 _ImageList.SetImageSize(#IconSize.cx,#IconSize.cy)
 end event

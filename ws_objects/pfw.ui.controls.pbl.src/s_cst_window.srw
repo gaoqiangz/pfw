@@ -872,6 +872,11 @@ nOldWidth = Width
 nOldHeight = Height
 Event OnPreOpen()
 
+CaptionBar.Event OnPreOpen()
+if IsValid(MDIClient) then
+	MDIClient.Event OnPreOpen()
+end if
+
 if Width = nOldWidth and Height = nOldHeight then
 	Painter.GetClientRect(#Handle,ref newClientRect)
 	if Not Painter.EqualRect(oldClientRect,newClientRect) then

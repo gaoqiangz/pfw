@@ -161,6 +161,10 @@ public function long of_settabstripbordermargin (readonly real left, readonly re
 public function long of_settabstripoffset (readonly real left, readonly real top, readonly real right, readonly real bottom)
 public function long of_settabstripsize (readonly real size)
 public function long of_settabpadding (readonly real padding)
+public function string of_getitemicon (readonly n_cst_ribbonbar_baseitem item, readonly string uri, readonly unsignedlong state)
+public function string of_getpanelicon (readonly n_cst_ribbonbar_panel panel, readonly string uri, readonly unsignedlong state)
+public function string of_gettabicon (readonly integer index, readonly string uri, readonly unsignedlong state)
+public function string of_gettoolbaritemicon (readonly n_cst_ribbonbar_toolbar toolbar, readonly integer index, readonly string uri, readonly unsignedlong state)
 end prototypes
 
 event _ongetcategorycolor(n_cst_ribbonbar_category category, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -928,6 +932,74 @@ public function long of_settabpadding (readonly real padding);if #TabPadding = p
 Event OnThemeChanged(EVT_TABPADDING)
 
 return RetCode.OK
+end function
+
+public function string of_getitemicon (readonly n_cst_ribbonbar_baseitem item, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetItemColor(item,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetItemColor(item,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
+end function
+
+public function string of_getpanelicon (readonly n_cst_ribbonbar_panel panel, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetPanelColor(panel,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetPanelColor(panel,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
+end function
+
+public function string of_gettabicon (readonly integer index, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetTabColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetTabColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
+end function
+
+public function string of_gettoolbaritemicon (readonly n_cst_ribbonbar_toolbar toolbar, readonly integer index, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetToolbarItemColor(toolbar,index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetToolbarItemColor(toolbar,index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
 end function
 
 on n_cst_ribbonbar_theme.create

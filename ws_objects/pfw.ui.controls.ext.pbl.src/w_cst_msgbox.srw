@@ -21,7 +21,7 @@ end forward
 
 global type w_cst_msgbox from se_cst_window
 integer width = 1106
-integer height = 740
+integer height = 741
 boolean minbox = false
 boolean maxbox = false
 boolean resizable = false
@@ -72,13 +72,13 @@ constant string TIP_IGNORE	= "忽略"
 constant string TIP_SHOW	= "查看详情"
 constant string TIP_HIDE		= "隐藏"
 //Icons
-constant string ICO_INFO					= "pfw://zip/images[msgbox/info.png]"
-constant string ICO_WARNING			= "pfw://zip/images[msgbox/warning.png]"
-constant string ICO_QUESTION			= "pfw://zip/images[msgbox/question.png]"
-constant string ICO_ERROR				= "pfw://zip/images[msgbox/error.png]"
-constant string ICO_ARROW_UP		= "pfw://zip/images[msgbox/arrow_up.png]"
-constant string ICO_ARROW_DOWN	= "pfw://zip/images[msgbox/arrow_down.png]"
-constant string ICO_COPY				= "pfw://zip/images[msgbox/copy.png]"
+constant string ICO_INFO					= "pfw://zip/images[msgbox/info.svg]{fill:rgb(24,112,183)}"
+constant string ICO_WARNING			= "pfw://zip/images[msgbox/warning.svg]{fill:rgb(239,185,0)}"
+constant string ICO_QUESTION			= "pfw://zip/images[msgbox/question.svg]{fill:rgb(121,171,210)}"
+constant string ICO_ERROR				= "pfw://zip/images[msgbox/error.svg]{fill:rgb(194,52,9)}"
+constant string ICO_ARROW_UP		= "pfw://zip/images[menu-up.svg]{fill:#888}"
+constant string ICO_ARROW_DOWN	= "pfw://zip/images[menu-down.svg]{fill:#888}"
+constant string ICO_COPY				= "pfw://zip/images[copy.svg]{fill:#888}"
 //Timer IDs
 constant uint TM_DETAIL 	 	= 1
 constant uint TM_TIMEOUT	= 2
@@ -89,7 +89,6 @@ constant real ICONWIDTH 	= 48
 constant real ICONHEIGHT 	= 48
 
 end variables
-
 forward prototypes
 private subroutine _wf_updatetextsize ()
 private subroutine _wf_initlayout ()
@@ -626,9 +625,9 @@ end event
 
 type cb_copy from s_cst_button within w_cst_msgbox
 integer x = 914
-integer y = 180
-integer width = 96
-integer height = 84
+integer y = 181
+integer width = 98
+integer height = 85
 string text = ""
 string #tiptext = "复制"
 end type
@@ -645,8 +644,8 @@ event onsetfocusquery;call super::onsetfocusquery;return 1
 end event
 
 type cb_3 from s_cst_button within w_cst_msgbox
-integer x = 709
-integer y = 12
+integer x = 710
+integer y = 13
 integer width = 302
 integer taborder = 30
 string text = "3"
@@ -677,7 +676,7 @@ end event
 
 type cb_2 from s_cst_button within w_cst_msgbox
 integer x = 384
-integer y = 12
+integer y = 13
 integer width = 302
 integer taborder = 20
 string text = "2"
@@ -710,8 +709,8 @@ end if
 end event
 
 type cb_1 from s_cst_button within w_cst_msgbox
-integer x = 59
-integer y = 12
+integer x = 58
+integer y = 13
 integer width = 302
 integer taborder = 10
 string text = "1"
@@ -742,9 +741,9 @@ end if
 end event
 
 type cb_detail from s_cst_button within w_cst_msgbox
-integer y = 124
-integer width = 1083
-integer height = 52
+integer y = 125
+integer width = 1082
+integer height = 53
 boolean bringtotop = true
 integer textsize = -8
 string text = ""
@@ -795,8 +794,8 @@ event onsetfocusquery;call super::onsetfocusquery;return 1
 end event
 
 type mle_detail from s_cst_multilineedit within w_cst_msgbox
-integer y = 180
-integer width = 1083
+integer y = 181
+integer width = 1082
 integer height = 464
 integer textsize = -10
 long backcolor = 16777215

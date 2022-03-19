@@ -8,18 +8,19 @@ end type
 end forward
 
 shared variables
-n_imagelist __ImageList
+n_imagelist _ImageList
 Ulong 			__RefCount = 0
 
 //Image indexes
-int		__Idx_RB_Normal
-int		__Idx_RB_Hover
-int		__Idx_RB_Down
-int		__Idx_RB_Focused
-int		__Idx_RBC_Normal
-int		__Idx_RBC_Hover
-int		__Idx_RBC_Down
-int		__Idx_RBC_Focused
+int _Idx_RB_Normal
+int _Idx_RB_Hover
+int _Idx_RB_Down
+int _Idx_RB_Focused
+int _Idx_RBC_Normal
+int _Idx_RBC_Hover
+int _Idx_RBC_Down
+int _Idx_RBC_Focused
+
 end variables
 
 global type s_cst_radiobox from radiobutton
@@ -126,21 +127,13 @@ Boolean _MouseCaptured		= false
 Boolean _inSetFocusing	= false
 
 //Images
-Constant String	ICO_RB_NORMAL		= "pfw://zip/images[rb_normal.png]"
-Constant String	ICO_RB_HOVER		= "pfw://zip/images[rb_hover.png]"
-Constant String	ICO_RB_DOWN			= "pfw://zip/images[rb_down.png]"
-Constant String	ICO_RB_FOCUSED		= "pfw://zip/images[rb_focused.png]"
-Constant String	ICO_RBC_NORMAL		= "pfw://zip/images[rbc_normal.png]"
-Constant String	ICO_RBC_HOVER		= "pfw://zip/images[rbc_hover.png]"
-Constant String	ICO_RBC_DOWN		= "pfw://zip/images[rbc_down.png]"
-Constant String	ICO_RBC_FOCUSED	= "pfw://zip/images[rbc_focused.png]"
+Constant String	ICO_RADIOBOX		= "pfw://zip/images[radiobox.svg]"
+Constant String	ICO_RADIOBOX_ON	= "pfw://zip/images[radiobox-on.svg]"
 //Sizes
-Constant Real ICONSIZE 	= 13 		//px
+Constant Real ICONSIZE 	= 16 		//px
 end variables
 
 forward prototypes
-private subroutine _of_initial ()
-private subroutine _of_uninitial ()
 public function long of_redraw (readonly boolean fadeanimation)
 private subroutine _of_updatetextsize ()
 private subroutine _of_updatepoints ()
@@ -167,44 +160,44 @@ Event OnEraseBkgnd(hdc)
 
 if Checked then
 	if _MouseDown then
-		__ImageList.Draw(__Idx_RBC_Down,hdc,&
+		_ImageList.Draw(_Idx_RBC_Down,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
 	elseif _MouseOver then
-		__ImageList.Draw(__Idx_RBC_Hover,hdc,&
+		_ImageList.Draw(_Idx_RBC_Hover,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
 	elseif _Focused then
-		__ImageList.Draw(__Idx_RBC_Focused,hdc,&
+		_ImageList.Draw(_Idx_RBC_Focused,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
 	else
-		__ImageList.Draw(__Idx_RBC_Normal,hdc,&
+		_ImageList.Draw(_Idx_RBC_Normal,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
 	end if
 else
 	if _MouseDown then
-		__ImageList.Draw(__Idx_RB_Down,hdc,&
+		_ImageList.Draw(_Idx_RB_Down,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
 	elseif _MouseOver then
-		__ImageList.Draw(__Idx_RB_Hover,hdc,&
+		_ImageList.Draw(_Idx_RB_Hover,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
 	elseif _Focused then
-		__ImageList.Draw(__Idx_RB_Focused,hdc,&
+		_ImageList.Draw(_Idx_RB_Focused,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
 	else
-		__ImageList.Draw(__Idx_RB_Normal,hdc,&
+		_ImageList.Draw(_Idx_RB_Normal,hdc,&
 										rcImage.left,&
 										rcImage.top,&
 										Not Enabled)
@@ -441,36 +434,15 @@ else
 end if
 end event
 
-event onconstructor;_of_Initial()
-
-Event OnPreConstructor()
-Event Constructor()
-Post Event OnPostConstructor( )
-end event
-
-event ondestructor;Event OnPreDestructor()
-Event Destructor()
-
-_of_Uninitial()
-end event
-
-private subroutine _of_initial ();#Handle = Handle(this)
+event onconstructor;#Handle = Handle(this)
 #ParentWindow = GetParentWindow(this)
 _Canvas = Create n_canvas
 
 //Init _ImageList
 __RefCount ++
 if __RefCount = 1 then
-	__ImageList = Create n_imagelist
-	__ImageList.SetImageSize(ICONSIZE,ICONSIZE)
-	__Idx_RB_Normal 		= __ImageList.AddImage(ICO_RB_NORMAL)
-	__Idx_RB_Hover 		= __ImageList.AddImage(ICO_RB_HOVER)
-	__Idx_RB_Down 		= __ImageList.AddImage(ICO_RB_DOWN)
-	__Idx_RB_Focused		= __ImageList.AddImage(ICO_RB_FOCUSED)
-	__Idx_RBC_Normal	= __ImageList.AddImage(ICO_RBC_NORMAL)
-	__Idx_RBC_Hover 		= __ImageList.AddImage(ICO_RBC_HOVER)
-	__Idx_RBC_Down 		= __ImageList.AddImage(ICO_RBC_DOWN)
-	__Idx_RBC_Focused	= __ImageList.AddImage(ICO_RBC_FOCUSED)
+	_ImageList = Create n_imagelist
+	_ImageList.SetImageSize(ICONSIZE,ICONSIZE)
 end if
 
 //Init tooltip
@@ -492,9 +464,28 @@ if LeftText then
 end if
 
 _Canvas.Attach(This)
-end subroutine
 
-private subroutine _of_uninitial ();_Canvas.Detach()
+Event OnPreConstructor()
+
+if __RefCount = 1 then
+	_Idx_RB_Normal 		= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX,0))
+	_Idx_RB_Hover 		= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX,Enums.STATE_HOVER))
+	_Idx_RB_Down 		= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX,Enums.STATE_PRESSED))
+	_Idx_RB_Focused		= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX,Enums.STATE_FOCUS))
+	_Idx_RBC_Normal 		= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX_ON,0))
+	_Idx_RBC_Hover 		= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX_ON,Enums.STATE_HOVER))
+	_Idx_RBC_Down 		= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX_ON,Enums.STATE_PRESSED))
+	_Idx_RBC_Focused	= _ImageList.AddImage(theme.of_GetIcon(ICO_RADIOBOX_ON,Enums.STATE_FOCUS))
+end if
+
+Event Constructor()
+Post Event OnPostConstructor( )
+end event
+
+event ondestructor;Event OnPreDestructor()
+Event Destructor()
+
+_Canvas.Detach()
 Destroy _Canvas
 
 if _TTID > 0 then
@@ -504,10 +495,10 @@ end if
 Destroy _ToolTip
 
 __RefCount --
-if __RefCount = 0 then
-	Destroy __ImageList
+if __RefCount  = 0 then
+	Destroy _ImageList
 end if
-end subroutine
+end event
 
 public function long of_redraw (readonly boolean fadeanimation);ulong safeDC
 

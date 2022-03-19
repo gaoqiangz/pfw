@@ -1410,7 +1410,7 @@ boolean dirty
 if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 if (Items[index].imageIndex > 0) <> (newImgIndex > 0) then
 	dirty = true
 end if
@@ -1919,7 +1919,7 @@ newItem.visible = true
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1

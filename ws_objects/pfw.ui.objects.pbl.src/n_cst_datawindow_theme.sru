@@ -69,6 +69,7 @@ public function long of_setsysiconsize (readonly real width, readonly real heigh
 public function long of_setsysroundsize (readonly real lefttop, readonly real righttop, readonly real leftbottom, readonly real rightbottom)
 public function long of_settitlebarheight (real height)
 public function long of_setscrollbarbordermargin (readonly real left, readonly real top, readonly real right, readonly real bottom)
+public function string of_getsystembuttonicon (readonly integer index, readonly string uri, readonly unsignedlong state)
 end prototypes
 
 event _ongetsystembuttoncolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -322,6 +323,23 @@ if #ScrollBarBorderMargin.left = left and #ScrollBarBorderMargin.top = top and &
 Event OnThemeChanged(EVT_SCROLLBARBORDERMARGIN)
 
 return RetCode.OK
+end function
+
+public function string of_getsystembuttonicon (readonly integer index, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetSystemButtonColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetSystemButtonColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
 end function
 
 on n_cst_datawindow_theme.create

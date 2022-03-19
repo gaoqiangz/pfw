@@ -1047,7 +1047,7 @@ if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Items[index].ItemType = ITT_SEPARATOR then return RetCode.E_NO_SUPPORT
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_MENUBAR))
 
 if (Items[index].imageIndex > 0) <> (newImgIndex > 0) then
 	dirty = true
@@ -1436,14 +1436,14 @@ Painter.FillTriangle(hdc,pt1,pt2,pt3,arrowColor,arrowColor,Enums.HORZ,false,true
 
 for ll_index = 1 to ARROWSIZE - 1
 	Painter.SetPixel(hdc,ll_x,ll_y,arrowColor)
-	Painter.SetPixel(hdc,ll_x + 1,ll_y,arrowColor)
-	Painter.SetPixel(hdc,ll_x + 3,ll_y,arrowColor)
-	Painter.SetPixel(hdc,ll_x + 4,ll_y,arrowColor)
-	ll_y += 1
+	Painter.SetPixel(hdc,ll_x + P2DX(1),ll_y,arrowColor)
+	Painter.SetPixel(hdc,ll_x + P2DX(3),ll_y,arrowColor)
+	Painter.SetPixel(hdc,ll_x + P2DX(4),ll_y,arrowColor)
+	ll_y += P2DY(1)
 	if ll_index < ARROWSIZE / 2 then
-		ll_x += 1
+		ll_x += P2DX(1)
 	else
-		ll_x -= 1
+		ll_x -= P2DX(1)
 	end if
 next
 end subroutine
@@ -1547,7 +1547,7 @@ newItem.PopupMenu = PopupMenu
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_MENUBAR))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -1702,7 +1702,7 @@ for index = 1 to nCount
 		end if
 		if Items[index].Image <> Items[index].menu.MenuImage then
 			Items[index].Image = Items[index].menu.MenuImage
-			Items[index].ImageIndex = _ImageList.AddImage(Trim(Items[index].menu.MenuImage))
+			Items[index].ImageIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,Items[index].menu.MenuImage,0,WOT_MENUBAR))
 		end if
 		Items[index].tipText = Items[index].menu.MicroHelp
 		if Items[index].Enabled then

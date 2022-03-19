@@ -269,7 +269,7 @@ _ItemImageList = itemimagelist
 end event
 
 event type boolean oninitdata(string title, string image, boolean collapsed);#Image = image
-TitleBar.ImageIndex = _PanelImageList.AddImage(image)
+TitleBar.ImageIndex = _PanelImageList.AddImage(theme.of_GetPanelIcon(this,image,0))
 
 #Title= Title
 #Collapsed = collapsed
@@ -1752,7 +1752,7 @@ boolean dirty
 
 if #Image= image then return RetCode.OK
 
-newIndex = _PanelImageList.AddImage(image)
+newIndex = _PanelImageList.AddImage(theme.of_GetPanelIcon(this,image,0))
 
 if (TitleBar.ImageIndex > 0) <> (newIndex > 0) then
 	dirty = true

@@ -97,6 +97,7 @@ public function long of_setitemminsize (readonly real size)
 public function long of_seticonsize (readonly real width, readonly real height)
 public function long of_settabstripsize (readonly real size)
 public function long of_settabstripoffset (readonly real left, readonly real top, readonly real right, readonly real bottom)
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state)
 end prototypes
 
 event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -444,6 +445,23 @@ if #TabStripOffset.left = left and #TabStripOffset.top = top and &
 Event OnThemeChanged(EVT_TABSTRIPOFFSET)
 
 return RetCode.OK
+end function
+
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
 end function
 
 on n_cst_tabcontrol_theme.create

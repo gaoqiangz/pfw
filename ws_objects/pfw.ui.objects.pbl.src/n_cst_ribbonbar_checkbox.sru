@@ -57,17 +57,11 @@ Boolean _MouseDown			= false
 Boolean 	_RightMouseDown = false
 
 //Images
-Constant String	ICO_CB_NORMAL		= "pfw://zip/images[cb_normal.png]"
-Constant String	ICO_CB_HOVER		= "pfw://zip/images[cb_hover.png]"
-Constant String	ICO_CB_DOWN			= "pfw://zip/images[cb_down.png]"
-Constant String	ICO_CBC_NORMAL		= "pfw://zip/images[cbc_normal.png]"
-Constant String	ICO_CBC_HOVER		= "pfw://zip/images[cbc_hover.png]"
-Constant String	ICO_CBC_DOWN		= "pfw://zip/images[cbc_down.png]"
-Constant String	ICO_CBSC_NORMAL	= "pfw://zip/images[cbsc_normal.png]"
-Constant String	ICO_CBSC_HOVER		= "pfw://zip/images[cbsc_hover.png]"
-Constant String	ICO_CBSC_DOWN		= "pfw://zip/images[cbsc_down.png]"
+Constant String	ICO_CHECKBOX		= "pfw://zip/images[checkbox.svg]"
+Constant String	ICO_CHECKBOX_ON	= "pfw://zip/images[checkbox-on.svg]"
+Constant String	ICO_CHECKBOX_DONE	= "pfw://zip/images[checkbox-done.svg]"
 //Sizes
-Constant real ICONSIZE 	= 13 		//px
+Constant real ICONSIZE 	= 16 		//px
 end variables
 
 forward prototypes
@@ -303,22 +297,6 @@ call super::destroy
 destroy(this.font)
 end on
 
-event constructor;call super::constructor;__RefCount ++
-if __RefCount = 1 then
-	__ImageList = Create n_imagelist
-	__ImageList.SetImageSize(ICONSIZE,ICONSIZE)
-	__Idx_CB_Normal 		= __ImageList.AddImage(ICO_CB_NORMAL)
-	__Idx_CB_Hover 		= __ImageList.AddImage(ICO_CB_HOVER)
-	__Idx_CB_Down 		= __ImageList.AddImage(ICO_CB_DOWN)
-	__Idx_CBC_Normal 	= __ImageList.AddImage(ICO_CBC_NORMAL)
-	__Idx_CBC_Hover 		= __ImageList.AddImage(ICO_CBC_HOVER)
-	__Idx_CBC_Down 		= __ImageList.AddImage(ICO_CBC_DOWN)
-	__Idx_CBSC_Normal	= __ImageList.AddImage(ICO_CBSC_NORMAL)
-	__Idx_CBSC_Hover 	= __ImageList.AddImage(ICO_CBSC_HOVER)
-	__Idx_CBSC_Down 	= __ImageList.AddImage(ICO_CBSC_DOWN)
-end if
-end event
-
 event destructor;call super::destructor;__RefCount --
 if __RefCount = 0 then
 	Destroy __ImageList
@@ -520,6 +498,18 @@ event onlbuttondblclk;call super::onlbuttondblclk;return Event OnLButtonDown(vKe
 end event
 
 event oninit;call super::oninit;_TTID = _ToolTip.AddTool(#ParentRibbonBar.#Handle,false,Win32.TTF_TRANSPARENT + Win32.TTF_TRACK + Win32.TTF_ABSOLUTE)
+
+if __RefCount = 1 then
+	__Idx_CB_Normal 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX,0))
+	__Idx_CB_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX,Enums.STATE_HOVER))
+	__Idx_CB_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX,Enums.STATE_PRESSED))
+	__Idx_CBSC_Normal	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,0))
+	__Idx_CBSC_Hover 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,Enums.STATE_HOVER))
+	__Idx_CBSC_Down 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,Enums.STATE_PRESSED))
+	__Idx_CBC_Normal 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,0))
+	__Idx_CBC_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,Enums.STATE_HOVER))
+	__Idx_CBC_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,Enums.STATE_PRESSED))
+end if
 end event
 
 event oncalclayout;call super::oncalclayout;szLayouts[DPM_LARGE].cx = ICONSIZE
@@ -561,6 +551,14 @@ if _MouseOver then
 end if
 
 return 0
+end event
+
+event constructor;call super::constructor;__RefCount ++
+if __RefCount = 1 then
+	__ImageList = Create n_imagelist
+	__ImageList.ShareImage(true)
+	__ImageList.SetImageSize(ICONSIZE,ICONSIZE)
+end if
 end event
 
 type font from n_cst_font within n_cst_ribbonbar_checkbox descriptor "pb_nvo" = "true" 

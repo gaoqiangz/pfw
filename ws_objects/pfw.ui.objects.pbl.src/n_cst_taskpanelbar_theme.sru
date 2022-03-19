@@ -74,6 +74,9 @@ public function long of_setitemroundsize (readonly real lefttop, readonly real r
 public function long of_setpaneliconsize (readonly real width, readonly real height)
 public function long of_setpanelmargin (readonly real margin)
 public function long of_setpanelroundsize (readonly real lefttop, readonly real righttop, readonly real leftbottom, readonly real rightbottom)
+public function string of_getitemicon (readonly n_cst_taskpanelbar_baseitem item, readonly string uri, readonly unsignedlong state)
+public function string of_getpanelicon (readonly n_cst_taskpanelbar_panel panel, readonly string uri, readonly unsignedlong state)
+public function string of_gettoolbaritemicon (readonly n_cst_taskpanelbar_toolbar toolbar, readonly integer index, readonly string uri, readonly unsignedlong state)
 end prototypes
 
 event _ongetitemcolor(n_cst_taskpanelbar_baseitem item, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -463,6 +466,57 @@ if #PanelRoundSize.leftTop = lefttop and #PanelRoundSize.rightTop = righttop and
 Event OnThemeChanged(EVT_PANELROUNDSIZE)
 
 return RetCode.OK
+end function
+
+public function string of_getitemicon (readonly n_cst_taskpanelbar_baseitem item, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetItemColor(item,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetItemColor(item,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
+end function
+
+public function string of_getpanelicon (readonly n_cst_taskpanelbar_panel panel, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetPanelColor(panel,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetPanelColor(panel,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
+end function
+
+public function string of_gettoolbaritemicon (readonly n_cst_taskpanelbar_toolbar toolbar, readonly integer index, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetToolbarItemColor(toolbar,index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetToolbarItemColor(toolbar,index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
 end function
 
 on n_cst_taskpanelbar_theme.create

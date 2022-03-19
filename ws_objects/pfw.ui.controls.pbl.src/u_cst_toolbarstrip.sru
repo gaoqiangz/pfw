@@ -534,7 +534,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 end if
 
 newItem.AnimatedImage = create n_image
@@ -2160,7 +2160,7 @@ if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if (Not _of_IsButton(index) and Items[index].ItemType <> ITT_ICON)  then return RetCode.E_NO_SUPPORT
 if Items[index].image = image then return RetCode.OK
 
-newImgIndex = _ImageList.AddImage(Trim(image))
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 
 if Items[index].ItemType = ITT_ICON and newImgIndex = 0 then
 	return RetCode.E_INVALID_IMAGE
@@ -2495,14 +2495,14 @@ Painter.FillTriangle(hdc,pt1,pt2,pt3,arrowColor,arrowColor,Enums.HORZ,false,true
 
 for nRow = 1 to ARROWSIZE - 1
 	Painter.SetPixel(hdc,nX,nY,arrowColor)
-	Painter.SetPixel(hdc,nX + 1,nY,arrowColor)
-	Painter.SetPixel(hdc,nX + 3,nY,arrowColor)
-	Painter.SetPixel(hdc,nX + 4,nY,arrowColor)
-	nY += 1
+	Painter.SetPixel(hdc,nX + P2DX(1),nY,arrowColor)
+	Painter.SetPixel(hdc,nX + P2DX(3),nY,arrowColor)
+	Painter.SetPixel(hdc,nX + P2DX(4),nY,arrowColor)
+	nY += P2DY(1)
 	if nRow < ARROWSIZE / 2 then
-		nX += 1
+		nX += P2DX(1)
 	else
-		nX -= 1
+		nX -= P2DX(1)
 	end if
 next
 end subroutine
@@ -2746,7 +2746,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -2793,7 +2793,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 end if
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -2987,7 +2987,7 @@ newItem.position = position
 
 if len(image) > 0 then
 	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(Trim(image))
+	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 end if
 
 if newItem.imageindex = 0 then return RetCode.E_INVALID_IMAGE

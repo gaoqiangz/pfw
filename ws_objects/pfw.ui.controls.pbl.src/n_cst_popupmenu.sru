@@ -95,7 +95,7 @@ public function long of_settext (readonly ulong id, readonly boolean byposition,
 public function long of_checkradios (readonly unsignedlong idfirst, readonly unsignedlong idlast, readonly unsignedlong idcheck, readonly boolean byposition, boolean checked)
 public function long of_remove (readonly unsignedlong id, readonly boolean byposition)
 public function long of_removeall ()
-public function long of_setimage (readonly ulong id, readonly boolean byposition, readonly string image)
+public function long of_setimage (readonly unsignedlong id, readonly boolean byposition, readonly string image)
 public function long of_setbordershadow (readonly boolean show)
 public function long of_settooltip (readonly boolean enabled)
 public function boolean of_issubmenu (readonly unsignedlong id, readonly boolean byposition)
@@ -389,7 +389,7 @@ _SubMenus = newSubMenus
 return RetCode.OK
 end function
 
-public function long of_setimage (readonly ulong id, readonly boolean byposition, readonly string image);return iif(_PopupMenuNative.SetImage(id,byPosition,_ImageList.AddImage(image)),RetCode.OK,RetCode.FAILED)
+public function long of_setimage (readonly unsignedlong id, readonly boolean byposition, readonly string image);return iif(_PopupMenuNative.SetImage(id,byPosition,_ImageList.AddImage(theme.of_GetIcon(image,0))),RetCode.OK,RetCode.FAILED)
 end function
 
 public function long of_setbordershadow (readonly boolean show);if #BorderShadow = show then return RetCode.OK
@@ -1040,7 +1040,7 @@ if Not IsValidObject(_ImageList) then
 	_PopupMenuNative.SetImageList(_ImageList)
 end if
 
-return _ImageList.AddImage(image)
+return _ImageList.AddImage(theme.of_GetIcon(image,0))
 end function
 
 public function long of_settag (readonly unsignedlong id, readonly boolean byposition, readonly string tag);return iif(_PopupMenuNative.SetTag(id,byPosition,tag),RetCode.OK,RetCode.FAILED)

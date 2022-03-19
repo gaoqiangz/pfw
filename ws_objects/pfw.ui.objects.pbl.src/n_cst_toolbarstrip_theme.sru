@@ -62,6 +62,7 @@ public function long of_seticonsize (readonly real width, readonly real height)
 public function long of_setitemmargin (readonly real margin)
 public function long of_setitemminsize (readonly real size)
 public function long of_setitemroundsize (readonly real lefttop, readonly real righttop, readonly real leftbottom, readonly real rightbottom)
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state)
 end prototypes
 
 event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -288,6 +289,23 @@ if #ItemRoundSize.leftTop = lefttop and #ItemRoundSize.rightTop = righttop and #
 Event OnThemeChanged(EVT_ITEMROUNDSIZE)
 
 return RetCode.OK
+end function
+
+public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetItemColor(index,CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
 end function
 
 on n_cst_toolbarstrip_theme.create

@@ -49,8 +49,8 @@ type variables
 */
 Public:
 //16 x 16
-Constant String ICO_S_ABOUT					= "pfw://zip/images[btn_talk.png]"
-Constant String ICO_S_SKIN					= "pfw://zip/images[btn_skin.png]"
+Constant String ICO_S_ABOUT					= "pfw://zip/images[win-help.svg]"
+Constant String ICO_S_SKIN					= "pfw://zip/images[win-skin.svg]"
 Constant String ICO_S_LOGO					= "res\images\logo.ico"
 Constant String ICO_S_CLASSIC				= "res\images\classic.bmp"
 Constant String ICO_S_BLUE					= "res\images\blue.bmp"

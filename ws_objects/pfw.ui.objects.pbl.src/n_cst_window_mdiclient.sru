@@ -78,6 +78,7 @@ event onclose ( )
 event type long onmousehwheel ( unsignedlong vkey,  long zdelta,  real xpos,  real ypos )
 event type long onrbuttondown ( unsignedlong vkey,  real xpos,  real ypos )
 event type long onkeydown ( unsignedinteger nchar,  unsignedinteger nrepcnt,  unsignedlong nflags )
+event onpreopen ( )
 timer timer
 theme theme
 end type
@@ -180,10 +181,11 @@ Constant Uint SBT_RESTORE		= 1
 Constant Uint SBT_MINI 				= 2
 Constant Uint SBT_SHEETLIST		= 3
 //System button icon
-Constant String ICO_CLOSE 		= "pfw://zip/images[btn_mdi_close.png]"
-Constant String ICO_RESTORE 		= "pfw://zip/images[btn_mdi_restore.png]"
-Constant String ICO_MINI 			= "pfw://zip/images[btn_mdi_mini.png]"
-Constant String ICO_SHEETLIST	= "pfw://zip/images[btn_mdi_option.png]"
+Constant String ICO_CLOSE 	= "pfw://zip/images[win-close.svg]"
+Constant String ICO_MAX 		= "pfw://zip/images[win-maximize.svg]"
+Constant String ICO_RESTORE = "pfw://zip/images[win-restore.svg]"
+Constant String ICO_MINI 		= "pfw://zip/images[win-minimize.svg]"
+Constant String ICO_SHEETLIST	= "pfw://zip/images[menu.svg]"
 //System button tiptext
 Constant String TIP_CLOSE 			= "关闭"
 Constant String TIP_RESTORE 		= "还原"
@@ -319,26 +321,23 @@ _TTID = _ToolTip.AddTool(#Handle,false,Win32.TTF_TRANSPARENT + Win32.TTF_TRACK +
 //Add close button
 SysButtons[IDX_CLOSE].ItemType			= SBT_CLOSE
 SysButtons[IDX_CLOSE].Enabled			= true
-SysButtons[IDX_CLOSE].ImageIndex		= _ImageList_Button.AddImage(ICO_CLOSE)
 SysButtons[IDX_CLOSE].TipText			= I18N(Enums.I18N_CAT_WINDOW,TIP_CLOSE)
 //Add max button
 SysButtons[IDX_RESTORE].ItemType		= SBT_RESTORE
 SysButtons[IDX_RESTORE].Enabled		= true
-SysButtons[IDX_RESTORE].ImageIndex	= _ImageList_Button.AddImage(ICO_RESTORE)
 SysButtons[IDX_RESTORE].TipText		= I18N(Enums.I18N_CAT_WINDOW,TIP_RESTORE)
 //Add min button
 SysButtons[IDX_MINI].ItemType			= SBT_MINI
 SysButtons[IDX_MINI].Enabled				= true
-SysButtons[IDX_MINI].ImageIndex			= _ImageList_Button.AddImage(ICO_MINI)
 SysButtons[IDX_MINI].TipText				= I18N(Enums.I18N_CAT_WINDOW,TIP_MINI)
 //Add window list button
 SysButtons[IDX_SHEETLIST].ItemType	= SBT_SHEETLIST
 SysButtons[IDX_SHEETLIST].Enabled		= true
-SysButtons[IDX_SHEETLIST].ImageIndex= _ImageList_Button.AddImage(ICO_SHEETLIST)
 SysButtons[IDX_SHEETLIST].TipText		= I18N(Enums.I18N_CAT_WINDOW,TIP_SHEETLIST)
 /*-------------------------------*/
 
 _Canvas.Attach(this,#Handle)
+
 end event
 
 event type long onncpaint(unsignedlong hdc);int index,nCount,nSelectedIndex
@@ -1301,6 +1300,14 @@ end if
 return 0
 end event
 
+event onpreopen();SysButtons[IDX_CLOSE].ImageIndex		= _ImageList_Button.AddImage(theme.of_GetItemIcon(IDX_CLOSE,ICO_CLOSE,0))
+SysButtons[IDX_RESTORE].ImageIndex	= _ImageList_Button.AddImage(theme.of_GetItemIcon(IDX_RESTORE,ICO_RESTORE,0))
+SysButtons[IDX_MINI].ImageIndex			= _ImageList_Button.AddImage(theme.of_GetItemIcon(IDX_MINI,ICO_MINI,0))
+SysButtons[IDX_SHEETLIST].ImageIndex= _ImageList_Button.AddImage(theme.of_GetItemIcon(IDX_SHEETLIST,ICO_SHEETLIST,0))
+
+of_UpdatePoints()
+end event
+
 public function long of_redraw (readonly boolean drawclient, readonly boolean fadeanimation);ulong safeDC
 
 safeDC=_Canvas.GetSafeNcDC()
@@ -1522,7 +1529,7 @@ newItem.Window = window
 newItem.Text = window.Title
 newItem.TipText = window.Title
 newItem.Image = window.Icon
-newItem.ImageIndex = _ImageList.AddImage(window.Icon)
+newItem.ImageIndex = _ImageList.AddImage(theme.of_GetIcon(window.Icon,0))
 Painter.CreatePath(1,ref newItem.PaintPath)
 
 for i = UpperBound(Items) + 1 to index + 1 step -1

@@ -69,7 +69,8 @@ Constant Uint CLR_SBTHUMBBKGND		= 10
 Constant Uint CLR_SBTHUMBBORDER		= 11
 Constant Uint CLR_CHEVRONBKGND		= 12
 Constant Uint CLR_CHEVRONBORDER		= 13
-Constant Uint CLR_CUSTOM					= 14
+Constant Uint CLR_ICON					= 14
+Constant Uint CLR_CUSTOM					= 15
 //Event flags
 Constant Uint EVT_THEME					= 0
 Constant Uint EVT_BKGNDSTYLE			= 1
@@ -92,28 +93,31 @@ ProtectedWrite RECTF		#BorderMargin
 /*--- Implementation ---*/
 Protected:
 /*--- 主题色 ---*/
-PrivateWrite Ulong _themeColor
+Ulong _themeColor
 //变暗级别(各分量递减10)
-PrivateWrite Ulong _themeColorD1
-PrivateWrite Ulong _themeColorD2
-PrivateWrite Ulong _themeColorD3
-PrivateWrite Ulong _themeColorD4
-PrivateWrite Ulong _themeColorD5
+Ulong _themeColorD1
+Ulong _themeColorD2
+Ulong _themeColorD3
+Ulong _themeColorD4
+Ulong _themeColorD5
 //变亮级别(各分量递增10)
-PrivateWrite Ulong _themeColorL1
-PrivateWrite Ulong _themeColorL2
-PrivateWrite Ulong _themeColorL3
-PrivateWrite Ulong _themeColorL4
-PrivateWrite Ulong _themeColorL5
+Ulong _themeColorL1
+Ulong _themeColorL2
+Ulong _themeColorL3
+Ulong _themeColorL4
+Ulong _themeColorL5
 //特定色
-PrivateWrite Ulong _themeColorGray		//灰色
-PrivateWrite Ulong _themeColorDark		//变暗70%
-PrivateWrite Ulong _themeColorLight		//变亮50%
+Ulong _themeColorGray		//灰色
+Ulong _themeColorDark		//变暗70%
+Ulong _themeColorLight		//变亮50%
+Ulong _themeColorIcon
+Ulong _themeColorIconHover		
+Ulong _themeColorIconPressed	
+Ulong _themeColorIconFocus
 //固定色
 Constant Ulong HIGHLIGHT = 4294623373	//ARGB(255,250,192,141)
 
 end variables
-
 forward prototypes
 public function long of_setbkgndorientation (readonly unsignedinteger orientation)
 public function long of_setbkgndstyle (readonly unsignedinteger style)
@@ -129,6 +133,8 @@ protected function unsignedlong _of_getthemecolor (readonly unsignedlong colorst
 public function unsignedlong of_getcolor (readonly unsignedinteger colorflag, readonly unsignedlong state)
 public function long of_setbordermargin (readonly real left, readonly real top, readonly real right, readonly real bottom)
 public function long of_setroundsize (readonly real lefttop, readonly real righttop, readonly real leftbottom, readonly real rightbottom)
+protected function string _of_torgb (readonly unsignedlong clr)
+public function string of_geticon (readonly string uri, readonly unsignedlong state)
 end prototypes
 
 event _ongetdefaultcolor(unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -214,6 +220,18 @@ event _ongetdefaultcolor(unsignedinteger colorflag, unsignedlong state, ref unsi
 		else
 			color = _themeColorD3
 		end if
+	case CLR_ICON
+		if BitTest(state,Enums.STATE_DISABLED) then
+			color = _themeColorGray
+		elseif BitTest(state,Enums.STATE_PRESSED) then
+			color = _themeColorIconPressed
+		elseif BitTest(state,Enums.STATE_HOVER) then
+			color = _themeColorIconHover
+		elseif BitTest(state,Enums.STATE_FOCUS) then
+			color = _themeColorIconFocus
+		else
+			color = _themeColorIcon
+		end if
 end choose
 end event
 
@@ -221,7 +239,9 @@ event _onthemecolorchanged();Uint a,r,g,b
 
 //设置主题色
 _themeColor = _of_GetThemeColor(#BkgndColorStyle)
+
 SplitARGB(_themeColor,ref a,ref r,ref g,ref b)
+
 if a > 0 then
 	_themeColorDark	= ARGBDarken(_themeColor,0.7)
 	_themeColorLight	= ARGBLighten(_themeColor,0.5)
@@ -236,6 +256,17 @@ if a > 0 then
 	_themeColorL3 	= ARGB(a,iif(Int(r + 30) > 255,255,r + 30),iif(Int(g + 30) > 255,255,g + 30),iif(Int(b + 30) > 255,255,b + 30))
 	_themeColorL4		= ARGB(a,iif(Int(r + 40) > 255,255,r + 40),iif(Int(g + 40) > 255,255,g + 40),iif(Int(b + 40) > 255,255,b + 40))
 	_themeColorL5 	= ARGB(a,iif(Int(r + 50) > 255,255,r + 50),iif(Int(g + 50) > 255,255,g + 50),iif(Int(b + 50) > 255,255,b + 50))
+	if r < 100 or g < 100 or b < 100 then
+		_themeColorIcon = ARGB(255,255,255,255)
+		_themeColorIconHover = ARGB(255,245,245,245)
+		_themeColorIconPressed = ARGB(255,235,235,235)
+		_themeColorIconFocus = ARGB(255,235,235,235)
+	else
+		_themeColorIcon = _themeColorDark
+		_themeColorIconHover = ARGBDarken(_themeColor,0.5)
+		_themeColorIconPressed = ARGBDarken(_themeColor,0.7)
+		_themeColorIconFocus = ARGBDarken(_themeColor,0.8)
+	end if
 else
 	_themeColor 		= 0
 	_themeColorDark 	= 0
@@ -251,6 +282,10 @@ else
 	_themeColorL3 	= 0
 	_themeColorL4 	= 0
 	_themeColorL5 	= 0
+	_themeColorIcon = 0
+	_themeColorIconHover = 0
+	_themeColorIconPressed = 0
+	_themeColorIconFocus = 0
 end if
 end event
 
@@ -457,6 +492,30 @@ if #RoundSize.leftTop = lefttop and #RoundSize.rightTop = righttop and #RoundSiz
 Event OnThemeChanged(EVT_ROUNDSIZE)
 
 return RetCode.OK
+end function
+
+protected function string _of_torgb (readonly unsignedlong clr);Uint a,r,g,b
+
+SplitARGB(clr,ref a,ref r,ref g,ref b)
+
+return Sprintf("rgb({},{},{})",r,g,b)
+end function
+
+public function string of_geticon (readonly string uri, readonly unsignedlong state);if Pos(uri,".svg") > 0 then
+	if Pos(uri,"{") = 0 then
+		return uri + "{fill:" + _of_ToRGB(of_GetColor(CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+elseif Left(uri,7) = "font://" then
+	if Pos(uri,"{") = 0 then
+		return uri + "{color:" + _of_ToRGB(of_GetColor(CLR_ICON,state)) + "}"
+	else
+		return uri
+	end if
+else
+	return uri
+end if
 end function
 
 on n_cst_base_theme.create

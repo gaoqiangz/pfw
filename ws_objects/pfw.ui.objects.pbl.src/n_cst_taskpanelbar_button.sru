@@ -88,7 +88,7 @@ end prototypes
 
 event type boolean oninitdata(string text, string image, string tiptext);int newIndex
 
-newIndex = _ItemImageList.AddImage(Image)
+newIndex = _ItemImageList.AddImage(theme.of_GetItemIcon(this,Image,0))
 
 if Len(Text) = 0 and newIndex = 0 then return false
 
@@ -190,7 +190,7 @@ boolean dirty
 
 if #Image= Image then return RetCode.OK
 
-newIndex = _ItemImageList.AddImage(Image)
+newIndex = _ItemImageList.AddImage(theme.of_GetItemIcon(this,Image,0))
 
 if szText.cx = 0 and newIndex = 0 then return RetCode.E_INVALID_IMAGE
 
