@@ -113,7 +113,7 @@ next
 end event
 
 event open;int index
-n_cst_threading_task_test task
+n_test_threading_task task
 
 for index = 1 to 2
 	//创建线程对象
@@ -126,7 +126,7 @@ for index = 1 to 2
 	//绑定线程CPU
 	threads[index].of_SetAffinity(index)
 	//添加任务
-	threads[index].of_AddTask(ref task,"n_cst_threading_task_test")
+	threads[index].of_AddTask(ref task,"n_test_threading_task")
 	//设置任务名称
 	task.#Tag = "TASK ID " + String(index)
 	//订阅任务事件
