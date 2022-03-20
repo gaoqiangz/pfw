@@ -197,7 +197,7 @@ treeview option>caption>popup[role="tooltip"] {
 
 	option.dragging {
 		opacity: 0.5;
-		outline: 1px dashed var(clr_drag_marker_border);
+		outline: 1dip dashed var(clr_drag_marker_border);
 	}
 
 	option.dragging:not(:node),

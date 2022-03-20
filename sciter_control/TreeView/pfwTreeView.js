@@ -1234,6 +1234,7 @@ const DD_AM_DURATION = 200;
 class DragDropHandler {
 	/** @type {pfwTreeView} */
 	tree = null;
+	px_as_dip = false;
 	_dragging = false;
 	_animating = false;
 	_drag_source = null;
@@ -1250,6 +1251,7 @@ class DragDropHandler {
 
 	constructor(tree) {
 		this.tree = tree;
+		this.px_as_dip = (tree.state.pixelsIn("1px") === tree.state.pixelsIn("1dip"));
 		let mouseHandler = (evt) => {
 			return this.onMouse(evt);
 		};
@@ -1271,7 +1273,15 @@ class DragDropHandler {
 	}
 
 	getEventLocalPos(evt) {
-		return this.tree.state.mapWindowToLocal(evt.windowX, evt.windowY);
+		let evtX = evt.windowX;
+		let evtY = evt.windowY;
+		//NOTE
+		//Event.window-X/Y的单位是pixel，在禁用PX_AS_DIP特性后需要转换为dip
+		if (!this.px_as_dip) {
+			evtX /= devicePixelRatio;
+			evtY /= devicePixelRatio;
+		}
+		return this.tree.state.mapWindowToLocal(evtX, evtY);
 	}
 
 	getElementLocalPos(el) {
