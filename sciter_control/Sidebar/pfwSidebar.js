@@ -112,7 +112,7 @@ export class pfwSidebar extends Element {
 			return <span class={`sb-img ${clsFont}`} state-html={charCode}></span>;
 		}
 		else {
-			let sStyle;
+			let sStyle = "";
 			let i = image.indexOf("{");
 			if (i > 0) {
 				sStyle = image.slice(i + 1, -1);
