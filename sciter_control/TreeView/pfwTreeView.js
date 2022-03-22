@@ -444,11 +444,11 @@ export class pfwTreeView extends Element {
 			return true;
 		};
 		elInput.onkeydown = function (evt) {
-			if (evt.code === "KeyRETURN") {
+			if (evt.code === "Enter") {
 				this._acceptText();
 				return true;
 			}
-			else if (evt.code === "KeyESCAPE") {
+			else if (evt.code === "Escape") {
 				tree._sendEvent(EVT_END_TEXT_EDIT, { target: elOption, reason: 2 });
 				elText.innerText = elOption.attributes["text"];
 				this._processed = true;
@@ -1115,11 +1115,11 @@ class EventHandler {
 	onKeyDown(evt, opt) {
 		if (evt.target.$is("input")) return false;
 
-		if (evt.code === "KeyHOME") {
+		if (evt.code === "Home") {
 			this.tree.selectOption(this.tree.$(">option"), true);
 			return true;
 		}
-		else if (evt.code === "KeyEND") {
+		else if (evt.code === "End") {
 			let optLast = this.tree.lastElementChild?.$p("option");
 			if (optLast?.state.expanded) {
 				let optChild = optLast.lastElementChild?.$p("option");
@@ -1138,7 +1138,7 @@ class EventHandler {
 		if (!this.tree.state.focus) this.tree.focus();
 
 		switch (evt.code) {
-			case "KeyLEFT":
+			case "ArrowLeft":
 				{
 					if (this.tree.isNode(opt)) {
 						if (opt.state.expanded) {
@@ -1151,7 +1151,7 @@ class EventHandler {
 					}
 					return true;
 				}
-			case "KeyRIGHT":
+			case "ArrowRight":
 				{
 					if (this.tree.isNode(opt)) {
 						if (opt.state.collapsed)
@@ -1161,7 +1161,7 @@ class EventHandler {
 					}
 					return true;
 				}
-			case "KeyUP":
+			case "ArrowUp":
 				{
 					let optPrior = opt.previousElementSibling?.$p("option");
 					while (optPrior?.state.disabled) {
@@ -1184,7 +1184,7 @@ class EventHandler {
 					}
 					return true;
 				}
-			case "KeyDOWN":
+			case "ArrowDown":
 				{
 					let optNext;
 					if (opt.state.expanded)
@@ -1207,7 +1207,7 @@ class EventHandler {
 					this.tree.selectOption(optNext, true);
 					return true;
 				}
-			case "KeySPACE":
+			case "Space":
 				{
 					if (!opt.state.checked)
 						this.tree.checkOption(opt, true);
