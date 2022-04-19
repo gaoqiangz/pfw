@@ -63,6 +63,10 @@ type variables
 
 /*--- Constants ---*/
 Public:
+//Task execute group
+constant long GROUP_NORMAL		= n_cst_thread_task.GROUP_NORMAL
+constant long GROUP_PREPARE	= n_cst_thread_task.GROUP_PREPARE
+constant long GROUP_POST		= n_cst_thread_task.GROUP_POST
 //Threading events (of_On/of_Off)
 Constant String EVT_COMMONNOTIFY	= "common-notify"	//arguments
 																	//  n_cst_threading_task source
@@ -104,6 +108,7 @@ Constant String EVT_ERROR			= "error"			//arguments
 Public:
 PrivateWrite 	n_cst_threading	#ParentThreading
 ProtectedWrite String	 			#Type
+PrivateWrite 	Long	 				#Group 			= GROUP_NORMAL
 ProtectedWrite Boolean 				#Running 			= false
 String										#Tag
 Any										#Data
@@ -125,7 +130,6 @@ String 	_taskClsName
 NAMEDDATA _datas[]
 
 end variables
-
 forward prototypes
 public function boolean of_isbusy ()
 public function long of_getlastexitcode ()
@@ -168,6 +172,7 @@ public function string of_gettaskclassname ()
 public function long of_preventevent ()
 public function long of_setdelayfor (readonly double seconds)
 public function long of_preventevent (boolean deep)
+public function long of_setgroup (readonly long group)
 end prototypes
 
 event type long oninit(n_cst_threading parentthreading, n_cst_thread parentthread, integer index, unsignedlong hevtsync, string clsname);long rtCode
@@ -596,11 +601,15 @@ end function
 public function long of_preventevent ();return _eventful.of_Prevent()
 end function
 
-public function long of_setdelayfor (readonly double seconds);if #Running then return RetCode.E_BUSY
+public function long of_setdelayfor (readonly double seconds);if of_IsBusy() then return RetCode.E_BUSY
 return _Task.of_SetDelayFor(seconds)
 end function
 
 public function long of_preventevent (boolean deep);return _eventful.of_Prevent(deep)
+end function
+
+public function long of_setgroup (readonly long group);if #ParentThreading.#Running then return RetCode.E_BUSY
+return _Task.of_SetGroup(group)
 end function
 
 on n_cst_threading_task.create

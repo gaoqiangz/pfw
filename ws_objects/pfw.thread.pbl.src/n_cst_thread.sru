@@ -17,7 +17,7 @@ event type long onstart ( )
 event onstop ( long exitcode )
 event oninit ( n_cst_threading parentthreading,  unsignedlong parentthreadid,  unsignedlong hevtcancelled )
 event type long onerror ( long errcode,  string errinfo )
-event type long ondotasks ( )
+event type long ondotasks ( long group )
 event onuninit ( )
 event onidle ( )
 event type long onpreparetask ( n_cst_thread_task task )
@@ -191,36 +191,50 @@ end if
 return rtCode
 end event
 
-event type long ondotasks();long rtCode
+event type long ondotasks(long group);long rtCode
 boolean bIgnoreTaskError,bIgnoreTaskCancel,bCancelled
 
-bIgnoreTaskError = #ParentThreading.#IgnoreTaskError
-bIgnoreTaskCancel = #ParentThreading.#IgnoreTaskCancel
-
-bCancelled = of_IsCancelled()
-_nExecIndex = 1
-do while(Not bCancelled and _nExecIndex <= UpperBound(Tasks))
-	rtCode = Event OnPrepareTask(Tasks[_nExecIndex])
-	if IsAllowed(rtCode) then
-		rtCode = Tasks[_nExecIndex].of_Execute()
-	end if
-	if IsFailed(rtCode) then
-		if Not bIgnoreTaskError and Not of_IsCancelled() then
-			_nExecIndex = 0
-			Event OnError(rtCode,"")
-			return rtCode
+if group = n_cst_thread_task.GROUP_POST then
+	_nExecIndex = 1
+	do while(_nExecIndex <= UpperBound(Tasks))
+		if Tasks[_nExecIndex].#Group = Tasks[_nExecIndex].GROUP_POST then
+			if IsAllowed(Event OnPrepareTask(Tasks[_nExecIndex])) then
+				Tasks[_nExecIndex].of_Execute()
+			end if
 		end if
-	end if
-	if rtCode = RetCode.CANCELLED and Not bIgnoreTaskCancel then
-		of_Cancel()
-		bCancelled = true
-		exit
-	end if
+		_nExecIndex++
+	loop
+	_nExecIndex = 0
+else
+	bIgnoreTaskError = #ParentThreading.#IgnoreTaskError
+	bIgnoreTaskCancel = #ParentThreading.#IgnoreTaskCancel
 	bCancelled = of_IsCancelled()
-	_nExecIndex++
-loop
-_nExecIndex = 0
-if bCancelled then return RetCode.CANCELLED
+	_nExecIndex = 1
+	do while(Not bCancelled and _nExecIndex <= UpperBound(Tasks))
+		if Tasks[_nExecIndex].#Group = group then
+			rtCode = Event OnPrepareTask(Tasks[_nExecIndex])
+			if IsAllowed(rtCode) then
+				rtCode = Tasks[_nExecIndex].of_Execute()
+			end if
+			if IsFailed(rtCode) then
+				if Not bIgnoreTaskError and Not of_IsCancelled() then
+					_nExecIndex = 0
+					Event OnError(rtCode,"")
+					return rtCode
+				end if
+			end if
+			if rtCode = RetCode.CANCELLED and Not bIgnoreTaskCancel then
+				of_Cancel()
+				bCancelled = true
+				exit
+			end if
+		end if
+		bCancelled = of_IsCancelled()
+		_nExecIndex++
+	loop
+	_nExecIndex = 0
+	if bCancelled then return RetCode.CANCELLED
+end if
 
 return RetCode.OK
 end event
@@ -364,18 +378,22 @@ if IsPrevented(Event OnStart()) then
 	nExitCode = RetCode.CANCELLED
 else
 	try
-		for nIndex = 1 to UpperBound(Tasks)
-			if IsPrevented(Tasks[nIndex].Event OnThreadStart()) then
-				nExitCode = RetCode.CANCELLED
-				exit
-			end if
-		next
-		if nExitCode <> RetCode.CANCELLED then
-			nExitCode = Event OnDoTasks()
-			for nIndex = UpperBound(Tasks) to 1 step -1
-				Tasks[nIndex].Event OnThreadStop(nExitCode)
+		nExitCode = Event OnDoTasks(n_cst_thread_task.GROUP_PREPARE)
+		if nExitCode = RetCode.OK then
+			for nIndex = 1 to UpperBound(Tasks)
+				if IsPrevented(Tasks[nIndex].Event OnThreadStart()) then
+					nExitCode = RetCode.CANCELLED
+					exit
+				end if
 			next
+			if nExitCode <> RetCode.CANCELLED then
+				nExitCode = Event OnDoTasks(n_cst_thread_task.GROUP_NORMAL)
+				for nIndex = UpperBound(Tasks) to 1 step -1
+					Tasks[nIndex].Event OnThreadStop(nExitCode)
+				next
+			end if
 		end if
+		Event OnDoTasks(n_cst_thread_task.GROUP_POST)
 	catch(Throwable ex)
 		nExitCode = RetCode.E_INTERNAL_ERROR
 		Event OnError(nExitCode,ex.GetMessage())

@@ -64,10 +64,18 @@ type variables
 //* 使预先被告知此类损害可能发生，金千枝（深圳）软件技术有限公司和贡献者均不承担任何责任。
 //================================================================
 
+/*--- Constants ---*/
+Public:
+//Execute group
+constant long GROUP_NORMAL		= 0
+constant long GROUP_PREPARE	= 1
+constant long GROUP_POST		= 2
+
 /*--- Properties---*/
 Public:
 PrivateWrite 	n_cst_threading_task 	#ParentTasking
 PrivateWrite 	n_cst_thread		 	#ParentThread
+PrivateWrite 	Long	 					#Group 			= GROUP_NORMAL
 PrivateWrite 	Boolean 					#Running 			= false
 
 /*--- Implementation ---*/
@@ -145,6 +153,7 @@ public function long of_setdelayfor (readonly double seconds)
 public function long of_getlasterrorcode ()
 public function string of_getlasterrorinfo ()
 public function long of_clearerror ()
+public function long of_setgroup (readonly long group)
 end prototypes
 
 event type long onstart();if of_IsCancelled() then return RetCode.PREVENT
@@ -584,6 +593,13 @@ end function
 
 public function long of_clearerror ();_lastErrCode = 0
 _lastErrInfo = ""
+
+return RetCode.OK
+end function
+
+public function long of_setgroup (readonly long group);if group < GROUP_NORMAL or group > GROUP_POST then return RetCode.E_INVALID_ARGUMENT
+
+#Group = group
 
 return RetCode.OK
 end function
