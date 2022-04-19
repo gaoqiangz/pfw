@@ -179,6 +179,8 @@ else
 end if
 
 threading.of_SetAutoRelease(false)
+threading.of_SetIgnoreTaskError(false)
+threading.of_SetIgnoreTaskCancel(true)
 threading.of_RemoveDatas()
 threading.of_Off()
 threading.of_PreventEvent(true)
@@ -287,6 +289,8 @@ for nIndex = 1 to nCount
 		ThreadDatas[nIndex].Threading.of_RemoveAll()
 	end if
 	ThreadDatas[nIndex].Threading.of_SetAutoRelease(false)
+	ThreadDatas[nIndex].Threading.of_SetIgnoreTaskError(false)
+	ThreadDatas[nIndex].Threading.of_SetIgnoreTaskCancel(true)
 	ThreadDatas[nIndex].Threading.of_RemoveDatas()
 	ThreadDatas[nIndex].Threading.of_Off()
 	ThreadDatas[nIndex].Threading.of_PreventEvent(true)
