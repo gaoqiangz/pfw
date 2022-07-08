@@ -49,9 +49,9 @@ public function long of_settitlebar (readonly boolean show)
 public function long of_setselectbold (readonly boolean bold)
 public function long of_settitlebariconalign (readonly alignment align)
 public function long of_settitlebartextalign (readonly alignment align)
-public function unsignedlong of_getitemcolor (readonly integer index, readonly unsignedlong state, readonly unsignedinteger colorflag)
 public function long of_seticonsize (readonly real width, readonly real height)
 public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state)
+public function unsignedlong of_getitemcolor (readonly integer index, readonly unsignedinteger colorflag, readonly unsignedlong state)
 end prototypes
 
 event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -217,21 +217,6 @@ end choose
 return RetCode.OK
 end function
 
-public function unsignedlong of_getitemcolor (readonly integer index, readonly unsignedlong state, readonly unsignedinteger colorflag);Ulong color
-
-SetNull(color)
-Event OnGetItemColor(index,colorFlag,state,ref color)
-if IsNull(color) then
-	Event _OnGetColor(colorFlag,state,ref color)
-end if
-if IsNull(color) then
-	Event _OnGetItemColor(index,colorFlag,state,ref color)
-end if
-if IsNull(color) then color = 0
-
-return color
-end function
-
 public function long of_seticonsize (readonly real width, readonly real height);if width = 0 or height = 0 then return RetCode.E_INVALID_ARGUMENT
 if #IconSize.cx = width and #IconSize.cy = height then return RetCode.OK
 
@@ -258,6 +243,21 @@ elseif Left(uri,7) = "font://" then
 else
 	return uri
 end if
+end function
+
+public function unsignedlong of_getitemcolor (readonly integer index, readonly unsignedinteger colorflag, readonly unsignedlong state);Ulong color
+
+SetNull(color)
+Event OnGetItemColor(index,colorFlag,state,ref color)
+if IsNull(color) then
+	Event _OnGetColor(colorFlag,state,ref color)
+end if
+if IsNull(color) then
+	Event _OnGetItemColor(index,colorFlag,state,ref color)
+end if
+if IsNull(color) then color = 0
+
+return color
 end function
 
 on n_cst_popupmenu_theme.create
