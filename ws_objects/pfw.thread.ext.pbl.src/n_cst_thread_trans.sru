@@ -89,8 +89,6 @@ public function string of_gridsyntaxfromsql (readonly string sql)
 public function long of_query (readonly string sql, ref datastore ds)
 public function transactiondata of_gettransdata ()
 public function long of_gettransdata (ref transactiondata data, ref string errinfo)
-public function longptr dbhandle ()
-public function longptr dbhandle (unsignedinteger r)
 end prototypes
 
 event onattach(n_cst_thread_task parenttask);#ParentTask = parentTask
@@ -105,7 +103,6 @@ public function long of_connect ();if DBHandle() <> 0 then
 end if
 
 _nLastConnOK = 0
-
 of_ClearState()
 
 if IsPrevented(Event OnBeforeConnect()) then
@@ -114,17 +111,6 @@ if IsPrevented(Event OnBeforeConnect()) then
 end if
 
 CONNECT USING this;
-
-if SQLCode <> 0 then
-	//FIXME
-	//因为_nLastConnOK=0时DBHandle返回0，因此DBHandle可能是有效的，所以会报此错误
-	if SQLErrText = "Transaction already connected" then
-		DISCONNECT USING this;
-		of_ClearState()
-		//重新连接
-		CONNECT USING this;
-	end if
-end if
 
 Event OnAfterConnect()
 
@@ -140,11 +126,7 @@ end function
 public function long of_disconnect ();if DBHandle() <= 0 then return RetCode.OK
 
 Event OnBeforeDisconnect()
-try
-	DISCONNECT USING this;
-catch(throwable ex)
-	//WTF???
-end try
+DISCONNECT USING this;
 Event OnAfterDisconnect()
 
 _nLastConnOK = 0
@@ -178,8 +160,7 @@ SQLReturnData = sSQLReturnData
 Event OnAfterRollback()
 end subroutine
 
-public function long of_rollback ();if DBHandle() <= 0 then return RetCode.E_INVALID_TRANSACTION
-if AutoCommit then return RetCode.FAILED
+public function long of_rollback ();if AutoCommit then return RetCode.FAILED
 
 _of_CleanRollback()
 
@@ -188,8 +169,8 @@ end function
 
 public function boolean of_isconnected ();boolean bConnected
 
-if DBHandle() <= 0 then return false
-if _nLastConnOK > 0 and CPU() - _nLastConnOK < 3000 then return true
+if _nLastConnOK = 0 then return false
+if CPU() - _nLastConnOK < 10000 then return true
 
 if Pos(Upper(DBMS),"ORACLE") > 0 then
 	EXECUTE IMMEDIATE "SELECT 1 FROM DUAL" USING this;
@@ -199,25 +180,15 @@ end if
 
 bConnected = (SQLNRows > 0)
 if bConnected then
-	Event OnConnOK()
+	_nLastConnOK = CPU()
 else
 	_nLastConnOK = 0
-	//FIXME
-	//连接已经意外断开，不能使用DISCONNECT避免发生崩溃
-	/*
-	try
-		DISCONNECT USING this;
-	catch(throwable ex)
-		//WTF???
-	end try
-	*/
 end if
 
 return bConnected
 end function
 
 public function long of_exec (readonly string sqlcmd);if sqlCmd = "" or IsNull(sqlCmd) then return RetCode.E_INVALID_ARGUMENT
-if DBHandle() <= 0 then return RetCode.E_INVALID_TRANSACTION
 
 of_ClearState()
 
@@ -237,8 +208,7 @@ end if
 return RetCode.OK
 end function
 
-public function long of_commit (readonly boolean autorollback);if DBHandle() <= 0 then return RetCode.E_INVALID_TRANSACTION
-if AutoCommit then return RetCode.FAILED
+public function long of_commit (readonly boolean autorollback);if AutoCommit then return RetCode.FAILED
 
 if IsPrevented(Event OnBeforeCommit()) then
 	if SQLCode <> 0 then
@@ -268,7 +238,6 @@ public function long of_retrieve (readonly datastore ds);long rtCode
 boolean bAutoCommit
 
 if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
-if DBHandle() <= 0 then return RetCode.E_INVALID_TRANSACTION
 if ds.SetTransObject(this) <> 1 then return RetCode.E_INVALID_TRANSACTION 
 
 of_ClearState()
@@ -298,7 +267,6 @@ end function
 public function long of_update (readonly datastore ds);long rtCode
 
 if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
-if DBHandle() <= 0 then return RetCode.E_INVALID_TRANSACTION
 if ds.SetTransObject(this) <> 1 then return RetCode.E_INVALID_TRANSACTION 
 
 of_ClearState()
@@ -389,9 +357,7 @@ SQLErrText = ""
 SQLReturnData = ""
 end subroutine
 
-public function long of_autocommit ();if DBHandle() <= 0 then return RetCode.E_INVALID_TRANSACTION
-
-if SQLCode <> 0 then
+public function long of_autocommit ();if SQLCode <> 0 then
 	if Not AutoCommit then
 		_of_CleanRollback()
 	end if
@@ -440,14 +406,6 @@ data.DBParm = DBParm
 data.Lock = Lock
 
 return RetCode.OK
-end function
-
-public function longptr dbhandle ();if _nLastConnOK = 0 then return 0
-return super::DBHandle()
-end function
-
-public function longptr dbhandle (unsignedinteger r);if _nLastConnOK = 0 then return 0
-return super::DBHandle(r)
 end function
 
 on n_cst_thread_trans.create
