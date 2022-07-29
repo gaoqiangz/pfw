@@ -138,6 +138,7 @@ Constant Long SC_OPT_UX_THEMING							= 11	// value - BOOL, TRUE - the engine wi
 																				// That UX theme is not using OS primitives for rendering input elements. Use it if you want exactly
 																				// the same (modulo fonts) look-n-feel on all platforms.
 Constant Long SC_OPT_ALPHA_WINDOW					= 12	//  hWnd, value - TRUE/FALSE - window uses per pixel alpha (e.g. WS_EX_LAYERED/UpdateLayeredWindow() window)
+Constant Long SC_OPT_PX_AS_DIP					= 16	//  value 1 - 1px in CSS is treated as 1dip, value 0 - default behavior - 1px is a physical pixel
 
 //SC_OPT_HTTPS_ERROR_VALUE
 Constant Long SC_OPTV_HTTPS_ERROR_DROP		= 0
