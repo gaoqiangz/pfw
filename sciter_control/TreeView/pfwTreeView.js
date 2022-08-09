@@ -880,38 +880,35 @@ export class pfwTreeView extends Element {
 
 		let bStateChanged = false;
 		switch (lastState) {
-			case CHECK_STATE_CHECKED:
-				{
-					if (!elParent.state.checked) {
-						let oldState = this.getCheckState(elParent);
-						bStateChanged = true;
-						elParent.state.incomplete = false;
-						elParent.state.checked = true;
-						if (fireEvent) this._sendEvent(EVT_CHECK_STATE_CHANGED, { target: elParent, old: oldState, new: lastState });
-					}
-					break;
+			case CHECK_STATE_CHECKED: {
+				if (!elParent.state.checked) {
+					let oldState = this.getCheckState(elParent);
+					bStateChanged = true;
+					elParent.state.incomplete = false;
+					elParent.state.checked = true;
+					if (fireEvent) this._sendEvent(EVT_CHECK_STATE_CHANGED, { target: elParent, old: oldState, new: lastState });
 				}
-			case CHECK_STATE_INDETERMINATE:
-				{
-					if (!elParent.state.incomplete) {
-						let oldState = this.getCheckState(elParent);
-						bStateChanged = true;
-						elParent.state.checked = false;
-						elParent.state.incomplete = true;
-						if (fireEvent) this._sendEvent(EVT_CHECK_STATE_CHANGED, { target: elParent, old: oldState, new: lastState });
-					}
-					break;
+				break;
+			}
+			case CHECK_STATE_INDETERMINATE: {
+				if (!elParent.state.incomplete) {
+					let oldState = this.getCheckState(elParent);
+					bStateChanged = true;
+					elParent.state.checked = false;
+					elParent.state.incomplete = true;
+					if (fireEvent) this._sendEvent(EVT_CHECK_STATE_CHANGED, { target: elParent, old: oldState, new: lastState });
 				}
-			default:
-				{
-					if (elParent.state.checked || elParent.state.incomplete) {
-						let oldState = this.getCheckState(elParent);
-						bStateChanged = true;
-						elParent.state.incomplete = false;
-						elParent.state.checked = false;
-						if (fireEvent) this._sendEvent(EVT_CHECK_STATE_CHANGED, { target: elParent, old: oldState, new: lastState });
-					}
+				break;
+			}
+			default: {
+				if (elParent.state.checked || elParent.state.incomplete) {
+					let oldState = this.getCheckState(elParent);
+					bStateChanged = true;
+					elParent.state.incomplete = false;
+					elParent.state.checked = false;
+					if (fireEvent) this._sendEvent(EVT_CHECK_STATE_CHANGED, { target: elParent, old: oldState, new: lastState });
 				}
+			}
 		}
 
 		if (bStateChanged)
@@ -1016,31 +1013,27 @@ class EventHandler {
 	hitTest(evt, elOption, where) {
 		if (elOption.state.disabled) return false;
 		switch (where) {
-			case HIT_CAPTION:
-				{
-					const [x1, y1, x2, y2] = elOption.$(">caption").state.box("rect", "border", "window");
-					return (evt.windowX >= x1 && evt.windowX <= x2 && evt.windowY >= y1 && evt.windowY <= y2);
+			case HIT_CAPTION: {
+				const [x1, y1, x2, y2] = elOption.$(">caption").state.box("rect", "border", "window", false);
+				return (evt.windowX >= x1 && evt.windowX <= x2 && evt.windowY >= y1 && evt.windowY <= y2);
+			}
+			case HIT_COLLAPSE_BUTTON: {
+				if (!this.tree.isNode(elOption)) return false;
+				return evt.target.$is("option") && evt.isOnIcon;
+			}
+			case HIT_CHECKBOX: {
+				if (!this.tree.isCheckBoxEnabled()) return false;
+				if (this.tree.isNode(elOption)) {
+					return evt.target.$is("caption") && evt.isOnIcon;
 				}
-			case HIT_COLLAPSE_BUTTON:
-				{
-					if (!this.tree.isNode(elOption)) return false;
+				else {
 					return evt.target.$is("option") && evt.isOnIcon;
 				}
-			case HIT_CHECKBOX:
-				{
-					if (!this.tree.isCheckBoxEnabled()) return false;
-					if (this.tree.isNode(elOption)) {
-						return evt.target.$is("caption") && evt.isOnIcon;
-					}
-					else {
-						return evt.target.$is("option") && evt.isOnIcon;
-					}
-					break;
-				}
-			default:
-				{
-					return false;
-				}
+				break;
+			}
+			default: {
+				return false;
+			}
 		}
 	}
 
@@ -1138,83 +1131,78 @@ class EventHandler {
 		if (!this.tree.state.focus) this.tree.focus();
 
 		switch (evt.code) {
-			case "ArrowLeft":
-				{
-					if (this.tree.isNode(opt)) {
-						if (opt.state.expanded) {
-							this.tree.collapseOption(opt, true);
-						}
-						else {
-							this.tree.collapseOption(opt.parentElement, true);
-							this.tree.selectOption(opt.parentElement, true);
-						}
+			case "ArrowLeft": {
+				if (this.tree.isNode(opt)) {
+					if (opt.state.expanded) {
+						this.tree.collapseOption(opt, true);
 					}
-					return true;
+					else {
+						this.tree.collapseOption(opt.parentElement, true);
+						this.tree.selectOption(opt.parentElement, true);
+					}
 				}
-			case "ArrowRight":
-				{
-					if (this.tree.isNode(opt)) {
-						if (opt.state.collapsed)
-							this.tree.expandOption(opt, true);
-						else
-							this.tree.selectOption(opt.$(">option"), true);
-					}
-					return true;
-				}
-			case "ArrowUp":
-				{
-					let optPrior = opt.previousElementSibling?.$p("option");
-					while (optPrior?.state.disabled) {
-						optPrior = optPrior.previousElementSibling?.$p("option");
-					}
-					if (optPrior) {
-						if (optPrior !== opt.parentElement && optPrior.state.expanded) {
-							let optChild = optPrior.lastElementChild?.$p("option");
-							while (optChild && optChild !== optPrior) {
-								if (optChild.state.disabled) {
-									optChild = optChild.previousElementSibling?.$p("option");
-									continue;
-								}
-								optPrior = optChild;
-								if (!optChild.state.expanded) break;
-								optChild = optChild.lastElementChild?.$p("option");
-							}
-						}
-						this.tree.selectOption(optPrior, true);
-					}
-					return true;
-				}
-			case "ArrowDown":
-				{
-					let optNext;
-					if (opt.state.expanded)
-						optNext = opt.$(">option");
+				return true;
+			}
+			case "ArrowRight": {
+				if (this.tree.isNode(opt)) {
+					if (opt.state.collapsed)
+						this.tree.expandOption(opt, true);
 					else
-						optNext = opt.nextElementSibling;
-					while (optNext?.state.disabled) {
-						optNext = optNext.nextElementSibling;
-					}
-					if (!optNext) {
-						let optParent = opt.parentElement;
-						while (optParent && optParent !== this) {
-							if (optParent.nextElementSibling && !optParent.nextElementSibling.state.disabled) {
-								optNext = optParent.nextElementSibling;
-								break;
+						this.tree.selectOption(opt.$(">option"), true);
+				}
+				return true;
+			}
+			case "ArrowUp": {
+				let optPrior = opt.previousElementSibling?.$p("option");
+				while (optPrior?.state.disabled) {
+					optPrior = optPrior.previousElementSibling?.$p("option");
+				}
+				if (optPrior) {
+					if (optPrior !== opt.parentElement && optPrior.state.expanded) {
+						let optChild = optPrior.lastElementChild?.$p("option");
+						while (optChild && optChild !== optPrior) {
+							if (optChild.state.disabled) {
+								optChild = optChild.previousElementSibling?.$p("option");
+								continue;
 							}
-							optParent = optParent.parentElement;
+							optPrior = optChild;
+							if (!optChild.state.expanded) break;
+							optChild = optChild.lastElementChild?.$p("option");
 						}
 					}
-					this.tree.selectOption(optNext, true);
-					return true;
+					this.tree.selectOption(optPrior, true);
 				}
-			case "Space":
-				{
-					if (!opt.state.checked)
-						this.tree.checkOption(opt, true);
-					else
-						this.tree.uncheckOption(opt, true);
-					return true;
+				return true;
+			}
+			case "ArrowDown": {
+				let optNext;
+				if (opt.state.expanded)
+					optNext = opt.$(">option");
+				else
+					optNext = opt.nextElementSibling;
+				while (optNext?.state.disabled) {
+					optNext = optNext.nextElementSibling;
 				}
+				if (!optNext) {
+					let optParent = opt.parentElement;
+					while (optParent && optParent !== this) {
+						if (optParent.nextElementSibling && !optParent.nextElementSibling.state.disabled) {
+							optNext = optParent.nextElementSibling;
+							break;
+						}
+						optParent = optParent.parentElement;
+					}
+				}
+				this.tree.selectOption(optNext, true);
+				return true;
+			}
+			case "Space": {
+				if (!opt.state.checked)
+					this.tree.checkOption(opt, true);
+				else
+					this.tree.uncheckOption(opt, true);
+				return true;
+			}
 		}
 
 		return false;
@@ -1307,65 +1295,61 @@ class DragDropHandler {
 		if (this._animating) return false;
 
 		switch (evt.type) {
-			case "mousedown":
-				{
-					if (evt.button !== 1) return false;
-					if (evt.isOnIcon) return false;
-					if (evt.target.$is("input")) break;
-					let opt = evt.target.$p("option");
-					if (!opt) break;
-					const [evtX, evtY] = this.getEventLocalPos(evt);
-					const [x, y, w, h] = this.getElementLocalRectW(opt.$(">caption"));
-					if (evtY < y || evtY > y + h) break;
-					this._mouse_down_opt = opt;
-					this._mouse_down_pos.x = evtX;
-					this._mouse_down_pos.y = evtY;
-					this._mouse_down_opt.state.capture("strict");
-					break;
+			case "mousedown": {
+				if (evt.button !== 1) return false;
+				if (evt.isOnIcon) return false;
+				if (evt.target.$is("input")) break;
+				let opt = evt.target.$p("option");
+				if (!opt) break;
+				const [evtX, evtY] = this.getEventLocalPos(evt);
+				const [x, y, w, h] = this.getElementLocalRectW(opt.$(">caption"));
+				if (evtY < y || evtY > y + h) break;
+				this._mouse_down_opt = opt;
+				this._mouse_down_pos.x = evtX;
+				this._mouse_down_pos.y = evtY;
+				this._mouse_down_opt.state.capture("strict");
+				break;
+			}
+			case "mouseup": {
+				if (this._mouse_down_opt) {
+					this._mouse_down_opt.state.capture(false);
+					this._mouse_down_opt = null;
 				}
-			case "mouseup":
-				{
+				if (this._dragging) {
+					this.doDrop(evt);
+					return true;
+				}
+				break;
+			}
+			case "mousemove": {
+				if (evt.button !== 1) return false;
+				if (this._dragging) {
+					this.doDragMove(evt);
+				} else {
+					if (!this._mouse_down_opt) break;
+					const [evtX, evtY] = this.getEventLocalPos(evt);
+					if (Math.abs(evtX - this._mouse_down_pos.x) > DD_X_THRESHOLD ||
+						Math.abs(evtY - this._mouse_down_pos.y) > DD_Y_THRESHOLD) {
+						this.doBeginDrag(evt);
+						return true;
+					}
+				}
+				break;
+			}
+			case "wheel": {
+				if (this._dragging && this._mouse_where !== 0) {
+					this._drop_target?.classList.remove("dragenter");
+					this._drop_target = this._mouse_target = null;
+					this._drop_where = this._mouse_where = 0;
+					this.tree.requestPaint();
+				} else if (!this._dragging) {
 					if (this._mouse_down_opt) {
 						this._mouse_down_opt.state.capture(false);
 						this._mouse_down_opt = null;
 					}
-					if (this._dragging) {
-						this.doDrop(evt);
-						return true;
-					}
-					break;
 				}
-			case "mousemove":
-				{
-					if (evt.button !== 1) return false;
-					if (this._dragging) {
-						this.doDragMove(evt);
-					} else {
-						if (!this._mouse_down_opt) break;
-						const [evtX, evtY] = this.getEventLocalPos(evt);
-						if (Math.abs(evtX - this._mouse_down_pos.x) > DD_X_THRESHOLD ||
-							Math.abs(evtY - this._mouse_down_pos.y) > DD_Y_THRESHOLD) {
-							this.doBeginDrag(evt);
-							return true;
-						}
-					}
-					break;
-				}
-			case "wheel":
-				{
-					if (this._dragging && this._mouse_where !== 0) {
-						this._drop_target?.classList.remove("dragenter");
-						this._drop_target = this._mouse_target = null;
-						this._drop_where = this._mouse_where = 0;
-						this.tree.requestPaint();
-					} else if (!this._dragging) {
-						if (this._mouse_down_opt) {
-							this._mouse_down_opt.state.capture(false);
-							this._mouse_down_opt = null;
-						}
-					}
-					break;
-				}
+				break;
+			}
 		}
 
 		return false;
@@ -1458,24 +1442,21 @@ class DragDropHandler {
 				}
 				//如果DOM序不会改变则目标位置视为无效
 				switch (nWhere) {
-					case DD_DROP_WHERE_BEFORE:
-						{
-							if (this._drag_source === this._mouse_target.previousElementSibling)
-								nWhere = 0;
-							break;
-						}
-					case DD_DROP_WHERE_AFTER:
-						{
-							if (this._drag_source === this._mouse_target.nextElementSibling)
-								nWhere = 0;
-							break;
-						}
-					case DD_DROP_WHERE_INSIDE:
-						{
-							if (this._drag_source.parentElement === this._mouse_target)
-								nWhere = 0;
-							break;
-						}
+					case DD_DROP_WHERE_BEFORE: {
+						if (this._drag_source === this._mouse_target.previousElementSibling)
+							nWhere = 0;
+						break;
+					}
+					case DD_DROP_WHERE_AFTER: {
+						if (this._drag_source === this._mouse_target.nextElementSibling)
+							nWhere = 0;
+						break;
+					}
+					case DD_DROP_WHERE_INSIDE: {
+						if (this._drag_source.parentElement === this._mouse_target)
+							nWhere = 0;
+						break;
+					}
 				}
 				if (nWhere !== 0) {
 					if (this.tree._sendEvent(EVT_DRAG_ENTER, { drag: this._drag_source, target: this._mouse_target, where: nWhere }))
@@ -1527,25 +1508,22 @@ class DragDropHandler {
 				if (this.tree.isCheckBoxEnabled()) this.tree.refreshParentCheckState(this._drag_source, false, true);
 
 				switch (this._drop_where) {
-					case DD_DROP_WHERE_BEFORE:
-						{
-							if (this._drag_source !== this._drop_target.previousElementSibling)
-								this._drop_target.parentElement.insertBefore(this._drag_source, this._drop_target);
-							break;
-						}
-					case DD_DROP_WHERE_AFTER:
-						{
-							if (this._drag_source !== this._drop_target.nextElementSibling)
-								this._drop_target.parentElement.insertAfter(this._drag_source, this._drop_target);
-							break;
-						}
-					case DD_DROP_WHERE_INSIDE:
-						{
-							if (this._drag_source.parentElement !== this._drop_target)
-								this._drop_target.appendChild(this._drag_source);
-							this.tree.expandOption(this._drop_target, true);
-							break;
-						}
+					case DD_DROP_WHERE_BEFORE: {
+						if (this._drag_source !== this._drop_target.previousElementSibling)
+							this._drop_target.parentElement.insertBefore(this._drag_source, this._drop_target);
+						break;
+					}
+					case DD_DROP_WHERE_AFTER: {
+						if (this._drag_source !== this._drop_target.nextElementSibling)
+							this._drop_target.parentElement.insertAfter(this._drag_source, this._drop_target);
+						break;
+					}
+					case DD_DROP_WHERE_INSIDE: {
+						if (this._drag_source.parentElement !== this._drop_target)
+							this._drop_target.appendChild(this._drag_source);
+						this.tree.expandOption(this._drop_target, true);
+						break;
+					}
 				}
 				this._drag_source.scrollIntoView();
 				this._drop_target.state.hover = false;
