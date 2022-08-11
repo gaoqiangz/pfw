@@ -21,6 +21,7 @@ event type long ondotasks ( long group )
 event onuninit ( )
 event onidle ( )
 event type long onpreparetask ( n_cst_thread_task task )
+event type long onfinalizetask ( n_cst_thread_task task )
 end type
 global n_cst_thread n_cst_thread
 
@@ -201,6 +202,7 @@ if group = n_cst_thread_task.GROUP_POST then
 			if IsAllowed(Event OnPrepareTask(Tasks[_nExecIndex])) then
 				Tasks[_nExecIndex].of_Execute()
 			end if
+			Event OnFinalizeTask(Tasks[_nExecIndex])
 		end if
 		_nExecIndex++
 	loop
@@ -216,6 +218,7 @@ else
 			if IsAllowed(rtCode) then
 				rtCode = Tasks[_nExecIndex].of_Execute()
 			end if
+			Event OnFinalizeTask(Tasks[_nExecIndex])
 			if IsFailed(rtCode) then
 				if Not bIgnoreTaskError and Not of_IsCancelled() then
 					_nExecIndex = 0
