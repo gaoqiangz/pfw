@@ -305,7 +305,9 @@ end if
 end event
 
 event onidle();if #Running then return
-_Thread.Event OnIdle()
+if IsValid(_Thread) then
+	_Thread.Event OnIdle()
+end if
 end event
 
 public function long of_getlastexitcode ();return _lastExitCode
@@ -1016,9 +1018,10 @@ event destructor;int nIndex,nCount
 n_cst_threading_task	emptyTasks[]
 NAMEDDATA emptyDatas[]
 
+timing_idle.Stop()
+
 Event OnThreadDestroying()
 
-timing_idle.Stop()
 #AutoRelease = false
 of_Terminate()
 if Not IsValid(this) then return
@@ -1043,10 +1046,16 @@ for nIndex = 1 to nCount
 next
 _datas = emptyDatas
 
-_Thread.Post Event OnUninit()
-//_Thread.Post of_Release()
+if _handle <> 0 then
+	_Thread.Post Event OnUninit()
+	//_Thread.Post of_Release()
+else
+	_Thread.Event OnUninit()
+end if
 SetNull(_Thread)
-SharedObjectUnregister(_sid)
+if _sid <> "" then
+	SharedObjectUnregister(_sid)
+end if
 
 if Not IsValidObject(#ParentThreadingPool) then
 	if _handle <> 0 then
