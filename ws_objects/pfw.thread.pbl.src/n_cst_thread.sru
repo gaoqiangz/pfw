@@ -21,7 +21,7 @@ event type long ondotasks ( long group )
 event onuninit ( )
 event onidle ( )
 event type long onpreparetask ( n_cst_thread_task task )
-event type long onfinalizetask ( n_cst_thread_task task )
+event onfinalizetask ( n_cst_thread_task task )
 end type
 global n_cst_thread n_cst_thread
 
