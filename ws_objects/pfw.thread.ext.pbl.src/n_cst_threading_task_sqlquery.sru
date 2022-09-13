@@ -86,6 +86,7 @@ public function boolean _of_hasreceiver ()
 public function long of_setpageduniqueindexcolumns (string columns[])
 public function long of_sethookclass (readonly string hookcls)
 public function long of_setcache (readonly boolean cache)
+public function long of_setisolation (readonly string isolation)
 end prototypes
 
 event type long onchilddatareceived(string name, ref blob blbdata);long rtCode
@@ -473,6 +474,11 @@ end function
 public function long of_setcache (readonly boolean cache);if of_IsBusy() then return RetCode.E_BUSY
 
 return _of_GetTask().of_SetCache(cache)
+end function
+
+public function long of_setisolation (readonly string isolation);if of_IsBusy() then return RetCode.E_BUSY
+
+return _of_GetTask().of_SetIsolation(isolation)
 end function
 
 on n_cst_threading_task_sqlquery.create

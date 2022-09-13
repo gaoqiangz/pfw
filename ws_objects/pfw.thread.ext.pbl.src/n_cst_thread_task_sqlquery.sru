@@ -37,6 +37,7 @@ boolean _bPageCounting = true
 boolean _bPageNative			//Use native implementation
 long _nMaxRows
 boolean _bCache
+string _sIsolation
 
 SQLCLAUSE _whereClauses[]
 SQLCLAUSE _orderByClauses[]
@@ -64,6 +65,7 @@ public function long of_setpagenative (readonly boolean use_native)
 public function long of_setpagesize (readonly long pagesize)
 public function long of_setsql (readonly string sql)
 public function long of_setsqlsyntax (readonly string sqlsyntax)
+public function long of_setisolation (readonly string isolation)
 end prototypes
 
 event type long ondatareceived(ref n_cst_thread_task_sqlbase_ds data, long rowcount);string sProp,sColName
@@ -250,6 +252,7 @@ _nPageSize = 0
 _bPageCounting = true
 _nMaxRows = 0
 _bCache = false
+_sIsolation = ""
 
 _whereClauses = emptyClauses
 _orderByClauses = emptyClauses
@@ -466,6 +469,11 @@ _sDataObject = ""
 return RetCode.OK
 end function
 
+public function long of_setisolation (readonly string isolation);_sIsolation = isolation
+
+return RetCode.OK
+end function
+
 on n_cst_thread_task_sqlquery.create
 call super::create
 end on
@@ -505,8 +513,13 @@ try
 		return RetCode.CANCELLED
 	end if
 	
-	//*解决MSSQL存储过程数据源使用临时表时可能长时间锁TEMPDB的问题
+	//解决MSSQL存储过程数据源使用临时表时可能长时间锁TEMPDB的问题
 	TransObject.AutoCommit = true
+	
+	//指定事务隔离级别
+	if _sIsolation <> "" then
+		TransObject.Lock = _sIsolation
+	end if
 	
 	sqlParser = Create n_sql
 
