@@ -235,7 +235,6 @@ return RetCode.OK
 end function
 
 public function long of_retrieve (readonly datastore ds);long rtCode
-boolean bAutoCommit
 
 if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
 if ds.SetTransObject(this) <> 1 then return RetCode.E_INVALID_TRANSACTION 
@@ -247,12 +246,7 @@ if IsPrevented(Event OnBeforeRetrieve(ds)) then
 	return RetCode.CANCELLED
 end if
 
-bAutoCommit = AutoCommit
-AutoCommit = true
-
 rtCode = ds.Retrieve()
-
-AutoCommit = bAutoCommit
 
 Event OnAfterRetrieve(ds,rtCode)
 

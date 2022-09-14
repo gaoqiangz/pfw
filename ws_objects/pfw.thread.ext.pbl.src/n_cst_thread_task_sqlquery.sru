@@ -513,9 +513,6 @@ try
 		return RetCode.CANCELLED
 	end if
 	
-	//解决MSSQL存储过程数据源使用临时表时可能长时间锁TEMPDB的问题
-	TransObject.AutoCommit = true
-	
 	//指定事务隔离级别
 	if _sIsolation <> "" then
 		TransObject.Lock = _sIsolation
@@ -811,7 +808,6 @@ try
 catch(Throwable ex)
 	throw ex
 finally
-	TransObject.AutoCommit = false
 	if IsValid(hook) then Destroy hook
 	if IsValid(sqlParser) then Destroy sqlParser
 	if IsValid(dsTmp) then Destroy dsTmp
