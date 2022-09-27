@@ -33,8 +33,6 @@ n_cst_thread_trans_pool _transPool
 
 TRANSACTIONDATA _transData
 
-string _sTransLock
-
 boolean _bNCharBinding
 
 SQLPARAM _sqlParams[]
@@ -44,7 +42,6 @@ n_cst_thread_trans _transObject
 
 ulong _hEvtCommitted
 end variables
-
 forward prototypes
 public function long of_settransdata (readonly transactiondata transdata)
 protected function long of_releasetransobject (ref n_cst_thread_trans transobject)
@@ -110,9 +107,6 @@ _transData = transData
 
 //擦除连接目标无关的参数
 _transData.AutoCommit = false
-_transData.Lock = ""
-//获取事务对象时还原
-_sTransLock = transData.Lock
 
 if _nTransRefIdx > 0 then
 	of_GetTransPool().of_RemoveRef(_nTransRefIdx)
@@ -146,7 +140,6 @@ n_cst_thread_trans_pool transPool
 
 if _nTransRefIdx > 0 and IsValidObject(_transObject) then
 	transObject = _transObject
-	transObject.Lock = _sTransLock
 	transObject.Event OnAttach(this)
 	transObject.of_ClearState()
 	return RetCode.OK
@@ -161,7 +154,6 @@ end if
 rtCode = transPool.of_Get(_nTransRefIdx,ref transObject)
 if IsSucceeded(rtCode) then
 	_transObject = transObject
-	_transObject.Lock = _sTransLock
 	_transObject.Event OnAttach(this)
 	//Test
 	if Not _transObject.of_IsConnected() then
@@ -171,6 +163,7 @@ if IsSucceeded(rtCode) then
 			return RetCode.E_INVALID_TRANSACTION
 		end if
 	end if
+	return RetCode.OK
 end if
 
 return rtCode
