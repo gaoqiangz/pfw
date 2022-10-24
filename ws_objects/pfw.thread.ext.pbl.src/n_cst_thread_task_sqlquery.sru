@@ -43,6 +43,7 @@ SQLCLAUSE _orderByClauses[]
 
 string _sPagedUniqueIndexColumns[]
 end variables
+
 forward prototypes
 public function long of_reset ()
 private function n_cst_threading_task_sqlquery _of_gettasking ()
@@ -584,8 +585,9 @@ try
 			else
 				if Event OnNotify(tasking.NCD_CHILDQUERY,nColIdx,data.Describe("#" + String(nColIdx) + ".Name")) = 1 then
 					sModString += "#" + String(nColIdx) + ".DDDW.AutoRetrieve = no ~n"
+				else
+					map.Add(sProp,true)
 				end if
-				map.Add(sProp,true)
 			end if
 		next
 		Destroy map
