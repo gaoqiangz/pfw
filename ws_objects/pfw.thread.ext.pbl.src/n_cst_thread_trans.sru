@@ -305,9 +305,13 @@ if Not IsValidObject(ds) then
 end if
 
 try
-	sSqlSyntax = of_GridSyntaxFromSQL(sql,ref errInfo)
-	if sSqlSyntax = "" then return RetCode.E_INVALID_SQL
-	if ds.Create(sSqlSyntax) <> 1 then return RetCode.E_INVALID_SQL
+	if Left(sql,1) = "@" then
+		ds.DataObject = Mid(sql,2)
+	else
+		sSqlSyntax = of_GridSyntaxFromSQL(sql,ref errInfo)
+		if sSqlSyntax = "" then return RetCode.E_INVALID_SQL
+		if ds.Create(sSqlSyntax) <> 1 then return RetCode.E_INVALID_SQL
+	end if
 	rtCode = of_Retrieve(ds)
 	bSucc = IsSucceeded(rtCode)
 	return rtCode
