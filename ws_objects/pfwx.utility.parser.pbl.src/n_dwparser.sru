@@ -5,11 +5,13 @@ end type
 end forward
 
 global type n_dwparser from nonvisualobject native "pfwx.dll"
-public function string copyright()
-public function string getversion()
-public function long parse(readonly string syn)
-public function string describe(readonly string selector)
-public function string modify(readonly string modifier)
+public function string Copyright()
+public function string GetVersion()
+public function long Parse(readonly string syn)
+public function string Describe(readonly string selector)
+public function string Modify(readonly string modifier)
+public function long FromJson(readonly string syn_json)
+public function string ToJson()
 end type
 global n_dwparser n_dwparser
 
