@@ -3,6 +3,7 @@ Save Format v3.0(19990112)
 @end;
 @begin Targets
  0 "pfw.pbt";
+ 1 "pfwx.pbt";
 @end;
-DefaultTarget "pfw.pbt";
-DefaultRemoteTarget "pfw.pbt";
+DefaultTarget "pfwx.pbt";
+DefaultRemoteTarget "pfwx.pbt";
