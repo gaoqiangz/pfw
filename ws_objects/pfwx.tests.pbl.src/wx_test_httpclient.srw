@@ -329,6 +329,7 @@ call super::destroy
 end on
 
 event oncomplete;call super::oncomplete;wf_Show(response)
+
 end event
 
 event onreceive;call super::onreceive;st_progress.text = Sprintf("total: {}, received: {}, speed: {}/s",wf_Bytes2String(total),wf_Bytes2String(received),wf_Bytes2String(speed))
