@@ -69,10 +69,12 @@ mle_1.text += "[Elapsed]"
 mle_1.text += "~r~n~r~n"
 mle_1.text += String(resp.GetElapsed()) + "ms"
 mle_1.text += "~r~n~r~n"
-mle_1.text += "[ErrorInfo]"
-mle_1.text += "~r~n~r~n"
-mle_1.text += resp.GetErrorInfo()
-mle_1.text += "~r~n~r~n"
+if Not resp.IsValid() then
+	mle_1.text += "[ErrorInfo]"
+	mle_1.text += "~r~n~r~n"
+	mle_1.text += resp.GetErrorInfo()
+	mle_1.text += "~r~n~r~n"
+end if
 mle_1.text += "[Status]"
 mle_1.text += "~r~n~r~n"
 mle_1.text += String(resp.GetHttpStatus())
@@ -303,7 +305,7 @@ integer y = 1024
 integer width = 3383
 integer height = 1392
 integer taborder = 10
-integer textsize = -12
+integer textsize = -10
 integer weight = 400
 fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
