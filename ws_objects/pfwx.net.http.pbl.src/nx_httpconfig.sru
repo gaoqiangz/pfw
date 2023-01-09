@@ -8,6 +8,7 @@ global type nx_httpconfig from nonvisualobject native "pfwx.dll"
 public function nx_httpconfig SetAgent(readonly string val)
 public function nx_httpconfig SetDefaultHeader(readonly string key, readonly string val)
 public function nx_httpconfig SetCookieStore(readonly boolean enabled)
+public function nx_httpconfig SetCookieStore(readonly nx_httpcookie provider)
 public function nx_httpconfig SetProxy(readonly string url)
 public function nx_httpconfig SetProxy(readonly string url, readonly string user, readonly string psw)
 public function nx_httpconfig AddRootCertificate(readonly string pem)
