@@ -227,12 +227,13 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Tahoma"
-string text = "Progress"
+string text = "Download"
 end type
 
 event clicked;nx_httprequest req
 
 req = httpclient.Request("GET","https://dldir1.qq.com/qqfile/qq/PCQQ9.7.1/QQ9.7.1.28934.exe")
+req.SetReceiveFile("D:\QQ9.7.1.28934.exe")
 req.AsyncSend(234,true)
 
 end event
@@ -270,8 +271,12 @@ string text = "GET"
 end type
 
 event clicked;nx_httprequest req
+nx_httpconfig cfg
+
+//cfg = Create nx_httpconfig
 
 req = httpclient.Request("GET","https://www.taobao.com")
+req.SetReceiveFile("d:\resp.html")
 req.AsyncSend(123)
 
 end event
