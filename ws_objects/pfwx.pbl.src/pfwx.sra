@@ -41,6 +41,7 @@ destroy(error)
 destroy(message)
 end on
 
-event open;Open(wx_test_httpclient)
+event open;//Open(wx_test_httpclient)
+Open(wx_test_mqttclient)
 end event
 
