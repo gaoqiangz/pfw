@@ -359,7 +359,7 @@ choose case TransObject.of_GetDBType()
 				else
 					sOrderBy = "(SELECT 0)" //原始结果集排序
 				end if
-				sqlParser.ModifyOrder(Enums.SQL_MS_REPLACE,sOrderBy + " OFFSET " + String(_nPageSize * (_nPageIndex - 1)) + " ROWS FETCH NEXT " + String(_nPageSize) + " ROWS ONLY") //去掉ORDER BY语句
+				sqlParser.ModifyOrder(Enums.SQL_MS_REPLACE,sOrderBy + " OFFSET " + String(_nPageSize * (_nPageIndex - 1)) + " ROWS FETCH NEXT " + String(_nPageSize) + " ROWS ONLY")
 				sql = sqlParser.GetSQL()
 			else
 				if sqlParser.HasOrder() then
@@ -370,6 +370,7 @@ choose case TransObject.of_GetDBType()
 				end if
 				sqlParser.ModifyColumn(Enums.SQL_MS_REPLACE, "TOP " + String(_nPageSize * _nPageIndex) + " " + sqlParser.GetColumn() + ",ROW_NUMBER() OVER (ORDER BY " + sOrderBy + ") AS pfwPagedSQL_RN")
 				sql = "SELECT TOP " + String(_nPageSize) + " * FROM (" + sqlParser.GetSQL() + ") pfwPagedSQL_Tbl WHERE pfwPagedSQL_RN BETWEEN " + String(_nPageSize * (_nPageIndex - 1) + 1) + " AND " + String(_nPageSize * _nPageIndex)
+				sql += " ORDER BY pfwPagedSQL_RN"
 			end if
 		end if
 	case TransObject.DBT_ORACLE
