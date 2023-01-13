@@ -271,12 +271,8 @@ string text = "GET"
 end type
 
 event clicked;nx_httprequest req
-nx_httpconfig cfg
-
-//cfg = Create nx_httpconfig
 
 req = httpclient.Request("GET","https://www.taobao.com")
-req.SetReceiveFile("d:\resp.html")
 req.AsyncSend(123)
 
 end event
