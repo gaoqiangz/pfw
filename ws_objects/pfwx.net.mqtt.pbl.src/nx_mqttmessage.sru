@@ -6,8 +6,6 @@ end forward
 
 global type nx_mqttmessage from nonvisualobject native "pfwx.dll"
 public function boolean IsValid()
-public function boolean IsText()
-public function boolean IsBinary()
 public function boolean IsRetained()
 public function string GetTopic()
 public function long GetQoS()
