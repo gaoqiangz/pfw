@@ -2,11 +2,11 @@
 forward
 global type wx_test_mqttclient from window
 end type
-type sle_2 from singlelineedit within wx_test_mqttclient
+type sle_topic_filter from singlelineedit within wx_test_mqttclient
 end type
 type st_7 from statictext within wx_test_mqttclient
 end type
-type ddlb_1 from dropdownlistbox within wx_test_mqttclient
+type ddlb_sub_qos from dropdownlistbox within wx_test_mqttclient
 end type
 type cb_4 from commandbutton within wx_test_mqttclient
 end type
@@ -62,9 +62,9 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
-sle_2 sle_2
+sle_topic_filter sle_topic_filter
 st_7 st_7
-ddlb_1 ddlb_1
+ddlb_sub_qos ddlb_sub_qos
 cb_4 cb_4
 cb_3 cb_3
 ddlb_qos ddlb_qos
@@ -89,9 +89,9 @@ end type
 global wx_test_mqttclient wx_test_mqttclient
 
 on wx_test_mqttclient.create
-this.sle_2=create sle_2
+this.sle_topic_filter=create sle_topic_filter
 this.st_7=create st_7
-this.ddlb_1=create ddlb_1
+this.ddlb_sub_qos=create ddlb_sub_qos
 this.cb_4=create cb_4
 this.cb_3=create cb_3
 this.ddlb_qos=create ddlb_qos
@@ -112,9 +112,9 @@ this.mle_1=create mle_1
 this.st_4=create st_4
 this.st_9=create st_9
 this.mqttclient=create mqttclient
-this.Control[]={this.sle_2,&
+this.Control[]={this.sle_topic_filter,&
 this.st_7,&
-this.ddlb_1,&
+this.ddlb_sub_qos,&
 this.cb_4,&
 this.cb_3,&
 this.ddlb_qos,&
@@ -137,9 +137,9 @@ this.st_9}
 end on
 
 on wx_test_mqttclient.destroy
-destroy(this.sle_2)
+destroy(this.sle_topic_filter)
 destroy(this.st_7)
-destroy(this.ddlb_1)
+destroy(this.ddlb_sub_qos)
 destroy(this.cb_4)
 destroy(this.cb_3)
 destroy(this.ddlb_qos)
@@ -162,7 +162,18 @@ destroy(this.st_9)
 destroy(this.mqttclient)
 end on
 
-type sle_2 from singlelineedit within wx_test_mqttclient
+event open;/*
+sle_url.text = ""
+sle_user.text = ""
+sle_psw.text = ""
+*/
+sle_topic.text = "test/topic"
+sle_msg.text = "我爱PB!"
+sle_topic_filter.text = "test/+"
+
+end event
+
+type sle_topic_filter from singlelineedit within wx_test_mqttclient
 integer x = 215
 integer y = 344
 integer width = 585
@@ -195,7 +206,7 @@ string text = "质量:"
 boolean focusrectangle = false
 end type
 
-type ddlb_1 from dropdownlistbox within wx_test_mqttclient
+type ddlb_sub_qos from dropdownlistbox within wx_test_mqttclient
 integer x = 1097
 integer y = 344
 integer width = 352
@@ -232,7 +243,7 @@ string facename = "Tahoma"
 string text = "Subscribe"
 end type
 
-event clicked;mqttclient.Subscribe(sle_topic.text,Long(ddlb_qos.text))
+event clicked;mqttclient.Subscribe(sle_topic_filter.text,Long(ddlb_sub_qos.text))
 end event
 
 type cb_3 from commandbutton within wx_test_mqttclient
@@ -251,6 +262,7 @@ string text = "Publish"
 end type
 
 event clicked;mqttclient.Publish(sle_topic.text,sle_msg.text,Long(ddlb_qos.text),cbx_retain.checked)
+
 end event
 
 type ddlb_qos from dropdownlistbox within wx_test_mqttclient
@@ -495,11 +507,14 @@ cfg = Create nx_mqttconfig
 cfg.SetAutoReconnect(true)
 cfg.SetOfflineQueue(true)
 cfg.SetCredential(sle_user.text,sle_psw.text)
+cfg.SetTimeout(3)
 
 mqttclient.Open(sle_url.text,cfg)
 
-mqttclient.Subscribe("test/+")
-mqttclient.Publish("test/topic","我爱PB!",1)
+
+//mqttclient.Publish("test/topic",1,false)
+//mqttclient.Subscribe("test/+")
+//mqttclient.Publish("test/topic","我爱PB!",1)
 end event
 
 type mle_1 from multilineedit within wx_test_mqttclient
