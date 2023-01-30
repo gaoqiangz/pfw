@@ -7,9 +7,6 @@ end forward
 global type nx_mqttclient from nonvisualobject native "pfwx.dll"
 public function boolean IsOpen()
 public function boolean IsClosed()
-public function boolean IsPending()
-public function boolean IsReconnecting()
-public function long GetState()
 public function long Open(readonly string urls)
 public function long Open(readonly string urls,readonly nx_mqttconfig cfg)
 public function long Close()

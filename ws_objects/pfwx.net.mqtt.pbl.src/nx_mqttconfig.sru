@@ -14,6 +14,18 @@ public function nx_mqttconfig SetPersistence(readonly string filepath)
 public function nx_mqttconfig SetOfflineQueue(readonly boolean enabled)
 public function nx_mqttconfig SetAutoReconnect(readonly boolean enabled)
 public function nx_httpconfig SetTimeout(readonly double secs)
+public function nx_mqttconfig WillMessage(readonly string topic)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly long qos)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly long qos,readonly boolean retain)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly string data)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly string data,readonly long qos)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly string data,readonly long qos,readonly boolean retain)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly blob data)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly blob data,readonly long qos)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly blob data,readonly long qos,readonly boolean retain)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly nonvisualobject json_or_xml)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly nonvisualobject json_or_xml,readonly long qos)
+public function nx_mqttconfig WillMessage(readonly string topic,readonly nonvisualobject json_or_xml,readonly long qos,readonly boolean retain)
 end type
 global nx_mqttconfig nx_mqttconfig
 
@@ -26,3 +38,4 @@ on nx_mqttconfig.destroy
 TriggerEvent( this, "destructor" )
 call super::destroy
 end on
+

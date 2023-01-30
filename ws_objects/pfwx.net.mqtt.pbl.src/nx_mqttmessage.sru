@@ -11,6 +11,11 @@ public function string GetTopic()
 public function long GetQoS()
 public function blob GetData()
 public function string GetDataString()
+public function string GetDataString(readonly long encoding)
+public function nonvisualobject GetDataJSON()
+public function nonvisualobject GetDataJSON(readonly long encoding)
+public function nonvisualobject GetDataXML()
+public function nonvisualobject GetDataXML(readonly long encoding)
 end type
 global nx_mqttmessage nx_mqttmessage
 
