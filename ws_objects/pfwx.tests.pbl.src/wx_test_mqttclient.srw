@@ -2,6 +2,8 @@
 forward
 global type wx_test_mqttclient from window
 end type
+type cb_5 from commandbutton within wx_test_mqttclient
+end type
 type sle_topic_filter from singlelineedit within wx_test_mqttclient
 end type
 type st_7 from statictext within wx_test_mqttclient
@@ -62,6 +64,7 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
+cb_5 cb_5
 sle_topic_filter sle_topic_filter
 st_7 st_7
 ddlb_sub_qos ddlb_sub_qos
@@ -89,6 +92,7 @@ end type
 global wx_test_mqttclient wx_test_mqttclient
 
 on wx_test_mqttclient.create
+this.cb_5=create cb_5
 this.sle_topic_filter=create sle_topic_filter
 this.st_7=create st_7
 this.ddlb_sub_qos=create ddlb_sub_qos
@@ -112,7 +116,8 @@ this.mle_1=create mle_1
 this.st_4=create st_4
 this.st_9=create st_9
 this.mqttclient=create mqttclient
-this.Control[]={this.sle_topic_filter,&
+this.Control[]={this.cb_5,&
+this.sle_topic_filter,&
 this.st_7,&
 this.ddlb_sub_qos,&
 this.cb_4,&
@@ -137,6 +142,7 @@ this.st_9}
 end on
 
 on wx_test_mqttclient.destroy
+destroy(this.cb_5)
 destroy(this.sle_topic_filter)
 destroy(this.st_7)
 destroy(this.ddlb_sub_qos)
@@ -162,15 +168,35 @@ destroy(this.st_9)
 destroy(this.mqttclient)
 end on
 
-event open;/*
-sle_url.text = ""
+event open;//支持协议：tcp/ssl/ws/wss
+//测试broker doc: https://test.mosquitto.org/
+
+sle_url.text = "ssl://test.mosquitto.org:8883"
 sle_user.text = ""
 sle_psw.text = ""
-*/
+
 sle_topic.text = "test/topic"
 sle_msg.text = "我爱PB!"
-sle_topic_filter.text = "test/+"
+sle_topic_filter.text = "test/topic"
 
+end event
+
+type cb_5 from commandbutton within wx_test_mqttclient
+integer x = 2016
+integer y = 336
+integer width = 402
+integer height = 112
+integer taborder = 20
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+string text = "Unsubscribe"
+end type
+
+event clicked;mqttclient.Unsubscribe(sle_topic_filter.text)
 end event
 
 type sle_topic_filter from singlelineedit within wx_test_mqttclient
@@ -261,8 +287,15 @@ string facename = "Tahoma"
 string text = "Publish"
 end type
 
-event clicked;mqttclient.Publish(sle_topic.text,sle_msg.text,Long(ddlb_qos.text),cbx_retain.checked)
+event clicked;nx_mqttmessage msg
 
+msg = Create nx_mqttmessage
+msg.SetTopic(sle_topic.text)
+msg.SetQoS(Long(ddlb_qos.text))
+msg.SetRetained(cbx_retain.checked)
+msg.SetData(sle_msg.text)
+
+mqttclient.Publish(msg)
 end event
 
 type ddlb_qos from dropdownlistbox within wx_test_mqttclient
@@ -504,17 +537,35 @@ end type
 event clicked;nx_mqttconfig cfg
 
 cfg = Create nx_mqttconfig
+
+//使Broker保持订阅状态
+cfg.SetClientId("pfwx-mqtt-c")
+cfg.SetCleanSession(false)
+
+//自动重连（仅首次连接成功后有效）
 cfg.SetAutoReconnect(true)
+
+//开启【离线队列后】支持离线状态下发布消息，将在连接建立后自动保持原始顺序发送给服务端
 cfg.SetOfflineQueue(true)
+
+//账号
 cfg.SetCredential(sle_user.text,sle_psw.text)
+
+//连接超时
 cfg.SetTimeout(3)
 
 mqttclient.Open(sle_url.text,cfg)
 
+//开启【离线队列】后可队列以下消息
 
-//mqttclient.Publish("test/topic",1,false)
-//mqttclient.Subscribe("test/+")
-//mqttclient.Publish("test/topic","我爱PB!",1)
+nx_mqttmessage msg
+
+msg = Create nx_mqttmessage
+msg.SetTopic("test/topic")
+msg.SetQoS(1)
+msg.SetData("我爱PB!")
+
+mqttclient.Publish(msg)
 end event
 
 type mle_1 from multilineedit within wx_test_mqttclient
@@ -579,7 +630,7 @@ on mqttclient.destroy
 call super::destroy
 end on
 
-event onopen;call super::onopen;mle_1.text += Sprintf("Open [reconnect: {}]~r~n",reconnect)
+event onopen;call super::onopen;mle_1.text += Sprintf("Open [reconnect: {}, reused: {}]~r~n",reconnect,sessionPresent)
 mle_1.Scroll(mle_1.LineCount() + 1)
 
 end event
