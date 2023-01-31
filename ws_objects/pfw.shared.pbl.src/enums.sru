@@ -1120,6 +1120,7 @@ constant long PY_LIKE_FUZZY_SOUND	= 4	//匹配模糊发音（l=n，f=h，r=l）
 
 /*--- End Pinyin ---*/
 end variables
+
 on enums.create
 call super::create
 TriggerEvent( this, "constructor" )
