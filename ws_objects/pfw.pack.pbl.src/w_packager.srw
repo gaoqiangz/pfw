@@ -192,13 +192,12 @@ private:
 DEPENDDATA _depends[]
 
 constant string ORCASCR_EXE	= "orcascr190.exe"
-constant string PACK_APP_PBD	= "pack.pbd"
+constant string PACK_APP_PBD	= "pfw.pack.pbd"
 constant long MATCH_FALSE			= 0
 constant long MATCH_TRUE			= 1
 constant long MATCH_ALWAYS_FALSE	= -1
 constant long MATCH_ALWAYS_TRUE	= 2
 end variables
-
 forward prototypes
 public function long _wf_split (string src, readonly string delimiter, ref string dstarray[], readonly boolean ignoreempty)
 private function string _wf_getpathfilename (string path, readonly boolean includeext)
