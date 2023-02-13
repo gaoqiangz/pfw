@@ -14,7 +14,7 @@ public function nx_mqttconfig SetPersistence(readonly string filepath)
 public function nx_mqttconfig SetOfflineQueue(readonly boolean enabled)
 public function nx_mqttconfig SetAutoReconnect(readonly boolean enabled)
 public function nx_httpconfig SetTimeout(readonly double secs)
-public function nx_mqttconfig WillMessage(readonly nx_mqttmessage msg)
+public function nx_mqttconfig SetWillMessage(readonly nx_mqttmessage msg)
 end type
 global nx_mqttconfig nx_mqttconfig
 
