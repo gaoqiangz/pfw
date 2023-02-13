@@ -198,6 +198,7 @@ constant long MATCH_TRUE			= 1
 constant long MATCH_ALWAYS_FALSE	= -1
 constant long MATCH_ALWAYS_TRUE	= 2
 end variables
+
 forward prototypes
 public function long _wf_split (string src, readonly string delimiter, ref string dstarray[], readonly boolean ignoreempty)
 private function string _wf_getpathfilename (string path, readonly boolean includeext)
@@ -553,7 +554,7 @@ event clicked;parent.Event OnChecked(this)
 end event
 
 type cbx_x_utility_dwparser from checkbox within w_packager
-string tag = "pfw.utility.parser:.*dwparser"
+string tag = "pfwx.utility.parser:.*dwparser"
 integer x = 2450
 integer y = 616
 integer width = 425
@@ -1557,8 +1558,8 @@ end if
 FileWrite(hFile,'@ECHO OFF')
 FileWrite(hFile,'CD /D "%~~dp0"')
 FileWrite(hFile,ORCASCR_EXE + ' script.bat || pause')
-FileWrite(hFile,'DEL /F /Q script.bat')
-FileWrite(hFile,'DEL /F /Q build.bat')
+//FileWrite(hFile,'DEL /F /Q script.bat')
+//FileWrite(hFile,'DEL /F /Q build.bat')
 
 FileClose(hFile)
 
