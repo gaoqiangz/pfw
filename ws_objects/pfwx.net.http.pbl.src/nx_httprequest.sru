@@ -20,6 +20,7 @@ public function nx_httprequest Query(readonly string key, readonly string val)
 public function nx_httprequest SetReceiveFile(readonly string filepath)
 public function nx_httpresponse Send()
 public function nx_httpresponse Send(readonly ulong hevent)
+public function nx_httpresponse Send(readonly ulong hevent, readonly boolean progress)
 public function long AsyncSend(readonly ulong id)
 public function long AsyncSend(readonly ulong id, readonly boolean progress)
 end type
