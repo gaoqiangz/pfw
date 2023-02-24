@@ -20,7 +20,7 @@ public function nx_httpconfig AcceptInvalidHost(readonly boolean enabled)
 public function nx_httpconfig SetTimeout(readonly double secs)
 public function nx_httpconfig SetConnectTimeout(readonly double secs)
 public function nx_httpconfig SetHttpsOnly(readonly boolean enabled)
-public function nx_httpconfig SetGuaranteeOrder(readonly boolean enabled)
+public function nx_httpconfig SetConcurrency(readonly ulong max_concurrency)
 end type
 global nx_httpconfig nx_httpconfig
 
