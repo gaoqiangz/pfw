@@ -6,6 +6,7 @@ end forward
 
 global type nx_httpclient from nonvisualobject native "pfwx.dll"
 public function long Reconfig(readonly nx_httpconfig cfg)
+public function boolean HasAsyncRequest()
 public function nx_httprequest Request(readonly string method, readonly string url)
 public function long Cancel(readonly ulong id)
 public function long CancelAll()
