@@ -22,6 +22,7 @@ long _nAutoCommit = AC_OFF
 string _sSQL
 
 end variables
+
 forward prototypes
 public function long of_reset ()
 public function long of_setautocommit (readonly long autocommit)
@@ -101,11 +102,13 @@ if IsSucceeded(rtCode) then
 		end if
 	end if
 else
-	Event OnDBError(transObject.SQLDBCode,transObject.SQLErrText,sSQL,Primary!,0)
-	Event OnError(rtCode,transObject.SQLErrText)
 	if _nAutoCommit = AC_NATIVE then
 		transObject.AutoCommit = false
+	else
+		transObject.of_Rollback()
 	end if
+	Event OnDBError(transObject.SQLDBCode,transObject.SQLErrText,sSQL,Primary!,0)
+	Event OnError(rtCode,transObject.SQLErrText)
 end if
 
 return rtCode
