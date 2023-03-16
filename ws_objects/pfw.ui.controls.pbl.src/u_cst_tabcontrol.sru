@@ -351,6 +351,8 @@ private function real _of_gettabstripsize ()
 private subroutine _of_scrollposition (readonly real scrollsize)
 private function boolean _of_openwindowwithparm (ref window objectw, readonly any aparm, readonly string clsname)
 private function boolean _of_openwindowwithparm (ref window objectw, readonly any aparm)
+public function long of_setselectedimage (readonly integer index, readonly string image)
+public function string of_getselectedimage (readonly integer index)
 end prototypes
 
 event type long onncpaint(unsignedlong hdc);int index,nSelectedIndex
@@ -2950,7 +2952,7 @@ private function boolean _of_hasvalidimage (readonly integer index);if index < 1
 if Items[index].UseAnimatedImage then
 	return (Items[index].AnimatedImage.GetFrameCount() > 0)
 else
-	return (Items[index].imageIndex > 0)
+	return (Items[index].imageIndex > 0 or Items[index].selectedImageIndex > 0)
 end if
 end function
 
@@ -3247,13 +3249,14 @@ boolean dirty
 if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Items[index].image = image then return RetCode.OK
 
+dirty = _of_HasValidImage(index)
+
 newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
-if (Items[index].imageIndex > 0) <> (newImgIndex > 0) then
-	dirty = true
-end if
 
 Items[index].image = image
 Items[index].imageIndex = newImgIndex
+
+dirty = dirty <> _of_HasValidImage(index)
 
 if dirty then
 	_of_UpdateTextSize(index)
@@ -3734,10 +3737,6 @@ else
 	newItem.image = image
 end if
 
-if Len(newItem.image) > 0 then
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,newItem.image,0))
-end if
-
 Painter.CreatePath(1,ref newItem.PaintPath)
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -3747,6 +3746,10 @@ Items[index] = newItem
 
 if index <= _selectedIndex then
 	_selectedIndex += 1
+end if
+
+if Len(newItem.image) > 0 then
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,newItem.image,0))
 end if
 
 if Items[index].IsPage then
@@ -4025,7 +4028,7 @@ pt3.y = pt1.y + ARROWSIZE / 2
 Painter.FillTriangle(hdc,pt1,pt2,pt3,arrowColor,arrowColor,Enums.HORZ,false,true,arrowColor)
 end subroutine
 
-private subroutine _of_drawitem (readonly integer index, readonly unsignedlong hdc);long dcState
+private subroutine _of_drawitem (readonly integer index, readonly unsignedlong hdc);long dcState,nImgIdx
 ulong borderColor,bkColor,bkColor2,nState
 
 if Not Items[index].visible or Items[index].Hidden or Items[index].Floated or Items[index].PaintPath = 0 then return
@@ -4155,8 +4158,15 @@ end choose
 /* Draw text and image*/
 if Items[index].UseAnimatedImage then
 	Items[index].AnimatedImage.Draw(hdc, Items[index].rcImage.left ,Items[index].rcImage.top,Not Items[index].enabled )
-elseif Items[index].imageIndex > 0 then
-	_ImageList.Draw(Items[index].imageindex,hdc, Items[index].rcImage.left ,Items[index].rcImage.top,Not Items[index].Enabled)
+else
+	if Items[index].Selected and Items[index].selectedImageIndex > 0 then
+		nImgIdx = Items[index].selectedImageIndex
+	elseif Items[index].imageIndex > 0 then
+		nImgIdx = Items[index].imageIndex
+	end if
+	if nImgIdx <> 0 then
+		_ImageList.Draw(nImgIdx,hdc, Items[index].rcImage.left ,Items[index].rcImage.top,Not Items[index].Enabled)
+	end if
 end if
 
 if Items[index].DisplayText and Items[index].szText.cx>0 then
@@ -4574,10 +4584,6 @@ else
 	newItem.image = image
 end if
 
-if Len(newItem.image) > 0 then
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,newItem.image,0))
-end if
-
 Painter.CreatePath(1,ref newItem.PaintPath)
 
 for i = UpperBound(Items) + 1 to index + 1 step -1
@@ -4587,6 +4593,10 @@ Items[index] = newItem
 
 if index <= _selectedIndex then
 	_selectedIndex += 1
+end if
+
+if Len(newItem.image) > 0 then
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,newItem.image,0))
 end if
 
 if Items[index].IsPageW then
@@ -5666,6 +5676,45 @@ end if
 end function
 
 private function boolean _of_openwindowwithparm (ref window objectw, readonly any aparm);return _of_OpenWindowWithParm(ref objectW,aparm,"")
+end function
+
+public function long of_setselectedimage (readonly integer index, readonly string image);int newImgIndex
+boolean dirty
+
+if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
+if Items[index].selectedImage = image then return RetCode.OK
+
+dirty = _of_HasValidImage(index)
+
+newImgIndex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,Enums.STATE_SELECTED))
+
+Items[index].selectedImage = image
+Items[index].selectedImageIndex = newImgIndex
+
+dirty = dirty <> _of_HasValidImage(index)
+
+if dirty then
+	_of_UpdateTextSize(index)
+end if
+
+if Items[index].Floated then
+	Items[index].FloatWnd.Icon = image
+else
+	if Items[index].Visible then
+		if dirty then
+			of_UpdatePoints()
+		else
+			_of_DrawItem(index,true,false)
+		end if
+	end if
+end if
+
+return RetCode.OK
+end function
+
+public function string of_getselectedimage (readonly integer index);if index < 1 or index > UpperBound(Items) then return ""
+
+return Items[index].selectedImage
 end function
 
 on u_cst_tabcontrol.create

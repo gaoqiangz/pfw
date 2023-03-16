@@ -21,6 +21,8 @@ global type tabcontrolitem from structure
 	long		tiptime
 	string		image
 	integer		imageindex
+	string		selectedimage
+	integer		selectedimageindex
 	string		amimage
 	n_image		animatedimage
 	boolean		useanimatedimage
