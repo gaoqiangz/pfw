@@ -1714,15 +1714,15 @@ newItem.visible = true
 newItem.displaytext = true
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -1765,15 +1765,15 @@ newItem.position = position
 newItem.Chevron.Visible = true
 newItem.PopupMenu = PopupMenu
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -2110,15 +2110,15 @@ newItem.position = position
 newItem.Chevron.Visible = true
 newItem.PopupMenu = PopupMenu
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TOOLBAR))
+end if
 
 _of_UpdateTextSize(index)
 

@@ -1917,11 +1917,6 @@ newItem.DisplayText = true
 newItem.enabled = true
 newItem.visible = true
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
@@ -1929,6 +1924,11 @@ Items[index] = newItem
 
 if index <= _selectedIndex then
 	_selectedIndex += 1
+end if
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
 end if
 
 _of_UpdateTextSize(index)

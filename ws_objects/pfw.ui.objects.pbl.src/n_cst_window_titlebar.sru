@@ -1605,15 +1605,15 @@ newItem.visible = true
 newItem.displaytext = false
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[i].image = image
+	Items[i].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -1709,17 +1709,15 @@ newItem.enabled = true
 newItem.visible = true
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
-end if
-
-if newItem.imageindex = 0 then return RetCode.E_INVALID_IMAGE
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -2547,15 +2545,15 @@ newItem.displaytext = false
 newItem.position = position
 newItem.PopupMenu = PopupMenu
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -3370,15 +3368,15 @@ newItem.position = position
 newItem.PopupMenu = PopupMenu
 newItem.Chevron.Visible = true
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_TITLEBAR))
+end if
 
 _of_UpdateTextSize(index)
 

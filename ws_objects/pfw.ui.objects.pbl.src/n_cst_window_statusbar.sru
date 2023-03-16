@@ -948,15 +948,15 @@ newItem.visible = true
 newItem.displaytext = true
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -1814,15 +1814,15 @@ newItem.displaytext = true
 newItem.position = position
 newItem.PopupMenu = PopupMenu
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -2029,17 +2029,15 @@ newItem.visible = true
 newItem.tipText = tipText
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
-end if
-
-if newItem.imageindex = 0 then return RetCode.E_INVALID_IMAGE
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0,WOT_STATUSBAR))
+end if
 
 _of_UpdateTextSize(index)
 

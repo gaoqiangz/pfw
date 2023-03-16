@@ -2164,18 +2164,6 @@ itemIndex = of_GetIndex(object)
 
 if itemIndex > 0 then return itemIndex
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
-	if newItem.imageIndex > 0 then
-		_ImageList_TitleBar.AddImage(theme.of_GetItemIcon(index,image,0))
-		_ImageList_Icontray.AddImage(theme.of_GetItemIcon(index,image,0))
-	end if
-end if
-if newItem.imageindex = 0 then
-	return RetCode.E_INVALID_IMAGE
-end if
-
 newItem.Text = txt
 newItem.Title = txt
 newItem.tipText = tipText
@@ -2209,6 +2197,15 @@ Items[index] = newItem
 
 if index <= _selectedIndex then
 	_selectedIndex += 1
+end if
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
+	if Items[index].imageIndex > 0 then
+		_ImageList_TitleBar.AddImage(theme.of_GetItemIcon(index,image,0))
+		_ImageList_Icontray.AddImage(theme.of_GetItemIcon(index,image,0))
+	end if
 end if
 
 _of_UpdateTextSize(index)

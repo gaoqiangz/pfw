@@ -532,11 +532,6 @@ newItem.DisplayText = true
 newItem.ItemType = ITT_NORMAL
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
-end if
-
 newItem.AnimatedImage = create n_image
 newItem.AnimatedImage.ShareImage(true)
 newItem.AnimatedImage.SetImageSize(theme.#IconSize.cx,theme.#IconSize.cy)
@@ -545,6 +540,11 @@ for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -2744,15 +2744,15 @@ newItem.Chevron.Visible = true
 newItem.ItemType = ITT_DROPDOWN
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -2791,15 +2791,15 @@ newItem.Chevron.Visible = true
 newItem.ItemType = ITT_SPLIT
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
-end if
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
+end if
 
 _of_UpdateTextSize(index)
 
@@ -2985,17 +2985,15 @@ newItem.visible = true
 newItem.ItemType = ITT_ICON
 newItem.position = position
 
-if len(image) > 0 then
-	newItem.image = image
-	newItem.imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
-end if
-
-if newItem.imageindex = 0 then return RetCode.E_INVALID_IMAGE
-
 for i = UpperBound(Items) + 1 to index + 1 step -1
 	Items[i] = Items[i - 1]
 next
 Items[index] = newItem
+
+if len(image) > 0 then
+	Items[index].image = image
+	Items[index].imageindex = _ImageList.AddImage(theme.of_GetItemIcon(index,image,0))
+end if
 
 of_UpdatePoints()
 
