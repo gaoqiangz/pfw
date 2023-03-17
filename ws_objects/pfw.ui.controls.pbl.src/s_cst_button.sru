@@ -545,7 +545,7 @@ if _of_HasValidImage() then
 			rcCalc.bottom = rcClient.bottom - rcClient.top - (theme.#IconSize.cy + 2)
 		end if
 	else
-		rcCalc.right -= theme.#IconSize.cx + 2
+		rcCalc.right -= theme.#IconSize.cx + theme.#IconSpacing
 		Painter.of_CalcTextSize(theme.Font,text,uDTParam,ref rcCalc)
 		if rcCalc.bottom > rcClient.bottom - rcClient.top then
 			rcCalc.bottom = rcClient.bottom - rcClient.top
@@ -1008,54 +1008,48 @@ if _of_HasValidImage() then
 		choose case theme.#IconPosition
 			case Enums.LEFT
 				//Set _rcImage
-				_rcImage.left		= rcClient.left
+				_rcImage.left		= rcClient.left + (fItemWidth - theme.#IconSize.cx - theme.#IconSpacing - _szText.cx)/2 	//取中间
 				_rcImage.right	= _rcImage.left + theme.#IconSize.cx
 				_rcImage.top		= rcClient.top + (fItemHeight - theme.#IconSize.cy) / 2 //取中间
 				_rcImage.bottom= _rcImage.top + theme.#IconSize.cy
 				//Set _rcText
-				_rcText.left		= _rcImage.right + 2
-				_rcText.right		= rcClient.right
+				_rcText.left		= _rcImage.right + theme.#IconSpacing
+				_rcText.right		= _rcText.left + _szText.cx
 				_rcText.top		= rcClient.top + (fItemHeight - _szText.cy)/2	//取中间
 				_rcText.bottom	= _rcText.top + _szText.cy
 			case Enums.TOP
 				//Set _rcImage
 				_rcImage.left		= rcClient.left + (fItemWidth - theme.#IconSize.cx)/2 	//取中间
 				_rcImage.right	= _rcImage.left + theme.#IconSize.cx
-				_rcImage.top		= rcClient.top
+				_rcImage.top		= rcClient.top + (fItemHeight - theme.#IconSize.cy - theme.#IconSpacing - _szText.cy)/2 	//取中间
 				_rcImage.bottom= _rcImage.top + theme.#IconSize.cy
 				//Set _rcText
 				_rcText.left			= rcClient.left
 				_rcText.right		= rcClient.right
-				_rcText.top		= _rcImage.bottom + 2
-				if (rcClient.bottom - _rcText.top) > _szText.cy then
-					_rcText.top 	+= (rcClient.bottom - _rcText.top  - _szText.cy)/2 //取中间
-				end if
+				_rcText.top		= _rcImage.bottom + theme.#IconSpacing
 				_rcText.bottom	= _rcText.top + _szText.cy
 			case Enums.RIGHT
+				//Set _rcText
+				_rcText.left			= rcClient.left + (fItemWidth - theme.#IconSize.cx - theme.#IconSpacing - _szText.cx)/2 	//取中间
+				_rcText.right		= _rcText.left + _szText.cx
+				_rcText.top		= rcClient.top + (fItemHeight - _szText.cy)/2	//取中间
+				_rcText.bottom	= _rcText.top + _szText.cy
 				//Set _rcImage
-				_rcImage.left		= rcClient.right - theme.#IconSize.cx
+				_rcImage.left		= _rcText.right + theme.#IconSpacing
 				_rcImage.right	= _rcImage.left + theme.#IconSize.cx
 				_rcImage.top		= rcClient.top + (fItemHeight - theme.#IconSize.cy) / 2 //取中间
 				_rcImage.bottom= _rcImage.top + theme.#IconSize.cy
-				//Set _rcText
-				_rcText.left			= rcClient.left
-				_rcText.right		= _rcImage.left - 2
-				_rcText.top		= rcClient.top + (fItemHeight - _szText.cy)/2	//取中间
-				_rcText.bottom	= _rcText.top + _szText.cy
 			case Enums.BOTTOM
-				//Set _rcImage
-				_rcImage.left		= rcClient.left + (fItemWidth - theme.#IconSize.cx)/2 	//取中间
-				_rcImage.right	= _rcImage.left + theme.#IconSize.cx
-				_rcImage.top		= rcClient.bottom - theme.#IconSize.cy
-				_rcImage.bottom= _rcImage.top + theme.#IconSize.cy
 				//Set _rcText
 				_rcText.left			= rcClient.left
 				_rcText.right		= rcClient.right
-				_rcText.top		= rcClient.top
-				if (_rcImage.top - 2 - _rcText.top) > _szText.cy then
-					_rcText.top 	+= (_rcImage.top - 2 - _rcText.top  - _szText.cy)/2 //取中间
-				end if
+				_rcText.top		= rcClient.top + (fItemHeight - theme.#IconSize.cy - theme.#IconSpacing - _szText.cy)/2 	//取中间
 				_rcText.bottom	= _rcText.top + _szText.cy
+				//Set _rcImage
+				_rcImage.left		= rcClient.left + (fItemWidth - theme.#IconSize.cx)/2 	//取中间
+				_rcImage.right	= _rcImage.left + theme.#IconSize.cx
+				_rcImage.top		= _rcText.bottom + theme.#IconSpacing
+				_rcImage.bottom= _rcImage.top + theme.#IconSize.cy
 		end choose
 	else
 		//Set _rcImage
@@ -1404,6 +1398,9 @@ choose case eventFlag
 			dirty = true
 		end if
 	case EVT_MULTILINE
+		_of_UpdateTextSize()
+		dirty = true
+	case EVT_ICONSPACING
 		_of_UpdateTextSize()
 		dirty = true
 	case EVT_ICONSIZE

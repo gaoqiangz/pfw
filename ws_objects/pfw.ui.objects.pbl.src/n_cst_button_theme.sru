@@ -19,14 +19,16 @@ Public:
 Constant Uint EVT_ICONPOSITION		= EVT_CUSTOM + 1
 Constant Uint EVT_TEXTALIGN			= EVT_CUSTOM + 2
 Constant Uint EVT_MULTILINE			= EVT_CUSTOM + 3
-Constant Uint EVT_ICONSIZE			= EVT_CUSTOM + 4
-Constant Uint EVT_FONT					= EVT_CUSTOM + 5
+Constant Uint EVT_ICONSPACING	= EVT_CUSTOM + 4
+Constant Uint EVT_ICONSIZE			= EVT_CUSTOM + 5
+Constant Uint EVT_FONT					= EVT_CUSTOM + 6
 
 /*--- Properties ---*/
 Public:
 ProtectedWrite Uint			#IconPosition 	= Enums.LEFT		//图标位置(Enums.LEFT,Enums.TOP,Enums.RIGHT,Enums.BOTTOM)
 ProtectedWrite Alignment	#TextAlign		= Center!			//文字对齐方式(Left!,Center!,Right!)
 ProtectedWrite Boolean		#MultiLine		= false				//多行文本
+ProtectedWrite	real 			#IconSpacing	= 2 					//dip
 ProtectedWrite SIZE			#IconSize								//图标大小
 end variables
 
@@ -36,6 +38,7 @@ protected function long _of_settheme (readonly n_cst_base_theme newtheme)
 public function long of_settextalign (readonly alignment align)
 public function long of_setmultiline (readonly boolean multiline)
 public function long of_seticonsize (readonly real width, readonly real height)
+public function long of_seticonspacing (readonly real spacing)
 end prototypes
 
 public function long of_seticonposition (readonly unsignedinteger position);if #IconPosition = position then return RetCode.OK
@@ -65,6 +68,7 @@ if IsAncestor(newTheme,"n_cst_button_theme") then
 	#IconPosition 	= ln_newTheme.#IconPosition
 	#TextAlign		= ln_newTheme.#TextAlign
 	#MultiLine		= ln_newTheme.#MultiLine
+	#IconSpacing = ln_newTheme.#IconSpacing
 	#IconSize 		= ln_newTheme.#IconSize
 	Font.of_SetFont(ln_newTheme.Font)
 end if
@@ -102,6 +106,14 @@ if #IconSize.cx = width and #IconSize.cy = height then return RetCode.OK
 #IconSize.cy = height
 
 Event OnThemeChanged(EVT_ICONSIZE)
+
+return RetCode.OK
+end function
+
+public function long of_seticonspacing (readonly real spacing);if #IconSpacing = spacing then return RetCode.OK
+
+#IconSpacing = spacing
+Event OnThemeChanged(EVT_ICONSPACING)
 
 return RetCode.OK
 end function

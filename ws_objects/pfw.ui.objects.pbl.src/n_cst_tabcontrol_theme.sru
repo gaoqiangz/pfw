@@ -51,10 +51,12 @@ Constant Uint EVT_TABSTRIPBORDERSTYLE	= EVT_CUSTOM + 10
 Constant Uint EVT_ITEMBKGNDSTYLE			= EVT_CUSTOM + 11
 Constant Uint EVT_ITEMMINSIZE				= EVT_CUSTOM + 12
 Constant Uint EVT_TABSTRIPSIZE				= EVT_CUSTOM + 13
-Constant Uint EVT_ICONSIZE					= EVT_CUSTOM + 14
-Constant Uint EVT_TABSTRIPOFFSET				= EVT_CUSTOM + 15
-Constant Uint EVT_FONT							= EVT_CUSTOM + 16
-Constant Uint EVT_SELECTEDFONT			= EVT_CUSTOM + 17
+Constant Uint EVT_ICONNEARTEXT				= EVT_CUSTOM + 14
+Constant Uint EVT_ICONSPACING				= EVT_CUSTOM + 15
+Constant Uint EVT_ICONSIZE					= EVT_CUSTOM + 16
+Constant Uint EVT_TABSTRIPOFFSET				= EVT_CUSTOM + 17
+Constant Uint EVT_FONT							= EVT_CUSTOM + 18
+Constant Uint EVT_SELECTEDFONT			= EVT_CUSTOM + 19
 
 /*--- Properties ---*/
 Public:
@@ -69,8 +71,10 @@ ProtectedWrite Uint 			#IconPosition 			= Enums.LEFT			//图标位置(LEFT,TOP,R
 ProtectedWrite	Boolean		#FixedSize				= true					//固定Tab最小大小
 ProtectedWrite Uint			#TabStripBorderStyle = Enums.BS_SOLID	//Tab导航栏边框风格
 ProtectedWrite Uint 			#ItemBkgndStyle 		= Enums.SOLID		//Tab背景风格
-ProtectedWrite	real 			#ItemMinSize	 		= 80 						//px
-ProtectedWrite	real 			#TabStripSize			= 30						//Tab导航栏大小(px)
+ProtectedWrite	real 			#ItemMinSize	 		= 80 						//dip
+ProtectedWrite	real 			#TabStripSize			= 30						//Tab导航栏大小(dip)
+ProtectedWrite Boolean		#IconNearText	 			= true				//图标始终紧贴文本
+ProtectedWrite	real 			#IconSpacing	 		= 2 					//dip
 ProtectedWrite SIZEF			#IconSize											//按钮图标大小
 ProtectedWrite RECTF			#TabStripOffset
 end variables
@@ -98,6 +102,8 @@ public function long of_seticonsize (readonly real width, readonly real height)
 public function long of_settabstripsize (readonly real size)
 public function long of_settabstripoffset (readonly real left, readonly real top, readonly real right, readonly real bottom)
 public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state)
+public function long of_seticonneartext (readonly boolean enabled)
+public function long of_seticonspacing (readonly real spacing)
 end prototypes
 
 event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -298,6 +304,8 @@ if IsAncestor(newTheme,"n_cst_tabcontrol_theme") then
 	#TabStripBorderStyle = ln_newTheme.#TabStripBorderStyle
 	#ItemBkgndStyle 		= ln_newTheme.#ItemBkgndStyle
 	#ItemMinSize 			= ln_newTheme.#ItemMinSize
+	#IconNearText 			= ln_newTheme.#IconNearText
+	#IconSpacing 			= ln_newTheme.#IconSpacing
 	#IconSize 				= ln_newTheme.#IconSize
 	#TabStripOffset		= ln_newTheme.#TabStripOffset
 	Font.of_SetFont(ln_newTheme.Font)
@@ -462,6 +470,22 @@ elseif Left(uri,7) = "font://" then
 else
 	return uri
 end if
+end function
+
+public function long of_seticonneartext (readonly boolean enabled);if #IconNearText = enabled then return RetCode.OK
+
+#IconNearText = enabled
+Event OnThemeChanged(EVT_ICONNEARTEXT)
+
+return RetCode.OK
+end function
+
+public function long of_seticonspacing (readonly real spacing);if #IconSpacing = spacing then return RetCode.OK
+
+#IconSpacing = spacing
+Event OnThemeChanged(EVT_ICONSPACING)
+
+return RetCode.OK
 end function
 
 on n_cst_tabcontrol_theme.create

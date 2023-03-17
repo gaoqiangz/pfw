@@ -1465,7 +1465,7 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcImage.top		= ll_top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
 					//Set rcText
-					Items[index].rcText.left 			= Items[index].rcImage.right + 2
+					Items[index].rcText.left 			= Items[index].rcImage.right + theme.#IconSpacing
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= ll_top + (itemSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
@@ -1483,14 +1483,14 @@ for index = 1 to UpperBound(Items)
 					//Set rcText
 					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
-					Items[index].rcText.top			= Items[index].rcImage.bottom + 2
+					Items[index].rcText.top			= Items[index].rcImage.bottom + theme.#IconSpacing
 					if (adjustedRect.bottom - Items[index].rcText.top) > Items[index].szText.cy then
 						Items[index].rcText.top 		+= (adjustedRect.bottom - Items[index].rcText.top - Items[index].szText.cy) / 2
 					end if
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.RIGHT
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + Items[index].szText.cx + 2
+					Items[index].rcImage.left		= ll_x + 2 + Items[index].szText.cx + theme.#IconSpacing
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= ll_top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
@@ -1514,8 +1514,8 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= ll_top + 2
-					if (Items[index].rcImage.top - 2 - Items[index].rcText.top) > Items[index].szText.cy then
-						Items[index].rcText.top 		+= (Items[index].rcImage.top - 2 - Items[index].rcText.top - Items[index].szText.cy) / 2
+					if (Items[index].rcImage.top - theme.#IconSpacing - Items[index].rcText.top) > Items[index].szText.cy then
+						Items[index].rcText.top 		+= (Items[index].rcImage.top - theme.#IconSpacing - Items[index].rcText.top - Items[index].szText.cy) / 2
 					end if
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 			end choose
@@ -1588,26 +1588,40 @@ for index = 1 to UpperBound(Items)
 			if Not Painter.IsRectEmpty(Items[index].rcImage) then
 				choose case theme.#IconPosition
 					case Enums.LEFT
-						if Painter.IsRectEmpty(Items[index].rcText) then
-							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
-						end if
-					case Enums.TOP
-						Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
-					case Enums.RIGHT
-						if Painter.IsRectEmpty(Items[index].rcText) then
-							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
 						else
-							Painter.OffsetRect(Items[index].rcImage,offsetSize,0 )
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
+							end if
 						end if
-					case Enums.BOTTOM
-						Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
+					case Enums.RIGHT
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
+						else
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
+							else
+								Painter.OffsetRect(Items[index].rcImage,offsetSize,0)
+							end if
+						end if
+					case Enums.TOP,Enums.BOTTOM
+						Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
 				end choose
-			end if
-			if Not Painter.IsRectEmpty(Items[index].rcText) then
-				Items[index].rcText.right += offsetSize
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					if theme.#IconNearText or theme.#IconPosition = Enums.TOP or theme.#IconPosition = Enums.BOTTOM then
+						Painter.OffsetRect(Items[index].rcText,offsetSize / 2,0)
+					else
+						Items[index].rcText.right += offsetSize
+					end if
+				end if
+			else
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					Items[index].rcText.right += offsetSize
+				end if
 			end if
 			if Not Painter.IsRectEmpty(Items[index].CloseButton.rcPaint) then
-				Painter.OffsetRect(Items[index].CloseButton.rcPaint,offsetSize,0 )
+				Painter.OffsetRect(Items[index].CloseButton.rcPaint,offsetSize,0)
 			end if
 			Items[index].rcPaint.right += offsetSize
 		end if
@@ -2066,7 +2080,7 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcImage.top		= adjustedRect.top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
 					//Set rcText
-					Items[index].rcText.left 			= Items[index].rcImage.right + 2
+					Items[index].rcText.left 			= Items[index].rcImage.right + theme.#IconSpacing
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= adjustedRect.top + (itemSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
@@ -2084,14 +2098,14 @@ for index = 1 to UpperBound(Items)
 					//Set rcText
 					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
-					Items[index].rcText.top			= Items[index].rcImage.bottom + 2
+					Items[index].rcText.top			= Items[index].rcImage.bottom + theme.#IconSpacing
 					if (ll_bottom - Items[index].rcText.top) > Items[index].szText.cy then
 						Items[index].rcText.top 		+= (ll_bottom - Items[index].rcText.top - Items[index].szText.cy) / 2
 					end if
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.RIGHT
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + Items[index].szText.cx + 2
+					Items[index].rcImage.left		= ll_x + 2 + Items[index].szText.cx + theme.#IconSpacing
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= adjustedRect.top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
@@ -2115,8 +2129,8 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= adjustedRect.top + 2
-					if (Items[index].rcImage.top - 2 - Items[index].rcText.top) > Items[index].szText.cy then
-						Items[index].rcText.top 		+= (Items[index].rcImage.top - 2 - Items[index].rcText.top - Items[index].szText.cy) / 2
+					if (Items[index].rcImage.top - theme.#IconSpacing - Items[index].rcText.top) > Items[index].szText.cy then
+						Items[index].rcText.top 		+= (Items[index].rcImage.top - theme.#IconSpacing - Items[index].rcText.top - Items[index].szText.cy) / 2
 					end if
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 			end choose
@@ -2188,26 +2202,40 @@ for index = 1 to UpperBound(Items)
 			if Not Painter.IsRectEmpty(Items[index].rcImage) then
 				choose case theme.#IconPosition
 					case Enums.LEFT
-						if Painter.IsRectEmpty(Items[index].rcText) then
-							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
-						end if
-					case Enums.TOP
-						Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
-					case Enums.RIGHT
-						if Painter.IsRectEmpty(Items[index].rcText) then
-							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
 						else
-							Painter.OffsetRect(Items[index].rcImage,offsetSize,0 )
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
+							end if
 						end if
-					case Enums.BOTTOM
-						Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0 )
+					case Enums.RIGHT
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
+						else
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
+							else
+								Painter.OffsetRect(Items[index].rcImage,offsetSize,0)
+							end if
+						end if
+					case Enums.TOP,Enums.BOTTOM
+						Painter.OffsetRect(Items[index].rcImage,offsetSize / 2,0)
 				end choose
-			end if
-			if Not Painter.IsRectEmpty(Items[index].rcText) then
-				Items[index].rcText.right += offsetSize
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					if theme.#IconNearText or theme.#IconPosition = Enums.TOP or theme.#IconPosition = Enums.BOTTOM then
+						Painter.OffsetRect(Items[index].rcText,offsetSize / 2,0)
+					else
+						Items[index].rcText.right += offsetSize
+					end if
+				end if
+			else
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					Items[index].rcText.right += offsetSize
+				end if
 			end if
 			if Not Painter.IsRectEmpty(Items[index].CloseButton.rcPaint) then
-				Painter.OffsetRect(Items[index].CloseButton.rcPaint,offsetSize,0 )
+				Painter.OffsetRect(Items[index].CloseButton.rcPaint,offsetSize,0)
 			end if
 			Items[index].rcPaint.right += offsetSize
 		end if
@@ -2337,7 +2365,7 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcImage.top		= ll_y + 2 + (maxSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
-					Items[index].rcText.left 			= Items[index].rcImage.right + 2
+					Items[index].rcText.left 			= Items[index].rcImage.right + theme.#IconSpacing
 					Items[index].rcText.right 		= adjustedRect.right - 2
 					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
@@ -2350,7 +2378,7 @@ for index = 1 to UpperBound(Items)
 					//Set rcText
 					Items[index].rcText.left 			= ll_left  + 2
 					Items[index].rcText.right 		= adjustedRect.right  - 2
-					Items[index].rcText.top			= Items[index].rcImage.bottom + 2
+					Items[index].rcText.top			= Items[index].rcImage.bottom + theme.#IconSpacing
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.RIGHT
 					if Items[index].szText.cy > theme.#IconSize.cy then
@@ -2365,14 +2393,14 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= ll_left + 2
-					Items[index].rcText.right 		= Items[index].rcImage.left - 2
+					Items[index].rcText.right 		= Items[index].rcImage.left - theme.#IconSpacing
 					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.BOTTOM
 					//Set rcImage
 					Items[index].rcImage.left		= ll_left  + (itemSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + Items[index].szText.cy + 2
+					Items[index].rcImage.top		= ll_y + 2 + Items[index].szText.cy + theme.#IconSpacing
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= ll_left  + 2
@@ -2446,10 +2474,39 @@ for index = 1 to UpperBound(Items)
 		if Items[index].rcPaint.bottom - Items[index].rcPaint.top < theme.#ItemMinSize then
 			offsetSize = theme.#ItemMinSize - (Items[index].rcPaint.bottom - Items[index].rcPaint.top)
 			if Not Painter.IsRectEmpty(Items[index].rcImage) then
-				Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2 )
-			end if
-			if Not Painter.IsRectEmpty(Items[index].rcText) then
-				Painter.OffsetRect(Items[index].rcText,0,offsetSize / 2)
+				choose case theme.#IconPosition
+					case Enums.TOP
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+						else
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+							end if
+						end if
+					case Enums.BOTTOM
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+						else
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+							else
+								Painter.OffsetRect(Items[index].rcImage,0,offsetSize)
+							end if
+						end if
+					case Enums.LEFT,Enums.RIGHT
+						Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+				end choose
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					if theme.#IconNearText or theme.#IconPosition = Enums.LEFT or theme.#IconPosition = Enums.RIGHT then
+						Painter.OffsetRect(Items[index].rcText,0,offsetSize / 2)
+					else
+						Items[index].rcText.bottom += offsetSize
+					end if
+				end if
+			else
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					Items[index].rcText.bottom += offsetSize
+				end if
 			end if
 			if Not Painter.IsRectEmpty(Items[index].CloseButton.rcPaint) then
 				Painter.OffsetRect(Items[index].CloseButton.rcPaint,0,offsetSize )
@@ -2582,7 +2639,7 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcImage.top		= ll_y + 2 + (maxSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
-					Items[index].rcText.left 			= Items[index].rcImage.right + 2
+					Items[index].rcText.left 			= Items[index].rcImage.right + theme.#IconSpacing
 					Items[index].rcText.right 		= ll_right - 2
 					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
@@ -2595,7 +2652,7 @@ for index = 1 to UpperBound(Items)
 					//Set rcText
 					Items[index].rcText.left 			= adjustedRect.left  + 2
 					Items[index].rcText.right 		= ll_right  - 2
-					Items[index].rcText.top			= Items[index].rcImage.bottom + 2
+					Items[index].rcText.top			= Items[index].rcImage.bottom + theme.#IconSpacing
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.RIGHT
 					if Items[index].szText.cy > theme.#IconSize.cy then
@@ -2610,14 +2667,14 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= adjustedRect.left + 2
-					Items[index].rcText.right 		= Items[index].rcImage.left - 2
+					Items[index].rcText.right 		= Items[index].rcImage.left - theme.#IconSpacing
 					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.BOTTOM
 					//Set rcImage
 					Items[index].rcImage.left		= adjustedRect.left  + (itemSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + Items[index].szText.cy + 2
+					Items[index].rcImage.top		= ll_y + 2 + Items[index].szText.cy + theme.#IconSpacing
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= adjustedRect.left  + 2
@@ -2691,13 +2748,42 @@ for index = 1 to UpperBound(Items)
 		if Items[index].rcPaint.bottom - Items[index].rcPaint.top < theme.#ItemMinSize then
 			offsetSize = theme.#ItemMinSize - (Items[index].rcPaint.bottom - Items[index].rcPaint.top)
 			if Not Painter.IsRectEmpty(Items[index].rcImage) then
-				Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2 )
-			end if
-			if Not Painter.IsRectEmpty(Items[index].rcText) then
-				Painter.OffsetRect(Items[index].rcText,0,offsetSize / 2)
+				choose case theme.#IconPosition
+					case Enums.TOP
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+						else
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+							end if
+						end if
+					case Enums.BOTTOM
+						if theme.#IconNearText then
+							Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+						else
+							if Painter.IsRectEmpty(Items[index].rcText) then
+								Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+							else
+								Painter.OffsetRect(Items[index].rcImage,0,offsetSize)
+							end if
+						end if
+					case Enums.LEFT,Enums.RIGHT
+						Painter.OffsetRect(Items[index].rcImage,0,offsetSize / 2)
+				end choose
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					if theme.#IconNearText or theme.#IconPosition = Enums.LEFT or theme.#IconPosition = Enums.RIGHT then
+						Painter.OffsetRect(Items[index].rcText,0,offsetSize / 2)
+					else
+						Items[index].rcText.bottom += offsetSize
+					end if
+				end if
+			else
+				if Not Painter.IsRectEmpty(Items[index].rcText) then
+					Items[index].rcText.bottom += offsetSize
+				end if
 			end if
 			if Not Painter.IsRectEmpty(Items[index].CloseButton.rcPaint) then
-				Painter.OffsetRect(Items[index].CloseButton.rcPaint,0,offsetSize )
+				Painter.OffsetRect(Items[index].CloseButton.rcPaint,0,offsetSize)
 			end if
 			Items[index].rcPaint.bottom += offsetSize
 		end if
@@ -2811,7 +2897,7 @@ if theme.#TabPosition = TabsOnLeft! or theme.#TabPosition = TabsOnRight! then
 	if theme.#TextOrientation = Enums.HORZ then
 		calcRect.right = theme.#TabStripSize - borderMargin - 4
 		if _of_HasValidImage(index) and (theme.#IconPosition = Enums.LEFT or theme.#IconPosition = Enums.RIGHT) then
-			calcRect.right -= theme.#IconSize.cx + 2
+			calcRect.right -= theme.#IconSize.cx + theme.#IconSpacing
 		end if
 		Painter.of_CalcTextSize(ln_calcFont,Items[index].Text,dtparam,ref calcRect)
 	else
@@ -2820,8 +2906,8 @@ if theme.#TabPosition = TabsOnLeft! or theme.#TabPosition = TabsOnRight! then
 	Items[index].szText.cx = calcRect.right
 	Items[index].szText.cy = calcRect.bottom
 	if _of_HasValidImage(index) and (theme.#IconPosition = Enums.LEFT or theme.#IconPosition = Enums.RIGHT) then
-		if Items[index].szText.cx > theme.#TabStripSize - borderMargin - 4 - 2 - theme.#IconSize.cx then
-			Items[index].szText.cx = theme.#TabStripSize  - borderMargin - 4 - 2 - theme.#IconSize.cx
+		if Items[index].szText.cx > theme.#TabStripSize - borderMargin - 4 - theme.#IconSpacing - theme.#IconSize.cx then
+			Items[index].szText.cx = theme.#TabStripSize  - borderMargin - 4 - theme.#IconSpacing - theme.#IconSize.cx
 		end if
 	else
 		if Items[index].szText.cx > theme.#TabStripSize - borderMargin - 4 then
@@ -2838,8 +2924,8 @@ else
 	Items[index].szText.cx = calcRect.right
 	Items[index].szText.cy = calcRect.bottom
 	if _of_HasValidImage(index) and (theme.#IconPosition = Enums.TOP or theme.#IconPosition = Enums.BOTTOM) then
-		if Items[index].szText.cy > theme.#TabStripSize - borderMargin - theme.#IconSize.cy - 2 - 4 then
-			Items[index].szText.cy = theme.#TabStripSize - borderMargin - theme.#IconSize.cy - 2 - 4
+		if Items[index].szText.cy > theme.#TabStripSize - borderMargin - theme.#IconSize.cy - theme.#IconSpacing - 4 then
+			Items[index].szText.cy = theme.#TabStripSize - borderMargin - theme.#IconSize.cy - theme.#IconSpacing - 4
 		end if
 	else
 		if Items[index].szText.cy > theme.#TabStripSize - borderMargin - 4 then
@@ -5905,6 +5991,11 @@ choose case eventFlag
 	case EVT_TEXTALIGN
 		dirty = true
 	case EVT_ICONPOSITION
+		_of_UpdateTextSize()
+		dirty = true
+	case EVT_ICONNEARTEXT
+		dirty = true
+	case EVT_ICONSPACING
 		_of_UpdateTextSize()
 		dirty = true
 	case EVT_ICONSIZE
