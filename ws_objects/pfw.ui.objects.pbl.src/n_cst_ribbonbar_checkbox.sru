@@ -503,12 +503,12 @@ if __RefCount = 1 then
 	__Idx_CB_Normal 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX,0))
 	__Idx_CB_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX,Enums.STATE_HOVER))
 	__Idx_CB_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX,Enums.STATE_PRESSED))
-	__Idx_CBSC_Normal	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,0))
-	__Idx_CBSC_Hover 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,Enums.STATE_HOVER))
-	__Idx_CBSC_Down 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,Enums.STATE_PRESSED))
-	__Idx_CBC_Normal 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,0))
-	__Idx_CBC_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,Enums.STATE_HOVER))
-	__Idx_CBC_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,Enums.STATE_PRESSED))
+	__Idx_CBSC_Normal	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,Enums.STATE_CHECKED))
+	__Idx_CBSC_Hover 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,Enums.STATE_CHECKED + Enums.STATE_HOVER))
+	__Idx_CBSC_Down 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_ON,Enums.STATE_CHECKED + Enums.STATE_PRESSED))
+	__Idx_CBC_Normal 	= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,Enums.STATE_CHECKED))
+	__Idx_CBC_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,Enums.STATE_CHECKED + Enums.STATE_HOVER))
+	__Idx_CBC_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_CHECKBOX_DONE,Enums.STATE_CHECKED + Enums.STATE_PRESSED))
 end if
 end event
 

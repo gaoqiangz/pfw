@@ -419,9 +419,9 @@ if __RefCount = 1 then
 	__Idx_RB_Normal 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX,0))
 	__Idx_RB_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX,Enums.STATE_HOVER))
 	__Idx_RB_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX,Enums.STATE_PRESSED))
-	__Idx_RBC_Normal 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,0))
-	__Idx_RBC_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,Enums.STATE_HOVER))
-	__Idx_RBC_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,Enums.STATE_PRESSED))
+	__Idx_RBC_Normal 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,Enums.STATE_CHECKED))
+	__Idx_RBC_Hover 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,Enums.STATE_CHECKED + Enums.STATE_HOVER))
+	__Idx_RBC_Down 		= __ImageList.AddImage(theme.of_GetItemIcon(this,ICO_RADIOBOX_ON,Enums.STATE_CHECKED + Enums.STATE_PRESSED))
 end if
 end event
 
