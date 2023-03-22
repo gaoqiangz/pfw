@@ -402,6 +402,7 @@ Win32.CopyScrollBarCreateInfo(ref sbCreateInfo,lpsbci,Win32.SIZEOF_SCROLLBARCREA
 sbCreateInfo.fBarSize = theme.#ScrollBarSize
 sbCreateInfo.fArrowSize = theme.#ScrollBarArrowSize
 sbCreateInfo.rcBorderMargin = theme.#ScrollBarBorderMargin
+sbCreateInfo.showArrow = theme.#ScrollBarArrow
 
 Win32.CopyScrollBarCreateInfo(lpsbci,ref sbCreateInfo,Win32.SIZEOF_SCROLLBARCREATEINFO)
 
@@ -1124,7 +1125,7 @@ choose case eventFlag
 		if IconData.Index > 0 then
 			dirty = true
 		end if
-	case EVT_SCROLLBARSIZE,EVT_SCROLLBARARROWSIZE
+	case EVT_SCROLLBARSIZE,EVT_SCROLLBARARROW,EVT_SCROLLBARARROWSIZE
 		if HScrollBar or VScrollBar then
 			Send(_hWndList,WinMsg.WM_PUI_UPDATESCROLLBARSIZE,Win32.SB_BOTH,0)
 		end if

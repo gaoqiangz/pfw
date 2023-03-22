@@ -30,10 +30,11 @@ Constant Uint EVT_SYSICONSIZE						= EVT_CUSTOM + 6
 Constant Uint EVT_ICONSIZE							= EVT_CUSTOM + 7
 Constant Uint EVT_SCROLLBARBORDERSTYLE		= EVT_CUSTOM + 8
 Constant Uint EVT_SCROLLBARSIZE					= EVT_CUSTOM + 9
-Constant Uint EVT_SCROLLBARARROWSIZE			= EVT_CUSTOM + 10
-Constant Uint EVT_SCROLLBARROUNDSIZE			= EVT_CUSTOM + 11
-Constant Uint EVT_SCROLLBARBORDERMARGIN	= EVT_CUSTOM + 12
-Constant Uint EVT_FONT									= EVT_CUSTOM + 13
+Constant Uint EVT_SCROLLBARARROW				= EVT_CUSTOM + 10
+Constant Uint EVT_SCROLLBARARROWSIZE			= EVT_CUSTOM + 11
+Constant Uint EVT_SCROLLBARROUNDSIZE			= EVT_CUSTOM + 12
+Constant Uint EVT_SCROLLBARBORDERMARGIN	= EVT_CUSTOM + 13
+Constant Uint EVT_FONT									= EVT_CUSTOM + 14
 
 /*--- Properties ---*/
 Public:
@@ -46,11 +47,11 @@ ProtectedWrite SIZEF			#SysIconSize											//系统按钮图标大小
 ProtectedWrite SIZEF			#IconSize												//窗口图标大小
 ProtectedWrite Uint			#ScrollBarBorderStyle	= Enums.BS_SOLID	//滚动条边框风格
 ProtectedWrite Real			#ScrollBarSize	 			= 14						//滚动条大小(px)
+ProtectedWrite Boolean		#ScrollBarArrow										//显示滚动条箭头
 ProtectedWrite Real			#ScrollBarArrowSize		= 12						//滚动条箭头大小(px)
 ProtectedWrite RADIUSF		#ScrollBarRoundSize									//滚动条圆角大小(px,#ScrollBarBorderStyle=Enums.BS_ROUND时有效)
 ProtectedWrite RECTF			#ScrollBarBorderMargin								//滚动条边框间距(px)
 end variables
-
 forward prototypes
 protected function long _of_settheme (readonly n_cst_base_theme newtheme)
 public function long of_setscrollbarborderstyle (readonly unsignedinteger style)
@@ -70,6 +71,7 @@ public function long of_setsysroundsize (readonly real lefttop, readonly real ri
 public function long of_settitlebarheight (real height)
 public function long of_setscrollbarbordermargin (readonly real left, readonly real top, readonly real right, readonly real bottom)
 public function string of_getsystembuttonicon (readonly integer index, readonly string uri, readonly unsignedlong state)
+public function long of_setscrollbararrow (readonly boolean show)
 end prototypes
 
 event _ongetsystembuttoncolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -103,6 +105,7 @@ if IsAncestor(newTheme,"n_cst_datawindow_theme") then
 	#SysIconSize 				= ln_newTheme.#SysIconSize
 	#IconSize 					= ln_newTheme.#IconSize
 	#ScrollBarSize 				= ln_newTheme.#ScrollBarSize
+	#ScrollBarArrow	 		= ln_newTheme.#ScrollBarArrow
 	#ScrollBarArrowSize 		= ln_newTheme.#ScrollBarArrowSize
 	#ScrollBarBorderStyle 	= ln_newTheme.#ScrollBarBorderStyle
 	#ScrollBarRoundSize 		= ln_newTheme.#ScrollBarRoundSize
@@ -340,6 +343,14 @@ elseif Left(uri,7) = "font://" then
 else
 	return uri
 end if
+end function
+
+public function long of_setscrollbararrow (readonly boolean show);if #ScrollBarArrow = show then return RetCode.OK
+
+#ScrollBarArrow = show
+Event OnThemeChanged(EVT_SCROLLBARARROW)
+
+return RetCode.OK
 end function
 
 on n_cst_datawindow_theme.create

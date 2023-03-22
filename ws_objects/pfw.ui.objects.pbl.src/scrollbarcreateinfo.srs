@@ -4,5 +4,6 @@ global type scrollbarcreateinfo from structure
 	real		fbarsize
 	real		farrowsize
 	RECTF		rcbordermargin
+	boolean	showarrow
 end type
 

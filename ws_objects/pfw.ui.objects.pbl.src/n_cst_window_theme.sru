@@ -53,10 +53,11 @@ Constant Uint EVT_TOOLBARHEIGHT					= EVT_CUSTOM + 20
 Constant Uint EVT_ICONSIZE							= EVT_CUSTOM + 21
 Constant Uint EVT_SCROLLBARBORDERSTYLE		= EVT_CUSTOM + 22
 Constant Uint EVT_SCROLLBARSIZE					= EVT_CUSTOM + 23
-Constant Uint EVT_SCROLLBARARROWSIZE			= EVT_CUSTOM + 24
-Constant Uint EVT_SCROLLBARROUNDSIZE			= EVT_CUSTOM + 25
-Constant Uint EVT_SCROLLBARBORDERMARGIN	= EVT_CUSTOM + 26
-Constant Uint EVT_FONT									= EVT_CUSTOM + 27
+Constant Uint EVT_SCROLLBARARROW				= EVT_CUSTOM + 24
+Constant Uint EVT_SCROLLBARARROWSIZE			= EVT_CUSTOM + 25
+Constant Uint EVT_SCROLLBARROUNDSIZE			= EVT_CUSTOM + 26
+Constant Uint EVT_SCROLLBARBORDERMARGIN	= EVT_CUSTOM + 27
+Constant Uint EVT_FONT									= EVT_CUSTOM + 28
 
 /*--- Properties ---*/
 Public:
@@ -83,6 +84,7 @@ ProtectedWrite	real			#ToolBarHeight					= 24						//工具栏高度(px)
 ProtectedWrite	SIZEF			#IconSize													//窗口图标大小
 ProtectedWrite Uint			#ScrollBarBorderStyle		= Enums.BS_SOLID	//滚动条边框风格
 ProtectedWrite real			#ScrollBarSize	 				= 14						//滚动条大小(px)
+ProtectedWrite Boolean		#ScrollBarArrow										//显示滚动条箭头
 ProtectedWrite real			#ScrollBarArrowSize			= 12						//滚动条箭头大小(px)
 ProtectedWrite RADIUSF		#ScrollBarRoundSize										//滚动条圆角大小(px,#ScrollBarBorderStyle=Enums.BS_ROUND时有效)
 ProtectedWrite RECTF			#ScrollBarBorderMargin									//滚动条边框间距(px)
@@ -129,6 +131,7 @@ public function long of_setstatusbarheight (readonly real height)
 public function long of_settitlebarheight (readonly real height)
 public function long of_settoolbarheight (readonly real height)
 public function string of_getitemicon (readonly integer index, readonly string uri, readonly unsignedlong state, readonly unsignedinteger objecttype)
+public function long of_setscrollbararrow (readonly boolean show)
 end prototypes
 
 event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, unsignedinteger objecttype, ref unsignedlong color);
@@ -289,6 +292,7 @@ if IsAncestor(newTheme,"n_cst_window_theme") then
 	#ToolBarHeight 				= ln_newTheme.#ToolBarHeight
 	#IconSize 						= ln_newTheme.#IconSize
 	#ScrollBarSize 					= ln_newTheme.#ScrollBarSize
+	#ScrollBarArrow	 			= ln_newTheme.#ScrollBarArrow
 	#ScrollBarArrowSize 			= ln_newTheme.#ScrollBarArrowSize
 	#ScrollBarBorderStyle 		= ln_newTheme.#ScrollBarBorderStyle
 	#ScrollBarRoundSize 			= ln_newTheme.#ScrollBarRoundSize
@@ -747,6 +751,14 @@ elseif Left(uri,7) = "font://" then
 else
 	return uri
 end if
+end function
+
+public function long of_setscrollbararrow (readonly boolean show);if #ScrollBarArrow = show then return RetCode.OK
+
+#ScrollBarArrow = show
+Event OnThemeChanged(EVT_SCROLLBARARROW)
+
+return RetCode.OK
 end function
 
 on n_cst_window_theme.create

@@ -126,6 +126,8 @@ event type long oncreatescrollbar(unsignedlong lpsbci, boolean bvert);SCROLLBARC
 
 Win32.CopyScrollBarCreateInfo(ref sbCreateInfo,lpsbci,Win32.SIZEOF_SCROLLBARCREATEINFO)
 
+sbCreateInfo.fArrowSize = theme.#ArrowSize
+sbCreateInfo.showArrow = theme.#Arrow
 sbCreateInfo.rcBorderMargin = theme.#BorderMargin
 
 Win32.CopyScrollBarCreateInfo(lpsbci,ref sbCreateInfo,Win32.SIZEOF_SCROLLBARCREATEINFO)
@@ -248,6 +250,8 @@ event onthemechanged;call super::onthemechanged;boolean dirty
 if _Canvas.GetHandle() = 0 then return
 
 //of_Redraw(true)
+
+Send(#Handle,WinMsg.WM_PUI_UPDATESCROLLBARSIZE,Win32.SB_BOTH,0)
 
 Parent.Event OnThemeChanged(eventFlag)
 end event

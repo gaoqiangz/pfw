@@ -15,19 +15,20 @@ Public:
 //Event flags
 Constant Uint EVT_SCROLLBARBORDERSTYLE		= EVT_CUSTOM + 1
 Constant Uint EVT_SCROLLBARSIZE					= EVT_CUSTOM + 2
-Constant Uint EVT_SCROLLBARARROWSIZE			= EVT_CUSTOM + 3
-Constant Uint EVT_SCROLLBARROUNDSIZE			= EVT_CUSTOM + 4
-Constant Uint EVT_SCROLLBARBORDERMARGIN	= EVT_CUSTOM + 5
+Constant Uint EVT_SCROLLBARARROW				= EVT_CUSTOM + 3
+Constant Uint EVT_SCROLLBARARROWSIZE			= EVT_CUSTOM + 4
+Constant Uint EVT_SCROLLBARROUNDSIZE			= EVT_CUSTOM + 5
+Constant Uint EVT_SCROLLBARBORDERMARGIN	= EVT_CUSTOM + 6
 
 /*--- Properties ---*/
 Public:
 ProtectedWrite Uint		#ScrollBarBorderStyle	= Enums.BS_SOLID	//滚动条边框风格
 ProtectedWrite real		#ScrollBarSize	 			= 14						//滚动条大小(px)
+ProtectedWrite Boolean	#ScrollBarArrow										//显示滚动条箭头
 ProtectedWrite real		#ScrollBarArrowSize		= 12						//滚动条箭头大小(px)
 ProtectedWrite RADIUSF	#ScrollBarRoundSize									//滚动条圆角大小(px,#ScrollBarBorderStyle=Enums.BS_ROUND时有效)
 ProtectedWrite RECTF		#ScrollBarBorderMargin								//滚动条边框间距(px)
 end variables
-
 forward prototypes
 protected function long _of_settheme (readonly n_cst_base_theme newtheme)
 public function long of_setscrollbarborderstyle (readonly unsignedinteger style)
@@ -36,6 +37,7 @@ public function long of_setscrollbararrowsize (readonly real size)
 public function long of_setscrollbarbordermargin (readonly real left, readonly real top, readonly real right, readonly real bottom)
 public function long of_setscrollbarroundsize (readonly real lefttop, readonly real righttop, readonly real leftbottom, readonly real rightbottom)
 public function long of_setscrollbarsize (readonly real size)
+public function long of_setscrollbararrow (readonly boolean show)
 end prototypes
 
 protected function long _of_settheme (readonly n_cst_base_theme newtheme);long rtCode
@@ -48,6 +50,7 @@ if IsAncestor(newTheme,"n_cst_treeview_theme") then
 	n_cst_treeview_theme ln_newTheme
 	ln_newTheme 	= newTheme
 	#ScrollBarSize 				= ln_newTheme.#ScrollBarSize
+	#ScrollBarArrow	 		= ln_newTheme.#ScrollBarArrow
 	#ScrollBarArrowSize 		= ln_newTheme.#ScrollBarArrowSize
 	#ScrollBarBorderStyle 	= ln_newTheme.#ScrollBarBorderStyle
 	#ScrollBarRoundSize 		= ln_newTheme.#ScrollBarRoundSize
@@ -129,6 +132,14 @@ if Size < 4 then return RetCode.E_INVALID_ARGUMENT
 
 #ScrollBarSize = Size
 Event OnThemeChanged(EVT_SCROLLBARSIZE)
+
+return RetCode.OK
+end function
+
+public function long of_setscrollbararrow (readonly boolean show);if #ScrollBarArrow = show then return RetCode.OK
+
+#ScrollBarArrow = show
+Event OnThemeChanged(EVT_SCROLLBARARROW)
 
 return RetCode.OK
 end function
