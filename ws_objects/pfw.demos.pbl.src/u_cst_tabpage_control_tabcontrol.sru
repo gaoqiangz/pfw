@@ -3,6 +3,10 @@ $PBExportComments$PowerFramework~r~n(c)飞沃共享(深圳)科技有限公司
 forward
 global type u_cst_tabpage_control_tabcontrol from ue_cst_tabpage
 end type
+type cb_13 from se_cst_button within u_cst_tabpage_control_tabcontrol
+end type
+type em_iconspacing from se_cst_editmask within u_cst_tabpage_control_tabcontrol
+end type
 type rb_22 from se_cst_radiobox within u_cst_tabpage_control_tabcontrol
 end type
 type rb_21 from se_cst_radiobox within u_cst_tabpage_control_tabcontrol
@@ -230,6 +234,8 @@ integer width = 4489
 integer height = 5648
 boolean vscrollbar = true
 event onlbuttondown pbm_lbuttondown
+cb_13 cb_13
+em_iconspacing em_iconspacing
 rb_22 rb_22
 rb_21 rb_21
 cbx_29 cbx_29
@@ -353,6 +359,8 @@ end event
 on u_cst_tabpage_control_tabcontrol.create
 int iCurrent
 call super::create
+this.cb_13=create cb_13
+this.em_iconspacing=create em_iconspacing
 this.rb_22=create rb_22
 this.rb_21=create rb_21
 this.cbx_29=create cbx_29
@@ -464,120 +472,124 @@ this.rb_27=create rb_27
 this.rb_29=create rb_29
 this.gb_9=create gb_9
 iCurrent=UpperBound(this.Control)
-this.Control[iCurrent+1]=this.rb_22
-this.Control[iCurrent+2]=this.rb_21
-this.Control[iCurrent+3]=this.cbx_29
-this.Control[iCurrent+4]=this.cbx_28
-this.Control[iCurrent+5]=this.gb_10
-this.Control[iCurrent+6]=this.rb_23
-this.Control[iCurrent+7]=this.cbx_27
-this.Control[iCurrent+8]=this.cbx_7
-this.Control[iCurrent+9]=this.cbx_20
-this.Control[iCurrent+10]=this.cb_12
-this.Control[iCurrent+11]=this.sle_animatedimage
-this.Control[iCurrent+12]=this.cbx_12
-this.Control[iCurrent+13]=this.cb_11
-this.Control[iCurrent+14]=this.em_tabstripsize
-this.Control[iCurrent+15]=this.cbx_1
-this.Control[iCurrent+16]=this.cb_8
-this.Control[iCurrent+17]=this.cb_remove
-this.Control[iCurrent+18]=this.cb_2
-this.Control[iCurrent+19]=this.cb_7
-this.Control[iCurrent+20]=this.cb_6
-this.Control[iCurrent+21]=this.st_10
-this.Control[iCurrent+22]=this.st_9
-this.Control[iCurrent+23]=this.st_8
-this.Control[iCurrent+24]=this.st_1
-this.Control[iCurrent+25]=this.gb_3
-this.Control[iCurrent+26]=this.gb_4
-this.Control[iCurrent+27]=this.ddlb_size
-this.Control[iCurrent+28]=this.cbx_26
-this.Control[iCurrent+29]=this.cbx_25
-this.Control[iCurrent+30]=this.cb_10
-this.Control[iCurrent+31]=this.cb_9
-this.Control[iCurrent+32]=this.em_itemminsize
-this.Control[iCurrent+33]=this.cbx_24
-this.Control[iCurrent+34]=this.cbx_23
-this.Control[iCurrent+35]=this.rb_20
-this.Control[iCurrent+36]=this.ddlb_color
-this.Control[iCurrent+37]=this.cb_5
-this.Control[iCurrent+38]=this.st_2
-this.Control[iCurrent+39]=this.em_leftmargin
-this.Control[iCurrent+40]=this.rb_19
-this.Control[iCurrent+41]=this.rb_11
-this.Control[iCurrent+42]=this.rb_10
-this.Control[iCurrent+43]=this.rb_6
-this.Control[iCurrent+44]=this.rb_5
-this.Control[iCurrent+45]=this.rb_8
-this.Control[iCurrent+46]=this.rb_4
-this.Control[iCurrent+47]=this.rb_3
-this.Control[iCurrent+48]=this.rb_2
-this.Control[iCurrent+49]=this.rb_1
-this.Control[iCurrent+50]=this.rb_18
-this.Control[iCurrent+51]=this.cbx_22
-this.Control[iCurrent+52]=this.em_index
-this.Control[iCurrent+53]=this.cbx_21
-this.Control[iCurrent+54]=this.cbx_19
-this.Control[iCurrent+55]=this.cbx_18
-this.Control[iCurrent+56]=this.cbx_14
-this.Control[iCurrent+57]=this.cbx_13
-this.Control[iCurrent+58]=this.cbx_6
-this.Control[iCurrent+59]=this.cbx_5
-this.Control[iCurrent+60]=this.sle_fontname
-this.Control[iCurrent+61]=this.cb_4
-this.Control[iCurrent+62]=this.cb_3
-this.Control[iCurrent+63]=this.em_fontsize
-this.Control[iCurrent+64]=this.em_topmargin
-this.Control[iCurrent+65]=this.st_3
-this.Control[iCurrent+66]=this.em_rightmargin
-this.Control[iCurrent+67]=this.st_4
-this.Control[iCurrent+68]=this.st_5
-this.Control[iCurrent+69]=this.em_bottommargin
-this.Control[iCurrent+70]=this.st_6
-this.Control[iCurrent+71]=this.st_7
-this.Control[iCurrent+72]=this.cbx_4
-this.Control[iCurrent+73]=this.cbx_9
-this.Control[iCurrent+74]=this.cbx_10
-this.Control[iCurrent+75]=this.cbx_3
-this.Control[iCurrent+76]=this.sle_itemicon
-this.Control[iCurrent+77]=this.mle_itemtext
-this.Control[iCurrent+78]=this.mle_tiptext
-this.Control[iCurrent+79]=this.uo_1
-this.Control[iCurrent+80]=this.cb_1
-this.Control[iCurrent+81]=this.cbx_11
-this.Control[iCurrent+82]=this.cbx_15
-this.Control[iCurrent+83]=this.cbx_16
-this.Control[iCurrent+84]=this.ddlb_1
-this.Control[iCurrent+85]=this.cbx_8
-this.Control[iCurrent+86]=this.cbx_17
-this.Control[iCurrent+87]=this.gb_8
-this.Control[iCurrent+88]=this.gb_2
-this.Control[iCurrent+89]=this.gb_5
-this.Control[iCurrent+90]=this.gb_6
-this.Control[iCurrent+91]=this.gb_7
-this.Control[iCurrent+92]=this.gb_12
-this.Control[iCurrent+93]=this.gb_13
-this.Control[iCurrent+94]=this.rb_14
-this.Control[iCurrent+95]=this.rb_15
-this.Control[iCurrent+96]=this.rb_16
-this.Control[iCurrent+97]=this.rb_17
-this.Control[iCurrent+98]=this.rb_7
-this.Control[iCurrent+99]=this.rb_9
-this.Control[iCurrent+100]=this.rb_12
-this.Control[iCurrent+101]=this.rb_13
-this.Control[iCurrent+102]=this.gb_1
-this.Control[iCurrent+103]=this.mle_newitemtiptext
-this.Control[iCurrent+104]=this.sle_newitemicon
-this.Control[iCurrent+105]=this.mle_newitemlabel
-this.Control[iCurrent+106]=this.rb_28
-this.Control[iCurrent+107]=this.rb_26
-this.Control[iCurrent+108]=this.rb_27
-this.Control[iCurrent+109]=this.rb_29
-this.Control[iCurrent+110]=this.gb_9
+this.Control[iCurrent+1]=this.cb_13
+this.Control[iCurrent+2]=this.em_iconspacing
+this.Control[iCurrent+3]=this.rb_22
+this.Control[iCurrent+4]=this.rb_21
+this.Control[iCurrent+5]=this.cbx_29
+this.Control[iCurrent+6]=this.cbx_28
+this.Control[iCurrent+7]=this.gb_10
+this.Control[iCurrent+8]=this.rb_23
+this.Control[iCurrent+9]=this.cbx_27
+this.Control[iCurrent+10]=this.cbx_7
+this.Control[iCurrent+11]=this.cbx_20
+this.Control[iCurrent+12]=this.cb_12
+this.Control[iCurrent+13]=this.sle_animatedimage
+this.Control[iCurrent+14]=this.cbx_12
+this.Control[iCurrent+15]=this.cb_11
+this.Control[iCurrent+16]=this.em_tabstripsize
+this.Control[iCurrent+17]=this.cbx_1
+this.Control[iCurrent+18]=this.cb_8
+this.Control[iCurrent+19]=this.cb_remove
+this.Control[iCurrent+20]=this.cb_2
+this.Control[iCurrent+21]=this.cb_7
+this.Control[iCurrent+22]=this.cb_6
+this.Control[iCurrent+23]=this.st_10
+this.Control[iCurrent+24]=this.st_9
+this.Control[iCurrent+25]=this.st_8
+this.Control[iCurrent+26]=this.st_1
+this.Control[iCurrent+27]=this.gb_3
+this.Control[iCurrent+28]=this.gb_4
+this.Control[iCurrent+29]=this.ddlb_size
+this.Control[iCurrent+30]=this.cbx_26
+this.Control[iCurrent+31]=this.cbx_25
+this.Control[iCurrent+32]=this.cb_10
+this.Control[iCurrent+33]=this.cb_9
+this.Control[iCurrent+34]=this.em_itemminsize
+this.Control[iCurrent+35]=this.cbx_24
+this.Control[iCurrent+36]=this.cbx_23
+this.Control[iCurrent+37]=this.rb_20
+this.Control[iCurrent+38]=this.ddlb_color
+this.Control[iCurrent+39]=this.cb_5
+this.Control[iCurrent+40]=this.st_2
+this.Control[iCurrent+41]=this.em_leftmargin
+this.Control[iCurrent+42]=this.rb_19
+this.Control[iCurrent+43]=this.rb_11
+this.Control[iCurrent+44]=this.rb_10
+this.Control[iCurrent+45]=this.rb_6
+this.Control[iCurrent+46]=this.rb_5
+this.Control[iCurrent+47]=this.rb_8
+this.Control[iCurrent+48]=this.rb_4
+this.Control[iCurrent+49]=this.rb_3
+this.Control[iCurrent+50]=this.rb_2
+this.Control[iCurrent+51]=this.rb_1
+this.Control[iCurrent+52]=this.rb_18
+this.Control[iCurrent+53]=this.cbx_22
+this.Control[iCurrent+54]=this.em_index
+this.Control[iCurrent+55]=this.cbx_21
+this.Control[iCurrent+56]=this.cbx_19
+this.Control[iCurrent+57]=this.cbx_18
+this.Control[iCurrent+58]=this.cbx_14
+this.Control[iCurrent+59]=this.cbx_13
+this.Control[iCurrent+60]=this.cbx_6
+this.Control[iCurrent+61]=this.cbx_5
+this.Control[iCurrent+62]=this.sle_fontname
+this.Control[iCurrent+63]=this.cb_4
+this.Control[iCurrent+64]=this.cb_3
+this.Control[iCurrent+65]=this.em_fontsize
+this.Control[iCurrent+66]=this.em_topmargin
+this.Control[iCurrent+67]=this.st_3
+this.Control[iCurrent+68]=this.em_rightmargin
+this.Control[iCurrent+69]=this.st_4
+this.Control[iCurrent+70]=this.st_5
+this.Control[iCurrent+71]=this.em_bottommargin
+this.Control[iCurrent+72]=this.st_6
+this.Control[iCurrent+73]=this.st_7
+this.Control[iCurrent+74]=this.cbx_4
+this.Control[iCurrent+75]=this.cbx_9
+this.Control[iCurrent+76]=this.cbx_10
+this.Control[iCurrent+77]=this.cbx_3
+this.Control[iCurrent+78]=this.sle_itemicon
+this.Control[iCurrent+79]=this.mle_itemtext
+this.Control[iCurrent+80]=this.mle_tiptext
+this.Control[iCurrent+81]=this.uo_1
+this.Control[iCurrent+82]=this.cb_1
+this.Control[iCurrent+83]=this.cbx_11
+this.Control[iCurrent+84]=this.cbx_15
+this.Control[iCurrent+85]=this.cbx_16
+this.Control[iCurrent+86]=this.ddlb_1
+this.Control[iCurrent+87]=this.cbx_8
+this.Control[iCurrent+88]=this.cbx_17
+this.Control[iCurrent+89]=this.gb_8
+this.Control[iCurrent+90]=this.gb_2
+this.Control[iCurrent+91]=this.gb_5
+this.Control[iCurrent+92]=this.gb_6
+this.Control[iCurrent+93]=this.gb_7
+this.Control[iCurrent+94]=this.gb_12
+this.Control[iCurrent+95]=this.gb_13
+this.Control[iCurrent+96]=this.rb_14
+this.Control[iCurrent+97]=this.rb_15
+this.Control[iCurrent+98]=this.rb_16
+this.Control[iCurrent+99]=this.rb_17
+this.Control[iCurrent+100]=this.rb_7
+this.Control[iCurrent+101]=this.rb_9
+this.Control[iCurrent+102]=this.rb_12
+this.Control[iCurrent+103]=this.rb_13
+this.Control[iCurrent+104]=this.gb_1
+this.Control[iCurrent+105]=this.mle_newitemtiptext
+this.Control[iCurrent+106]=this.sle_newitemicon
+this.Control[iCurrent+107]=this.mle_newitemlabel
+this.Control[iCurrent+108]=this.rb_28
+this.Control[iCurrent+109]=this.rb_26
+this.Control[iCurrent+110]=this.rb_27
+this.Control[iCurrent+111]=this.rb_29
+this.Control[iCurrent+112]=this.gb_9
 end on
 
 on u_cst_tabpage_control_tabcontrol.destroy
 call super::destroy
+destroy(this.cb_13)
+destroy(this.em_iconspacing)
 destroy(this.rb_22)
 destroy(this.rb_21)
 destroy(this.cbx_29)
@@ -713,6 +725,29 @@ end event
 
 event resize;call super::resize;uo_1.resize(newwidth - uo_1.x * 2,uo_1.height)
 end event
+
+type cb_13 from se_cst_button within u_cst_tabpage_control_tabcontrol
+integer x = 1586
+integer y = 3932
+integer width = 649
+integer height = 120
+integer taborder = 180
+string text = "设置图标文本间距"
+end type
+
+event clicked;uo_1.theme.of_SetIconSpacing(integer(em_iconspacing.text))
+end event
+
+type em_iconspacing from se_cst_editmask within u_cst_tabpage_control_tabcontrol
+integer x = 1307
+integer y = 3948
+integer width = 251
+integer height = 92
+integer taborder = 180
+integer textsize = -8
+string text = "2"
+string mask = "###"
+end type
 
 type rb_22 from se_cst_radiobox within u_cst_tabpage_control_tabcontrol
 integer x = 137
@@ -899,7 +934,7 @@ integer height = 92
 integer taborder = 170
 integer textsize = -8
 string text = "40"
-string mask = "##"
+string mask = "###"
 end type
 
 type cbx_1 from se_cst_checkbox within u_cst_tabpage_control_tabcontrol
@@ -1167,7 +1202,7 @@ integer height = 92
 integer taborder = 170
 integer textsize = -8
 string text = "40"
-string mask = "##"
+string mask = "###"
 end type
 
 type cbx_24 from se_cst_checkbox within u_cst_tabpage_control_tabcontrol
@@ -1457,13 +1492,13 @@ end type
 type cbx_21 from se_cst_checkbox within u_cst_tabpage_control_tabcontrol
 integer x = 123
 integer y = 2568
-integer width = 631
+integer width = 681
 integer height = 80
 integer textsize = -10
-string text = "文字置于图标下方"
+string text = "图标始终靠近文本"
 end type
 
-event clicked;uo_1.theme.of_SetIconPosition(Enums.TOP)
+event clicked;uo_1.theme.of_SetIconNearText(checked)
 end event
 
 type cbx_19 from se_cst_checkbox within u_cst_tabpage_control_tabcontrol
@@ -2015,7 +2050,7 @@ type gb_7 from groupbox within u_cst_tabpage_control_tabcontrol
 integer x = 2565
 integer y = 2640
 integer width = 1737
-integer height = 1308
+integer height = 1496
 integer taborder = 120
 integer textsize = -10
 integer weight = 400
@@ -2032,7 +2067,7 @@ type gb_12 from groupbox within u_cst_tabpage_control_tabcontrol
 integer x = 69
 integer y = 1932
 integer width = 2418
-integer height = 2016
+integer height = 2216
 integer taborder = 130
 integer textsize = -10
 integer weight = 400
