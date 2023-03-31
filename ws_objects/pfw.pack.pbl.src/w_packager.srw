@@ -1515,7 +1515,7 @@ end type
 event clicked;long hFile,nIndex,nCount,nExpIdx,nExpCnt,nPos,nCmpResult
 string sPackFilePath,sPBLFiles[],sIncludeExps[],sFileName
 string sEntryFullStr,sEntryLine,sEntryName,sEntryType
-boolean bIncludePFWBase
+boolean bIncludePFWBase,bIncludePFWXBase
 checkbox cbx
 
 sPackFilePath = sle_path.Text
@@ -1532,6 +1532,8 @@ for nIndex = 1 to nCount
 	sIncludeExps[nExpCnt] = Lower(cbx.Tag)
 	if Lower(Left(cbx.Tag,4)) = "pfw." and Lower(Left(cbx.Tag,10)) <> "pfw.common" then
 		bIncludePFWBase = true
+	elseif Lower(Left(cbx.Tag,5)) = "pfwx." then
+		bIncludePFWXBase = true
 	end if
 next
 if nExpCnt = 0 then return
@@ -1539,6 +1541,11 @@ if nExpCnt = 0 then return
 if bIncludePFWBase then
 	nExpCnt += 1
 	sIncludeExps[nExpCnt] = "pfw.base:.*"
+end if
+
+if bIncludePFWXBase then
+	nExpCnt += 1
+	sIncludeExps[nExpCnt] = "pfwx.base:.*"
 end if
 
 FileDelete(sPackFilePath)
