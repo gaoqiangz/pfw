@@ -1,0 +1,8 @@
+﻿$PBExportHeader$pfwxfinalize.srf
+global type pfwxfinalize from function_object native "pfwx.dll"
+end type
+
+forward prototypes
+global function long pfwxFinalize ()
+end prototypes
+

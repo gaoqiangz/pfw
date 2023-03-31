@@ -24,6 +24,10 @@ string appicon = ""
 end type
 global pfwx pfwx
 
+type prototypes
+
+end prototypes
+
 on pfwx.create
 appname="pfwx"
 message=create message
@@ -41,7 +45,10 @@ destroy(error)
 destroy(message)
 end on
 
-event open;//Open(wx_test_httpclient)
-Open(wx_test_mqttclient)
+event open;Open(wx_test_httpclient)
+//Open(wx_test_mqttclient)
+end event
+
+event close;pfwxFinalize()
 end event
 
