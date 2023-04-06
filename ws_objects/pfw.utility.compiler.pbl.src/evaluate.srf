@@ -6,6 +6,16 @@ end type
 forward prototypes
 global function any Evaluate(readonly string scripting)
 global function any Evaluate(readonly string scripting,any param)
-global function any Evaluate(readonly string scripting,readonly string arglist,any param,...)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4,any arg5)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10)
+public function any Evaluate(readonly string scripting,readonly string arglist,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10,any arg11)
 end prototypes
 

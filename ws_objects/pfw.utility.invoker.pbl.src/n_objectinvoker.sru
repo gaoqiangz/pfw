@@ -35,7 +35,7 @@ public function any InvokeMethod(readonly string name,readonly string sign,any a
 public function any InvokeMethod(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8)
 public function any InvokeMethod(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9)
 public function any InvokeMethod(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10)
-public function any InvokeMethod(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10,any arg11,...)
+public function any InvokeMethod(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10,any arg11)
 public function any InvokeEvent(readonly string name,readonly string sign)
 public function any InvokeEvent(readonly string name,readonly string sign,any arg1)
 public function any InvokeEvent(readonly string name,readonly string sign,any arg1,any arg2)
@@ -47,7 +47,7 @@ public function any InvokeEvent(readonly string name,readonly string sign,any ar
 public function any InvokeEvent(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8)
 public function any InvokeEvent(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9)
 public function any InvokeEvent(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10)
-public function any InvokeEvent(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10,any arg11,...)
+public function any InvokeEvent(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10,any arg11)
 end type
 global n_objectinvoker n_objectinvoker
 
