@@ -86,6 +86,8 @@ public function boolean _of_hasreceiver ()
 public function long of_setpageduniqueindexcolumns (string columns[])
 public function long of_sethookclass (readonly string hookcls)
 public function long of_setcache (readonly boolean cache)
+public function long of_setfilter (readonly string filter)
+public function long of_setsort (readonly string sort)
 end prototypes
 
 event type long onchilddatareceived(string name, ref blob blbdata);long rtCode
@@ -283,9 +285,7 @@ end function
 
 public function long of_reset ();long rtCode
 
-if of_IsBusy() then return RetCode.E_BUSY
-
-rtCode = _of_GetTask().of_Reset()
+rtCode = super::of_Reset()
 if IsFailed(rtCode) then return rtCode
 
 #PageIndex = 0
@@ -299,7 +299,7 @@ Data.Reset()
 Data.DataObject = ""
 SetNull(_receiver)
 
-return super::of_Reset()
+return RetCode.OK
 end function
 
 public function long of_setsqlsyntax (readonly string sqlsyntax);if of_IsBusy() then return RetCode.E_BUSY
@@ -473,6 +473,16 @@ end function
 public function long of_setcache (readonly boolean cache);if of_IsBusy() then return RetCode.E_BUSY
 
 return _of_GetTask().of_SetCache(cache)
+end function
+
+public function long of_setfilter (readonly string filter);if of_IsBusy() then return RetCode.E_BUSY
+
+return _of_GetTask().of_SetFilter(filter)
+end function
+
+public function long of_setsort (readonly string sort);if of_IsBusy() then return RetCode.E_BUSY
+
+return _of_GetTask().of_SetSort(sort)
 end function
 
 on n_cst_threading_task_sqlquery.create

@@ -41,6 +41,7 @@ powerobject _updateObject
 //Identity columns
 IDCOLDATA _idColDatas[]
 end variables
+
 forward prototypes
 private function n_cst_thread_task_sqlupdate _of_gettask ()
 public function long of_reset ()
@@ -82,9 +83,7 @@ end function
 public function long of_reset ();long rtCode
 IDCOLDATA emptyIdColDatas[]
 
-if of_IsBusy() then return RetCode.E_BUSY
-
-rtCode = _of_GetTask().of_Reset()
+rtCode = super::of_Reset()
 if IsFailed(rtCode) then return rtCode
 
 _bMultiTableUpdate = false
@@ -95,7 +94,7 @@ _nRowsDeleted = 0
 _idColDatas = emptyIdColDatas
 SetNull(_updateObject)
 
-return super::of_Reset()
+return RetCode.OK
 end function
 
 public function long of_setdataobject (readonly string dataobject);if of_IsBusy() then return RetCode.E_BUSY

@@ -29,6 +29,8 @@ string _sHookClass
 string _sDataObject
 string _sSQL
 string _sSQLSyntax
+string _sNewSort
+string _sNewFilter
 long _nChunkSize	= 10000	//Chunk row count,min:1000
 boolean _bPaged
 long _nPageSize
@@ -64,6 +66,8 @@ public function long of_setpagenative (readonly boolean use_native)
 public function long of_setpagesize (readonly long pagesize)
 public function long of_setsql (readonly string sql)
 public function long of_setsqlsyntax (readonly string sqlsyntax)
+public function long of_setfilter (readonly string filter)
+public function long of_setsort (readonly string sort)
 end prototypes
 
 event type long ondatareceived(ref n_cst_thread_task_sqlbase_ds data, long rowcount);string sProp,sColName
@@ -243,6 +247,8 @@ _sHookClass = ""
 _sSQL = ""
 _sSQLSyntax = ""
 _sDataObject = ""
+_sNewSort = ""
+_sNewFilter = ""
 _nChunkSize = 10000
 _nPageIndex = 0
 _bPaged = false
@@ -467,6 +473,16 @@ _sDataObject = ""
 return RetCode.OK
 end function
 
+public function long of_setfilter (readonly string filter);_sNewFilter = filter
+
+return RetCode.OK
+end function
+
+public function long of_setsort (readonly string sort);_sNewSort = sort
+
+return RetCode.OK
+end function
+
 on n_cst_thread_task_sqlquery.create
 call super::create
 end on
@@ -528,6 +544,10 @@ try
 	if _sDataObject <> "" then
 		if Not bCacheDS then
 			data.dataObject = _sDataObject
+			if data.Describe("DataWindow.Units") = "" then
+				Event OnError(RetCode.E_INVALID_ARGUMENT,"无效的查询对象")
+				return RetCode.E_INVALID_ARGUMENT
+			end if
 		end if
 	else
 		if _sSQLSyntax <> "" then
@@ -556,7 +576,21 @@ try
 		end if
 		sSQLSyntax = ""
 	end if
-
+	
+	//修改排序和过滤语句
+	if _sNewSort <> "" then
+		if data.SetSort(_sNewSort) <> 1 then
+			Event OnError(RetCode.E_INVALID_ARGUMENT,"SetSort: " + _sNewSort)
+			return RetCode.E_INVALID_ARGUMENT
+		end if
+	end if
+	if _sNewFilter <> "" then
+		if data.SetFilter(_sNewFilter) <> 1 then
+			Event OnError(RetCode.E_INVALID_ARGUMENT,"SetFilter: " + _sNewFilter)
+			return RetCode.E_INVALID_ARGUMENT
+		end if
+	end if
+	
 	//保存当前的SQL用于还原
 	sSQLOriginal = data.GetSQLSelect()
 	

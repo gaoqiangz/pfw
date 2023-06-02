@@ -16,6 +16,7 @@ Protected:
 Transaction _Trans
 DBERRORDATA _lastDBError
 Boolean _bHasTransData
+Boolean _bHasParams
 end variables
 
 forward prototypes
@@ -30,6 +31,7 @@ public function boolean of_hastransdata ()
 public function long of_addparam (readonly any param)
 public function long of_addparam (readonly string name, readonly any value)
 public function long of_resetparams ()
+public function boolean of_hasparams ()
 end prototypes
 
 event ondberror(readonly dberrordata err);_lastDBError = err
@@ -41,10 +43,18 @@ end function
 public function transaction of_gettransobject ();return _Trans
 end function
 
-public function long of_reset ();DBERRORDATA emptyData
+public function long of_reset ();long rtCode
+n_cst_thread_task_sqlbase task
+DBERRORDATA emptyData
 
 if of_IsBusy() then return RetCode.E_BUSY
 
+task = _Task
+
+rtCode = task.of_Reset()
+if IsFailed(rtCode) then return rtCode
+
+_bHasParams = false
 _lastDBError = emptyData
 
 return RetCode.OK
@@ -121,7 +131,8 @@ end function
 public function long of_addparam (readonly any param);return of_AddParam("",param)
 end function
 
-public function long of_addparam (readonly string name, readonly any value);n_cst_thread_task_sqlbase task
+public function long of_addparam (readonly string name, readonly any value);long rtCode
+n_cst_thread_task_sqlbase task
 
 if of_IsBusy() then return RetCode.E_BUSY
 
@@ -132,16 +143,26 @@ if UpperBound(value,1) = 0 then return RetCode.E_INVALID_ARGUMENT
 
 task = _Task
 
-return task.of_AddParam(name,value)
+rtCode = task.of_AddParam(name,value)
+if IsSucceeded(rtCode) then
+	_bHasParams = true
+end if
+
+return rtCode
 end function
 
 public function long of_resetparams ();n_cst_thread_task_sqlbase task
 
 if of_IsBusy() then return RetCode.E_BUSY
 
+_bHasParams = false
+
 task = _Task
 
 return task.of_ResetParams()
+end function
+
+public function boolean of_hasparams ();return _bHasParams
 end function
 
 on n_cst_threading_task_sqlbase.create

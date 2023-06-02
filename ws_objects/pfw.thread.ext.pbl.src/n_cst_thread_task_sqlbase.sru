@@ -7,6 +7,8 @@ type sqlarg from structure within n_cst_thread_task_sqlbase
 end type
 type sqlparam from structure within n_cst_thread_task_sqlbase
 end type
+type cacheds from structure within n_cst_thread_task_sqlbase
+end type
 end forward
 
 type sqlarg from structure
@@ -19,6 +21,13 @@ end type
 type sqlparam from structure
 	string		name
 	any		value
+end type
+
+type cacheds from structure
+	n_cst_thread_task_sqlbase_ds		ds
+	string		origsql
+	string		origsort
+	string		origfilter
 end type
 
 global type n_cst_thread_task_sqlbase from n_cst_thread_task
@@ -42,6 +51,7 @@ n_cst_thread_trans _transObject
 
 ulong _hEvtCommitted
 end variables
+
 forward prototypes
 public function long of_settransdata (readonly transactiondata transdata)
 protected function long of_releasetransobject (ref n_cst_thread_trans transobject)
@@ -563,6 +573,7 @@ end function
 
 public function n_cst_thread_task_sqlbase_ds of_getcacheds (readonly string dataobject);n_map mapCache
 n_cst_thread_task_sqlbase_ds ds
+CACHEDS cacheDS
 
 if #ParentThread.of_HasData("$SQL.DataStoreCache") then
 	mapCache = #ParentThread.of_GetData("$SQL.DataStoreCache")
@@ -573,7 +584,22 @@ if Not IsValidObject(mapCache) then
 end if
 
 if mapCache.Exists(dataObject) then
-	ds = mapCache.Get(dataObject)
+	cacheDS = mapCache.Get(dataObject)
+	ds = cacheDS.ds
+	if cacheDS.origSQL <> ds.GetSQLSelect() then
+		ds.Modify('DataWindow.Table.Select = "' + cacheDS.origSQL +'"')
+	end if
+	if cacheDS.origSort <> "" then
+		if cacheDS.origSort <> ds.Describe("DataWindow.Table.Sort") then
+			ds.SetFilter(cacheDS.origSort)
+		end if
+	end if
+	if cacheDS.origFilter <> "" then
+		if cacheDS.origFilter <> ds.Describe("DataWindow.Table.Filter") then
+			ds.SetFilter(cacheDS.origFilter)
+		end if
+	end if
+	ds.of_ClearState()
 else
 	if #ParentThread.of_IsMainThread() then
 		ds = Create n_cst_thread_task_sqlbase_ds
@@ -581,7 +607,13 @@ else
 		ds = Create n_cst_thread_task_sqlbase_ds_mt
 	end if
 	ds.DataObject = dataObject
-	mapCache.Add(dataObject,ds)
+	cacheDS.ds = ds
+	cacheDS.origSQL = ds.GetSQLSelect()
+	cacheDS.origSort = ds.Describe("DataWindow.Table.Sort")
+	if cacheDS.origSort = "!" or cacheDS.origSort = "?" then cacheDS.origSort = ""
+	cacheDS.origFilter = ds.Describe("DataWindow.Table.Filter")
+	if cacheDS.origFilter = "!" or cacheDS.origFilter = "?" then cacheDS.origFilter = ""
+	mapCache.Add(dataObject,cacheDS)
 end if
 
 ds.Event OnInit(this)

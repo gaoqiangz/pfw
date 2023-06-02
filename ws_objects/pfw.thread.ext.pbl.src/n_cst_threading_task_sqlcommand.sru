@@ -23,10 +23,10 @@ constant long AC_NATIVE	= n_cst_thread_task_sqlcommand.AC_NATIVE
 Private:
 ulong _hEvtCommitted
 end variables
+
 forward prototypes
 private function n_cst_thread_task_sqlcommand _of_gettask ()
 public function long of_setsql (readonly string sql)
-public function long of_reset ()
 public function long of_rollback ()
 public function boolean of_iscommitted ()
 public function long of_setautocommit (readonly long autocommit)
@@ -40,16 +40,6 @@ end function
 public function long of_setsql (readonly string sql);if of_IsBusy() then return RetCode.E_BUSY
 
 return _of_GetTask().of_SetSQL(sql)
-end function
-
-public function long of_reset ();long rtCode
-
-if of_IsBusy() then return RetCode.E_BUSY
-
-rtCode = _of_GetTask().of_Reset()
-if IsFailed(rtCode) then return rtCode
-
-return super::of_Reset()
 end function
 
 public function long of_rollback ();if of_IsBusy() then return RetCode.E_BUSY
