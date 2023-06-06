@@ -98,6 +98,7 @@ public function long of_collect (readonly boolean force)
 public function long of_collect ()
 public function boolean of_hasalive ()
 private function boolean _of_checkfly ()
+public function long of_reserve ()
 end prototypes
 
 event oncollect();if _inTerminating then return
@@ -395,6 +396,30 @@ next
 FlyThreadDatas = newFlyThreadDatas
 
 return UpperBound(FlyThreadDatas) > 0
+end function
+
+public function long of_reserve ();uint nIndex
+n_cst_threading threading
+
+if _inTerminating then return RetCode.E_BUSY
+
+for nIndex = UpperBound(ThreadDatas) + 1 to #MaxPool
+	try
+		threading = Create Using _of_GetThreadingClsName()
+	catch(Throwable ex)
+		return RetCode.E_INVALID_TYPE
+	end try
+	if Not IsValidObject(threading) then return RetCode.E_INVALID_OBJECT
+	
+	threading.Event OnInit(this)
+	
+	ThreadDatas[nIndex].Threading = threading
+	ThreadDatas[nIndex].idleStartTime = 0
+	
+	Event OnThreadCreated(threading)
+next
+
+return RetCode.OK
 end function
 
 on n_cst_threading_pool.create
