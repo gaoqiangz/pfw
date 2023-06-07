@@ -589,15 +589,11 @@ if mapCache.Exists(dataObject) then
 	if cacheDS.origSQL <> ds.GetSQLSelect() then
 		ds.Modify('DataWindow.Table.Select = "' + cacheDS.origSQL +'"')
 	end if
-	if cacheDS.origSort <> "" then
-		if cacheDS.origSort <> ds.Describe("DataWindow.Table.Sort") then
-			ds.SetFilter(cacheDS.origSort)
-		end if
+	if cacheDS.origSort <> ds.Describe("DataWindow.Table.Sort") then
+		ds.SetFilter(cacheDS.origSort)
 	end if
-	if cacheDS.origFilter <> "" then
-		if cacheDS.origFilter <> ds.Describe("DataWindow.Table.Filter") then
-			ds.SetFilter(cacheDS.origFilter)
-		end if
+	if cacheDS.origFilter <> ds.Describe("DataWindow.Table.Filter") then
+		ds.SetFilter(cacheDS.origFilter)
 	end if
 	ds.of_ClearState()
 else

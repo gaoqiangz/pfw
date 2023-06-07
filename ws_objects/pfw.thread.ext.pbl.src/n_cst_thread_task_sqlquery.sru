@@ -474,11 +474,13 @@ return RetCode.OK
 end function
 
 public function long of_setfilter (readonly string filter);_sNewFilter = filter
+if _sNewFilter = "" then _sNewFilter = " "
 
 return RetCode.OK
 end function
 
 public function long of_setsort (readonly string sort);_sNewSort = sort
+if _sNewSort = "" then _sNewSort = " "
 
 return RetCode.OK
 end function
@@ -579,13 +581,13 @@ try
 	
 	//修改排序和过滤语句
 	if _sNewSort <> "" then
-		if data.SetSort(_sNewSort) <> 1 then
+		if data.SetSort(Trim(_sNewSort)) <> 1 then
 			Event OnError(RetCode.E_INVALID_ARGUMENT,"SetSort: " + _sNewSort)
 			return RetCode.E_INVALID_ARGUMENT
 		end if
 	end if
 	if _sNewFilter <> "" then
-		if data.SetFilter(_sNewFilter) <> 1 then
+		if data.SetFilter(Trim(_sNewFilter)) <> 1 then
 			Event OnError(RetCode.E_INVALID_ARGUMENT,"SetFilter: " + _sNewFilter)
 			return RetCode.E_INVALID_ARGUMENT
 		end if
