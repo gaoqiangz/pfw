@@ -1047,8 +1047,13 @@ next
 _datas = emptyDatas
 
 if _handle <> 0 then
-	_Thread.Post Event OnUninit()
-	//_Thread.Post of_Release()
+	if #Running then
+		//NOTICE
+		//可能引起死锁，建议线程完全停止后再销毁
+		_Thread.Post Event OnUninit()
+	else
+		_Thread.Event OnUninit()
+	end if
 else
 	_Thread.Event OnUninit()
 end if
