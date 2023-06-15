@@ -262,6 +262,8 @@ for nIndex = 1 to nCount
 	SetNull(_datas[nIndex].data)
 next
 _datas = emptyDatas
+
+GarbageCollect()
 end event
 
 event onidle();_Eventful.of_Trigger(EVT_IDLE,this)
