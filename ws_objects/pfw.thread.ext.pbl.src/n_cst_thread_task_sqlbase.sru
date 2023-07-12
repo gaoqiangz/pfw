@@ -31,6 +31,12 @@ type cacheds from structure
 end type
 
 global type n_cst_thread_task_sqlbase from n_cst_thread_task
+long #group = 0
+boolean #running = false
+unsignedlong _id = 0
+unsignedlong _hevtcancelled = 0
+long _lasterrcode = 0
+double _fdelayfor = 0
 event type long ondberror ( long sqldbcode,  string sqlerrtext,  string sqlsyntax,  dwbuffer buffer,  long row )
 event oncommitted ( )
 end type
@@ -639,5 +645,11 @@ event onprepare;call super::onprepare;if _hEvtCommitted <> 0 then
 	ResetEvent(_hEvtCommitted)
 end if
 return 0
+end event
+
+event onerror;call super::onerror;//overried
+of_Rollback()
+call super::OnError;
+return AncestorReturnValue
 end event
 
