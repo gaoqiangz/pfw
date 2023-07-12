@@ -5,6 +5,8 @@ global type n_cst_thread from nonvisualobject
 end type
 type nameddata from structure within n_cst_thread
 end type
+type timing_idle from timing within n_cst_thread
+end type
 end forward
 
 type nameddata from structure
@@ -22,6 +24,7 @@ event onuninit ( )
 event onidle ( )
 event type long onpreparetask ( n_cst_thread_task task )
 event onfinalizetask ( n_cst_thread_task task )
+timing_idle timing_idle
 end type
 global n_cst_thread n_cst_thread
 
@@ -93,8 +96,9 @@ Long _nLastGC
 Long _nExecIndex
 Ulong _nExecCount
 Ulong _nTaskNextId
-end variables
 
+constant double IDLE_INTERVAL = 1 //sec
+end variables
 forward prototypes
 public function integer of_inserttask (readonly integer index, ref n_cst_thread_task newtask, readonly string tasktypename)
 public function integer of_addtask (ref n_cst_thread_task newtask, string tasktypename)
@@ -155,12 +159,15 @@ if IsPrevented(#ParentThreading.Event OnStart()) then
 end if
 if Not #Running or of_IsCancelled() then return RetCode.PREVENT
 
+timing_idle.Stop()
+
 return RetCode.ALLOW
 end event
 
 event onstop(long exitcode);_nExecIndex = 0
 #Running = false
 #ParentThreading.Post Event OnStop(exitCode)
+timing_idle.Start(IDLE_INTERVAL)
 end event
 
 event oninit(n_cst_threading parentthreading, unsignedlong parentthreadid, unsignedlong hevtcancelled);Constant Long THREAD_ALL_ACCESS = 2032639
@@ -245,6 +252,8 @@ end event
 event onuninit();int nIndex,nCount
 n_cst_thread_task emptyTasks[]
 NAMEDDATA emptyDatas[]
+
+timing_idle.Stop()
 
 nCount = UpperBound(Tasks)
 for nIndex = 1 to nCount
@@ -720,10 +729,28 @@ end function
 
 on n_cst_thread.create
 call super::create
+this.timing_idle=create timing_idle
 TriggerEvent( this, "constructor" )
 end on
 
 on n_cst_thread.destroy
+TriggerEvent( this, "destructor" )
+call super::destroy
+destroy(this.timing_idle)
+end on
+
+type timing_idle from timing within n_cst_thread descriptor "pb_nvo" = "true" 
+end type
+
+event timer;parent.Event OnIdle()
+end event
+
+on timing_idle.create
+call super::create
+TriggerEvent( this, "constructor" )
+end on
+
+on timing_idle.destroy
 TriggerEvent( this, "destructor" )
 call super::destroy
 end on

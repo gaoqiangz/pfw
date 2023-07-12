@@ -5,8 +5,6 @@ global type n_cst_threading from nonvisualobject
 end type
 type nameddata from structure within n_cst_threading
 end type
-type timing_idle from timing within n_cst_threading
-end type
 end forward
 
 type nameddata from structure
@@ -26,14 +24,12 @@ event onpoststop ( long exitcode )
 event ontaskcreated ( n_cst_threading_task tasking )
 event type long ontaskdestroy ( n_cst_threading_task tasking )
 event type integer onmsgbox ( string title,  string text,  string detail,  icon ico,  button btn,  integer defbtn )
-event onidle ( )
 event onthreaddestroying ( )
 event onthreaddestroyed ( )
 event onthreadcreating ( )
 event onthreadcreated ( n_cst_thread thread )
 event onthreadexited ( )
 event type long onthreadcreate ( string clsname,  ref n_cst_thread thread,  ref string instancename )
-timing_idle timing_idle
 end type
 global n_cst_threading n_cst_threading
 
@@ -155,8 +151,6 @@ Long		_lastExitCode
 Long		_lastErrCode
 String	_lastErrInfo
 Long		_nExitCode
-
-constant double IDLE_INTERVAL = 1 //sec
 end variables
 
 forward prototypes
@@ -287,7 +281,6 @@ return RetCode.ALLOW
 end event
 
 event onpoststop(long exitcode);#Running = false
-timing_idle.Start(IDLE_INTERVAL)
 
 _of_SendNotify(Enums.TNR_STOP,exitCode,0,_lastErrInfo)
 
@@ -301,12 +294,6 @@ if IsValid(this) then
 			Destroy thisThreading
 		end if
 	end if
-end if
-end event
-
-event onidle();if #Running then return
-if IsValid(_Thread) then
-	_Thread.Event OnIdle()
 end if
 end event
 
@@ -474,7 +461,6 @@ if #Running then return RetCode.E_BUSY
 
 #Running = true
 ResetEvent(_hEvtCancelled)
-timing_idle.Stop()
 
 for nIndex = UpperBound(Tasks) to 1 step -1
 	ResetEvent(Tasks[nIndex].of_GetCancelEvent())
@@ -940,14 +926,12 @@ end function
 
 on n_cst_threading.create
 call super::create
-this.timing_idle=create timing_idle
 TriggerEvent( this, "constructor" )
 end on
 
 on n_cst_threading.destroy
 TriggerEvent( this, "destructor" )
 call super::destroy
-destroy(this.timing_idle)
 end on
 
 event constructor;ulong nThisThreadId
@@ -1018,8 +1002,6 @@ event destructor;int nIndex,nCount
 n_cst_threading_task	emptyTasks[]
 NAMEDDATA emptyDatas[]
 
-timing_idle.Stop()
-
 Event OnThreadDestroying()
 
 #AutoRelease = false
@@ -1072,29 +1054,5 @@ end if
 
 Event OnThreadDestroyed()
 
-end event
-
-type timing_idle from timing within n_cst_threading descriptor "pb_nvo" = "true" 
-end type
-
-on timing_idle.create
-call super::create
-TriggerEvent( this, "constructor" )
-end on
-
-on timing_idle.destroy
-TriggerEvent( this, "destructor" )
-call super::destroy
-end on
-
-event timer;if Not IsValid(parent) then
-	Stop()
-	return
-end if
-if parent.#Running then
-	Stop()
-else
-	parent.Event OnIdle()
-end if
 end event
 
