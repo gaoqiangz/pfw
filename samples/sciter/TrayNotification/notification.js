@@ -1,11 +1,22 @@
 export class Notification extends Element {
   static instance = null;
+  static pending = [];
 
   componentDidMount() {
     Notification.instance = this;
+	if(Notification.pending) {
+		for(const {title, message, severity, delay} of Notification.pending) {
+			Notification.show(title, message, severity, delay);
+		}
+		Notification.pending = null;
+	}
   }
 
   static show(title, message, severity, delay = 0) {
+	if(!this.instance) {
+		this.pending.push({title,message,severity,delay});
+		return;
+	}
     this.instance.append(<Message title={title} message={message} severity={severity} delay={delay * 1000} />);
   }
 

@@ -1,4 +1,4 @@
-<html window-frame="transparent">
+<html window-frame="transparent" window-width="500" window-height="320">
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <title>PowerFramework</title>
@@ -40,19 +40,20 @@ controlbar > button {
 	background-size: 16dip;
 	border-radius: 0;
 	border: none;
+	fill: #fff;
 }
 controlbar > button:hover {
 	background-color: rgba(9,163,220,0.5);
 } 
 controlbar > button:active {
-	background: 50% 70% no-repeat;
+	background-position: 50% 70%;
 	background-color: rgba(9,163,220,0.7);
 } 
 controlbar > #minimize  {
-	background-image: url(pfw://zip/images[btn_mini.png]);
+	background-image: url(pfw://zip/images[win-minimize.svg]);
 } 
 controlbar > #close {
-	background-image: url(pfw://zip/images[btn_close.png]);
+	background-image: url(pfw://zip/images[win-close.svg]);
 }
 controlbar > #close:hover {
 	background-color: #D44027
@@ -119,22 +120,26 @@ button:active {
 	size: 40dip 40dip;
 }
 </style>
+<script type="text/javascript">
+document.ready = function() {
+	document.body.append(<header role="window-caption">
+		<caption disable>PowerFramework</caption>
+		<controlbar>
+			<button#minimize role="window-minimize" tooltip="最小化"></button>
+			<button#close role="window-close" tooltip="关闭"></button>
+		</controlbar>
+	</header>);
+	document.body.append(<div#main>
+		<img#logo src="home://res/images/logo.png"/>
+		<div#inputs>
+			<input#txtUid/>
+			<input#txtPsw/>
+		</div>
+		<button#btnLogin>登  录</button>
+	</div>);
+}
+</script>
 </head>
 <body>
-<header role="window-caption">
-	<caption disable>PowerFramework</caption>
-	<controlbar>
-		<button#minimize role="window-minimize" tooltip="最小化"></button>
-		<button#close role="window-close" tooltip="关闭"></button>
-	</controlbar>
-</header>
-<div#main>
-	<img#logo src="home://res/images/logo.png"/>
-	<div#inputs>
-		<input#txtUid/>
-		<input#txtPsw/>
-	</div>
-	<button#btnLogin>登  录</button>
-</div>
 </body>
 </html>

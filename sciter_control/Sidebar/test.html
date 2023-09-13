@@ -1,188 +1,218 @@
 <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="pfwSidebar.css" />
+        <style>
+            html {
+                overflow: hidden;
+            }
 
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" href="pfwSidebar.css">
-		<style>
-			html {
-				overflow: hidden;
-			}
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 微软雅黑, 宋体;
+            }
 
-			body {
-				margin: 0;
-				padding: 0;
-				font-family: 微软雅黑, 宋体;
-			}
+            sidebar {
+                display: block !important;
+                size: *;
+            }
 
-			sidebar {
-				display: block !important;
-				size: *;
-			}
+            sidebar:collapsed {
+                width: min-content;
+            }
+        </style>
+        <script type="module">
+            import { $ } from '@sciter';
 
-			sidebar:collapsed {
-				width: min-content;
-			}
-		</style>
-		<script type="module">
-			import { $ } from "@sciter";
+            document.ready = function () {
+                var elNav = $('sidebar');
+                var strIco = '#f270@myFont';
+                elNav.setIconFont('../../res/fonts/awesome.ttf');
+                elNav.setIconFont('../../res/fonts/awesome.ttf', 'myFont');
+                elNav.enableItemSelect(true);
+                elNav.setCSSVars({
+                    clr_text: 'rgb(0,180,0)',
+                    min_group_height: '30dip',
+                });
+                elNav.load([
+                    {
+                        text: '<span style="display:inline-block;width:*;flow:horizontal"><span style="display:inline-block;margin-right:4dip;width:*;min-width:0;white-space:nowrap;word-wrap:normal;text-overflow:ellipsis">groupgroupgroupgroupgroup group 1</span><span style="display:inline-block;padding:2dip;font-size:9pt;background:red;">99</span></span>',
+                        image: strIco,
+                        textIsHtml: true,
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: '#f260',
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        text: 'groupgroupgroupgroupgroup group 1',
+                        image: '#f272',
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: strIco,
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        text: 'groupgroupgroupgroupgroup group 1',
+                        image: strIco,
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: strIco,
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        text: 'groupgroupgroupgroupgroup group 1',
+                        image: strIco,
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: strIco,
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        text: 'groupgroupgroupgroupgroup group 1',
+                        image: strIco,
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: strIco,
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        text: 'groupgroupgroupgroupgroup group 1',
+                        image: strIco,
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: strIco,
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        text: 'groupgroupgroupgroupgroup group 1',
+                        image: strIco,
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: strIco,
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        text: 'groupgroupgroupgroupgroup group 1',
+                        image: strIco,
+                        attributes: {
+                            attr1: 'val',
+                        },
+                        children: [
+                            {
+                                text: 'child 1',
+                                image: strIco,
+                                attributes: {
+                                    attr1: 'val',
+                                },
+                            },
+                        ],
+                    },
+                ]);
 
-			document.ready = function () {
-				var elNav = $("sidebar");
-				var strIco = "#f270@myFont";
-				elNav.setIconFont("../../res/fonts/awesome.ttf");
-				elNav.setIconFont("../../res/fonts/awesome.ttf", "myFont");
-				elNav.enableItemSelect(true);
-				elNav.setCSSVars({
-					clr_text: "rgb(0,180,0)",
-					min_group_height: "30dip"
-				});
-				elNav.load([{
-					text: "<span style=\"display:inline-block;width:*;flow:horizontal\"><span style=\"display:inline-block;margin-right:4dip;width:*;min-width:0;white-space:nowrap;word-wrap:normal;text-overflow:ellipsis\">groupgroupgroupgroupgroup group 1</span><span style=\"display:inline-block;padding:2dip;font-size:9pt;background:red;\">99</span></span>",
-					image: strIco,
-					textIsHtml: true,
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: "#f260",
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}, {
-					text: "groupgroupgroupgroupgroup group 1",
-					image: "#f272",
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: strIco,
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}, {
-					text: "groupgroupgroupgroupgroup group 1",
-					image: strIco,
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: strIco,
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}, {
-					text: "groupgroupgroupgroupgroup group 1",
-					image: strIco,
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: strIco,
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}, {
-					text: "groupgroupgroupgroupgroup group 1",
-					image: strIco,
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: strIco,
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}, {
-					text: "groupgroupgroupgroupgroup group 1",
-					image: strIco,
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: strIco,
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}, {
-					text: "groupgroupgroupgroupgroup group 1",
-					image: strIco,
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: strIco,
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}, {
-					text: "groupgroupgroupgroupgroup group 1",
-					image: strIco,
-					attributes: {
-						attr1: "val"
-					},
-					children: [{
-						text: "child 1",
-						image: strIco,
-						attributes: {
-							attr1: "val"
-						}
-					}]
-				}]);
+                elNav.on('sb-collapsing', (evt) => {
+                    console.log('collapsing', evt, evt.data);
+                });
+                elNav.on('sb-collapsed', (evt) => {
+                    console.log('collapsed', evt, evt.data);
+                });
+                elNav.on('sb-expanding', (evt) => {
+                    console.log('expanding', evt, evt.data);
+                });
+                elNav.on('sb-expanded', (evt) => {
+                    console.log('expanded', evt, evt.data);
+                });
+                elNav.on('sb-populate', (evt) => {
+                    console.log('populate', evt, evt.data);
+                });
+                elNav.on('sb-selection-changing', (evt) => {
+                    console.log('selection-changing', evt, evt.data);
+                });
+                elNav.on('sb-selection-changed', (evt) => {
+                    console.log('selection-changed', evt, evt.data);
+                });
+                elNav.on('sb-clicked', (evt) => {
+                    console.log('clicked', evt, evt.data);
+                });
 
-				elNav.on("sb-collapsing", (evt) => {
-					console.log("collapsing", evt, evt.data);
-				});
-				elNav.on("sb-collapsed", (evt) => {
-					console.log("collapsed", evt, evt.data);
-				});
-				elNav.on("sb-expanding", (evt) => {
-					console.log("expanding", evt, evt.data);
-				});
-				elNav.on("sb-expanded", (evt) => {
-					console.log("expanded", evt, evt.data);
-				});
-				elNav.on("sb-populate", (evt) => {
-					console.log("populate", evt, evt.data);
-				});
-				elNav.on("sb-selection-changing", (evt) => {
-					console.log("selection-changing", evt, evt.data);
-				});
-				elNav.on("sb-selection-changed", (evt) => {
-					console.log("selection-changed", evt, evt.data);
-				});
-				elNav.on("sb-clicked", (evt) => {
-					console.log("clicked", evt, evt.data);
-				});
+                //elNav.state.collapsed = true;
+                //elNav.enableItemSelect(false);
 
-				//elNav.state.collapsed = true;
-				//elNav.enableItemSelect(false);
+                //console.log(document.appendChild);
+                //return;
+                let elOwner = elNav.$('option');
+                elNav.setImage(elOwner, '#f271');
+                let opt = elNav.insertOption(
+                    elOwner,
+                    2,
+                    'testxxx',
+                    false,
+                    '#f270',
+                    'testxxx'
+                );
+                elNav.addChildOption(opt, 'testxxx', false, '#f270', 'testxxx');
+            };
+        </script>
+    </head>
 
-				//console.log(document.appendChild);
-				//return;
-				let elOwner = elNav.$("option");
-				elNav.setImage(elOwner, "#f271");
-				let opt = elNav.insertOption(elOwner, 2, "testxxx", false, "#f270", "testxxx");
-				elNav.addChildOption(opt, "testxxx", false, "#f270", "testxxx");
-			}
-		</script>
-	</head>
-
-	<body>
-		<sidebar></sidebar>
-	</body>
-
+    <body>
+        <sidebar></sidebar>
+    </body>
 </html>

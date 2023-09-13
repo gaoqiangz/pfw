@@ -43,13 +43,9 @@ export class lowpoly extends Element {
 	r;
 
 	componentDidMount() {
-		this.style.setProperty("padding", "0");
-		this.style.setProperty("flow", "stack");
-		this.style.setProperty("overflow", "hidden");
+		this.style.set({"padding":"0","flow":"stack","overflow":"hidden"});
 		var el = document.createElement("lowpoly");
-		el.style.setProperty("display", "block");
-		el.style.setProperty("z-index", "-1");
-		el.style.setProperty("size", "*");
+		el.style.set({"display":"block","z-index":"-1","size":"*"});
 		this.prepend(el);
 		this.D = new CAV.CanvasRenderer(el);
 		this.I = new CAV.Scene()
