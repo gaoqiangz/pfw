@@ -99,6 +99,7 @@ Ulong _nTaskNextId
 
 constant double IDLE_INTERVAL = 1 //sec
 end variables
+
 forward prototypes
 public function integer of_inserttask (readonly integer index, ref n_cst_thread_task newtask, readonly string tasktypename)
 public function integer of_addtask (ref n_cst_thread_task newtask, string tasktypename)
@@ -200,7 +201,7 @@ return rtCode
 end event
 
 event type long ondotasks(long group);long rtCode
-boolean bIgnoreTaskError,bIgnoreTaskCancel,bCancelled
+boolean bIgnoreTaskError,bIgnoreTaskCancel
 
 if group = n_cst_thread_task.GROUP_POST then
 	_nExecIndex = 1
@@ -217,9 +218,8 @@ if group = n_cst_thread_task.GROUP_POST then
 else
 	bIgnoreTaskError = #ParentThreading.#IgnoreTaskError
 	bIgnoreTaskCancel = #ParentThreading.#IgnoreTaskCancel
-	bCancelled = of_IsCancelled()
 	_nExecIndex = 1
-	do while(Not bCancelled and _nExecIndex <= UpperBound(Tasks))
+	do while(Not of_IsCancelled() and _nExecIndex <= UpperBound(Tasks))
 		if Tasks[_nExecIndex].#Group = group then
 			rtCode = Event OnPrepareTask(Tasks[_nExecIndex])
 			if IsAllowed(rtCode) then
@@ -235,15 +235,13 @@ else
 			end if
 			if rtCode = RetCode.CANCELLED and Not bIgnoreTaskCancel then
 				of_Cancel()
-				bCancelled = true
 				exit
 			end if
 		end if
-		bCancelled = of_IsCancelled()
 		_nExecIndex++
 	loop
 	_nExecIndex = 0
-	if bCancelled then return RetCode.CANCELLED
+	if of_IsCancelled() then return RetCode.CANCELLED
 end if
 
 return RetCode.OK
