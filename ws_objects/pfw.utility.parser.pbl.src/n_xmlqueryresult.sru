@@ -16,11 +16,11 @@ public function string GetValueString()
 public function double GetValueNumber()
 public function boolean GetValueBoolean()
 public function n_xmlnode GetValueNode()
-public function int GetValueNodes(ref n_xmlnode nodes[])
-public function int GetValueNodes(ref n_xmlnode nodes[],readonly long sorttype)
+public function long GetValueNodes(ref n_xmlnode nodes[])
+public function long GetValueNodes(ref n_xmlnode nodes[],readonly long sorttype)
 public function n_xmlattribute GetValueAttribute()
-public function int GetValueAttributes(ref n_xmlattribute nodes[])
-public function int GetValueAttributes(ref n_xmlattribute nodes[],readonly long sorttype)
+public function long GetValueAttributes(ref n_xmlattribute nodes[])
+public function long GetValueAttributes(ref n_xmlattribute nodes[],readonly long sorttype)
 end type
 global n_xmlqueryresult n_xmlqueryresult
 

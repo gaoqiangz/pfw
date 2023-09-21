@@ -641,3 +641,9 @@ end if
 return 0
 end event
 
+event onerror;//overried
+of_Rollback()
+call super::OnError;
+return AncestorReturnValue
+end event
+

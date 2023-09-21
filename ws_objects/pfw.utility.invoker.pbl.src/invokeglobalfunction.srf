@@ -4,17 +4,17 @@ global type invokeglobalfunction from function_object native "pfw.dll"
 end type
 
 forward prototypes
-public function any invokeglobalfunction(readonly string name,readonly string sign)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10)
-public function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10,any arg11)
+global function any invokeglobalfunction(readonly string name,readonly string sign)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10)
+global function any invokeglobalfunction(readonly string name,readonly string sign,any arg1,any arg2,any arg3,any arg4,any arg5,any arg6,any arg7,any arg8,any arg9,any arg10,any arg11)
 end prototypes
 

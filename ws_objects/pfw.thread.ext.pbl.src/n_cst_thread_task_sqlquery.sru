@@ -742,7 +742,11 @@ try
 	end if
 	
 	if nRowCnt < 0 then
-		Event OnError(RetCode.E_DB_ERROR,"")
+		if bPlainSQL then
+			Event OnError(RetCode.E_DB_ERROR,"检索失败!")
+		else
+			Event OnError(RetCode.E_DB_ERROR,data.DataObject + "检索失败,请检查参数传递是否正确!")
+		end if
 		return RetCode.E_DB_ERROR
 	end if
 	
@@ -816,7 +820,7 @@ try
 				nPageCount = Ceiling(nRecordCount / _nPageSize)
 			else
 				Event OnDBError(TransObject.SQLDBCode,TransObject.SQLErrText,sSQL,Primary!,1)
-				Event OnError(RetCode.E_DB_ERROR,"")
+				Event OnError(RetCode.E_DB_ERROR,"检索失败")
 				return RetCode.E_DB_ERROR
 			end if
 		end if
