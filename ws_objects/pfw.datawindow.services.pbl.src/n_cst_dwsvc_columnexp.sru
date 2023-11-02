@@ -339,7 +339,6 @@ if nRowCnt <= 0 then return
 
 nCount = _of_FindVarDepends(index,ref nColExps,false)
 if nCount > 0 then
-	_bRowCalcing = true
 	for nRow = 1 to nRowCnt
 		_of_MakeDirty()
 		for nIndex = 1 to nCount
@@ -349,7 +348,6 @@ if nCount > 0 then
 			_of_CalcItem(nRow,nColExps[nIndex])
 		next
 	next
-	_bRowCalcing = false
 end if
 
 nCount = UpperBound(GlobalVars[index].links)
