@@ -1574,7 +1574,7 @@ FileWrite(hFile,"start session")
 
 FileWrite(hFile,Sprintf('file delete "{1}" "Clobber Always"',sPackFilePath))
 FileWrite(hFile,Sprintf('file delete "{1}" "Clobber Always"',Left(sPackFilePath,Len(sPackFilePath) - 3) + "pbd"))
-FileWrite(hFile,Sprintf('create library "{1}" "{2}"',sPackFilePath,"PowerFramework~n(c)金千枝（深圳）软件技术有限公司"))
+FileWrite(hFile,Sprintf('create library "{1}" "{2}"',sPackFilePath,"PowerFramework (c)金千枝（深圳）软件技术有限公司"))
 
 nCount = _wf_Split(GetLibraryList(),",",ref sPBLFiles,true)
 for nIndex = 1 to nCount
