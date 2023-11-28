@@ -175,7 +175,7 @@ private function long _of_update (readonly n_cst_thread_task_sqlbase_ds data);lo
 long nIndex,nCount
 long nIdentityColumn
 long nPrimaryIdValues[],nFilterIdValues[]
-string sColDBNamePrefix
+string sUpdateTable,sColDBNamePrefix
 n_cst_threading_task_sqlupdate tasking
 n_cst_thread_trans transObject
 
@@ -186,6 +186,12 @@ if of_IsCancelled() then return RetCode.CANCELLED
 tasking = #ParentTasking
 
 Data.of_ClearState()
+
+sUpdateTable = Data.Describe("DataWindow.Table.UpdateTable")
+if sUpdateTable = "" or sUpdateTable = "!" or sUpdateTable = "?" then
+	Event OnError(RetCode.E_DB_ERROR,"没有可更新的表")
+	return RetCode.E_DB_ERROR
+end if
 
 if IsPrevented(TransObject.Event OnBeforeUpdate(Data)) then
 	if TransObject.of_IsFailed() then
@@ -209,7 +215,7 @@ if of_IsCancelled() then return RetCode.CANCELLED
 if rtCode = 1 then
 	if Data.of_GetInsertedCount() > 0 then
 		/*--- 处理自动增加列 ---*/
-		sColDBNamePrefix = Lower(Data.Describe("DataWindow.Table.UpdateTable")) + "."
+		sColDBNamePrefix = Lower(sUpdateTable) + "."
 		nCount = Long(Data.Describe("DataWindow.Column.Count"))
 		for nIndex = 1 to nCount
 			if Data.Describe("#" + String(nIndex) + ".Identity") = "yes" then
