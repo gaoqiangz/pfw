@@ -39,6 +39,10 @@ end function
 
 public function long of_setsql (readonly string sql);if of_IsBusy() then return RetCode.E_BUSY
 
+#IF DEFINED DEBUG THEN
+	Assert(Len(sql) > 0,"Len(sql) <= 0")
+#END IF
+
 return _of_GetTask().of_SetSQL(sql)
 end function
 

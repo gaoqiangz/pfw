@@ -99,6 +99,8 @@ end function
 
 public function long of_setdataobject (readonly string dataobject);if of_IsBusy() then return RetCode.E_BUSY
 
+Assert(Len(dataObject) > 0,"Len(dataObject) <= 0")
+
 return _of_GetTask().of_SetDataObject(dataObject)
 end function
 
@@ -113,6 +115,10 @@ return _of_GetTask().of_Rollback()
 end function
 
 public function long of_setsqlsyntax (readonly string sqlsyntax);if of_IsBusy() then return RetCode.E_BUSY
+
+#IF DEFINED DEBUG THEN
+	Assert(Len(sqlSyntax) > 0,"Len(sqlSyntax) <= 0")
+#END IF
 
 return _of_GetTask().of_SetSQLSyntax(sqlSyntax)
 end function

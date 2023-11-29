@@ -280,6 +280,10 @@ end event
 
 public function long of_setsql (readonly string sql);if of_IsBusy() then return RetCode.E_BUSY
 
+#IF DEFINED DEBUG THEN
+	Assert(Len(sql) > 0,"Len(sql) <= 0")
+#END IF
+
 return _of_GetTask().of_SetSQL(sql)
 end function
 
@@ -304,10 +308,18 @@ end function
 
 public function long of_setsqlsyntax (readonly string sqlsyntax);if of_IsBusy() then return RetCode.E_BUSY
 
+#IF DEFINED DEBUG THEN
+	Assert(Len(sqlSyntax) > 0,"Len(sqlSyntax) <= 0")
+#END IF
+
 return _of_GetTask().of_SetSQLSyntax(sqlSyntax)
 end function
 
 public function long of_setdataobject (readonly string dataobject);if of_IsBusy() then return RetCode.E_BUSY
+
+#IF DEFINED DEBUG THEN
+	Assert(Len(dataObject) > 0,"Len(dataObject) <= 0")
+#END IF
 
 return _of_GetTask().of_SetDataObject(dataObject)
 end function
