@@ -258,7 +258,7 @@ if n > 0 then
 	choose case ClassName(paramArray[1])
 		case "string"
 			for i = 1 to n
-				sVal += "~'" + String(paramArray[i]) + "~'"
+				sVal += "~'" + String(ReplaceAll(paramArray[i],"'","''",true)) + "~'"
 				if i <> UpperBound(paramArray) then
 					sVal += ","
 				end if
@@ -304,7 +304,7 @@ else
 	if IsNull(param) then return "NULL"
 	choose case ClassName(param)
 		case "string"
-			sVal = "~'" + String(param) + "~'"
+			sVal = "~'" + String(ReplaceAll(param,"'","''",true)) + "~'"
 		case "time"
 			sVal = "~'" + String(param,"hh:mm:ss") + "~'"
 		case "date"
