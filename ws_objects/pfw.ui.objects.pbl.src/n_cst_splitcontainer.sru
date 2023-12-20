@@ -1449,21 +1449,21 @@ if #Orientation = Enums.VERT then
 	end if
 	if offsetSize < 0 then
 		Panel1.of_GetClientRect(ref panelRect)
-		if (panelRect.right - panelRect.left) + offsetSize  < Panel1.#MinSize then
+		if (panelRect.right - panelRect.left) + offsetSize < Panel1.#MinSize then
 			offsetSize = -((panelRect.right - panelRect.left) - Panel1.#MinSize)
 		end if
 		Panel2.of_GetClientRect(ref panelRect)
-		if (panelRect.right - panelRect.left) - offsetSize  > Panel2.#MaxSize then
+		if (panelRect.right - panelRect.left) - offsetSize > Panel2.#MaxSize then
 			offsetSize = (panelRect.right - panelRect.left) - Panel2.#MaxSize
 		end if
 	end if
 	if offsetSize > 0 then
 		Panel1.of_GetClientRect(ref panelRect)
-		if (panelRect.right - panelRect.left) + offsetSize  > Panel1.#MaxSize then
-			offsetSize = -((panelRect.right - panelRect.left) -Panel1.#MaxSize)
+		if (panelRect.right - panelRect.left) + offsetSize > Panel1.#MaxSize then
+			offsetSize = -((panelRect.right - panelRect.left) - Panel1.#MaxSize)
 		end if
 		Panel2.of_GetClientRect(ref panelRect)
-		if (panelRect.right - panelRect.left) - offsetSize  < Panel2.#MinSize then
+		if (panelRect.right - panelRect.left) - offsetSize < Panel2.#MinSize then
 			offsetSize = (panelRect.right - panelRect.left) - Panel2.#MinSize
 		end if
 	end if
@@ -1474,13 +1474,21 @@ else
 	end if
 	if offsetSize < 0 then
 		Panel1.of_GetClientRect(ref panelRect)
-		if (panelRect.bottom - panelRect.top) + offsetSize  < Panel1.#MinSize then
+		if (panelRect.bottom - panelRect.top) + offsetSize < Panel1.#MinSize then
 			offsetSize = -((panelRect.bottom - panelRect.top) - Panel1.#MinSize)
+		end if
+		Panel2.of_GetClientRect(ref panelRect)
+		if (panelRect.bottom - panelRect.top) - offsetSize  > Panel2.#MaxSize then
+			offsetSize = (panelRect.bottom - panelRect.top) - Panel2.#MaxSize
 		end if
 	end if
 	if offsetSize > 0 then
+		Panel1.of_GetClientRect(ref panelRect)
+		if (panelRect.bottom - panelRect.top) + offsetSize > Panel1.#MaxSize then
+			offsetSize = -((panelRect.bottom - panelRect.top) - Panel1.#MaxSize)
+		end if
 		Panel2.of_GetClientRect(ref panelRect)
-		if (panelRect.bottom - panelRect.top) - offsetSize  < Panel2.#MinSize then
+		if (panelRect.bottom - panelRect.top) - offsetSize < Panel2.#MinSize then
 			offsetSize = (panelRect.bottom - panelRect.top) - Panel2.#MinSize
 		end if
 	end if
