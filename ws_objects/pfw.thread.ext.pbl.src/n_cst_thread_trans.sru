@@ -25,6 +25,7 @@ event onsyntaxfromsql ( readonly string sql,  readonly string presentation,  ref
 event type long onsettransdata ( transactiondata data )
 event type long ongettransdata ( ref transactiondata data,  ref string errinfo )
 event onconnok ( )
+event type long ontest ( )
 end type
 global n_cst_thread_trans n_cst_thread_trans
 
@@ -167,18 +168,23 @@ _of_CleanRollback()
 return RetCode.OK
 end function
 
-public function boolean of_isconnected ();boolean bConnected
+public function boolean of_isconnected ();long rtCode
+boolean bConnected
 
 if _nLastConnOK = 0 then return false
 if CPU() - _nLastConnOK < 10000 then return true
 
-if Pos(Upper(DBMS),"ORACLE") > 0 then
-	EXECUTE IMMEDIATE "SELECT 1 FROM DUAL" USING this;
+rtCode = Event OnTest()
+if IsNull(rtCode) then
+	if Pos(Upper(DBMS),"ORACLE") > 0 then
+		EXECUTE IMMEDIATE "SELECT 1 FROM DUAL" USING this;
+	else
+		EXECUTE IMMEDIATE "SELECT 1" USING this;
+	end if
+	bConnected = (SQLNRows > 0)
 else
-	EXECUTE IMMEDIATE "SELECT 1" USING this;
+	bConnected = IsSucceeded(rtCode)
 end if
-
-bConnected = (SQLNRows > 0)
 if bConnected then
 	_nLastConnOK = CPU()
 else
