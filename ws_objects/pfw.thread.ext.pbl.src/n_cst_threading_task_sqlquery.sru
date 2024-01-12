@@ -175,22 +175,6 @@ event ondatareceived(long rowcount);if of_IsCancelled() then return
 
 _nRowCount = rowCount
 Event OnNotify(NCD_DATARECEIVED,_nRowCount,"")
-
-if IsValid(_receiver) then
-	if _receiver.TypeOf() = DataWindow! then
-		datawindow dw
-		dw = _receiver
-		if dw.RowCount() > 0 then
-			_bRcvrRedraw = true
-			dw.SetRedraw(false)
-			dw.Reset()
-		end if
-	else
-		datastore ds
-		ds = _receiver
-		ds.Reset()
-	end if
-end if
 end event
 
 event type long ondatachunk(ref blob blbdata, long count, long current, boolean fullstate);long rtCode
@@ -205,9 +189,10 @@ if IsValid(_receiver) then
 			if fullState then
 				rtCode = dw.SetFullState(blbData)
 			else
-				if Not _bRcvrRedraw then
+				if current = 1 then
 					_bRcvrRedraw = true
 					dw.SetRedraw(false)
+					dw.Reset()
 				end if
 				rtCode = dw.SetChanges(blbData)
 				if count = current then
@@ -229,6 +214,9 @@ if IsValid(_receiver) then
 			if fullState then
 				rtCode = ds.SetFullState(blbData)
 			else
+				if current = 1 then
+					ds.Reset()
+				end if
 				rtCode = ds.SetChanges(blbData)
 				if count = current then
 					ds.ResetUpdate()
@@ -243,6 +231,9 @@ else
 	if fullState then
 		rtCode = Data.SetFullState(blbData)
 	else
+		if current = 1 then
+			Data.Reset()
+		end if
 		rtCode = Data.SetChanges(blbData)
 		if count = current then
 			Data.ResetUpdate()

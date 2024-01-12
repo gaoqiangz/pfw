@@ -103,6 +103,10 @@ choose case Long(Data.Describe("DataWindow.Processing"))
 		if tasking._of_NeedCreate() then
 			tasking.Event OnCreateData(Data.Describe("DataWindow.Syntax"))
 			if of_IsCancelled() then return RetCode.CANCELLED
+			//NOTE
+			//使用当前语法构建的对象执行SetChanges将自动处理过滤
+			//避免过滤缓存区拷贝的性能问题
+			Data.RowsMove(1,Data.FilteredCount(),Filter!,Data,Data.RowCount() + 1,Primary!)
 		end if
 		
 		//DDDW
@@ -547,8 +551,48 @@ try
 		if Not bCacheDS then
 			data.dataObject = _sDataObject
 			if data.Describe("DataWindow.Units") = "" then
-				Event OnError(RetCode.E_INVALID_ARGUMENT,"无效的查询对象")
+				Event OnError(RetCode.E_INVALID_ARGUMENT,"无效的DataObject")
 				return RetCode.E_INVALID_ARGUMENT
+			end if
+		end if
+		//更新排序和过滤语句
+		if Not #ParentThread.of_IsMainThread() and Not tasking._of_NeedCreate() then
+			choose case Long(data.Describe("DataWindow.Processing"))
+				case 4,5 //Crosstab or Composite datawindow
+					//NOTE
+					//使用SetFullState传递数据的风格需要同步排序和过滤条件
+					if _sNewSort <> "" then
+						if data.SetSort(Trim(_sNewSort)) <> 1 then
+							Event OnError(RetCode.E_INVALID_ARGUMENT,"SetSort: " + _sNewSort)
+							return RetCode.E_INVALID_ARGUMENT
+						end if
+					end if
+					if _sNewFilter <> "" then
+						if data.SetFilter(Trim(_sNewFilter)) <> 1 then
+							Event OnError(RetCode.E_INVALID_ARGUMENT,"SetFilter: " + _sNewFilter)
+							return RetCode.E_INVALID_ARGUMENT
+						end if
+					end if
+				case else
+					//NOTE
+					//使用SetChanges传递数据的风格不需要排序和过滤条件，甚至会影响性能
+					data.SetSort("")
+					data.SetFilter("")
+			end choose
+		else
+			if (#ParentThread.of_IsMainThread() and (tasking._of_HasReceiver() or _bCache)) or tasking._of_NeedCreate() then
+				if _sNewSort <> "" then
+					if data.SetSort(Trim(_sNewSort)) <> 1 then
+						Event OnError(RetCode.E_INVALID_ARGUMENT,"SetSort: " + _sNewSort)
+						return RetCode.E_INVALID_ARGUMENT
+					end if
+				end if
+				if _sNewFilter <> "" then
+					if data.SetFilter(Trim(_sNewFilter)) <> 1 then
+						Event OnError(RetCode.E_INVALID_ARGUMENT,"SetFilter: " + _sNewFilter)
+						return RetCode.E_INVALID_ARGUMENT
+					end if
+				end if
 			end if
 		end if
 	else
@@ -577,20 +621,6 @@ try
 			return RetCode.E_INVALID_SQL
 		end if
 		sSQLSyntax = ""
-	end if
-	
-	//修改排序和过滤语句
-	if _sNewSort <> "" then
-		if data.SetSort(Trim(_sNewSort)) <> 1 then
-			Event OnError(RetCode.E_INVALID_ARGUMENT,"SetSort: " + _sNewSort)
-			return RetCode.E_INVALID_ARGUMENT
-		end if
-	end if
-	if _sNewFilter <> "" then
-		if data.SetFilter(Trim(_sNewFilter)) <> 1 then
-			Event OnError(RetCode.E_INVALID_ARGUMENT,"SetFilter: " + _sNewFilter)
-			return RetCode.E_INVALID_ARGUMENT
-		end if
 	end if
 	
 	//保存当前的SQL用于还原
