@@ -392,11 +392,10 @@ return RetCode.OK
 end function
 
 public function long of_retrieve (readonly datastore ds, readonly any params[], readonly boolean retrievedddw);long nColIdx,nColCnt,nRowCnt,nParmIdx,nParmCnt
-string sModStr,sRevertStr
+string sModStr
 n_scriptinvoker invoker
 
 if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
-if ds.SetTransObject(this) <> 1 then return RetCode.E_INVALID_TRANSACTION 
 
 of_ClearState()
 
@@ -410,48 +409,46 @@ if Not retrieveDDDW then
 	for nColIdx = 1 to nColCnt
 		if ds.Describe("#" + String(nColIdx) + ".DDDW.AutoRetrieve") <> "yes" then continue
 		sModStr += "#" + String(nColIdx) + ".DDDW.AutoRetrieve = no ~n"
-		sRevertStr += "#" + String(nColIdx) + ".DDDW.AutoRetrieve = yes ~n"
 	next
 	if sModStr <> "" then
 		ds.Modify(sModStr)
 	end if
 end if
 
-nParmCnt = UpperBound(params)
-
-if nParmCnt <= 8 then
-	choose case nParmCnt
-		case 0
-			nRowCnt = ds.Retrieve()
-		case 1
-			nRowCnt = ds.Retrieve(params[1])
-		case 2
-			nRowCnt = ds.Retrieve(params[1],params[2])
-		case 3
-			nRowCnt = ds.Retrieve(params[1],params[2],params[3])
-		case 4
-			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4])
-		case 5
-			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5])
-		case 6
-			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6])
-		case 7
-			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6],params[7])
-		case 8
-			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6],params[7],params[8])
-	end choose
+if ds.SetTransObject(this) = 1 then
+	nParmCnt = UpperBound(params)
+	if nParmCnt <= 8 then
+		choose case nParmCnt
+			case 0
+				nRowCnt = ds.Retrieve()
+			case 1
+				nRowCnt = ds.Retrieve(params[1])
+			case 2
+				nRowCnt = ds.Retrieve(params[1],params[2])
+			case 3
+				nRowCnt = ds.Retrieve(params[1],params[2],params[3])
+			case 4
+				nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4])
+			case 5
+				nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5])
+			case 6
+				nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6])
+			case 7
+				nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6],params[7])
+			case 8
+				nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6],params[7],params[8])
+		end choose
+	else
+		invoker = Create n_scriptinvoker
+		invoker.Init(ds,"retrieve","LAV")
+		for nParmIdx = 1 to nParmCnt
+			invoker.SetArg(nParmIdx,params[nParmIdx])
+		next
+		nRowCnt = invoker.Invoke()
+		Destroy invoker
+	end if
 else
-	invoker = Create n_scriptinvoker
-	invoker.Init(ds,"retrieve","LAV")
-	for nParmIdx = 1 to nParmCnt
-		invoker.SetArg(nParmIdx,params[nParmIdx])
-	next
-	nRowCnt = invoker.Invoke()
-	Destroy invoker
-end if
-
-if sRevertStr <> "" then
-	ds.Modify(sRevertStr)
+	nRowCnt = -1
 end if
 
 Event OnAfterRetrieve(ds,nRowCnt)
