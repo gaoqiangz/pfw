@@ -1453,7 +1453,7 @@ for index = 1 to UpperBound(Items)
 		ll_x += 10
 	end if
 	
-	ll_x += Items[index].OffsetPosition
+	ll_x += Items[index].OffsetPosition + theme.#ItemMargin
 	
 	if _of_HasValidImage(index) then
 		if Items[index].DisplayText and Items[index].szText.cx > 0 then
@@ -2068,7 +2068,7 @@ for index = 1 to UpperBound(Items)
 		ll_x += 10
 	end if
 	
-	ll_x += Items[index].OffsetPosition
+	ll_x += Items[index].OffsetPosition + theme.#ItemMargin
 	
 	if _of_HasValidImage(index) then
 		if Items[index].DisplayText and Items[index].szText.cx > 0 then
@@ -2348,7 +2348,7 @@ for index = 1 to UpperBound(Items)
 		ll_y += 10
 	end if
 	
-	ll_y += Items[index].OffsetPosition
+	ll_y += Items[index].OffsetPosition + theme.#ItemMargin
 	
 	if _of_HasValidImage(index) then
 		if Items[index].DisplayText and Items[index].szText.cx > 0 then
@@ -2622,7 +2622,7 @@ for index = 1 to UpperBound(Items)
 		ll_y += 10
 	end if
 	
-	ll_y += Items[index].OffsetPosition
+	ll_y += Items[index].OffsetPosition + theme.#ItemMargin
 	
 	if _of_HasValidImage(index) then
 		if Items[index].DisplayText and Items[index].szText.cx > 0 then
@@ -6011,6 +6011,8 @@ choose case eventFlag
 		if #FixedSize then
 			dirty = true
 		end if
+	case EVT_ITEMMARGIN
+		dirty = true
 	case EVT_ITEMPADDING
 		dirty = true
 	case EVT_FIXEDSIZE

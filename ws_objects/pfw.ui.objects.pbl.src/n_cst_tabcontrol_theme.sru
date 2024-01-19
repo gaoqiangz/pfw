@@ -50,14 +50,15 @@ Constant Uint EVT_FIXEDSIZE					= EVT_CUSTOM + 9
 Constant Uint EVT_TABSTRIPBORDERSTYLE	= EVT_CUSTOM + 10
 Constant Uint EVT_ITEMBKGNDSTYLE			= EVT_CUSTOM + 11
 Constant Uint EVT_ITEMMINSIZE				= EVT_CUSTOM + 12
-Constant Uint EVT_ITEMPADDING				= EVT_CUSTOM + 13
-Constant Uint EVT_TABSTRIPSIZE				= EVT_CUSTOM + 14
-Constant Uint EVT_ICONNEARTEXT				= EVT_CUSTOM + 15
-Constant Uint EVT_ICONSPACING				= EVT_CUSTOM + 16
-Constant Uint EVT_ICONSIZE					= EVT_CUSTOM + 17
-Constant Uint EVT_TABSTRIPOFFSET				= EVT_CUSTOM + 18
-Constant Uint EVT_FONT							= EVT_CUSTOM + 19
-Constant Uint EVT_SELECTEDFONT			= EVT_CUSTOM + 20
+Constant Uint EVT_ITEMMARGIN				= EVT_CUSTOM + 13
+Constant Uint EVT_ITEMPADDING				= EVT_CUSTOM + 14
+Constant Uint EVT_TABSTRIPSIZE				= EVT_CUSTOM + 15
+Constant Uint EVT_ICONNEARTEXT				= EVT_CUSTOM + 16
+Constant Uint EVT_ICONSPACING				= EVT_CUSTOM + 17
+Constant Uint EVT_ICONSIZE					= EVT_CUSTOM + 18
+Constant Uint EVT_TABSTRIPOFFSET				= EVT_CUSTOM + 19
+Constant Uint EVT_FONT							= EVT_CUSTOM + 20
+Constant Uint EVT_SELECTEDFONT			= EVT_CUSTOM + 21
 
 /*--- Properties ---*/
 Public:
@@ -73,7 +74,8 @@ ProtectedWrite	Boolean		#FixedSize				= true					//固定Tab最小大小
 ProtectedWrite Uint			#TabStripBorderStyle = Enums.BS_SOLID	//Tab导航栏边框风格
 ProtectedWrite Uint 			#ItemBkgndStyle 		= Enums.SOLID		//Tab背景风格
 ProtectedWrite	real 			#ItemMinSize	 		= 80 						//dip
-ProtectedWrite	real 			#ItemPadding	 		= 4 						//dip
+ProtectedWrite	real 			#ItemMargin		 		= 0 						//dip
+ProtectedWrite	real 			#ItemPadding	 		= 2 						//dip
 ProtectedWrite	real 			#TabStripSize			= 30						//Tab导航栏大小(dip)
 ProtectedWrite Boolean		#IconNearText	 			= true				//图标始终紧贴文本
 ProtectedWrite	real 			#IconSpacing	 		= 2 					//dip
@@ -106,6 +108,7 @@ public function string of_getitemicon (readonly integer index, readonly string u
 public function long of_seticonneartext (readonly boolean enabled)
 public function long of_seticonspacing (readonly real spacing)
 public function long of_setitempadding (readonly real padding)
+public function long of_setitemmargin (readonly real margin)
 end prototypes
 
 event _ongetitemcolor(integer index, unsignedinteger colorflag, unsignedlong state, ref unsignedlong color);choose case colorFlag
@@ -306,6 +309,7 @@ if IsAncestor(newTheme,"n_cst_tabcontrol_theme") then
 	#TabStripBorderStyle = ln_newTheme.#TabStripBorderStyle
 	#ItemBkgndStyle 		= ln_newTheme.#ItemBkgndStyle
 	#ItemMinSize 			= ln_newTheme.#ItemMinSize
+	#ItemMargin 			= ln_newTheme.#ItemMargin
 	#ItemPadding 			= ln_newTheme.#ItemPadding
 	#IconNearText 			= ln_newTheme.#IconNearText
 	#IconSpacing 			= ln_newTheme.#IconSpacing
@@ -495,6 +499,14 @@ public function long of_setitempadding (readonly real padding);if #ItemPadding =
 
 #ItemPadding = padding
 Event OnThemeChanged(EVT_ITEMPADDING)
+
+return RetCode.OK
+end function
+
+public function long of_setitemmargin (readonly real margin);if #ItemMargin = margin then return RetCode.OK
+
+#ItemMargin = margin
+Event OnThemeChanged(EVT_ITEMMARGIN)
 
 return RetCode.OK
 end function
