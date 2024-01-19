@@ -1460,7 +1460,7 @@ for index = 1 to UpperBound(Items)
 			choose case theme.#IconPosition
 				case Enums.LEFT
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= ll_top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
@@ -1476,12 +1476,12 @@ for index = 1 to UpperBound(Items)
 						maxSize = theme.#IconSize.cx
 					end if
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + (maxSize - theme.#IconSize.cx)/2
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding + (maxSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= ll_top + 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
-					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
+					Items[index].rcText.left 			= ll_x  + theme.#ItemPadding + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= Items[index].rcImage.bottom + theme.#IconSpacing
 					if (adjustedRect.bottom - Items[index].rcText.top) > Items[index].szText.cy then
@@ -1490,12 +1490,12 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.RIGHT
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + Items[index].szText.cx + theme.#IconSpacing
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding + Items[index].szText.cx + theme.#IconSpacing
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= ll_top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
 					//Set rcText
-					Items[index].rcText.left 			= ll_x + 2
+					Items[index].rcText.left 			= ll_x + theme.#ItemPadding
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= ll_top + (itemSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
@@ -1506,12 +1506,12 @@ for index = 1 to UpperBound(Items)
 						maxSize = theme.#IconSize.cx
 					end if
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + (maxSize - theme.#IconSize.cx)/2
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding + (maxSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= adjustedRect.bottom - 2 - theme.#IconSize.cy
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
-					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
+					Items[index].rcText.left 			= ll_x  + theme.#ItemPadding + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= ll_top + 2
 					if (Items[index].rcImage.top - theme.#IconSpacing - Items[index].rcText.top) > Items[index].szText.cy then
@@ -1522,7 +1522,7 @@ for index = 1 to UpperBound(Items)
 		else
 			Painter.SetRectEmpty(Items[index].rcText)
 			//Set rcImage
-			Items[index].rcImage.left		= ll_x + 2
+			Items[index].rcImage.left		= ll_x + theme.#ItemPadding
 			Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 			Items[index].rcImage.top		= ll_top + (itemSize - theme.#IconSize.cy) / 2
 			Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
@@ -1530,7 +1530,7 @@ for index = 1 to UpperBound(Items)
 	elseif Items[index].DisplayText and Items[index].szText.cx > 0 then
 		Painter.SetRectEmpty(Items[index].rcImage)
 		//Set rcText
-		Items[index].rcText.left 		= ll_x  + 2
+		Items[index].rcText.left 		= ll_x  + theme.#ItemPadding
 		Items[index].rcText.right 	= Items[index].rcText.left  + Items[index].szText.cx
 		Items[index].rcText.top		= ll_top + (itemSize - Items[index].szText.cy) / 2
 		Items[index].rcText.bottom 	= Items[index].rcText.top + Items[index].szText.cy
@@ -1546,13 +1546,13 @@ for index = 1 to UpperBound(Items)
 	//Set rcPaint
 	Items[index].rcPaint.left 			= ll_x
 	if Not Painter.IsRectEmpty(Items[index].rcText) and  Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.right = Max(Items[index].rcText.right, Items[index].rcImage.right) + 2
+		Items[index].rcPaint.right = Max(Items[index].rcText.right, Items[index].rcImage.right) + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcText) then
-		Items[index].rcPaint.right = Items[index].rcText.right + 2
+		Items[index].rcPaint.right = Items[index].rcText.right + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.right = Items[index].rcImage.right + 2
+		Items[index].rcPaint.right = Items[index].rcImage.right + theme.#ItemPadding
 	else
-		Items[index].rcPaint.right = Items[index].rcPaint.left + 4
+		Items[index].rcPaint.right = Items[index].rcPaint.left + theme.#ItemPadding * 2
 	end if
 	Items[index].rcPaint.top 			= ll_top
 	Items[index].rcPaint.bottom 	= tabStripRect.bottom - fBorderOffsetSize
@@ -2075,7 +2075,7 @@ for index = 1 to UpperBound(Items)
 			choose case theme.#IconPosition
 				case Enums.LEFT
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= adjustedRect.top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
@@ -2091,12 +2091,12 @@ for index = 1 to UpperBound(Items)
 						maxSize = theme.#IconSize.cx
 					end if
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + (maxSize - theme.#IconSize.cx)/2
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding + (maxSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= adjustedRect.top + 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
-					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
+					Items[index].rcText.left 			= ll_x  + theme.#ItemPadding + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= Items[index].rcImage.bottom + theme.#IconSpacing
 					if (ll_bottom - Items[index].rcText.top) > Items[index].szText.cy then
@@ -2105,12 +2105,12 @@ for index = 1 to UpperBound(Items)
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.RIGHT
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + Items[index].szText.cx + theme.#IconSpacing
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding + Items[index].szText.cx + theme.#IconSpacing
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= adjustedRect.top + (itemSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cx
 					//Set rcText
-					Items[index].rcText.left 			= ll_x + 2
+					Items[index].rcText.left 			= ll_x + theme.#ItemPadding
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= adjustedRect.top + (itemSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
@@ -2121,12 +2121,12 @@ for index = 1 to UpperBound(Items)
 						maxSize = theme.#IconSize.cx
 					end if
 					//Set rcImage
-					Items[index].rcImage.left		= ll_x + 2 + (maxSize - theme.#IconSize.cx)/2
+					Items[index].rcImage.left		= ll_x + theme.#ItemPadding + (maxSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 					Items[index].rcImage.top		= ll_bottom - 2 - theme.#IconSize.cy
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
-					Items[index].rcText.left 			= ll_x  + 2 + (maxSize - Items[index].szText.cx) / 2
+					Items[index].rcText.left 			= ll_x  + theme.#ItemPadding + (maxSize - Items[index].szText.cx) / 2
 					Items[index].rcText.right 		= Items[index].rcText.left  + Items[index].szText.cx
 					Items[index].rcText.top			= adjustedRect.top + 2
 					if (Items[index].rcImage.top - theme.#IconSpacing - Items[index].rcText.top) > Items[index].szText.cy then
@@ -2137,7 +2137,7 @@ for index = 1 to UpperBound(Items)
 		else
 			Painter.SetRectEmpty(Items[index].rcText)
 			//Set rcImage
-			Items[index].rcImage.left		= ll_x + 2
+			Items[index].rcImage.left		= ll_x + theme.#ItemPadding
 			Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
 			Items[index].rcImage.top		= adjustedRect.top + (itemSize - theme.#IconSize.cy) / 2
 			Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
@@ -2145,7 +2145,7 @@ for index = 1 to UpperBound(Items)
 	elseif Items[index].DisplayText and Items[index].szText.cx > 0 then
 		Painter.SetRectEmpty(Items[index].rcImage)
 		//Set rcText
-		Items[index].rcText.left 		= ll_x  + 2
+		Items[index].rcText.left 		= ll_x  + theme.#ItemPadding
 		Items[index].rcText.right 	= Items[index].rcText.left  + Items[index].szText.cx
 		Items[index].rcText.top		= adjustedRect.top + (itemSize - Items[index].szText.cy) / 2
 		Items[index].rcText.bottom 	= Items[index].rcText.top + Items[index].szText.cy
@@ -2161,13 +2161,13 @@ for index = 1 to UpperBound(Items)
 	//Set rcPaint
 	Items[index].rcPaint.left 			= ll_x
 	if Not Painter.IsRectEmpty(Items[index].rcText) and  Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.right = Max(Items[index].rcText.right, Items[index].rcImage.right) + 2
+		Items[index].rcPaint.right = Max(Items[index].rcText.right, Items[index].rcImage.right) + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcText) then
-		Items[index].rcPaint.right = Items[index].rcText.right + 2
+		Items[index].rcPaint.right = Items[index].rcText.right + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.right = Items[index].rcImage.right + 2
+		Items[index].rcPaint.right = Items[index].rcImage.right + theme.#ItemPadding
 	else
-		Items[index].rcPaint.right = Items[index].rcPaint.left + 4
+		Items[index].rcPaint.right = Items[index].rcPaint.left + theme.#ItemPadding * 2
 	end if
 	Items[index].rcPaint.top 			= tabStripRect.Top + fBorderOffsetSize
 	Items[index].rcPaint.bottom 	= ll_bottom
@@ -2362,18 +2362,18 @@ for index = 1 to UpperBound(Items)
 					//Set rcImage
 					Items[index].rcImage.left		= ll_left  + 2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + (maxSize - theme.#IconSize.cy) / 2
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding + (maxSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= Items[index].rcImage.right + theme.#IconSpacing
 					Items[index].rcText.right 		= adjustedRect.right - 2
-					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
+					Items[index].rcText.top			= ll_y + theme.#ItemPadding + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.TOP
 					//Set rcImage
 					Items[index].rcImage.left		= ll_left  + (itemSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= ll_left  + 2
@@ -2389,23 +2389,23 @@ for index = 1 to UpperBound(Items)
 					//Set rcImage
 					Items[index].rcImage.left		= adjustedRect.right  - 2 - theme.#IconSize.cx
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + (maxSize - theme.#IconSize.cy) / 2
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding + (maxSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= ll_left + 2
 					Items[index].rcText.right 		= Items[index].rcImage.left - theme.#IconSpacing
-					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
+					Items[index].rcText.top			= ll_y + theme.#ItemPadding + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.BOTTOM
 					//Set rcImage
 					Items[index].rcImage.left		= ll_left  + (itemSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + Items[index].szText.cy + theme.#IconSpacing
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding + Items[index].szText.cy + theme.#IconSpacing
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= ll_left  + 2
 					Items[index].rcText.right 		= adjustedRect.right  - 2
-					Items[index].rcText.top			= ll_y + 2
+					Items[index].rcText.top			= ll_y + theme.#ItemPadding
 					Items[index].rcText.bottom 		= Items[index].rcImage.top - 2
 			end choose
 		else
@@ -2413,7 +2413,7 @@ for index = 1 to UpperBound(Items)
 			//Set rcImage
 			Items[index].rcImage.left		= ll_left  + (itemSize - theme.#IconSize.cx)/2
 			Items[index].rcImage.right		= Items[index].rcImage.left + theme.#IconSize.cx
-			Items[index].rcImage.top		= ll_y + 2
+			Items[index].rcImage.top		= ll_y + theme.#ItemPadding
 			Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 		end if
 	elseif Items[index].DisplayText and Items[index].szText.cx > 0 then
@@ -2421,7 +2421,7 @@ for index = 1 to UpperBound(Items)
 		//Set rcText
 		Items[index].rcText.left 		= ll_left  + 2 
 		Items[index].rcText.right 	= adjustedRect.right - 2
-		Items[index].rcText.top		= ll_y + 2
+		Items[index].rcText.top		= ll_y + theme.#ItemPadding
 		Items[index].rcText.bottom 	= Items[index].rcText.top + Items[index].szText.cy
 	else
 		Painter.SetRectEmpty(Items[index].rcImage)
@@ -2437,13 +2437,13 @@ for index = 1 to UpperBound(Items)
 	Items[index].rcPaint.right 	= tabStripRect.right - fBorderOffsetSize
 	Items[index].rcPaint.top 		= ll_y
 	if Not Painter.IsRectEmpty(Items[index].rcText) and  Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.bottom = Max(Items[index].rcText.bottom, Items[index].rcImage.bottom) + 2
+		Items[index].rcPaint.bottom = Max(Items[index].rcText.bottom, Items[index].rcImage.bottom) + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcText) then
-		Items[index].rcPaint.bottom = Items[index].rcText.bottom + 2
+		Items[index].rcPaint.bottom = Items[index].rcText.bottom + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.bottom = Items[index].rcImage.bottom + 2
+		Items[index].rcPaint.bottom = Items[index].rcImage.bottom + theme.#ItemPadding
 	else
-		Items[index].rcPaint.bottom = Items[index].rcPaint.top + 4
+		Items[index].rcPaint.bottom = Items[index].rcPaint.top + theme.#ItemPadding * 2
 	end if
 	if Items[index].Selected then
 		Items[index].rcPaint.right += 2
@@ -2636,18 +2636,18 @@ for index = 1 to UpperBound(Items)
 					//Set rcImage
 					Items[index].rcImage.left		= adjustedRect.left  + 2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + (maxSize - theme.#IconSize.cy) / 2
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding + (maxSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= Items[index].rcImage.right + theme.#IconSpacing
 					Items[index].rcText.right 		= ll_right - 2
-					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
+					Items[index].rcText.top			= ll_y + theme.#ItemPadding + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.TOP
 					//Set rcImage
 					Items[index].rcImage.left		= adjustedRect.left  + (itemSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= adjustedRect.left  + 2
@@ -2663,23 +2663,23 @@ for index = 1 to UpperBound(Items)
 					//Set rcImage
 					Items[index].rcImage.left		= ll_right  - 2 - theme.#IconSize.cx
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + (maxSize - theme.#IconSize.cy) / 2
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding + (maxSize - theme.#IconSize.cy) / 2
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= adjustedRect.left + 2
 					Items[index].rcText.right 		= Items[index].rcImage.left - theme.#IconSpacing
-					Items[index].rcText.top			= ll_y + 2 + (maxSize - Items[index].szText.cy) / 2
+					Items[index].rcText.top			= ll_y + theme.#ItemPadding + (maxSize - Items[index].szText.cy) / 2
 					Items[index].rcText.bottom 		= Items[index].rcText.top + Items[index].szText.cy
 				case Enums.BOTTOM
 					//Set rcImage
 					Items[index].rcImage.left		= adjustedRect.left  + (itemSize - theme.#IconSize.cx)/2
 					Items[index].rcImage.right 		= Items[index].rcImage.left + theme.#IconSize.cx
-					Items[index].rcImage.top		= ll_y + 2 + Items[index].szText.cy + theme.#IconSpacing
+					Items[index].rcImage.top		= ll_y + theme.#ItemPadding + Items[index].szText.cy + theme.#IconSpacing
 					Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 					//Set rcText
 					Items[index].rcText.left 			= adjustedRect.left  + 2
 					Items[index].rcText.right 		= ll_right  - 2
-					Items[index].rcText.top			= ll_y + 2
+					Items[index].rcText.top			= ll_y + theme.#ItemPadding
 					Items[index].rcText.bottom 		= Items[index].rcImage.top - 2
 			end choose
 		else
@@ -2687,7 +2687,7 @@ for index = 1 to UpperBound(Items)
 			//Set rcImage
 			Items[index].rcImage.left		= adjustedRect.left  + (itemSize - theme.#IconSize.cx)/2
 			Items[index].rcImage.right		= Items[index].rcImage.left + theme.#IconSize.cx
-			Items[index].rcImage.top		= ll_y + 2
+			Items[index].rcImage.top		= ll_y + theme.#ItemPadding
 			Items[index].rcImage.bottom 	= Items[index].rcImage.top + theme.#IconSize.cy
 		end if
 	elseif Items[index].DisplayText and Items[index].szText.cx > 0 then
@@ -2695,7 +2695,7 @@ for index = 1 to UpperBound(Items)
 		//Set rcText
 		Items[index].rcText.left 		= adjustedRect.left  + 2 
 		Items[index].rcText.right 	= ll_right - 2
-		Items[index].rcText.top		= ll_y + 2
+		Items[index].rcText.top		= ll_y + theme.#ItemPadding
 		Items[index].rcText.bottom 	= Items[index].rcText.top + Items[index].szText.cy
 	else
 		Painter.SetRectEmpty(Items[index].rcImage)
@@ -2711,13 +2711,13 @@ for index = 1 to UpperBound(Items)
 	Items[index].rcPaint.right 	= ll_right
 	Items[index].rcPaint.top 		= ll_y
 	if Not Painter.IsRectEmpty(Items[index].rcText) and  Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.bottom = Max(Items[index].rcText.bottom, Items[index].rcImage.bottom) + 2
+		Items[index].rcPaint.bottom = Max(Items[index].rcText.bottom, Items[index].rcImage.bottom) + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcText) then
-		Items[index].rcPaint.bottom = Items[index].rcText.bottom + 2
+		Items[index].rcPaint.bottom = Items[index].rcText.bottom + theme.#ItemPadding
 	elseif Not Painter.IsRectEmpty(Items[index].rcImage) then
-		Items[index].rcPaint.bottom = Items[index].rcImage.bottom + 2
+		Items[index].rcPaint.bottom = Items[index].rcImage.bottom + theme.#ItemPadding
 	else
-		Items[index].rcPaint.bottom = Items[index].rcPaint.top + 4
+		Items[index].rcPaint.bottom = Items[index].rcPaint.top + theme.#ItemPadding * 2
 	end if
 	if Items[index].Selected then
 		Items[index].rcPaint.left -= 2
@@ -6011,7 +6011,10 @@ choose case eventFlag
 		if #FixedSize then
 			dirty = true
 		end if
+	case EVT_ITEMPADDING
+		dirty = true
 	case EVT_FIXEDSIZE
+		dirty = true
 		dirty = true
 	case EVT_TABSTRIPBORDERSTYLE
 		dirty = true
