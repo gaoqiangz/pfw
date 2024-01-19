@@ -75,7 +75,6 @@ public function long of_rollback ()
 public function boolean of_isconnected ()
 public function long of_exec (readonly string sqlcmd)
 public function long of_commit (readonly boolean autorollback)
-public function long of_retrieve (readonly datastore ds)
 public function long of_update (readonly datastore ds)
 public function string of_gridsyntaxfromsql (readonly string sql, ref string errinfo)
 public function long of_query (readonly string sql, ref datastore ds, ref string errinfo)
@@ -90,6 +89,10 @@ public function string of_gridsyntaxfromsql (readonly string sql)
 public function long of_query (readonly string sql, ref datastore ds)
 public function transactiondata of_gettransdata ()
 public function long of_gettransdata (ref transactiondata data, ref string errinfo)
+public function long of_retrieve (readonly datastore ds, readonly any params[], readonly boolean retrievedddw)
+public function long of_retrieve (readonly datastore ds, readonly any params[])
+public function long of_retrieve (readonly datastore ds)
+public function long of_retrieve (readonly datastore ds, readonly boolean retrievedddw)
 end prototypes
 
 event onattach(n_cst_thread_task parenttask);#ParentTask = parentTask
@@ -240,30 +243,6 @@ end if
 return RetCode.OK
 end function
 
-public function long of_retrieve (readonly datastore ds);long rtCode
-
-if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
-if ds.SetTransObject(this) <> 1 then return RetCode.E_INVALID_TRANSACTION 
-
-of_ClearState()
-
-if IsPrevented(Event OnBeforeRetrieve(ds)) then
-	if SQLCode <> 0 then return RetCode.E_DB_ERROR
-	return RetCode.CANCELLED
-end if
-
-rtCode = ds.Retrieve()
-
-Event OnAfterRetrieve(ds,rtCode)
-
-if SQLCode <> 0 and rtCode >= 0 then
-	rtCode = -1
-	ds.Reset()
-end if
-
-return rtCode
-end function
-
 public function long of_update (readonly datastore ds);long rtCode
 
 if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
@@ -410,6 +389,92 @@ data.DBParm = DBParm
 data.Lock = Lock
 
 return RetCode.OK
+end function
+
+public function long of_retrieve (readonly datastore ds, readonly any params[], readonly boolean retrievedddw);long nColIdx,nColCnt,nRowCnt,nParmIdx,nParmCnt
+string sModStr,sRevertStr
+n_scriptinvoker invoker
+
+if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
+if ds.SetTransObject(this) <> 1 then return RetCode.E_INVALID_TRANSACTION 
+
+of_ClearState()
+
+if IsPrevented(Event OnBeforeRetrieve(ds)) then
+	if SQLCode <> 0 then return RetCode.E_DB_ERROR
+	return RetCode.CANCELLED
+end if
+
+if Not retrieveDDDW then
+	nColCnt = Long(ds.Describe("DataWindow.Column.Count"))
+	for nColIdx = 1 to nColCnt
+		if ds.Describe("#" + String(nColIdx) + ".DDDW.AutoRetrieve") <> "yes" then continue
+		sModStr += "#" + String(nColIdx) + ".DDDW.AutoRetrieve = no ~n"
+		sRevertStr += "#" + String(nColIdx) + ".DDDW.AutoRetrieve = yes ~n"
+	next
+	if sModStr <> "" then
+		ds.Modify(sModStr)
+	end if
+end if
+
+nParmCnt = UpperBound(params)
+
+if nParmCnt <= 8 then
+	choose case nParmCnt
+		case 0
+			nRowCnt = ds.Retrieve()
+		case 1
+			nRowCnt = ds.Retrieve(params[1])
+		case 2
+			nRowCnt = ds.Retrieve(params[1],params[2])
+		case 3
+			nRowCnt = ds.Retrieve(params[1],params[2],params[3])
+		case 4
+			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4])
+		case 5
+			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5])
+		case 6
+			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6])
+		case 7
+			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6],params[7])
+		case 8
+			nRowCnt = ds.Retrieve(params[1],params[2],params[3],params[4],params[5],params[6],params[7],params[8])
+	end choose
+else
+	invoker = Create n_scriptinvoker
+	invoker.Init(ds,"retrieve","LAV")
+	for nParmIdx = 1 to nParmCnt
+		invoker.SetArg(nParmIdx,params[nParmIdx])
+	next
+	nRowCnt = invoker.Invoke()
+	Destroy invoker
+end if
+
+if sRevertStr <> "" then
+	ds.Modify(sRevertStr)
+end if
+
+Event OnAfterRetrieve(ds,nRowCnt)
+
+if SQLCode <> 0 and nRowCnt >= 0 then
+	nRowCnt = -1
+	ds.Reset()
+end if
+
+return nRowCnt
+end function
+
+public function long of_retrieve (readonly datastore ds, readonly any params[]);return of_Retrieve(ds,params,false)
+end function
+
+public function long of_retrieve (readonly datastore ds);any emptyParams[]
+
+return of_Retrieve(ds,emptyParams,false)
+end function
+
+public function long of_retrieve (readonly datastore ds, readonly boolean retrievedddw);any emptyParams[]
+
+return of_Retrieve(ds,emptyParams,retrieveDDDW)
 end function
 
 on n_cst_thread_trans.create
