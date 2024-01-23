@@ -45,7 +45,7 @@ sidebar option>caption>popup[role="tooltip"] {
 		font-size: var(font_size);
 		background-color: var(clr_bkgnd);
 		flow: vertical;
-		overflow-y: pfw-scroll-indicator;
+        overflow: scroll-indicator;
 		vertical-scrollbar: pfw-scroll-indicator;
 		horizontal-scrollbar: pfw-scroll-indicator;
 	}
