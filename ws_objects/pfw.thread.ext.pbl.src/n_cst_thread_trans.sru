@@ -93,6 +93,7 @@ public function long of_retrieve (readonly datastore ds, readonly any params[], 
 public function long of_retrieve (readonly datastore ds, readonly any params[])
 public function long of_retrieve (readonly datastore ds)
 public function long of_retrieve (readonly datastore ds, readonly boolean retrievedddw)
+private subroutine _of_cleandisconnect ()
 end prototypes
 
 event onattach(n_cst_thread_task parenttask);#ParentTask = parentTask
@@ -102,7 +103,9 @@ end event
 event onconnok();_nLastConnOK = CPU()
 end event
 
-public function long of_connect ();if DBHandle() <> 0 then
+public function long of_connect ();boolean bConnected
+
+if DBHandle() <> 0 then
 	DISCONNECT USING this;
 end if
 
@@ -116,9 +119,14 @@ end if
 
 CONNECT USING this;
 
+bConnected = (SQLCode = 0)
+
 Event OnAfterConnect()
 
 if SQLCode <> 0 then
+	if bConnected then
+		_of_CleanDisconnect()
+	end if
 	return RetCode.FAILED
 end if
 
@@ -473,6 +481,24 @@ public function long of_retrieve (readonly datastore ds, readonly boolean retrie
 
 return of_Retrieve(ds,emptyParams,retrieveDDDW)
 end function
+
+private subroutine _of_cleandisconnect ();long nSQLCode,nSQLDBCode,nSQLNRows
+string sSQLErrText,sSQLReturnData
+
+nSQLCode = SQLCode
+nSQLDBCode = SQLDBCode
+nSQLNRows = SQLNRows
+sSQLErrText = SQLErrText
+sSQLReturnData = SQLReturnData
+
+DISCONNECT USING this;
+
+SQLCode = nSQLCode
+SQLDBCode = nSQLDBCode
+SQLNRows = nSQLNRows
+SQLErrText = sSQLErrText
+SQLReturnData = sSQLReturnData
+end subroutine
 
 on n_cst_thread_trans.create
 call super::create
