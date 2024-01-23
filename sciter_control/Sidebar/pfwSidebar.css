@@ -23,6 +23,10 @@ sidebar option>caption>popup[role="tooltip"] {
 		var(max_popup_height): 700dip;
 		var(group_bar_width): 4dip;
 		var(child_group_offset): 14dip;
+		var(item_padding_left): 4dip;
+		var(item_padding_top): 4dip;
+		var(item_padding_right): 4dip;
+		var(item_padding_bottom): 4dip;
 		var(clr_bkgnd): #1a202c;
 		var(clr_group_bkgnd): #344058;
 		var(clr_group_bar): #009688;
@@ -30,8 +34,9 @@ sidebar option>caption>popup[role="tooltip"] {
 		var(clr_item_selected): #1e9fff;
 		var(clr_text): #bec0c5;
 		var(clr_text_hover): #fff;
-		var(clr_icon): #fff;
-		var(clr_icon_hover): #fff;
+		var(clr_text_selected): #fff;
+		var(clr_text_expand): #fff;
+		/* clr_text_xxx -> clr_icon_xxx 可单独控制图标颜色 */
 		var(clr_arrow): #fff;
 		var(tooltip_bkgnd): var(clr_group_bkgnd);
 		var(tooltip_text): var(clr_text);
@@ -65,7 +70,7 @@ sidebar option>caption>popup[role="tooltip"] {
 	/* 分组标题 */
 
 	option>caption {
-		padding: 4dip;
+		padding: var(item_padding_top) var(item_padding_right) var(item_padding_bottom) var(item_padding_left);
 		width: *;
 		color: var(clr_text);
 		vertical-align: middle;
@@ -79,9 +84,12 @@ sidebar option>caption>popup[role="tooltip"] {
 		word-wrap: break-word;
 	}
 
-	option>caption:hover,
-	option:has-child-of-type(options):expanded>caption {
+	option>caption:hover {
 		color: var(clr_text_hover);
+	}
+
+	option:has-child-of-type(options):expanded>caption {
+		color: var(clr_text_expand);
 	}
 
 	option:has-child-of-type(options)>caption {
@@ -106,6 +114,7 @@ sidebar option>caption>popup[role="tooltip"] {
 
 	option:not(:has-child-of-type(options)):current>caption {
 		background-color: var(clr_item_selected);
+		color: var(clr_text_selected);
 	}
 
 	option:has-child-of-type(options)>caption {
@@ -145,8 +154,8 @@ sidebar option>caption>popup[role="tooltip"] {
 		margin-right: 4dip;
 		size: var(group_icon_size);
 		font-size: var(group_icon_size);
-		fill: var(clr_icon);
-		color: var(clr_icon);
+		fill: var(clr_icon,var(clr_text));
+		color: var(clr_icon,var(clr_text));
 	}
 
 	options .sb-img {
@@ -154,10 +163,19 @@ sidebar option>caption>popup[role="tooltip"] {
 		font-size: var(item_icon_size);
 	}
 
-	option>caption:hover>.sb-img,
+	option>caption:hover>.sb-img {
+		fill: var(clr_icon_hover,var(clr_text_hover));
+		color: var(clr_icon_hover,var(clr_text_hover));
+	}
+	
 	option:has-child-of-type(options):expanded>caption>.sb-img {
-		fill: var(clr_icon_hover);
-		color: var(clr_icon_hover);
+		fill: var(clr_icon_expand,var(clr_text_expand));
+		color: var(clr_icon_expand,var(clr_text_expand));
+	}
+
+	option:not(:has-child-of-type(options)):current>caption>.sb-img {
+		fill: var(clr_icon_selected,var(clr_text_selected));
+		color: var(clr_icon_selected,var(clr_text_selected));
 	}
 
 	/* 子分组后代偏移量的设置 */
