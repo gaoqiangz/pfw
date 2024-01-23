@@ -32,6 +32,7 @@ protectedwrite boolean			#ItemSelect 	= false	//开启节点选择功能
 private:
 constant string IMPL_HTML = "pfw://arch/sciter[sidebar/main.html]"
 end variables
+
 forward prototypes
 public function long of_setcollapsed (readonly boolean collapse)
 public function boolean of_iscollapsed ()
@@ -592,6 +593,10 @@ public function long of_setcssvars (readonly n_scitervalue data);//=============
 //		max_popup_height
 //		group_bar_width
 //		child_group_offset
+//		item_padding_left
+//		item_padding_top
+//		item_padding_right
+//		item_padding_bottom
 //		clr_bkgnd
 //		clr_group_bkgnd
 //		clr_group_bar
@@ -599,10 +604,13 @@ public function long of_setcssvars (readonly n_scitervalue data);//=============
 //		clr_item_selected_bkgnd
 //		clr_text
 //		clr_text_hover
+//		clr_text_selected
+//		clr_text_expand
 //		clr_icon
 //		clr_icon_hover
+//		clr_icon_selected
+//		clr_icon_expand
 //		clr_arrow
-//		clr_scrollbar_bkgnd
 //		font_size
 //--------------------------------------------------------------------
 // Returns:  long
