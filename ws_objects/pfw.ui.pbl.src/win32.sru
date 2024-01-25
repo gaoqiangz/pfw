@@ -447,7 +447,7 @@ Constant Long IDC_HELP				= 32651	//IDC_HELP=MAKEINTRESOURCE(32651)
 Constant Long GWL_STYLE 		= -16 
 Constant Long GWL_EXSTYLE	= -20 
 //ScrollBar
-Constant Long SIZEOF_SCROLLBARCREATEINFO 	= 24
+Constant Long SIZEOF_SCROLLBARCREATEINFO 	= 28
 Constant Long SIZEOF_SCROLLBARDRAWINFO 	= 100
 Constant Long SB_HORZ 	= 0
 Constant Long SB_VERT 	= 1
@@ -476,7 +476,6 @@ Constant Long WIN8_1			= 	203
 Constant Long WIN10			= 	204
 Constant Long WINLATEST		= 	1000
 end variables
-
 forward prototypes
 public function boolean iswinxp ()
 public function boolean iswin2000 ()
