@@ -68,6 +68,8 @@ Constant String CLS_PAGE_SCITER_VSPAGE	 			= "u_cst_tabpage_sciter_vspage"
 Constant String CLS_PAGE_SCITER_TEST					= "u_cst_tabpage_sciter_test"
 Constant String CLS_PAGE_BLINK_BROWSER 			= "u_cst_tabpage_blink_browser"
 Constant String CLS_PAGE_BLINK_CHARTS 			= "u_cst_tabpage_blink_charts"
+Constant String CLS_PAGE_WEBVIEW_BROWSER 			= "u_cst_tabpage_webview_browser"
+Constant String CLS_PAGE_WEBVIEW_CHARTS 			= "u_cst_tabpage_webview_charts"
 Constant String CLS_PAGE_UTILITY_HTTPCLIENT			= "u_cst_tabpage_utility_httpclient"
 Constant String CLS_PAGE_UTILITY_ALIPAY					= "u_cst_tabpage_utility_alipay"
 Constant String CLS_PAGE_UTILITY_WXPAY				= "u_cst_tabpage_utility_wxpay"
@@ -75,6 +77,7 @@ Constant String CLS_PAGE_UTILITY_CRYPTO				= "u_cst_tabpage_utility_crypto"
 //Messages
 Constant Long NM_TRAYICON_NOTIFY = WinMsg.WM_APP + 100
 end variables
+
 forward prototypes
 public subroutine wf_setthemestyle (readonly unsignedinteger style)
 public function pm_color wf_getcolormenu ()
@@ -711,11 +714,19 @@ button = panel.of_AddButton("Test",Res.ICO_S_SCITER,Res.ICO_L_SCITER,"Sciter交�
 button.#Tag = CLS_PAGE_SCITER_TEST
 button.of_SetTextAlign(Center!)
 //添加Panel
+panel = category.of_AddPanel("WebView",Res.ICO_L_SCITER)
+button = panel.of_AddButton("Browser",Res.ICO_S_SCITER,Res.ICO_L_SCITER,"WebView2浏览器~n用于加载Web页面~n" + CLS_PAGE_WEBVIEW_BROWSER)
+button.#Tag = CLS_PAGE_WEBVIEW_BROWSER
+button = panel.of_AddButton("Charts",Res.ICO_S_CHART,Res.ICO_L_CHART,"ECharts图表~n" + CLS_PAGE_WEBVIEW_CHARTS)
+button.#Tag = CLS_PAGE_WEBVIEW_CHARTS
+//添加Panel
+/*Blink计划被废弃
 panel = category.of_AddPanel("Blink",Res.ICO_L_SCITER)
 button = panel.of_AddButton("Browser",Res.ICO_S_SCITER,Res.ICO_L_SCITER,"Blink浏览器~n用于加载Web页面~n" + CLS_PAGE_BLINK_BROWSER)
 button.#Tag = CLS_PAGE_BLINK_BROWSER
 button = panel.of_AddButton("Charts",Res.ICO_S_CHART,Res.ICO_L_CHART,"ECharts图表~n" + CLS_PAGE_BLINK_CHARTS)
 button.#Tag = CLS_PAGE_BLINK_CHARTS
+*/
 //添加Panel
 panel = category.of_AddPanel("Utility",Res.ICO_L_TOOL)
 button = panel.of_AddButton("HttpClient",Res.ICO_L_TOOL,Res.ICO_L_TOOL,"HttpClient~n" + CLS_PAGE_UTILITY_HTTPCLIENT)
