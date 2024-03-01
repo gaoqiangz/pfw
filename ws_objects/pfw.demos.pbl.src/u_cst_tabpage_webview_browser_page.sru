@@ -147,9 +147,6 @@ uo_webview.Resize(newWidth,newHeight - uo_webview.y)
 
 end event
 
-event onopen;call super::onopen;Post of_LoadUrl(parm)
-end event
-
 event onpreopen;call super::onpreopen;n_cst_splitcontainer_panel panel
 
 /* 设置工具栏主题 */
@@ -236,6 +233,9 @@ end if
 uo_nav_container.#LockUpdate = false
 uo_nav_container.of_UpdatePoints()
 
+end event
+
+event onopen;call super::onopen;Post of_LoadUrl(parm)
 end event
 
 type uo_nav from ue_cst_toolbarstrip within u_cst_tabpage_webview_browser_page
@@ -499,6 +499,9 @@ end if
 //刷新导航按钮状态
 uo_nav.of_Enable(uo_nav.of_GetIndexByTag("backward"),of_CanBackward())
 uo_nav.of_Enable(uo_nav.of_GetIndexByTag("forward"),of_CanForward())
+end event
+
+event onengineerror;call super::onengineerror;MessageBox("OnEngineError",reason)
 end event
 
 type uo_nav_container from ue_cst_splitcontainer within u_cst_tabpage_webview_browser_page

@@ -174,6 +174,9 @@ end on
 event ondocumentready;call super::ondocumentready;of_Refresh()
 end event
 
+event onengineerror;call super::onengineerror;MessageBox("OnEngineError",reason)
+end event
+
 type uo_splitcontainer from ue_cst_splitcontainer within u_cst_tabpage_webview_charts
 integer y = 136
 integer width = 3438

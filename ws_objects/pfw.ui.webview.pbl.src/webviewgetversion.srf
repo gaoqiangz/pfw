@@ -1,0 +1,9 @@
+﻿$PBExportHeader$webviewgetversion.srf
+global type webviewgetversion from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function string WebViewGetVersion ()
+global function string WebViewGetVersion (readonly string runtimeDir)
+end prototypes
+

@@ -547,6 +547,11 @@ Constant Long BLINK_NAV_TYPE_OTHER				= 5
 
 /*--- WebView ---*/
 
+//runtime mode (WetViewSetRuntimeMode::[mode])
+Constant Long WEBVIEW_RUNTIME_EVERGREEN	= 0
+Constant Long WEBVIEW_RUNTIME_FIXED			= 1
+Constant Long WEBVIEW_RUNTIME_AUTO			= 2
+
 //options (u_webview/n_webview::SetOption:[option])
 Constant Long WEBVIEW_OPT_STATUSBAR				= 0    // value:boolean - disabled by default
 Constant Long WEBVIEW_OPT_CONTEXT_MENU			= 1    // value:boolean - enabled by default

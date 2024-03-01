@@ -2,6 +2,8 @@
 forward
 global type w_test_webview from window
 end type
+type cb_6 from commandbutton within w_test_webview
+end type
 type cb_5 from commandbutton within w_test_webview
 end type
 type cb_4 from commandbutton within w_test_webview
@@ -22,7 +24,7 @@ end forward
 
 global type w_test_webview from window
 integer width = 5714
-integer height = 1956
+integer height = 2428
 boolean titlebar = true
 string title = "Untitled"
 boolean controlmenu = true
@@ -32,6 +34,7 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
+cb_6 cb_6
 cb_5 cb_5
 cb_4 cb_4
 cb_3 cb_3
@@ -44,6 +47,7 @@ end type
 global w_test_webview w_test_webview
 
 on w_test_webview.create
+this.cb_6=create cb_6
 this.cb_5=create cb_5
 this.cb_4=create cb_4
 this.cb_3=create cb_3
@@ -52,7 +56,8 @@ this.sle_url=create sle_url
 this.cb_1=create cb_1
 this.uo_webview=create uo_webview
 this.webview=create webview
-this.Control[]={this.cb_5,&
+this.Control[]={this.cb_6,&
+this.cb_5,&
 this.cb_4,&
 this.cb_3,&
 this.cb_2,&
@@ -62,6 +67,7 @@ this.uo_webview}
 end on
 
 on w_test_webview.destroy
+destroy(this.cb_6)
 destroy(this.cb_5)
 destroy(this.cb_4)
 destroy(this.cb_3)
@@ -78,8 +84,34 @@ end event
 event open;//为确保API兼容性请安装WebView2 Runtime 109.0.1518.78及以上版本运行时
 //注意：Windows7/8仅支持到109.0.1518.78版
 //https://blogs.windows.com/msedgedev/2022/12/09/microsoft-edge-and-webview2-ending-support-for-windows-7-and-windows-8-8-1/
+//历史版本WebView2运行时下载
+//https://github.com/westinyang/WebView2RuntimeArchive/releases
+
+//从指定目录加载运行时，运行使用Evergreen模式
+//https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution#evergreen-distribution-mode
+//WebViewSetRuntimeMode(Enums.WEBVIEW_RUNTIME_FIXED)
+//[msedgewebview2.exe]文件所在目录
+//WebViewSetRuntimeDir("E:\Downloads\WebView2 Runtime 109.0.1518.78\Microsoft.WebView2.FixedVersionRuntime.109.0.1518.78.x64")
 
 uo_webview.SetOption(4,true)
+end event
+
+type cb_6 from commandbutton within w_test_webview
+integer x = 4233
+integer y = 28
+integer width = 457
+integer height = 132
+integer taborder = 60
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+string text = "GetVersion"
+end type
+
+event clicked;MessageBox("",WebViewGetVersion())
 end event
 
 type cb_5 from commandbutton within w_test_webview
@@ -166,6 +198,7 @@ event clicked;constant string HTML = '<html>'+&
 												 'height: 100px;'+&
 											'}'+&
 										'</style>'+&
+										'<script src="http://pfw.mem/test.js"></script>'+&
 									'</head>'+&
 									'<body>'+&
 										'<div id="main"></div>'+&
@@ -204,7 +237,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Tahoma"
 long textcolor = 33554432
-string text = "https://www.bing.com"
+string text = "https://www.baidu.com"
 borderstyle borderstyle = stylelowered!
 end type
 
@@ -231,8 +264,8 @@ end event
 type uo_webview from u_cst_webview within w_test_webview
 integer x = 37
 integer y = 212
-integer width = 4206
-integer height = 1596
+integer width = 5637
+integer height = 2100
 integer taborder = 10
 end type
 
@@ -243,7 +276,8 @@ end on
 event oninvoke;call super::oninvoke;int nIndex,nCnt
 string sArgList
 
-pfwThrowException("test ex")
+//测试异常
+//pfwThrowException("test ex")
 
 nCnt = UpperBound(args)
 for nIndex = 1 to nCnt
@@ -252,6 +286,9 @@ for nIndex = 1 to nCnt
 next
 
 return "OnInvoke: " + method + ", [" + sArgList + "]"
+end event
+
+event onengineerror;call super::onengineerror;MessageBox("OnEngineError",reason)
 end event
 
 type webview from n_cst_webview within w_test_webview descriptor "pb_nvo" = "true" 
@@ -264,4 +301,9 @@ end on
 on webview.destroy
 call super::destroy
 end on
+
+event onloadresource;call super::onloadresource;if url = "mem://test.js" then
+	data = Blob("alert('inject script')",EncodingUTF8!)
+end if
+end event
 

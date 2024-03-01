@@ -1,0 +1,8 @@
+﻿$PBExportHeader$webviewsetruntimedir.srf
+global type webviewsetruntimedir from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function long WebViewSetRuntimeDir (readonly string dir)
+end prototypes
+
