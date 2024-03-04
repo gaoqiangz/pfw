@@ -28,6 +28,7 @@ event onthreadcreated ( n_cst_threading threading )
 event type long onthreaddestroy ( n_cst_threading threading )
 event oncollect ( )
 event onthreadexited ( unsignedlong id )
+event onthreadrelease ( n_cst_threading threading )
 timing_collect timing_collect
 end type
 global n_cst_threading_pool n_cst_threading_pool
@@ -164,6 +165,8 @@ for index = 1 to nCount
 next
 if index > nCount then return RetCode.E_OBJECT_NOT_FOUND
 
+Event OnThreadRelease(threading)
+
 if threading.#Running then
 	for i = threading.of_GetCount() to 1 step -1
 		if IsSucceeded(threading.of_GetTask(i,ref tasking)) then
@@ -273,7 +276,10 @@ _inTerminating = true
 nCount = UpperBound(ThreadDatas)
 for nIndex = 1 to nCount
 	if Not IsValid(ThreadDatas[nIndex].Threading) then continue
-	ThreadDatas[nIndex].Locked = false
+	if ThreadDatas[nIndex].Locked then
+		Event OnThreadRelease(ThreadDatas[nIndex].Threading)
+		ThreadDatas[nIndex].Locked = false
+	end if
 	ThreadDatas[nIndex].idleStartTime = CPU()
 	if ThreadDatas[nIndex].Threading.#Running then
 		for i = ThreadDatas[nIndex].Threading.of_GetCount() to 1 step -1
