@@ -148,14 +148,18 @@ end function
 protected function long of_gettransobject (ref n_cst_thread_trans transobject, ref dberrordata dberrdata);long rtCode
 n_cst_thread_trans_pool transPool
 
-if _nTransRefIdx > 0 and IsValidObject(_transObject) then
-	transObject = _transObject
-	transObject.Event OnAttach(this)
-	transObject.of_ClearState()
-	return RetCode.OK
-end if
-
 transPool = of_GetTransPool()
+
+if _nTransRefIdx > 0 and IsValidObject(_transObject) then
+	if Not _transObject.of_IsBroken() then
+		transObject = _transObject
+		transObject.Event OnAttach(this)
+		transObject.of_ClearState()
+		return RetCode.OK
+	end if
+	transPool.of_RemoveRef(_nTransRefIdx)
+	_nTransRefIdx = 0
+end if
 
 if _nTransRefIdx <= 0 then
 	_nTransRefIdx = transPool.of_AddRef(_transData)

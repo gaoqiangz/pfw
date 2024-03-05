@@ -68,6 +68,7 @@ private:
 ulong _nLastConnOK
 boolean _bBroken
 end variables
+
 forward prototypes
 public function long of_connect ()
 public function long of_disconnect ()
@@ -96,6 +97,7 @@ public function long of_retrieve (readonly datastore ds)
 public function long of_retrieve (readonly datastore ds, readonly boolean retrievedddw)
 private subroutine _of_cleandisconnect ()
 public function long of_setbroken ()
+public function boolean of_isbroken ()
 end prototypes
 
 event onattach(n_cst_thread_task parenttask);#ParentTask = parentTask
@@ -108,7 +110,9 @@ end event
 
 public function long of_connect ();boolean bConnected
 
-if DBHandle() <> 0 and Not _bBroken then
+if _bBroken then return RetCode.E_INVALID_TRANSACTION
+
+if DBHandle() <> 0 then
 	DISCONNECT USING this;
 end if
 
@@ -179,6 +183,7 @@ Event OnAfterRollback()
 end subroutine
 
 public function long of_rollback ();if AutoCommit then return RetCode.FAILED
+if _bBroken then return RetCode.E_INVALID_TRANSACTION
 
 _of_CleanRollback()
 
@@ -188,8 +193,8 @@ end function
 public function boolean of_isconnected ();long rtCode
 boolean bConnected
 
-if IsFailed(Event OnCheck()) then return false
 if _nLastConnOK = 0 or _bBroken then return false
+if IsFailed(Event OnCheck()) then return false
 if CPU() - _nLastConnOK < 10000 then return true
 
 rtCode = Event OnTest()
@@ -213,7 +218,6 @@ return bConnected
 end function
 
 public function long of_exec (readonly string sqlcmd);if sqlCmd = "" or IsNull(sqlCmd) then return RetCode.E_INVALID_ARGUMENT
-if _bBroken then  return RetCode.E_INVALID_TRANSACTION 
 
 of_ClearState()
 
@@ -234,7 +238,7 @@ return RetCode.OK
 end function
 
 public function long of_commit (readonly boolean autorollback);if AutoCommit then return RetCode.FAILED
-if _bBroken then  return RetCode.E_INVALID_TRANSACTION 
+if _bBroken then return RetCode.E_INVALID_TRANSACTION
 
 if IsPrevented(Event OnBeforeCommit()) then
 	if SQLCode <> 0 then
@@ -263,7 +267,6 @@ end function
 public function long of_update (readonly datastore ds);long rtCode
 
 if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
-if _bBroken then  return RetCode.E_INVALID_TRANSACTION 
 if ds.SetTransObject(this) <> 1 then return RetCode.E_INVALID_TRANSACTION 
 
 of_ClearState()
@@ -299,7 +302,6 @@ string sSqlSyntax
 boolean bCreated,bSucc
 
 if sql = "" then return RetCode.E_INVALID_SQL
-if _bBroken then  return RetCode.E_INVALID_TRANSACTION
 
 of_ClearState()
 
@@ -415,7 +417,6 @@ string sModStr
 n_scriptinvoker invoker
 
 if Not IsValidObject(ds) then return RetCode.E_INVALID_OBJECT
-if _bBroken then  return RetCode.E_INVALID_TRANSACTION 
 
 of_ClearState()
 
@@ -514,6 +515,12 @@ end subroutine
 
 public function long of_setbroken ();_bBroken = true
 return RetCode.OK
+end function
+
+public function boolean of_isbroken ();if Not _bBroken then
+	Event OnCheck()
+end if
+return _bBroken
 end function
 
 on n_cst_thread_trans.create
