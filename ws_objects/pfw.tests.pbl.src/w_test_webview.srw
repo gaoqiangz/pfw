@@ -93,7 +93,14 @@ event open;//为确保API兼容性请安装WebView2 Runtime 109.0.1518.78及以�
 //[msedgewebview2.exe]文件所在目录
 //WebViewSetRuntimeDir("E:\Downloads\WebView2 Runtime 109.0.1518.78\Microsoft.WebView2.FixedVersionRuntime.109.0.1518.78.x64")
 
-uo_webview.SetOption(4,true)
+//JS异步调用PB
+//await __pb__.invoke.query('SQL');
+//JS同步调用PB
+//__pb__.invokeSync.query('SQL');
+//统一在webview::OnInvoke事件中处理：method='query', args={'SQL'}
+
+
+uo_webview.SetOption(Enums.WEBVIEW_OPT_DEVTOOLS,true)
 end event
 
 type cb_6 from commandbutton within w_test_webview
@@ -129,7 +136,8 @@ string facename = "Tahoma"
 string text = "Evaluate"
 end type
 
-event clicked;MessageBox("",uo_webview.Evaluate("1+1"))
+event clicked;//Evaluate异步计算在OnEvaluateResult事件获取结果
+MessageBox("",uo_webview.EvaluateSync("1+1"))
 end event
 
 type cb_4 from commandbutton within w_test_webview

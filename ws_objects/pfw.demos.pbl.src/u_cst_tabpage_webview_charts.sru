@@ -30,12 +30,9 @@ forward prototypes
 public subroutine of_refresh ()
 end prototypes
 
-public subroutine of_refresh ();if Not uo_editor.IsDocumentReady() then return
-if Not uo_webview.IsDocumentReady() then return
+public subroutine of_refresh ();if uo_editor.EvaluateSync("hasEditorError()") = "true" then return
 
-if uo_editor.Evaluate("hasEditorError()") = "true" then return
-
-uo_webview.Evaluate(ParseJson(uo_editor.Evaluate("editor.getValue()")).GetValueString())
+uo_webview.Evaluate(ParseJson(uo_editor.EvaluateSync("editor.getValue()")).GetValueString())
 uo_webview.Evaluate("refresh()")
 end subroutine
 
@@ -82,7 +79,7 @@ end event
 
 event onopen;call super::onopen;constant string HTML = '<html>'+&
 									'<head>'+&
-										'<script src="tests/blink/echarts/echarts.min.js"></script>'+&
+										'<script src="tests/webview/echarts/echarts.min.js"></script>'+&
 										'<style>'+&
 											'html,body,#main {'+&
 												 'width: 100%;'+&
@@ -111,9 +108,10 @@ event onopen;call super::onopen;constant string HTML = '<html>'+&
 										'refresh();'+&
 									'</script>'+&
 								'</html>'
-
-uo_webview.LoadHtml(HTML, GetCurrentDirectory() /* baseUrl */)
-uo_editor.LoadFile("tests\blink\echarts\editor.html")
+								
+uo_webview.LoadHtmlSync(HTML, GetCurrentDirectory() /* baseUrl */)
+uo_editor.LoadFileSync("tests\webview\echarts\editor.html")
+of_Refresh()
 end event
 
 type st_1 from statictext within u_cst_tabpage_webview_charts
@@ -139,9 +137,6 @@ integer width = 942
 integer height = 1504
 integer taborder = 30
 end type
-
-event ondocumentready;call super::ondocumentready;of_Refresh()
-end event
 
 on uo_editor.destroy
 call u_cst_webview::destroy
@@ -170,9 +165,6 @@ end type
 on uo_webview.destroy
 call u_cst_webview::destroy
 end on
-
-event ondocumentready;call super::ondocumentready;of_Refresh()
-end event
 
 event onengineerror;call super::onengineerror;MessageBox("OnEngineError",reason)
 end event

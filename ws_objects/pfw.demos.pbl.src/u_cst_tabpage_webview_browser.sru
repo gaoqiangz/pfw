@@ -75,7 +75,7 @@ uo_tab.theme.of_SetFixedSize(true)
 //设置标签的最小大小
 uo_tab.theme.of_SetItemMinSize(150 /* 150dip */)
 //设置标签导航栏高度
-uo_tab.theme.of_SetTabStripSize(30 /* 30dip */)
+uo_tab.theme.of_SetTabStripSize(36 /* 36dip */)
 //显示标签下拉列表按钮
 uo_tab.theme.of_SetTabListButton(true)
 
