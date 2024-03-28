@@ -26,6 +26,7 @@ event type long onsettransdata ( transactiondata data )
 event type long ongettransdata ( ref transactiondata data,  ref string errinfo )
 event onconnok ( )
 event type long ontest ( )
+event type long oncheck ( )
 end type
 global n_cst_thread_trans n_cst_thread_trans
 
@@ -65,6 +66,7 @@ privatewrite n_cst_thread			#ParentThread
 
 private:
 ulong _nLastConnOK
+boolean _bBroken
 end variables
 
 forward prototypes
@@ -94,6 +96,8 @@ public function long of_retrieve (readonly datastore ds, readonly any params[])
 public function long of_retrieve (readonly datastore ds)
 public function long of_retrieve (readonly datastore ds, readonly boolean retrievedddw)
 private subroutine _of_cleandisconnect ()
+public function long of_setbroken ()
+public function boolean of_isbroken ()
 end prototypes
 
 event onattach(n_cst_thread_task parenttask);#ParentTask = parentTask
@@ -101,9 +105,12 @@ event onattach(n_cst_thread_task parenttask);#ParentTask = parentTask
 end event
 
 event onconnok();_nLastConnOK = CPU()
+_bBroken = false
 end event
 
 public function long of_connect ();boolean bConnected
+
+if _bBroken then return RetCode.E_INVALID_TRANSACTION
 
 if DBHandle() <> 0 then
 	DISCONNECT USING this;
@@ -135,7 +142,10 @@ Event OnConnOK()
 return RetCode.OK
 end function
 
-public function long of_disconnect ();if DBHandle() <= 0 then return RetCode.OK
+public function long of_disconnect ();if DBHandle() <= 0 or _bBroken then
+	_nLastConnOK = 0
+	return RetCode.OK
+end if
 
 Event OnBeforeDisconnect()
 DISCONNECT USING this;
@@ -173,6 +183,7 @@ Event OnAfterRollback()
 end subroutine
 
 public function long of_rollback ();if AutoCommit then return RetCode.FAILED
+if _bBroken then return RetCode.E_INVALID_TRANSACTION
 
 _of_CleanRollback()
 
@@ -182,7 +193,8 @@ end function
 public function boolean of_isconnected ();long rtCode
 boolean bConnected
 
-if _nLastConnOK = 0 then return false
+if _nLastConnOK = 0 or _bBroken then return false
+if IsFailed(Event OnCheck()) then return false
 if CPU() - _nLastConnOK < 10000 then return true
 
 rtCode = Event OnTest()
@@ -226,6 +238,7 @@ return RetCode.OK
 end function
 
 public function long of_commit (readonly boolean autorollback);if AutoCommit then return RetCode.FAILED
+if _bBroken then return RetCode.E_INVALID_TRANSACTION
 
 if IsPrevented(Event OnBeforeCommit()) then
 	if SQLCode <> 0 then
@@ -499,6 +512,16 @@ SQLNRows = nSQLNRows
 SQLErrText = sSQLErrText
 SQLReturnData = sSQLReturnData
 end subroutine
+
+public function long of_setbroken ();_bBroken = true
+return RetCode.OK
+end function
+
+public function boolean of_isbroken ();if Not _bBroken then
+	Event OnCheck()
+end if
+return _bBroken
+end function
 
 on n_cst_thread_trans.create
 call super::create

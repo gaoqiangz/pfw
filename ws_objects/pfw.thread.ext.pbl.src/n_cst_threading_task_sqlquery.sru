@@ -197,6 +197,7 @@ if IsValid(_receiver) then
 				rtCode = dw.SetChanges(blbData)
 				if count = current then
 					dw.ResetUpdate()
+					dw.GroupCalc()
 					if _bRcvrRedraw then
 						_bRcvrRedraw = false
 						dw.SetRedraw(true)

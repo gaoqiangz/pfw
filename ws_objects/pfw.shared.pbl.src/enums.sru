@@ -545,6 +545,35 @@ Constant Long BLINK_NAV_TYPE_OTHER				= 5
 
 /*--- End Blink ---*/
 
+/*--- WebView ---*/
+
+//runtime mode (WetViewSetRuntimeMode::[mode])
+Constant Long WEBVIEW_RUNTIME_EVERGREEN	= 0
+Constant Long WEBVIEW_RUNTIME_FIXED			= 1
+Constant Long WEBVIEW_RUNTIME_AUTO			= 2
+
+//options (u_webview/n_webview::SetOption:[option])
+Constant Long WEBVIEW_OPT_STATUSBAR				= 0    // value:boolean - disabled by default
+Constant Long WEBVIEW_OPT_CONTEXT_MENU			= 1    // value:boolean - enabled by default
+Constant Long WEBVIEW_OPT_CUSTOM_DIALOG		= 2    // value:boolean - OnAlert/OnConfirm/OnPrompt, disabled by default
+Constant Long WEBVIEW_OPT_BUILTIN_ERROR_PAGE	= 3    // value:boolean - disabled by default
+Constant Long WEBVIEW_OPT_DEVTOOLS				= 4	 // value:boolean - disabled by default
+Constant Long WEBVIEW_OPT_GET_FAVICON			= 5    // value:boolean - OnFaviconChanged, disabled by default
+
+//create window flags (n_blink::CreateWindow:[flags])
+//注:
+//	1. 使用WEBVIEW_WS_POPUP风格创建时最好指定[owner]参数
+//	2. 使用WEBVIEW_WS_MAIN风格创建时将忽略[owner]参数
+Constant Long WEBVIEW_WS_TITLEBAR   		= 1		// toplevel window, has titlebar
+Constant Long WEBVIEW_WS_RESIZEABLE 		= 2 		// has resizeable frame
+Constant Long WEBVIEW_WS_TOOL      			= 4 		// is tool window
+Constant Long WEBVIEW_WS_CONTROLS   		= 8 		// has minimize / maximize buttons
+Constant Long WEBVIEW_WS_ALPHA      		= 16		// transparent window ( e.g. WS_EX_LAYERED on Windows )
+Constant Long WEBVIEW_WS_MAIN       		= 32		// main window of the app
+Constant Long WEBVIEW_WS_VISIBLE     		= 65536	// the window is visible
+
+/*--- End WebView ---*/
+
 /*--- Thread ---*/
 
 //Thread notify reasons
@@ -1120,7 +1149,6 @@ constant long PY_LIKE_FUZZY_SOUND	= 4	//匹配模糊发音（l=n，f=h，r=l）
 
 /*--- End Pinyin ---*/
 end variables
-
 on enums.create
 call super::create
 TriggerEvent( this, "constructor" )
