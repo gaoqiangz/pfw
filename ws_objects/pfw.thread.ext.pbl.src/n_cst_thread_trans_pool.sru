@@ -107,23 +107,27 @@ _transactions[refIndex].refCount --
 
 //移除并释放连接
 if _transactions[refIndex].refCount <= 0 then
-	if _bKeepAlive then
-		_transactions[refIndex].idleStartTime = CPU()
-	else
-		nCount = UpperBound(_transactions)
-		for index = 1 to nCount
-			if index = refIndex then
-				if IsValidObject(_transactions[index].TransObject) then
+	if _bKeepAlive and IsValidObject(_transactions[refIndex].TransObject) then
+		if Not _transactions[refIndex].TransObject.of_IsBroken() then
+			_transactions[refIndex].idleStartTime = CPU()
+			return RetCode.OK
+		end if
+	end if
+	nCount = UpperBound(_transactions)
+	for index = 1 to nCount
+		if index = refIndex then
+			if IsValidObject(_transactions[index].TransObject) then
+				if Not _transactions[index].TransObject.of_IsBroken() then
 					_transactions[index].TransObject.of_Rollback()
 					_transactions[index].TransObject.of_Disconnect()
-					Destroy _transactions[index].TransObject
 				end if
-			else
-				NewTransactions[UpperBound(NewTransactions) + 1] = _transactions[index]
+				Destroy _transactions[index].TransObject
 			end if
-		next
-		_transactions = NewTransactions
-	end if
+		else
+			NewTransactions[UpperBound(NewTransactions) + 1] = _transactions[index]
+		end if
+	next
+	_transactions = NewTransactions
 end if
 
 return RetCode.OK
@@ -168,16 +172,21 @@ public function long of_get (readonly integer refindex, ref n_cst_thread_trans t
 
 try
 	//初始化连接
-	if Not IsValidObject(_transactions[refIndex].TransObject) then
-		if _sTransCls <> "" then
-			_transactions[refIndex].TransObject = Create Using _sTransCls
-		else
-			_transactions[refIndex].TransObject = Create n_cst_thread_trans
+	if IsValidObject(_transactions[refIndex].TransObject) then
+		if Not _transactions[refIndex].TransObject.of_IsBroken() then
+			TransObject = _transactions[refIndex].TransObject
+			TransObject.of_ClearState()
+			return RetCode.OK
 		end if
-		_transactions[refIndex].TransObject.of_SetTransData(_transactions[refIndex].TransData)
+		Destroy _transactions[refIndex].TransObject
 	end if
+	if _sTransCls <> "" then
+		_transactions[refIndex].TransObject = Create Using _sTransCls
+	else
+		_transactions[refIndex].TransObject = Create n_cst_thread_trans
+	end if
+	_transactions[refIndex].TransObject.of_SetTransData(_transactions[refIndex].TransData)
 	TransObject = _transactions[refIndex].TransObject
-	TransObject.of_ClearState()
 catch(throwable ex)
 	return RetCode.E_INVALID_OBJECT
 end try
