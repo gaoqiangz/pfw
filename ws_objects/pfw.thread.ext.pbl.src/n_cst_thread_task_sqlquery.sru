@@ -499,7 +499,7 @@ end on
 
 event ondotask;call super::ondotask;long rtCode,nRowCnt
 string sSQL,sSQLOriginal,sSQLExec,sSQLSyntax,sModString,sDwArgs,sError,sProp,sColName
-boolean bSwitchStaticMode,bRestoreSQL,bCacheDS,bPlainSQL
+boolean bIsProcedure,bSwitchStaticMode,bRestoreSQL,bCacheDS,bPlainSQL
 long nIndex,nCount,nColIdx,nColCnt
 long nRecordCount,nPageCount
 n_cst_thread_task_sqlbase_ds data
@@ -623,12 +623,14 @@ try
 		sSQLSyntax = ""
 	end if
 	
+	bIsProcedure = (data.Describe("DataWindow.Table.Procedure") <> "!")
+	
 	//保存当前的SQL用于还原
 	sSQLOriginal = data.GetSQLSelect()
 	
 	//替换SQL
 	//支持指定DataObject时修改其运行时SQL
-	if _sSQL <> "" and Not bPlainSQL then
+	if _sSQL <> "" and Not bPlainSQL and Not bIsProcedure then
 		if sSQLOriginal <> _sSQL then
 			sError = data.Modify('DataWindow.Table.Select = "' + _sSQL +'"')
 			if sError <> "" then
@@ -679,7 +681,7 @@ try
 	end if
 	
 	//修改SQL语句
-	if UpperBound(_whereClauses) > 0 or UpperBound(_orderByClauses) > 0 then
+	if Not bIsProcedure and (UpperBound(_whereClauses) > 0 or UpperBound(_orderByClauses) > 0) then
 		if Not sqlParser.Parse(sSQLOriginal) then
 			Event OnError(RetCode.E_INTERNAL_ERROR,"SQL解析失败!")
 			return RetCode.E_INTERNAL_ERROR
@@ -718,7 +720,7 @@ try
 	end if
 	
 	//分页查询
-	if _bPaged then
+	if Not bIsProcedure and _bPaged then
 		rtCode = _of_BuildPagedSQL(TransObject,sSQLExec,ref sSQL)
 		if rtCode <> RetCode.OK then return rtCode
 		//修改SQL
@@ -802,8 +804,9 @@ try
 //		end if
 	end if
 	
-	if _bPaged and _bPageCounting then
-		//保存当前的SQL参数
+	//统计页数
+	//保存当前的SQL参数
+	if Not bIsProcedure and _bPaged and _bPageCounting then
 		sDwArgs = data.Describe("DataWindow.Table.Arguments")
 	end if
 	
@@ -812,7 +815,7 @@ try
 	if rtCode <> RetCode.OK then return rtCode
 	
 	//统计页数
-	if _bPaged and _bPageCounting then
+	if Not bIsProcedure and _bPaged and _bPageCounting then
 		//当前页不足分页大小时不进行统计
 		if (nRowCnt > 0 and nRowCnt < _nPageSize) or (nRowCnt = 0 and _nPageIndex = 1) then
 			nPageCount = _nPageIndex
