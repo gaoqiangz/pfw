@@ -331,9 +331,6 @@ do
 		end if
 	end if
 	
-	//无更新能力
-	if data.Describe("DataWindow.Table.UpdateTable") = "?" and Not _bMultiTableUpdate then exit
-	
 	//*去掉排序条件,保证数据按拷贝的顺序被提交
 	data.SetSort("")
 	
