@@ -189,6 +189,7 @@ Data.of_ClearState()
 
 sUpdateTable = Data.Describe("DataWindow.Table.UpdateTable")
 if sUpdateTable = "" or sUpdateTable = "!" or sUpdateTable = "?" then
+	Event OnDBError(-1,"没有可更新的表","",Primary!,0)
 	Event OnError(RetCode.E_DB_ERROR,"没有可更新的表")
 	return RetCode.E_DB_ERROR
 end if
