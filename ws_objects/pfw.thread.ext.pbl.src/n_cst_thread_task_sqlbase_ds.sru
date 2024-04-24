@@ -53,6 +53,7 @@ n_regexp _re
 constant string RE_NCHAR_PAT = "(=|\(|,)(\s+)'"
 constant string RE_NCHAR_RPL = "$1$2N'"
 end variables
+
 forward prototypes
 public function boolean of_isrowsexceeded ()
 public function long of_setmaxrows (readonly long maxrows)
@@ -99,9 +100,7 @@ TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 
-event dberror;if IsValid(#ParentTask) then
-	return #ParentTask.Event OnDBError(sqldbcode,sqlerrtext,sqlsyntax,buffer,row)
-end if
+event dberror;return #ParentTask.Event OnDBError(sqldbcode,sqlerrtext,sqlsyntax,buffer,row)
 end event
 
 event updateend;_nRowsInserted = rowsInserted

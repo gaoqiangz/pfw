@@ -26,6 +26,11 @@ public:
 //Type
 constant string TASK_TYPE = "sqlupdate"
 
+/*--- Constants ---*/
+Public:
+//Notify codes (wparam)
+Constant Long NCD_PROGRESS = 1 //lparam:(low word:current,high word:total)
+
 /*--- Implementation ---*/
 Private:
 long _nRowsInserted
@@ -41,7 +46,6 @@ powerobject _updateObject
 //Identity columns
 IDCOLDATA _idColDatas[]
 end variables
-
 forward prototypes
 private function n_cst_thread_task_sqlupdate _of_gettask ()
 public function long of_reset ()
