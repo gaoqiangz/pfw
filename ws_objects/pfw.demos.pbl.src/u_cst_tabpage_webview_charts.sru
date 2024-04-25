@@ -32,7 +32,7 @@ end prototypes
 
 public subroutine of_refresh ();if uo_editor.EvaluateSync("hasEditorError()") = "true" then return
 
-uo_webview.Evaluate(ParseJson(uo_editor.EvaluateSync("editor.getValue()")).GetValueString())
+uo_webview.Evaluate(uo_editor.EvaluateSync("editor.getValue()"))
 uo_webview.Evaluate("refresh()")
 end subroutine
 
