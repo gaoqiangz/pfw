@@ -2,6 +2,8 @@
 forward
 global type wx_test_httpclient from window
 end type
+type cb_6 from commandbutton within wx_test_httpclient
+end type
 type cb_5 from commandbutton within wx_test_httpclient
 end type
 type cb_4 from commandbutton within wx_test_httpclient
@@ -36,6 +38,7 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
+cb_6 cb_6
 cb_5 cb_5
 cb_4 cb_4
 st_progress st_progress
@@ -119,6 +122,7 @@ return String(Round(fBytes,2)) + UNITS[nUnit]
 end function
 
 on wx_test_httpclient.create
+this.cb_6=create cb_6
 this.cb_5=create cb_5
 this.cb_4=create cb_4
 this.st_progress=create st_progress
@@ -129,7 +133,8 @@ this.cb_2=create cb_2
 this.cb_1=create cb_1
 this.mle_1=create mle_1
 this.httpclient=create httpclient
-this.Control[]={this.cb_5,&
+this.Control[]={this.cb_6,&
+this.cb_5,&
 this.cb_4,&
 this.st_progress,&
 this.hpb_progress,&
@@ -141,6 +146,7 @@ this.mle_1}
 end on
 
 on wx_test_httpclient.destroy
+destroy(this.cb_6)
 destroy(this.cb_5)
 destroy(this.cb_4)
 destroy(this.st_progress)
@@ -152,6 +158,33 @@ destroy(this.cb_1)
 destroy(this.mle_1)
 destroy(this.httpclient)
 end on
+
+type cb_6 from commandbutton within wx_test_httpclient
+integer x = 613
+integer y = 676
+integer width = 457
+integer height = 132
+integer taborder = 30
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+string text = "Upload"
+end type
+
+event clicked;nx_httprequest req
+nx_httpmultipart multipart
+
+multipart = Create nx_httpmultipart
+multipart.AddFile("file","D:\QQ9.7.1.28934.exe")
+
+req = httpclient.Request("POST","http://8.130.98.132:8848/upload")
+req.SetBody(multipart)
+req.AsyncSend(123,true)
+
+end event
 
 type cb_5 from commandbutton within wx_test_httpclient
 integer x = 599
@@ -172,8 +205,8 @@ event clicked;httpclient.Cancel(123)
 end event
 
 type cb_4 from commandbutton within wx_test_httpclient
-integer x = 613
-integer y = 680
+integer x = 1152
+integer y = 676
 integer width = 457
 integer height = 132
 integer taborder = 30
@@ -232,7 +265,7 @@ end type
 
 event clicked;nx_httprequest req
 
-req = httpclient.Request("GET","https://dldir1.qq.com/qqfile/qq/PCQQ9.7.1/QQ9.7.1.28934.exe")
+req = httpclient.Request("GET","https://dldir1.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.9_240428_x64_01.exe")
 req.SetReceiveFile("D:\QQ9.7.1.28934.exe")
 req.AsyncSend(234,true)
 
@@ -336,6 +369,15 @@ end event
 event onreceive;call super::onreceive;st_progress.text = Sprintf("total: {}, received: {}, speed: {}/s",wf_Bytes2String(total),wf_Bytes2String(received),wf_Bytes2String(speed))
 if total > 0 then
 	hpb_progress.position = received / total * 100
+end if
+
+//返回1阻止
+return 0
+end event
+
+event onsend;call super::onsend;st_progress.text = Sprintf("total: {}, sent: {}, speed: {}/s",wf_Bytes2String(total),wf_Bytes2String(sent),wf_Bytes2String(speed))
+if total > 0 then
+	hpb_progress.position = sent / total * 100
 end if
 
 //返回1阻止

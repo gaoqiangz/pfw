@@ -10,10 +10,11 @@ public function boolean HasAsyncRequest()
 public function nx_httprequest Request(readonly string method, readonly string url)
 public function long Cancel(readonly ulong id)
 public function long CancelAll()
-event type long OnReceive(ulong id,ulong total,ulong received,ulong speed)
 event OnSuccess(ulong id,nx_httpresponse response)
 event OnError(ulong id,nx_httpresponse response)
 event OnComplete(ulong id,nx_httpresponse response)
+event type long OnReceive(ulong id,ulong total,ulong received,ulong speed)
+event type long OnSend(ulong id,ulong total,ulong sent,ulong speed)
 end type
 global nx_httpclient nx_httpclient
 
