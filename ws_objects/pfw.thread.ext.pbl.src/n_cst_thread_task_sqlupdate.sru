@@ -115,14 +115,12 @@ next
 //Key Columns
 nCount = UpperBound(Tables[index].KeyColumns)
 for nIndex = 1 to nCount
-	if Data.Describe(Tables[index].KeyColumns[nIndex] + ".Key") <> "yes" then
-		nColId = Long(Data.Describe(Tables[index].KeyColumns[nIndex] + ".Id"))
-		if nColId <= 0 then
-			Event OnError(RetCode.E_INTERNAL_ERROR,"无效的列名:" + Tables[index].KeyColumns[nIndex])
-			return RetCode.E_INTERNAL_ERROR
-		end if
-		nKeyColumns[UpperBound(nKeyColumns) + 1] = nColId
+	nColId = Long(Data.Describe(Tables[index].KeyColumns[nIndex] + ".Id"))
+	if nColId <= 0 then
+		Event OnError(RetCode.E_INTERNAL_ERROR,"无效的列名:" + Tables[index].KeyColumns[nIndex])
+		return RetCode.E_INTERNAL_ERROR
 	end if
+	nKeyColumns[UpperBound(nKeyColumns) + 1] = nColId
 	sModString += Tables[index].KeyColumns[nIndex] + ".Key = yes" + "~n"
 next
 //Identity Column
