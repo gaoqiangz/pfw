@@ -182,7 +182,7 @@ multipart.AddFile("file","D:\QQ9.7.1.28934.exe")
 
 req = httpclient.Request("POST","http://8.130.98.132:8848/upload")
 req.SetBody(multipart)
-req.AsyncSend(123,true)
+req.AsyncSend(234,true)
 
 end event
 
