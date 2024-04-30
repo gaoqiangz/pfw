@@ -501,7 +501,7 @@ n_scriptinvoker invoker
 
 nParmCnt = UpperBound(_sqlParams)
 
-if nParmCnt <= 8 then
+if nParmCnt <= 10 then
 	choose case nParmCnt
 		case 0
 			nRowCnt = Data.Retrieve()
@@ -521,6 +521,10 @@ if nParmCnt <= 8 then
 			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value)
 		case 8
 			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value)
+		case 9
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value)
+		case 10
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value)
 	end choose
 else
 	invoker = Create n_scriptinvoker
