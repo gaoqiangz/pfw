@@ -130,6 +130,7 @@ String 	_taskClsName
 NAMEDDATA _datas[]
 
 end variables
+
 forward prototypes
 public function boolean of_isbusy ()
 public function long of_getlastexitcode ()
@@ -173,6 +174,7 @@ public function long of_preventevent ()
 public function long of_setdelayfor (readonly double seconds)
 public function long of_preventevent (boolean deep)
 public function long of_setgroup (readonly long group)
+public function long of_setskip (readonly boolean skip)
 end prototypes
 
 event type long oninit(n_cst_threading parentthreading, n_cst_thread parentthread, integer index, unsignedlong hevtsync, string clsname);long rtCode
@@ -610,6 +612,10 @@ end function
 
 public function long of_setgroup (readonly long group);if #ParentThreading.#Running then return RetCode.E_BUSY
 return _Task.of_SetGroup(group)
+end function
+
+public function long of_setskip (readonly boolean skip);if of_IsBusy() then return RetCode.E_BUSY
+return _Task.of_SetSkip(skip)
 end function
 
 on n_cst_threading_task.create

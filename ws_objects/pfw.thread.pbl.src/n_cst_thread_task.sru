@@ -84,6 +84,8 @@ Ulong _id
 Ulong _hEvtCancelled
 n_cst_threading_eventful _eventful
 
+Boolean _bSkip
+
 Long		_lastErrCode
 String	_lastErrInfo
 
@@ -91,6 +93,7 @@ double _fDelayFor //sec
 
 NAMEDDATA _datas[]
 end variables
+
 forward prototypes
 public function boolean of_iscancelled ()
 public function unsignedlong of_getcancelevent ()
@@ -154,6 +157,7 @@ public function long of_getlasterrorcode ()
 public function string of_getlasterrorinfo ()
 public function long of_clearerror ()
 public function long of_setgroup (readonly long group)
+public function long of_setskip (readonly boolean skip)
 end prototypes
 
 event type long onstart();if of_IsCancelled() then return RetCode.PREVENT
@@ -237,6 +241,7 @@ end function
 public function long of_execute ();long nExitCode
 
 if #Running then return RetCode.E_BUSY
+if _bSkip then return RetCode.OK
 
 of_ClearError()
 
@@ -252,7 +257,11 @@ else
 			if of_IsCancelled() then
 				nExitCode = RetCode.CANCELLED
 			else
-				nExitCode = Event OnDoTask()
+				if Not _bSkip then
+					nExitCode = Event OnDoTask()
+				else
+					nExitCode = RetCode.OK
+				end if
 			end if
 		end if
 	catch(Throwable ex)
@@ -601,6 +610,10 @@ public function long of_setgroup (readonly long group);if group < GROUP_NORMAL o
 
 #Group = group
 
+return RetCode.OK
+end function
+
+public function long of_setskip (readonly boolean skip);_bSkip = skip
 return RetCode.OK
 end function
 
