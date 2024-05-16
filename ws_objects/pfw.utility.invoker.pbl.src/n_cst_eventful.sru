@@ -381,24 +381,18 @@ end if
 if newEvent.name = "" then return RetCode.E_INVALID_ARGUMENT
 
 nCount = UpperBound(Events)
-for nIndex = 1 to nCount
-	if Not IsValidObject(Events[nIndex].object) then
-		bCollect = true
-		continue
-	end if
-	if Events[nIndex].name <> newEvent.name then continue
-	if Events[nIndex].object <> newEvent.object then continue
-	if Events[nIndex].evtName <> newEvent.evtName then continue
-	Events[nIndex].invalid = false
-	Events[nIndex].disabled = false
-	Events[nIndex].capture = newEvent.capture
-	//Events[nIndex].priority = newEvent.priority
-	return RetCode.OK
-next
 
-if bCollect and _nDeep <= 0 then
-	_of_Collect()
-	nCount = UpperBound(Events)
+if _nDeep <= 0 then
+	for nIndex = 1 to nCount
+		if Not IsValidObject(Events[nIndex].object) then
+			bCollect = true
+			exit
+		end if
+	next
+	if bCollect then
+		_of_Collect()
+		nCount = UpperBound(Events)
+	end if
 end if
 
 newEvent.invoker = Create n_scriptinvoker
