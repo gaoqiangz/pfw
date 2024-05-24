@@ -67,25 +67,10 @@ public function integer of_addref (readonly transactiondata transdata)
 public function long of_get (readonly integer refindex, ref n_cst_thread_trans transobject)
 public function boolean of_exists (readonly transactiondata transdata)
 public function long of_removeall (readonly boolean force)
+public subroutine of_collect (readonly boolean force)
 end prototypes
 
-event onidle(n_cst_thread thread);int index,nCount
-SHAREDTRANSACTIONDATA NewTransactions[]
-
-nCount = UpperBound(_transactions)
-for index = 1 to nCount
-	if _transactions[index].refCount <= 0 and CPU() - _transactions[index].idleStartTime >= _nKeepAliveExpireTime then
-		if IsValidObject(_transactions[index].TransObject) then
-			_transactions[index].TransObject.of_Rollback()
-			_transactions[index].TransObject.of_Disconnect()
-			Destroy _transactions[index].TransObject
-		end if
-	else
-		NewTransactions[UpperBound(NewTransactions) + 1] = _transactions[index]
-	end if
-next
-_transactions = NewTransactions
-
+event onidle(n_cst_thread thread);of_Collect(false)
 end event
 
 event oninit(n_cst_thread parentthread);if parentThread.#ParentThreading.of_GetDataBoolean("$SQL.TransPool.KeepAlive") then
@@ -224,6 +209,25 @@ _transactions = NewTransactions
 
 return RetCode.OK
 end function
+
+public subroutine of_collect (readonly boolean force);int index,nCount
+SHAREDTRANSACTIONDATA NewTransactions[]
+
+nCount = UpperBound(_transactions)
+for index = 1 to nCount
+	if _transactions[index].refCount <= 0 and (CPU() - _transactions[index].idleStartTime >= _nKeepAliveExpireTime or force) then
+		if IsValidObject(_transactions[index].TransObject) then
+			_transactions[index].TransObject.of_Rollback()
+			_transactions[index].TransObject.of_Disconnect()
+			Destroy _transactions[index].TransObject
+		end if
+	else
+		NewTransactions[UpperBound(NewTransactions) + 1] = _transactions[index]
+	end if
+next
+_transactions = NewTransactions
+
+end subroutine
 
 on n_cst_thread_trans_pool.create
 call super::create
