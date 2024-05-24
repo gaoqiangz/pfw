@@ -81,14 +81,15 @@ PrivateWrite 	n_cst_threading 	#ParentThreading
 PrivateWrite 	Boolean 				#Running 			= false
 
 /*--- Implementation ---*/
+Protected:
+n_cst_eventful _eventful
+
 Private:
 Ulong _handle
 Ulong _id
 Ulong _idMain
 Ulong _hEvtCancelled
 n_cst_thread_task Tasks[]
-
-n_cst_eventful _eventful
 
 NAMEDDATA _datas[]
 
@@ -99,7 +100,6 @@ Ulong _nTaskNextId
 
 constant double IDLE_INTERVAL = 1 //sec
 end variables
-
 forward prototypes
 public function integer of_inserttask (readonly integer index, ref n_cst_thread_task newtask, readonly string tasktypename)
 public function integer of_addtask (ref n_cst_thread_task newtask, string tasktypename)
