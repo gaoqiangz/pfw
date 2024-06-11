@@ -560,7 +560,7 @@ Constant Long WEBVIEW_OPT_BUILTIN_ERROR_PAGE	= 3    // value:boolean - disabled 
 Constant Long WEBVIEW_OPT_DEVTOOLS				= 4	 // value:boolean - disabled by default
 Constant Long WEBVIEW_OPT_GET_FAVICON			= 5    // value:boolean - OnFaviconChanged, disabled by default
 
-//create window flags (n_blink::CreateWindow:[flags])
+//create window flags (n_webview::CreateWindow:[flags])
 //注:
 //	1. 使用WEBVIEW_WS_POPUP风格创建时最好指定[owner]参数
 //	2. 使用WEBVIEW_WS_MAIN风格创建时将忽略[owner]参数
