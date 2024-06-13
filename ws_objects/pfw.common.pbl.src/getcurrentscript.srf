@@ -4,20 +4,6 @@ global type getcurrentscript from function_object
 end type
 
 forward prototypes
-global function string getcurrentscript ()
+global function string getcurrentscript () system library "pfw.dll" alias for "pfwGetCurrentScript"
+global function boolean getcurrentscript (ref string module, ref long lineno) system library "pfw.dll" alias for "pfwGetCurrentScript"
 end prototypes
-
-global function string getcurrentscript ();int nCount
-string sScript,sCallStack[]
-
-try
-	nCount = StackTrace(ref sCallStack)
-	if nCount < 1  then return ""
-	sScript = sCallStack[nCount - 1]
-catch(throwable ex)
-	sScript = ""
-end try
-
-return sScript
-end function
-
