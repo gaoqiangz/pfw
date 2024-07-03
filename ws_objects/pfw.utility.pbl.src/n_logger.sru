@@ -158,7 +158,7 @@ public function long Custom(readonly ulong level,readonly string name,readonly s
 public function long Custom(readonly ulong level,readonly string name,readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9)
 public function long Custom(readonly ulong level,readonly string name,readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10)
 public function long Custom(readonly ulong level,readonly string name,readonly string fmt,any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11)
-event OnLog(string module,long lineno,ulong level,string text)
+event type long OnLog(string module,long lineno,ulong level,string text)
 end type
 global n_logger n_logger
 
