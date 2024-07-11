@@ -1,0 +1,29 @@
+﻿$PBExportHeader$makejsonarray.srf
+global type MakeJsonarray from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function n_json MakeJsonArray()
+global function n_json MakeJsonArray(any param1)
+global function n_json MakeJsonArray(any param1,any param2)
+global function n_json MakeJsonArray(any param1,any param2,any param3)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15,any param16)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15,any param16,any param17)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15,any param16,any param17,any param17)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15,any param16,any param17,any param17,any param18)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15,any param16,any param17,any param17,any param18,any param19)
+global function n_json MakeJsonArray(any param1,any param2,any param3,any param4,any param5,any param6,any param7,any param8,any param9,any param10,any param11,any param12,any param13,any param14,any param15,any param16,any param17,any param17,any param18,any param19,any param20)
+end prototypes
+
