@@ -156,6 +156,7 @@ end event
 event type long onpaint(unsignedlong hdc);RECT cliRect
 
 if #LockUpdate then return 1
+if Not IsValid(_SplitContainer) then return 1
 
 Event OnEraseBkgnd(hdc)
 
