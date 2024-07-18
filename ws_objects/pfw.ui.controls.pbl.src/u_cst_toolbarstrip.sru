@@ -2012,6 +2012,10 @@ if Items[index].ItemType = ITT_SEPARATOR then return RetCode.E_NO_SUPPORT
 if Items[index].enabled = bEnabled then return RetCode.OK
 
 Items[index].enabled = bEnabled
+if Items[index].itemType = ITT_OBJECT then
+	Win32.EnableWindow(Handle(Items[index].Object),bEnabled)
+end if
+
 _of_DrawItem(index,true)
 
 return RetCode.OK
