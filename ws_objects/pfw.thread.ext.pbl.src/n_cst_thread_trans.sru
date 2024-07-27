@@ -16,9 +16,9 @@ event onafterupdate ( datastore data,  long result )
 event type long onbeforeupdate ( datastore data )
 event type long onbeforecommand ( string sqlcmd )
 event onaftercommand ( string sqlcmd )
-event type long onbeforecommit ( )
+event onbeforecommit ( )
 event onaftercommit ( )
-event type long onbeforerollback ( )
+event onbeforerollback ( )
 event onafterrollback ( )
 event onattach ( n_cst_thread_task parenttask )
 event onsyntaxfromsql ( readonly string sql,  readonly string presentation,  ref string sqlsyntax,  ref string errinfo )
@@ -169,7 +169,7 @@ nSQLNRows = SQLNRows
 sSQLErrText = SQLErrText
 sSQLReturnData = SQLReturnData
 
-if IsPrevented(Event OnBeforeRollback()) then return
+Event OnBeforeRollback()
 
 ROLLBACK USING this;
 
@@ -240,15 +240,7 @@ end function
 public function long of_commit (readonly boolean autorollback);if AutoCommit then return RetCode.FAILED
 if _bBroken then return RetCode.E_INVALID_TRANSACTION
 
-if IsPrevented(Event OnBeforeCommit()) then
-	if SQLCode <> 0 then
-		if autoRollback then
-			_of_CleanRollback()
-		end if
-		return RetCode.E_DB_ERROR
-	end if
-	return RetCode.CANCELLED
-end if
+Event OnBeforeCommit()
 
 COMMIt USING this;
 
@@ -504,6 +496,8 @@ nSQLNRows = SQLNRows
 sSQLErrText = SQLErrText
 sSQLReturnData = SQLReturnData
 
+Event OnBeforeDisconnect()
+
 DISCONNECT USING this;
 
 SQLCode = nSQLCode
@@ -511,6 +505,8 @@ SQLDBCode = nSQLDBCode
 SQLNRows = nSQLNRows
 SQLErrText = sSQLErrText
 SQLReturnData = sSQLReturnData
+
+Event OnAfterDisconnect()
 end subroutine
 
 public function long of_setbroken ();_bBroken = true
