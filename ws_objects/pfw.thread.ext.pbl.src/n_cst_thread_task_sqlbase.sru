@@ -525,6 +525,26 @@ if nParmCnt <= 10 then
 			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value)
 		case 10
 			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value)
+		case 11
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value)
+		case 12
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value)
+		case 13
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value)
+		case 14
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value)
+		case 15
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value)
+		case 16
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value)
+		case 17
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value)
+		case 18
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value,_sqlParams[18].value)
+		case 19
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value,_sqlParams[18].value,_sqlParams[19].value)
+		case 20
+			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value,_sqlParams[18].value,_sqlParams[19].value,_sqlParams[20].value)
 	end choose
 else
 	invoker = Create n_scriptinvoker
