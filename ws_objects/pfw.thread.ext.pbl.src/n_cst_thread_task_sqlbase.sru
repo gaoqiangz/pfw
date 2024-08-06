@@ -496,61 +496,97 @@ end function
 protected function long _of_sqlbindparams (ref string sql, readonly long dbtype);return _of_SQLBindParams(ref sql,dbType,"")
 end function
 
-protected function long _of_retrievewithparams (readonly datastore data);long nRowCnt,nParmIdx,nParmCnt
+protected function long _of_retrievewithparams (readonly datastore data);long nRowCnt,nParmIdx,nParmCnt,nDwArgIdx,nDwArgCnt
+string sDwArgs[]
+any aParams[]
+boolean bHasNamedParm
 n_scriptinvoker invoker
 
 nParmCnt = UpperBound(_sqlParams)
+for nParmIdx = 1 to nParmCnt
+	if _sqlParams[nParmIdx].name <> "" then
+		bHasNamedParm = true
+		exit
+	end if
+next
+
+//自动匹配DW参数索引
+if bHasNamedParm then
+	nDwArgCnt = _of_ParseArgs(Data.Describe("DataWindow.Table.Arguments"),ref sDwArgs)
+	if nParmCnt >= nDwArgCnt then
+		for nDwArgIdx = 1 to nDwArgCnt
+			//查找参数
+			for nParmIdx = 1 to nParmCnt
+				if _sqlParams[nParmIdx].name = sDwArgs[nDwArgIdx] then
+					aParams[nDwArgIdx] = _sqlParams[nParmIdx].value
+					exit
+				end if
+			next
+			//没有找到按顺序取参
+			if nParmIdx > nParmCnt then
+				aParams[nDwArgIdx] = _sqlParams[nDwArgIdx].value
+			end if
+		next
+	end if
+end if
+
+if UpperBound(aParams) = 0 then
+	for nParmIdx = 1 to nParmCnt
+		aParams[nParmIdx] = _sqlParams[nParmIdx].value
+	next
+end if
+nParmCnt = UpperBound(aParams)
 
 if nParmCnt <= 20 then
 	choose case nParmCnt
 		case 0
 			nRowCnt = Data.Retrieve()
 		case 1
-			nRowCnt = Data.Retrieve(_sqlParams[1].value)
+			nRowCnt = Data.Retrieve(aParams[1])
 		case 2
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2])
 		case 3
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3])
 		case 4
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4])
 		case 5
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5])
 		case 6
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6])
 		case 7
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7])
 		case 8
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8])
 		case 9
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9])
 		case 10
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10])
 		case 11
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11])
 		case 12
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12])
 		case 13
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13])
 		case 14
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14])
 		case 15
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15])
 		case 16
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16])
 		case 17
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17])
 		case 18
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value,_sqlParams[18].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18])
 		case 19
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value,_sqlParams[18].value,_sqlParams[19].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18],aParams[19])
 		case 20
-			nRowCnt = Data.Retrieve(_sqlParams[1].value,_sqlParams[2].value,_sqlParams[3].value,_sqlParams[4].value,_sqlParams[5].value,_sqlParams[6].value,_sqlParams[7].value,_sqlParams[8].value,_sqlParams[9].value,_sqlParams[10].value,_sqlParams[11].value,_sqlParams[12].value,_sqlParams[13].value,_sqlParams[14].value,_sqlParams[15].value,_sqlParams[16].value,_sqlParams[17].value,_sqlParams[18].value,_sqlParams[19].value,_sqlParams[20].value)
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18],aParams[19],aParams[20])
 	end choose
 else
 	invoker = Create n_scriptinvoker
 	invoker.Init(Data,"retrieve","LAV")
 	for nParmIdx = 1 to nParmCnt
-		invoker.SetArg(nParmIdx,_sqlParams[nParmIdx].value)
+		invoker.SetArg(nParmIdx,aParams[nParmIdx])
 	next
 	nRowCnt = invoker.Invoke()
 	Destroy invoker
