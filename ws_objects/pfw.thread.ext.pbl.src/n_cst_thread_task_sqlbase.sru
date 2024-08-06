@@ -501,7 +501,7 @@ n_scriptinvoker invoker
 
 nParmCnt = UpperBound(_sqlParams)
 
-if nParmCnt <= 10 then
+if nParmCnt <= 20 then
 	choose case nParmCnt
 		case 0
 			nRowCnt = Data.Retrieve()
