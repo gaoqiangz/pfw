@@ -103,7 +103,6 @@ if _transactions[refIndex].refCount <= 0 then
 		if index = refIndex then
 			if IsValidObject(_transactions[index].TransObject) then
 				if Not _transactions[index].TransObject.of_IsBroken() then
-					_transactions[index].TransObject.of_Rollback()
 					_transactions[index].TransObject.of_Disconnect()
 				end if
 				Destroy _transactions[index].TransObject
@@ -123,7 +122,6 @@ if Not IsValidObject(TransObject) then return RetCode.E_INVALID_OBJECT
 
 if _transactions[refIndex].refCount = 1 then
 	//释放连接
-	TransObject.of_Rollback()
 	TransObject.of_Disconnect()
 end if
 
@@ -196,7 +194,6 @@ nCount = UpperBound(_transactions)
 for index = 1 to nCount
 	if _transactions[index].refCount <= 0 or force then
 		if IsValidObject(_transactions[index].TransObject) then
-			_transactions[index].TransObject.of_Rollback()
 			_transactions[index].TransObject.of_Disconnect()
 			Destroy _transactions[index].TransObject
 		end if
@@ -217,7 +214,6 @@ nCount = UpperBound(_transactions)
 for index = 1 to nCount
 	if _transactions[index].refCount <= 0 and (CPU() - _transactions[index].idleStartTime >= _nKeepAliveExpireTime or force) then
 		if IsValidObject(_transactions[index].TransObject) then
-			_transactions[index].TransObject.of_Rollback()
 			_transactions[index].TransObject.of_Disconnect()
 			Destroy _transactions[index].TransObject
 		end if
