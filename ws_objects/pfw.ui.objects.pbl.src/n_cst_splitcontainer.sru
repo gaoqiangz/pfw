@@ -40,6 +40,7 @@ event type long onvisiblechanged ( boolean visible )
 event type long onerasebkgnd ( unsignedlong hdc )
 event onsplitbarmoved ( n_cst_splitcontainer splitcontainer,  real offset,  integer index )
 event oncheckhiddenstatus ( )
+event onmakedirty ( )
 timer timer
 panel1 panel1
 panel2 panel2
@@ -1061,6 +1062,11 @@ event oncheckhiddenstatus();Panel1.Event OnCheckHiddenStatus()
 Panel2.Event OnCheckHiddenStatus()
 end event
 
+event onmakedirty();_layoutChanged = true
+Panel1.Event OnMakeDirty()
+Panel2.Event OnMakeDirty()
+end event
+
 public function integer of_getobjectcount ();return Panel1.of_GetObjectCount() + Panel2.of_GetObjectCount()
 end function
 
@@ -1086,7 +1092,7 @@ end subroutine
 public function long of_updatepoints ();ulong hdwp
 RECTF newRect
 
-_layoutChanged = true
+Event OnMakeDirty()
 
 if of_IsLockUpdate() then return RetCode.FAILED
 if Not of_IsVisible() then return RetCode.OK

@@ -44,6 +44,7 @@ event type long onvisiblechanged ( boolean visible )
 event type long onerasebkgnd ( unsignedlong hdc )
 event onsplitbarmoved ( n_cst_splitcontainer splitcontainer,  real offset,  integer index )
 event oncheckhiddenstatus ( )
+event onmakedirty ( )
 font font
 end type
 global n_cst_splitcontainer_panel n_cst_splitcontainer_panel
@@ -359,6 +360,7 @@ elseif IsValidObject(Item.Object) then
 	 ***MAGIC CODE***
 	*/
 	if Visible then
+		Win32.SetRedraw(Handle(Item.Object),true)
 		Item.Object.Show()
 	else
 		Item.Object.Hide()
@@ -386,13 +388,25 @@ end event
 event oncheckhiddenstatus();if Item.IsContainer then
 	Item.SplitContainer.Event OnCheckHiddenStatus()
 elseif IsValidObject(Item.Object) then
-	if Item.Object.Visible then
+	if Win32.IsWindowVisible(Handle(Item.Object)) then
 		if Not of_IsVisible() then
 			Event OnVisibleChanged(false)
+		end if
+	else
+		if of_IsVisible() then
+			Event OnVisibleChanged(true)
 		end if
 	end if
 end if
 
+end event
+
+event onmakedirty();_layoutChanged = true
+if Item.IsContainer then
+	if Item.SplitContainer.#Visible then
+		Item.SplitContainer.Event OnMakeDirty()
+	end if
+end if
 end event
 
 private function boolean _of_isobjectcreator (readonly windowobject object);if Not IsValidObject(object) then return false
@@ -403,7 +417,7 @@ end function
 public function long of_updatepoints ();ulong hdwp
 RECTF newRect
 
-_layoutChanged = true
+Event OnMakeDirty()
 
 if of_IsLockUpdate() then return RetCode.FAILED
 if Not of_IsVisible() then return RetCode.OK
