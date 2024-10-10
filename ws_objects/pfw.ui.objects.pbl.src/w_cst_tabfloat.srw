@@ -6,8 +6,8 @@ end type
 end forward
 
 global type w_cst_tabfloat from s_cst_window
-integer width = 2408
-integer height = 1597
+integer width = 2409
+integer height = 1596
 string title = ""
 windowtype windowtype = popup!
 boolean center = false
@@ -234,7 +234,7 @@ end event
 
 event closequery;call super::closequery;if Not IsValidObject(#ParentTabControl) then return 0
 if Not _inClosing then
-	#ParentTabControl.Post of_Remove(wf_GetTabIndex())
+	#ParentTabControl.of_Remove(wf_GetTabIndex())
 	return 1
 end if
 
@@ -251,7 +251,7 @@ end event
 event close;call super::close;if Not IsValidObject(#ParentTabControl) then return 0
 if Not _inClosing then
 	_inClosing = true
-	#ParentTabControl.of_Remove(wf_GetTabIndex())
+	#ParentTabControl.of_Remove(wf_GetTabIndex(),true)
 end if
 
 return 0

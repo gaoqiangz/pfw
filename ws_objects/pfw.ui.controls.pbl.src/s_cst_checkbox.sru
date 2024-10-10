@@ -346,6 +346,7 @@ if _MouseDown then
 	_MouseDown = false
 	if _MouseOver then
 		if IsAllowed(Event OnClicking()) then
+			if Not IsValid(this) then return 1
 			if ThreeState then
 				if Not Checked then
 					Checked = true
@@ -358,7 +359,8 @@ if _MouseDown then
 			else
 				Checked = Not Checked
 			end if
-			Post Event Clicked()
+			Event Clicked()
+			if Not IsValid(this) then return 1
 		end if
 	end if
 	of_Redraw(false)
@@ -427,6 +429,7 @@ event onkeyup;if key = KeySpaceBar! then
 		_mouseover=false
 		_MouseDown = false
 		if IsAllowed(Event OnClicking()) then
+			if Not IsValid(this) then return 1
 			if ThreeState then
 				if Not Checked then
 					Checked = true
@@ -439,7 +442,8 @@ event onkeyup;if key = KeySpaceBar! then
 			else
 				Checked = Not Checked
 			end if
-			Post Event Clicked()
+			Event Clicked()
+			if Not IsValid(this) then return 1
 		end if
 		of_Redraw(false)
 	end if

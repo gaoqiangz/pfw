@@ -320,10 +320,12 @@ if _MouseDown then
 	_MouseDown = false
 	if _MouseOver then
 		if IsAllowed(Event OnClicking()) then
+			if Not IsValid(this) then return 1
 			if Automatic then
 				Checked = true
 			end if
-			Post Event Clicked()
+			Event Clicked()
+			if Not IsValid(this) then return 1
 		end if
 	end if
 	of_Redraw(false)
@@ -356,8 +358,9 @@ if _inSetFocusing then return 0
 
 if Automatic and Not Checked then
 	if IsAllowed(Event OnClicking()) then
+		if Not IsValid(this) then return 1
 		Checked = true
-		Post Event Clicked()
+		Event Clicked()
 	end if
 end if
 
@@ -401,10 +404,12 @@ event onkeyup;if key = KeySpaceBar! then
 		_mouseover=false
 		_MouseDown = false
 		if IsAllowed(Event OnClicking()) then
+			if Not IsValid(this) then return 1
 			if Automatic then
 				Checked = true
 			end if
-			Post Event Clicked()
+			Event Clicked()
+			if Not IsValid(this) then return 1
 		end if
 		of_Redraw(false)
 	end if

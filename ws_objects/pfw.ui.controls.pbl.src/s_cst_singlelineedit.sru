@@ -397,7 +397,8 @@ if _MouseCaptured then
 		of_Redraw(true)
 		if IconData.MouseOver then
 			if IsAllowed(Event OnImageClicking()) then
-				Post Event OnImageClicked()
+				if Not IsValid(this) then return 1
+				Event OnImageClicked()
 			end if
 		end if
 	end if

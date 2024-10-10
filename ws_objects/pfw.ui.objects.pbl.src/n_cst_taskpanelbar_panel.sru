@@ -284,10 +284,12 @@ event oncapturechanged();if _MouseCaptured then
 		TitleBar.MouseDown = false
 		_of_DrawTitleBar(true)
 		#ParentTaskPanelBar.Event OnTitleBarMouseUp(this,0,0)
+		if Not IsValid(this) then return
 	end if
 	Event OnMouseLeave()
 elseif _mouseDownIndex > 0 then
 	Items[_mouseDownIndex].Event OnCaptureChanged()
+	if Not IsValid(this) then return
 	_mouseDownIndex = 0
 end if
 end event
@@ -335,15 +337,19 @@ event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);if _MouseCa
 		TitleBar.MouseDown = false
 		_of_DrawTitleBar(true)
 		#ParentTaskPanelBar.Event OnTitleBarMouseUp(this,xpos,ypos)
+		if Not IsValid(this) then return 0
 		if TitleBar.MouseOver then
 			if IsAllowed(#ParentTaskPanelBar.Event OnTitleBarClicking(this)) then
+				if Not IsValid(this) then return 0
 				of_SetCollapsed(Not #Collapsed,true)
-				#ParentTaskPanelBar.Post Event OnTitleBarClicked(this)
+				#ParentTaskPanelBar.Event OnTitleBarClicked(this)
+				if Not IsValid(this) then return 0
 			end if
 		end if
 	end if
 elseif _mouseDownIndex > 0 then
 	Items[_mouseDownIndex].Event OnLButtonUp(vkey,xpos,ypos)
+	if Not IsValid(this) then return 0
 	_mouseDownIndex = 0
 end if
 

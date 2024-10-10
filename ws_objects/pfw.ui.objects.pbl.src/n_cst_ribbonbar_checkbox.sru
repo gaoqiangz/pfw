@@ -395,14 +395,16 @@ _MouseDown = false
 of_Redraw(true)
 
 #ParentRibbonBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver then
 	#ParentPanel.of_ExitPopupMode(0,true)
 	if IsAllowed(#ParentRibbonBar.Event OnItemChecking(this)) then
+		if Not IsValid(this) then return 0
 		if #Automatic then
 			of_Check(false)
 		end if
-		#ParentRibbonBar.Post Event OnItemChecked(this)
+		#ParentRibbonBar.Event OnItemChecked(this)
 	end if
 end if
 
@@ -542,11 +544,13 @@ _of_CaptureMouse(false)
 _RightMouseDown = false
 
 #ParentRibbonBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver then
 	if IsAllowed(#ParentRibbonBar.Event OnItemRightClicking(this)) then
+		if Not IsValid(this) then return 0
 		//#ParentPanel.of_ExitPopupMode(0,true)
-		#ParentRibbonBar.Post Event OnItemRightClicked(this)
+		#ParentRibbonBar.Event OnItemRightClicked(this)
 	end if
 end if
 

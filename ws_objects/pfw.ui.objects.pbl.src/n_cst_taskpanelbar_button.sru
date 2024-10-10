@@ -575,8 +575,10 @@ end if
 
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 if IsPrevented(#ParentTaskPanelBar.Event OnPopupMenu(this,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = _PopupMenu.of_Popup(#ParentTaskPanelBar.#Handle,xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
 
 _lastPopupTime = Cpu()
 
@@ -639,11 +641,13 @@ if #Style = Enums.BTS_DROPDOWN or &
 	else
 		_MouseDown = true
 		#ParentTaskPanelBar.Event OnItemMouseDown(this,xpos,ypos)
+		if Not IsValid(this) then return 0
 	end if
 	of_Redraw(false)
 	
 	pmCode = _of_PopupMenu(xpos,ypos)
-		
+	if Not IsValid(this) then return 0
+	
 	if #Style = Enums.BTS_SPLIT then
 		Chevron.MouseDown = false
 	else
@@ -653,7 +657,8 @@ if #Style = Enums.BTS_DROPDOWN or &
 	
 	if pmCode > 0 then
 		if IsAllowed(#ParentTaskPanelBar.Event OnMenuSelecting(this,pmCode)) then
-			#ParentTaskPanelBar.Post Event OnMenuSelected(this,pmCode)
+			if Not IsValid(this) then return 0
+			#ParentTaskPanelBar.Event OnMenuSelected(this,pmCode)
 		end if
 	end if
 else
@@ -674,10 +679,12 @@ _MouseDown = false
 of_Redraw(true)
 
 #ParentTaskPanelBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver and Not Chevron.MouseOver then
 	if IsAllowed(#ParentTaskPanelBar.Event OnItemClicking(this)) then
-		#ParentTaskPanelBar.Post Event OnItemClicked(this)
+		if Not IsValid(this) then return 0
+		#ParentTaskPanelBar.Event OnItemClicked(this)
 	end if
 end if
 

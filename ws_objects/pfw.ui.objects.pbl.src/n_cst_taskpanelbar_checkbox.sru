@@ -332,13 +332,15 @@ _MouseDown = false
 of_Redraw(true)
 
 #ParentTaskPanelBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver then
 	if IsAllowed(#ParentTaskPanelBar.Event OnItemChecking(this)) then
+		if Not IsValid(this) then return 0
 		if #Automatic then
 			of_Check(false)
 		end if
-		#ParentTaskPanelBar.Post Event OnItemChecked(this)
+		#ParentTaskPanelBar.Event OnItemChecked(this)
 	end if
 end if
 

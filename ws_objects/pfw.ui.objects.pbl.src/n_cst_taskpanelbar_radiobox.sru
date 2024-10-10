@@ -270,14 +270,16 @@ _MouseDown = false
 of_Redraw(true)
 
 #ParentTaskPanelBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver then
 	if IsAllowed(#ParentTaskPanelBar.Event OnItemChecking(this)) then
+		if Not IsValid(this) then return 0
 		if #Automatic and Not #Checked then
 		//	of_SetChecked(true)
 			#ParentPanel.of_CheckRadios(1,#ParentPanel.of_GetCount(),#ParentPanel.of_GetIndex(this),true)
 		end if
-		#ParentTaskPanelBar.Post Event OnItemChecked(this)
+		#ParentTaskPanelBar.Event OnItemChecked(this)
 	end if
 end if
 

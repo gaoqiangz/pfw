@@ -411,6 +411,8 @@ if Chevron.MouseOVer then
 	_of_DrawChevron(false)
 	
 	#ParentWindow.Event OnButtonMouseDown(IDX_CHEVRON,xpos,ypos,WOT_STATUSBAR)
+	if Not IsValid(this) then return 1
+	
 	_of_PopupMenu(xpos,ypos)
 	
 	Chevron.MouseDown = false
@@ -431,6 +433,8 @@ if _mouseOverIndex > 0 then
 			_of_DrawItem(li_mouseOverIndex,false)
 			
 			#ParentWindow.Event OnButtonMouseDown(li_mouseOverIndex,xpos,ypos,WOT_STATUSBAR)
+			if Not IsValid(this) then return 1
+	
 			_of_PopupMenu(li_mouseOverIndex,xpos,ypos)
 			
 			Items[li_mouseOverIndex].mousedown=false
@@ -455,25 +459,30 @@ end if
 return 1
 end event
 
-event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);if Not _MouseCaptured then return 1
+event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);int nMouseDownIndex
+
+if Not _MouseCaptured then return 1
 
 _of_CaptureMouse(false)
 
 if _mouseDownIndex > 0 then
-	Items[_mouseDownIndex].MouseDown = false
-	_of_DrawItem(_mouseDownIndex,true)
+	nMouseDownIndex = _mouseDownIndex
+	_mouseDownIndex = 0
+	
+	Items[nMouseDownIndex].MouseDown = false
+	_of_DrawItem(nMouseDownIndex,true)
 	
 	Win32.SetCursor(_hCurArrow)
 	
-	#ParentWindow.Event OnButtonMouseUp(_mouseDownIndex,xpos,ypos,WOT_STATUSBAR)
+	#ParentWindow.Event OnButtonMouseUp(nMouseDownIndex,xpos,ypos,WOT_STATUSBAR)
+	if Not IsValid(this) then return 1
 	
-	if _mouseDownIndex = _mouseOverIndex then		//Clicked
-		if IsAllowed(#ParentWindow.Event OnButtonclicking(_mouseDownIndex,WOT_STATUSBAR)) then
-			#ParentWindow.Post Event OnButtonclicked(_mouseDownIndex,WOT_STATUSBAR)
+	if nMouseDownIndex = _mouseOverIndex then		//Clicked
+		if IsAllowed(#ParentWindow.Event OnButtonclicking(nMouseDownIndex,WOT_STATUSBAR)) then
+			if Not IsValid(this) then return 1
+			#ParentWindow.Event OnButtonclicked(nMouseDownIndex,WOT_STATUSBAR)
 		end if
 	end if
-	
-	_mouseDownIndex = 0
 end if
 
 return 1
@@ -2117,6 +2126,7 @@ ypos = wndRect.top + Chevron.rcPaint.top + 1
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_BOTTOMALIGN
 
 if IsPrevented(#ParentWindow.Event OnPopupMenu(IDX_CHEVRON,ref xpos,ref ypos,ref pmFlags,WOT_STATUSBAR)) then return 0
+if Not IsValid(this) then return 0
 
 ln_menu = Create n_cst_popupmenu
 ln_menu.of_SetToolTip(#ParentWindow.#ToolTip)
@@ -2165,12 +2175,15 @@ for index = nCount to 1 step -1
 next
 
 rtCode = ln_menu.of_Popup(xpos,ypos, pmFlags)
+if Not IsValid(this) then return rtCode
 
 if rtCode > 0 then
 	rtCode = ln_menu.of_GetLastSelectID()
 	if rtCode > 0 then
 		if IsAllowed(#ParentWindow.Event OnButtonclicking(rtCode,WOT_STATUSBAR)) then
-			#ParentWindow.Post Event OnButtonclicked(rtCode,WOT_STATUSBAR)
+			if Not IsValid(this) then return rtCode
+			#ParentWindow.Event OnButtonclicked(rtCode,WOT_STATUSBAR)
+			if Not IsValid(this) then return rtCode
 		end if
 	else
 		n_cst_popupmenu ln_subMenuSelect,ln_subMenuSelect2,ln_subMenu
@@ -2197,7 +2210,9 @@ if rtCode > 0 then
 					nSelectIndex = IDX_CHEVRON
 				end if
 				if IsAllowed(#ParentWindow.Event OnMenuSelecting(nSelectIndex,rtCode,WOT_STATUSBAR)) then
-					#ParentWindow.Post Event OnMenuSelected(nSelectIndex,rtCode,WOT_STATUSBAR)
+					if Not IsValid(this) then return rtCode
+					#ParentWindow.Event OnMenuSelected(nSelectIndex,rtCode,WOT_STATUSBAR)
+					if Not IsValid(this) then return rtCode
 				end if
 			end if
 		end if
@@ -2228,12 +2243,18 @@ Painter.GetWindowRect(#ParentWindow.#Handle,ref wndRect)
 xpos = wndRect.left + Items[index].rcPaint.left
 ypos = wndRect.top + Items[index].rcPaint.top + 1
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_BOTTOMALIGN
+
 if IsPrevented(#ParentWindow.Event OnPopupMenu(index,ref xpos,ref ypos,ref pmFlags,WOT_STATUSBAR)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = Items[index].PopupMenu.of_Popup(xpos,ypos, pmFlags)
+if Not IsValid(this) then return rtCode
+
 if rtCode > 0 then
 	if IsAllowed(#ParentWindow.Event OnMenuSelecting(index,rtCode,WOT_STATUSBAR)) then
-		#ParentWindow.Post Event OnMenuSelected(index,rtCode,WOT_STATUSBAR)
+		if Not IsValid(this) then return rtCode
+		#ParentWindow.Event OnMenuSelected(index,rtCode,WOT_STATUSBAR)
+		if Not IsValid(this) then return rtCode
 	end if
 end if
 

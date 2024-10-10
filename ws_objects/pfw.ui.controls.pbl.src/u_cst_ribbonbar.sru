@@ -218,6 +218,7 @@ Constant Uint ADJ_FIXEDTAB			= 8
 Constant Real SCROLLBARSIZE 	= 10 		//px
 Constant Real ARROWICONSIZE	= 16		//px
 end variables
+
 forward prototypes
 private subroutine _of_updatetextsize ()
 private subroutine _of_trackncmouseleave (readonly boolean track)
@@ -1874,6 +1875,7 @@ else
 	_lastPopupindex = 0
 	
 	rtCode = _PopupCategory.of_Popup(0,0)
+	if Not IsValid(this) then return rtCode
 	
 	if _lastPopupindex = 0 then	//在弹出期间没有再次进入此函数并修改此值
 		_lastPopupIndex = index

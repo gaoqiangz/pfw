@@ -160,16 +160,13 @@ index = of_IndexFromPoint(xpos,ypos)
 
 if _mouseOverIndex <> index then
 	if _mouseOverIndex > 0 then
-		#ParentRibbonBar.Event OnItemMouseLeave(Items[_mouseOverIndex])
 		Items[_mouseOverIndex].Event OnMouseLeave()
 	end if
 	_mouseOverIndex = index
 	if _mouseOverIndex > 0 then
-		#ParentRibbonBar.Event OnItemMouseEnter(Items[_mouseOverIndex],xpos,ypos)
 		Items[_mouseOverIndex].Event OnMouseMove(vkey,xpos,ypos)
 	end if
 elseif _mouseOverIndex > 0 then
-	#ParentRibbonBar.Event OnItemMouseMove(Items[_mouseOverIndex],xpos,ypos)
 	Items[_mouseOverIndex].Event OnMouseMove(vkey,xpos,ypos)
 end if
 
@@ -220,7 +217,6 @@ event onmouseleave();if _MouseOver then
 	_MouseOver = false
 	
 	if _mouseOverIndex > 0 then
-		#ParentRibbonBar.Event OnItemMouseLeave(Items[_mouseOverIndex])
 		Items[_mouseOverIndex].Event OnMouseLeave()
 		_mouseOverIndex = 0
 	end if
@@ -269,15 +265,19 @@ if _MouseCaptured then
 		LaunchBtn.MouseDown = false
 		_of_DrawLaunchButton(true)
 		#ParentRibbonBar.Event OnLaunchButtonMouseUp(#Panel,xpos,ypos)
+		if Not IsValid(this) then return 0
 		if LaunchBtn.MouseOver then
 			if IsAllowed(#ParentRibbonBar.Event OnLaunchButtonClicking(#Panel)) then
+				if Not IsValid(this) then return 0
 				#Panel.of_ExitPopupMode(0,true)
-				#ParentRibbonBar.Post Event OnLaunchButtonClicked(#Panel)
+				#ParentRibbonBar.Event OnLaunchButtonClicked(#Panel)
+				if Not IsValid(this) then return 0
 			end if
 		end if
 	end if
 elseif _mouseDownIndex > 0 then
 	Items[_mouseDownIndex].Event OnLButtonUp(vkey,xpos,ypos)
+	if Not IsValid(this) then return 0
 	_mouseDownIndex = 0
 end if
 
@@ -315,13 +315,16 @@ event oncapturechanged();if _MouseCaptured then
 		LaunchBtn.MouseDown = false
 		_of_DrawLaunchButton(true)
 		#ParentRibbonBar.Event OnLaunchButtonMouseUp(#Panel,0,0)
+		if Not IsValid(this) then return
 	end if
 	Event OnMouseLeave()
 elseif _mouseDownIndex > 0 then
 	Items[_mouseDownIndex].Event OnCaptureChanged()
+	if Not IsValid(this) then return
 	_mouseDownIndex = 0
 elseif _rightMouseDownIndex > 0 then
 	Items[_rightMouseDownIndex].Event OnCaptureChanged()
+	if Not IsValid(this) then return
 	_rightMouseDownIndex = 0
 end if
 end event

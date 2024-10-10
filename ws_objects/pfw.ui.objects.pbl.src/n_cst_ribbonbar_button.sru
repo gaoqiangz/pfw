@@ -605,8 +605,10 @@ end if
 
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 if IsPrevented(#ParentRibbonBar.Event OnPopupMenu(this,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = _PopupMenu.of_Popup(#ParentPanel.of_GetHandle(),xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
 
 _lastPopupTime = Cpu()
 
@@ -773,11 +775,13 @@ if #Style = Enums.BTS_DROPDOWN or &
 	else
 		_MouseDown = true
 		#ParentRibbonBar.Event OnItemMouseDown(this,xpos,ypos)
+		if Not IsValid(this) then return 0
 	end if
 	of_Redraw(false)
 	
 	pmCode = _of_PopupMenu(xpos,ypos)
-		
+	if Not IsValid(this) then return 0
+	
 	if #Style = Enums.BTS_SPLIT then
 		Chevron.MouseDown = false
 	else
@@ -787,8 +791,10 @@ if #Style = Enums.BTS_DROPDOWN or &
 	
 	if pmCode > 0 then
 		if IsAllowed(#ParentRibbonBar.Event OnMenuSelecting(this,pmCode)) then
+			if Not IsValid(this) then return 0
 			#ParentPanel.of_ExitPopupMode(0,true)
-			#ParentRibbonBar.Post Event OnMenuSelected(this,pmCode)
+			#ParentRibbonBar.Event OnMenuSelected(this,pmCode)
+			if Not IsValid(this) then return 0
 		end if
 	end if
 else
@@ -809,11 +815,13 @@ _MouseDown = false
 of_Redraw(true)
 
 #ParentRibbonBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver and Not Chevron.MouseOver then
 	if IsAllowed(#ParentRibbonBar.Event OnItemClicking(this)) then
+		if Not IsValid(this) then return 0
 		#ParentPanel.of_ExitPopupMode(0,true)
-		#ParentRibbonBar.Post Event OnItemClicked(this)
+		#ParentRibbonBar.Event OnItemClicked(this)
 	end if
 end if
 
@@ -889,11 +897,13 @@ _of_CaptureMouse(false)
 _RightMouseDown = false
 
 #ParentRibbonBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver and Not Chevron.MouseOver then
 	if IsAllowed(#ParentRibbonBar.Event OnItemRightClicking(this)) then
+		if Not IsValid(this) then return 0
 		//#ParentPanel.of_ExitPopupMode(0,true)
-		#ParentRibbonBar.Post Event OnItemRightClicked(this)
+		#ParentRibbonBar.Event OnItemRightClicked(this)
 	end if
 end if
 

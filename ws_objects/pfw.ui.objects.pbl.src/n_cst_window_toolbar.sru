@@ -556,26 +556,32 @@ _hWnd 				= parentWindow.#Handle
 _Canvas 				= canvas
 end event
 
-event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);if Not _MouseCaptured then return 1
+event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);int nMouseDownIndex
+
+if Not _MouseCaptured then return 1
 
 _of_CaptureMouse(false)
 
 if _mouseDownIndex > 0 then
-	Items[_mouseDownIndex].MouseDown = false
-	_of_DrawItem(_mouseDownIndex,true)
+	nMouseDownIndex = _mouseDownIndex
+	_mouseDownIndex = 0
+
+	Items[nMouseDownIndex].MouseDown = false
+	_of_DrawItem(nMouseDownIndex,true)
 	
-	#ParentWindow.Event OnButtonMouseUp(_mouseDownIndex,xpos,ypos,WOT_TOOLBAR)
+	#ParentWindow.Event OnButtonMouseUp(nMouseDownIndex,xpos,ypos,WOT_TOOLBAR)
+	if Not IsValid(this) then return 1
 	
-	if _mouseDownIndex = _mouseOverIndex and Not Items[_mouseDownIndex].Chevron.MouseOver then	//Clicked
-		if IsAllowed(#ParentWindow.Event OnButtonclicking(_mouseDownIndex,WOT_TOOLBAR)) then
-			if IsValidObject(Items[_mouseDownIndex].menu) then
-				Items[_mouseDownIndex].menu.Post Event Clicked()
+	if nMouseDownIndex = _mouseOverIndex and Not Items[nMouseDownIndex].Chevron.MouseOver then	//Clicked
+		if IsAllowed(#ParentWindow.Event OnButtonclicking(nMouseDownIndex,WOT_TOOLBAR)) then
+			if Not IsValid(this) then return 1
+			if IsValidObject(Items[nMouseDownIndex].menu) then
+				Items[nMouseDownIndex].menu.Event Clicked()
+				if Not IsValid(this) then return 1
 			end if
-			#ParentWindow.Post Event OnButtonclicked(_mouseDownIndex,WOT_TOOLBAR)
+			#ParentWindow.Event OnButtonclicked(nMouseDownIndex,WOT_TOOLBAR)
 		end if
 	end if
-	
-	_mouseDownIndex = 0
 end if
 
 return 1
@@ -2263,14 +2269,19 @@ pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 
 if IsValidObject(_attachedMenu) then
 	Items[index].parentMenu.Event Clicked()
+	if Not IsValid(this) then return 0
 	Items[index].PopupMenu.theme.Font.of_SetFont(_attachedMenu.FaceName,Abs(_attachedMenu.TextSize),_attachedMenu.Weight = 700,_attachedMenu.Italic,_attachedMenu.Underline,false,n_cst_font.SDS_NONE)
 end if
 
 if IsPrevented(#ParentWindow.Event OnPopupMenu(index,ref xpos,ref ypos,ref pmFlags,WOT_TOOLBAR)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = Items[index].PopupMenu.of_Popup(0,xpos,ypos, pmFlags)
+if Not IsValid(this) then return rtCode
+
 if rtCode > 0 then
 	if IsAllowed(#ParentWindow.Event OnMenuSelecting(index,rtCode,WOT_TOOLBAR)) then
+		if Not IsValid(this) then return rtCode
 		if IsValidObject(_attachedMenu) then
 			if Items[index].itemType = ITT_SPLIT then
 				if Items[index].menu <> Items[index].parentMenu.Item[rtCode] then
@@ -2285,7 +2296,8 @@ if rtCode > 0 then
 				end if
 			end if
 		end if
-		#ParentWindow.Post Event OnMenuSelected(index,rtCode,WOT_TOOLBAR)
+		#ParentWindow.Event OnMenuSelected(index,rtCode,WOT_TOOLBAR)
+		if Not IsValid(this) then return 0
 	end if
 end if
 
@@ -2311,6 +2323,7 @@ ypos = wndRect.top + Chevron.rcPaint.bottom + 1
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 
 if IsPrevented(#ParentWindow.Event OnPopupMenu(IDX_CHEVRON,ref xpos,ref ypos,ref pmFlags,WOT_TOOLBAR)) then return 0
+if Not IsValid(this) then return 0
 
 ln_menu = Create n_cst_popupmenu
 ln_menu.of_SetToolTip(_parentWindow.#ToolTip)
@@ -2349,6 +2362,7 @@ for index = nCount to 1 step -1
 	elseif IsValidObject(Items[index].PopupMenu) then
 		if IsValidObject(_attachedMenu) then
 			Items[index].parentMenu.Event Clicked()
+			if Not IsValid(this) then return 0
 			Items[index].PopupMenu.theme.Font.of_SetFont(_attachedMenu.FaceName,Abs(_attachedMenu.TextSize),_attachedMenu.Weight = 700,_attachedMenu.Italic,_attachedMenu.Underline,false,n_cst_font.SDS_NONE)
 		end if
 		ln_menu.of_AddSubMenu( Items[index].PopupMenu, Items[index].text,Items[index].Image,Items[index].tipText,  Items[index].ItemType = ITT_SPLIT, Items[index].Enabled ,index)
@@ -2361,15 +2375,19 @@ for index = nCount to 1 step -1
 next
 
 rtCode = ln_menu.of_Popup(xpos,ypos, pmFlags)
+if Not IsValid(this) then return rtCode
 
 if rtCode > 0 then
 	rtCode = ln_menu.of_GetLastSelectID()
 	if rtCode > 0 then
 		if IsAllowed(#ParentWindow.Event OnButtonclicking(rtCode,WOT_TOOLBAR)) then
+			if Not IsValid(this) then return rtCode
 			if IsValidObject(Items[rtCode].menu) then
-				Items[rtCode].menu.Post Event Clicked()
+				Items[rtCode].menu.Event Clicked()
+				if Not IsValid(this) then return rtCode
 			end if
-			#ParentWindow.Post Event OnButtonclicked(rtCode,WOT_TOOLBAR)
+			#ParentWindow.Event OnButtonclicked(rtCode,WOT_TOOLBAR)
+			if Not IsValid(this) then return rtCode
 		end if
 	else
 		n_cst_popupmenu ln_subMenuSelect,ln_subMenuSelect2,ln_subMenu
@@ -2396,6 +2414,7 @@ if rtCode > 0 then
 					nSelectIndex = IDX_CHEVRON
 				end if
 				if IsAllowed(#ParentWindow.Event OnMenuSelecting(nSelectIndex,rtCode,WOT_TOOLBAR)) then
+					if Not IsValid(this) then return rtCode
 					if nSelectIndex > 0 and IsValidObject(_attachedMenu) then
 						if Items[nSelectIndex].itemType = ITT_SPLIT then
 							if Items[nSelectIndex].PopupMenu = ln_subMenuSelect then
@@ -2412,7 +2431,8 @@ if rtCode > 0 then
 							end if
 						end if
 					end if
-					#ParentWindow.Post Event OnMenuSelected(nSelectIndex,rtCode,WOT_TOOLBAR)
+					#ParentWindow.Event OnMenuSelected(nSelectIndex,rtCode,WOT_TOOLBAR)
+					if Not IsValid(this) then return rtCode
 				end if
 			end if
 		end if
@@ -2420,6 +2440,8 @@ if rtCode > 0 then
 end if
 
 Destroy ln_menu
+
+if Not IsValid(this) then return rtCode
 
 _lastPopupIndex = IDX_CHEVRON
 _lastPopupTime = Cpu()

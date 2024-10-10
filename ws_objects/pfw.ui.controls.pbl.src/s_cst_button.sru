@@ -290,7 +290,8 @@ if key = KeySpaceBar! then
 		of_Redraw(true)
 		if pmCode > 0 then
 			if IsAllowed(Event OnMenuSelecting(pmCode)) then
-				Post Event OnMenuSelected(pmCode)
+				if Not IsValid(this) then return 1
+				Event OnMenuSelected(pmCode)
 			end if
 		end if
 	else
@@ -308,7 +309,8 @@ elseif key = KeyUpArrow! or key = KeyDownArrow! then
 		of_Redraw(true)
 		if pmCode > 0 then
 			if IsAllowed(Event OnMenuSelecting(pmCode)) then
-				Post Event OnMenuSelected(pmCode)
+				if Not IsValid(this) then return 1
+				Event OnMenuSelected(pmCode)
 			end if
 		end if
 		return 1
@@ -320,7 +322,8 @@ elseif key = KeyUpArrow! or key = KeyDownArrow! then
 		of_Redraw(true)
 		if pmCode > 0 then
 			if IsAllowed(Event OnMenuSelecting(pmCode)) then
-				Post Event OnMenuSelected(pmCode)
+				if Not IsValid(this) then return 1
+				Event OnMenuSelected(pmCode)
 			end if
 		end if
 		return 1
@@ -334,7 +337,8 @@ event onkeyup;if key = KeySpaceBar! then
 		_bMouseDown = false
 		of_Redraw(true)
 		if IsAllowed(Event OnClicking()) then
-			Post Event Clicked()
+			if Not IsValid(this) then return 1
+			Event Clicked()
 		end if
 	end if
 else
@@ -354,6 +358,7 @@ if Not _bMouseLeaveTracked  then
 end if
 
 if IsAllowed(Event OnSetFocusQuery()) then
+	if Not IsValid(this) then return 1
 	SetFocus(this)
 end if
 
@@ -382,7 +387,8 @@ if #Style = Enums.BTS_DROPDOWN or &
 	
 	if pmCode > 0 then
 		if IsAllowed(Event OnMenuSelecting(pmCode)) then
-			Post Event OnMenuSelected(pmCode)
+			if Not IsValid(this) then return 1
+			Event OnMenuSelected(pmCode)
 		end if
 	end if
 else
@@ -404,7 +410,8 @@ if _bMouseDown then
 	of_Redraw(true)
 	if _bMouseOver and Not _Chevron.MouseOver then
 		if IsAllowed(Event OnClicking()) then
-			Post Event Clicked()
+			if Not IsValid(this) then return 1
+			Event Clicked()
 		end if
 	end if
 end if
@@ -1305,8 +1312,11 @@ end if
 
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 if IsPrevented(Event OnPopupMenu(ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = _PopupMenu.of_Popup(#Handle,xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
+
 _nLastPopupTime = Cpu()
 
 return rtCode

@@ -206,10 +206,12 @@ _MouseDown = false
 of_Redraw(true)
 
 #ParentTaskPanelBar.Event OnItemMouseUp(this,xpos,ypos)
+if Not IsValid(this) then return 0
 
 if _MouseOver then
 	if IsAllowed(#ParentTaskPanelBar.Event OnItemClicking(this)) then
-		#ParentTaskPanelBar.Post Event OnItemClicked(this)
+		if Not IsValid(this) then return 0
+		#ParentTaskPanelBar.Event OnItemClicked(this)
 	end if
 end if
 

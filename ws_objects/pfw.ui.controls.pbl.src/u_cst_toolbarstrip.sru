@@ -426,24 +426,29 @@ end if
 return 0
 end event
 
-event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);if Not _MouseCaptured then return 0
+event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);int nMouseDownIndex
+
+if Not _MouseCaptured then return 0
 
 _of_CaptureMouse(false)
 _of_TrackMouseLeave(true)
 
 if _mouseDownIndex > 0 then
-	Items[_mouseDownIndex].MouseDown = false
-	_of_DrawItem(_mouseDownIndex,true)
+	nMouseDownIndex = _mouseDownIndex
+	_mouseDownIndex = 0
 	
-	Event OnButtonMouseUp(_mouseDownIndex,xpos,ypos)
+	Items[nMouseDownIndex].MouseDown = false
+	_of_DrawItem(nMouseDownIndex,true)
 	
-	if _mouseDownIndex = _mouseOverIndex and Not Items[_mouseDownIndex].Chevron.MouseOver then		//Clicked
-		if IsAllowed(Event OnButtonclicking(_mouseDownIndex)) then
-			Post Event OnButtonclicked(_mouseDownIndex)
+	Event OnButtonMouseUp(nMouseDownIndex,xpos,ypos)
+	if Not IsValid(this) then return 0
+	
+	if nMouseDownIndex = _mouseOverIndex and Not Items[nMouseDownIndex].Chevron.MouseOver then		//Clicked
+		if IsAllowed(Event OnButtonclicking(nMouseDownIndex)) then
+			if Not IsValid(this) then return 0
+			Event OnButtonclicked(nMouseDownIndex)
 		end if
 	end if
-	
-	_mouseDownIndex = 0
 end if
 
 return 0
@@ -3288,11 +3293,16 @@ end if
 
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 if IsPrevented(Event OnPopupMenu(index,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = Items[index].PopupMenu.of_Popup(#Handle,xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
+
 if rtCode > 0 then
 	if IsAllowed(Event OnMenuSelecting(index,rtCode)) then
-		Post Event OnMenuSelected(index,rtCode)
+		if Not IsValid(this) then return rtCode
+		Event OnMenuSelected(index,rtCode)
+		if Not IsValid(this) then return rtCode
 	end if
 end if
 
@@ -3322,6 +3332,7 @@ else
 end if
 
 rtCode = ln_popup.of_Popup(#Handle,xpos,ypos,pFlags)
+if Not IsValid(this) then return rtCode
 
 Destroy ln_popup
 

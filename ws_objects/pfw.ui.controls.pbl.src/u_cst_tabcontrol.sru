@@ -3673,6 +3673,7 @@ elseif Items[index].IsPageW then
 	if IsPrevented(Items[index].PageW.Event OnDocking()) then return RetCode.FAILED
 end if
 if IsPrevented(Event OnTabDocking(index)) then return RetCode.FAILED
+if Not IsValid(this) then return RetCode.FAILED
 
 Items[index].Floated = false
 Items[index].FloatWnd.Event OnDetach()
@@ -3715,10 +3716,12 @@ if _SelectedIndex = 0 then
 end if
 
 if Items[index].IsPage then
-	Items[index].Page.Post Event OnDocked()
+	Items[index].Page.Event OnDocked()
 elseif Items[index].IsPageW then
-	Items[index].PageW.Post Event OnDocked()
+	Items[index].PageW.Event OnDocked()
 end if
+if Not IsValid(this) then return RetCode.OK
+
 Event OnTabDocked(index)
 
 return RetCode.OK
@@ -5392,6 +5395,7 @@ choose case theme.#TabPosition
 end choose
 
 if IsPrevented(Event OnPopupMenu(IDX_CHEVRON,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 ln_menu = Create n_cst_popupmenu
 ln_menu.of_SetToolTip(#ToolTip)
@@ -5409,6 +5413,7 @@ next
 ln_Menu.of_CheckRadios(1,count,_selectedIndex,false,true)
 
 rtCode = ln_menu.of_Popup(xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
 
 _lastPopupTime = Cpu()
 
@@ -5492,6 +5497,7 @@ elseif Items[index].IsPageW then
 	if IsPrevented(Items[index].PageW.Event OnFloating()) then return RetCode.FAILED
 end if
 if IsPrevented(Event OnTabFloating(index)) then return RetCode.FAILED
+if Not IsValid(this) then return RetCode.FAILED
 
 itemRect = Items[index].rcPaint
 if theme.#TabPosition = TabsOnLeft! or theme.#TabPosition = TabsOnRight! then
@@ -5556,10 +5562,11 @@ if Items[index].Visible then
 end if
 
 if Items[index].IsPage then
-	Items[index].Page.Post Event OnFloated()
+	Items[index].Page.Event OnFloated()
 elseif Items[index].IsPageW then
-	Items[index].PageW.Post Event OnFloated()
+	Items[index].PageW.Event OnFloated()
 end if
+if Not IsValid(this) then return RetCode.OK
 Event OnTabFloated(index)
 
 return RetCode.OK

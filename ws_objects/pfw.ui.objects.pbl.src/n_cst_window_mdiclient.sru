@@ -750,7 +750,7 @@ elseif _mouseOverIndex < 0 then
 				case MID_ARRGICON
 					of_ArrangeSheets(Icons!)
 				case MID_CLOSEALL
-					Post of_CloseSheets()
+					of_CloseSheets()
 				case else
 					of_Select(pmCode - MID_SHEETLIST)
 			end choose
@@ -2920,6 +2920,7 @@ xpos = wndRect.left + SysButtons[IDX_SHEETLIST].rcPaint.Left
 ypos = wndRect.top + SysButtons[IDX_SHEETLIST].rcPaint.Bottom + 1
 
 rtCode = pmMenu.of_Popup(xpos,ypos,Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN)
+if Not IsValid(this) then return rtCode
 
 Destroy pmMenu
 

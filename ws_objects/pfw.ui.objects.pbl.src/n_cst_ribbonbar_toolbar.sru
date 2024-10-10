@@ -1242,12 +1242,17 @@ end if
 
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 if IsPrevented(#ParentRibbonBar.Event OnToolBarPopupMenu(this,index,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = Items[index].PopupMenu.of_Popup(#ParentPanel.of_GetHandle(),xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
+
 if rtCode > 0 then
 	if IsAllowed(#ParentRibbonbar.Event OnToolBarMenuSelecting(this,index,rtCode)) then
+		if Not IsValid(this) then return rtCode
 		#ParentPanel.of_ExitPopupMode(0,true)
-		#ParentRibbonbar.Post Event OnToolBarMenuSelected(this,index,rtCode)
+		#ParentRibbonbar.Event OnToolBarMenuSelected(this,index,rtCode)
+		if Not IsValid(this) then return rtCode
 	end if
 end if
 	
@@ -1443,10 +1448,12 @@ if (Items[li_mouseOverIndex].ItemType = ITT_DROPDOWN and Items[li_mouseOverIndex
 	else
 		Items[li_mouseOverIndex].mousedown=true
 		#ParentRibbonbar.Event OnToolBarButtonMouseDown(this,li_mouseOverIndex,xpos,ypos)
+		if Not IsValid(this) then return 0
 	end if
 	_of_DrawItem(li_mouseOverIndex,false)
 	
 	_of_PopupMenu(li_mouseOverIndex,xpos,ypos)
+	if Not IsValid(this) then return 0
 	
 	if Items[li_mouseOverIndex].ItemType = ITT_SPLIT then
 		Items[li_mouseOverIndex].Chevron.mousedown=false
@@ -1460,31 +1467,36 @@ else
 	_of_DrawItem(li_mouseOverIndex,false)
 	_mouseDownIndex = li_mouseOverIndex
 	_of_CaptureMouse(true)
-	
 	#ParentRibbonbar.Event OnToolBarButtonMouseDown(this,_mouseDownIndex,xpos,ypos)
+	if Not IsValid(this) then return 0
 end if
 
 return 0
 end event
 
-event onlbuttonup;call super::onlbuttonup;if Not _MouseCaptured then return 0
+event onlbuttonup;call super::onlbuttonup;int nMouseDownIndex
+
+if Not _MouseCaptured then return 0
 
 _of_CaptureMouse(false)
 
 if _mouseDownIndex > 0 then
-	Items[_mouseDownIndex].MouseDown = false
-	_of_DrawItem(_mouseDownIndex,true)
+	nMouseDownIndex = _mouseDownIndex
+	_mouseDownIndex = 0
 	
-	#ParentRibbonbar.Event OnToolBarButtonMouseUp(this,_mouseDownIndex,xpos,ypos)
+	Items[nMouseDownIndex].MouseDown = false
+	_of_DrawItem(nMouseDownIndex,true)
 	
-	if _mouseDownIndex = _mouseOverIndex and Not Items[_mouseDownIndex].Chevron.MouseOver then		//Clicked
-		if IsAllowed(#ParentRibbonbar.Event OnToolBarButtonClicking(this,_mouseDownIndex)) then
+	#ParentRibbonbar.Event OnToolBarButtonMouseUp(this,nMouseDownIndex,xpos,ypos)
+	if Not IsValid(this) then return 0
+	
+	if nMouseDownIndex = _mouseOverIndex and Not Items[nMouseDownIndex].Chevron.MouseOver then		//Clicked
+		if IsAllowed(#ParentRibbonbar.Event OnToolBarButtonClicking(this,nMouseDownIndex)) then
+			if Not IsValid(this) then return 0
 			#ParentPanel.of_ExitPopupMode(0,true)
-			#ParentRibbonbar.Post Event OnToolBarButtonClicked(this,_mouseDownIndex)
+			#ParentRibbonbar.Event OnToolBarButtonClicked(this,nMouseDownIndex)
 		end if
 	end if
-	
-	_mouseDownIndex = 0
 end if
 
 return 0
@@ -1845,11 +1857,13 @@ _of_CaptureMouse(false)
 
 if _rightMouseDownIndex > 0 then
 	#ParentRibbonbar.Event OnToolBarButtonMouseUp(this,_rightMouseDownIndex,xpos,ypos)
-	
+	if Not IsValid(this) then return 0
 	if _rightMouseDownIndex = _mouseOverIndex and Not Items[_rightMouseDownIndex].Chevron.MouseOver then		//Clicked
 		if IsAllowed(#ParentRibbonbar.Event OnToolBarButtonRightClicking(this,_rightMouseDownIndex)) then
+			if Not IsValid(this) then return 0
 			//#ParentPanel.of_ExitPopupMode(0,true)
-			#ParentRibbonbar.Post Event OnToolBarButtonRightClicked(this,_rightMouseDownIndex)
+			#ParentRibbonbar.Event OnToolBarButtonRightClicked(this,_rightMouseDownIndex)
+			if Not IsValid(this) then return 0
 		end if
 	end if
 	

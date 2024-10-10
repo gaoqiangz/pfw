@@ -174,7 +174,7 @@ end prototypes
 
 event onmenuselected(unsignedlong id);if IsValidObject(_AttachedMenu) then
 	if id <= UpperBound(_AttachedMenu.Item) then
-		_AttachedMenu.Item[id].Post Event Clicked()
+		_AttachedMenu.Item[id].Event Clicked()
 	end if
 end if
 end event

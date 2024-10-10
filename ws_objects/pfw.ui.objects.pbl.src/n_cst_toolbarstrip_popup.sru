@@ -286,6 +286,7 @@ if _mouseOverIndex > 0 then
 		_of_DrawItem(li_mouseOverIndex,false)
 		
 		#ParentToolBarStrip.Event OnButtonMouseDown(Items[li_mouseOverIndex].ID,xpos,ypos)
+		if Not IsValid(this) then return 0
 		
 		pmCode = _of_PopupMenu(li_mouseOverIndex,xpos,ypos)
 		
@@ -298,8 +299,10 @@ if _mouseOverIndex > 0 then
 		
 		if pmCode > 0 then
 			if IsAllowed(#ParentToolBarStrip.Event OnMenuSelecting(Items[li_mouseOverIndex].ID,pmCode)) then
+				if Not IsValid(this) then return 0
 				ClosePopup(Items[li_mouseOverIndex].ID,true)
-				#ParentToolBarStrip.Post Event OnMenuSelected(Items[li_mouseOverIndex].ID,pmCode)
+				#ParentToolBarStrip.Event OnMenuSelected(Items[li_mouseOverIndex].ID,pmCode)
+				if Not IsValid(this) then return 0
 			end if
 		end if
 	else
@@ -308,6 +311,7 @@ if _mouseOverIndex > 0 then
 		_of_DrawItem(_mouseDownIndex,false)
 		_of_CaptureMouse(true)
 		#ParentToolBarStrip.Event OnButtonMouseDown(Items[_mouseDownIndex].ID,xpos,ypos)
+		if Not IsValid(this) then return 0
 	end if
 end if
 
@@ -331,25 +335,30 @@ end if
 return 0
 end event
 
-event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);if Not _MouseCaptured then return 0
+event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);int nMouseDownIndex
+
+if Not _MouseCaptured then return 0
 
 _of_CaptureMouse(false)
 _of_TrackMouseLeave(true)
 
 if _mouseDownIndex > 0 then
-	Items[_mouseDownIndex].MouseDown = false
-	_of_DrawItem(_mouseDownIndex,true)
+	nMouseDownIndex = _mouseDownIndex
+	_mouseDownIndex = 0
 	
-	#ParentToolBarStrip.Event OnButtonMouseUp(Items[_mouseDownIndex].ID,xpos,ypos)
+	Items[nMouseDownIndex].MouseDown = false
+	_of_DrawItem(nMouseDownIndex,true)
 	
-	if _mouseDownIndex = _mouseOverIndex and Not Items[_mouseDownIndex].Chevron.MouseOver then		//Clicked
-		if IsAllowed(#ParentToolBarStrip.Event OnButtonclicking(Items[_mouseDownIndex].ID)) then
-			ClosePopup(Items[_mouseDownIndex].ID,true)
-			#ParentToolBarStrip.Post Event OnButtonclicked(Items[_mouseDownIndex].ID)
+	#ParentToolBarStrip.Event OnButtonMouseUp(Items[nMouseDownIndex].ID,xpos,ypos)
+	if Not IsValid(this) then return 0
+	
+	if nMouseDownIndex = _mouseOverIndex and Not Items[nMouseDownIndex].Chevron.MouseOver then		//Clicked
+		if IsAllowed(#ParentToolBarStrip.Event OnButtonclicking(Items[nMouseDownIndex].ID)) then
+			if Not IsValid(this) then return 0
+			ClosePopup(Items[nMouseDownIndex].ID,true)
+			#ParentToolBarStrip.Event OnButtonclicked(Items[nMouseDownIndex].ID)
 		end if
 	end if
-	
-	_mouseDownIndex = 0
 end if
 
 return 0
@@ -1425,6 +1434,7 @@ else
 end if
 
 rtCode = ln_popup.of_Popup(GetHandle(),xpos,ypos,pFlags)
+if Not IsValid(this) then return rtCode
 
 Destroy ln_popup
 
@@ -1464,8 +1474,10 @@ end if
 
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 if IsPrevented(#ParentToolBarStrip.Event OnPopupMenu(Items[index].ID,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = Items[index].PopupMenu.of_Popup(GetHandle(),xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
 
 _lastPopupIndex = index
 _lastPopupTime = Cpu()

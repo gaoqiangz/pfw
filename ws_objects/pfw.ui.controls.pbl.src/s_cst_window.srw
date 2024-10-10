@@ -449,6 +449,7 @@ choose case _MouseCaptured
 	case WOT_STATUSBAR
 		StatusBar.Event OnLButtonUp(vkey,xpos,ypos)
 end choose
+if Not IsValid(this) then return 0
 
 _wf_TrackNcMouseLeave(true)
 

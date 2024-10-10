@@ -382,6 +382,7 @@ if Chevron.MouseOVer then
 	end if
 	
 	#ParentWindow.Event OnButtonMouseDown(IDX_CHEVRON,xpos,ypos,WOT_MENUBAR)
+	if Not IsValid(this) then return 1
 	
 	li_popupIndex = IDX_CHEVRON
 end if
@@ -397,6 +398,7 @@ if _mouseOverIndex > 0 then
 		end if
 		
 		#ParentWindow.Event OnButtonMouseDown(li_mouseOverIndex,xpos,ypos,WOT_MENUBAR)
+		if Not IsValid(this) then return 1
 		
 		li_popupIndex = li_mouseOverIndex
 	end if
@@ -1674,7 +1676,7 @@ for index = 1 to nCount
 		(BitAND(nSysKey,SYS_KEY_ALT) > 0) = KeyDown(KeyAlt!) and &
 		(BitAND(nSysKey,SYS_KEY_SHIFT) > 0) = KeyDown(KeyShift!) and &
 		nKey = nChar then
-		m.Item[index].Post Event Clicked()
+		m.Item[index].Event Clicked()
 		return 1
 	end if
 	if UpperBound(m.Item[index].Item) > 0 then
@@ -1780,6 +1782,7 @@ ypos = wndRect.top + Chevron.rcPaint.bottom + 1
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 
 if IsPrevented(#ParentWindow.Event OnPopupMenu(IDX_CHEVRON,ref xpos,ref ypos,ref pmFlags,WOT_MENUBAR)) then return 0
+if Not IsValid(this) then return 0
 
 ln_menu = Create n_cst_popupmenu
 ln_menu.of_SetToolTip(_parentWindow.#ToolTip)
@@ -1796,6 +1799,7 @@ for index = 1 to nCount
 	elseif Items[index].ItemType = ITT_MENU then
 		if IsValidObject(_attachedMenu) then
 			Items[index].menu.Event Clicked()
+			if Not IsValid(this) then return 0
 			Items[index].PopupMenu.theme.Font.of_SetFont(_attachedMenu.FaceName,Abs(_attachedMenu.TextSize),_attachedMenu.Weight = 700,_attachedMenu.Italic,_attachedMenu.Underline,false,n_cst_font.SDS_NONE)
 		end if
 		ln_menu.of_AddSubMenu( Items[index].PopupMenu, Items[index].text,Items[index].Image,Items[index].tipText,  false, Items[index].Enabled ,index)
@@ -1803,6 +1807,8 @@ for index = 1 to nCount
 next
 
 rtCode = ln_menu.of_Popup(0,_hWnd,xpos,ypos, pmFlags)
+if Not IsValid(this) then return rtCode
+
 if rtCode > 0 then
 	rtCode = ln_menu.of_GetLastSelectID()
 	if rtCode = 0 then
@@ -1833,7 +1839,9 @@ end if
 if nSelectedIndex > 0 then
 	if rtCode > 0 then
 		if IsAllowed(#ParentWindow.Event OnMenuSelecting(nSelectedIndex,rtCode,WOT_MENUBAR)) then
-			#ParentWindow.Post Event OnMenuSelected(nSelectedIndex,rtCode,WOT_MENUBAR)
+			if Not IsValid(this) then return rtCode
+			#ParentWindow.Event OnMenuSelected(nSelectedIndex,rtCode,WOT_MENUBAR)
+			if Not IsValid(this) then return rtCode
 		end if
 	end if
 end if
@@ -1892,15 +1900,19 @@ pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 
 if IsValidObject(_attachedMenu) then
 	Items[index].menu.Event Clicked()
+	if Not IsValid(this) then return 0
 	Items[index].PopupMenu.theme.Font.of_SetFont(_attachedMenu.FaceName,Abs(_attachedMenu.TextSize),_attachedMenu.Weight = 700,_attachedMenu.Italic,_attachedMenu.Underline,false,n_cst_font.SDS_NONE)
 end if
 
 if IsPrevented(#ParentWindow.Event OnPopupMenu(index,ref xpos,ref ypos,ref pmFlags,WOT_MENUBAR)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = Items[index].PopupMenu.of_Popup(0,_hWnd,xpos,ypos, pmFlags)
 if rtCode > 0 then
 	if IsAllowed(#ParentWindow.Event OnMenuSelecting(index,rtCode,WOT_MENUBAR)) then
-		#ParentWindow.Post Event OnMenuSelected(index,rtCode,WOT_MENUBAR)
+		if Not IsValid(this) then return rtCode
+		#ParentWindow.Event OnMenuSelected(index,rtCode,WOT_MENUBAR)
+		if Not IsValid(this) then return rtCode
 	end if
 end if
 

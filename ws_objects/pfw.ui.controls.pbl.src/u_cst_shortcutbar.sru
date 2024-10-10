@@ -2324,6 +2324,7 @@ else
 end if
 
 if IsPrevented(Event OnPopupMenu(IDX_CHEVRON,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 ln_menu = Create n_cst_popupmenu
 ln_menu.of_SetToolTip(#ToolTip)
@@ -2344,6 +2345,7 @@ next
 ln_Menu.of_CheckRadios(firstId,count,_selectedIndex,false,true)
 
 rtCode = ln_menu.of_Popup(xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
 
 _lastPopupTime = Cpu()
 

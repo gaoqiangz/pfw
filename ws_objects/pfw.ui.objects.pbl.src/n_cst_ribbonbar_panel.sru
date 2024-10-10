@@ -300,13 +300,16 @@ event oncapturechanged();if _MouseCaptured then
 		LaunchBtn.MouseDown = false
 		_of_DrawLaunchButton(true)
 		#ParentRibbonBar.Event OnLaunchButtonMouseUp(this,0,0)
+		if Not IsValid(this) then return
 	end if
 	Event OnMouseLeave()
 elseif _mouseDownIndex > 0 then
 	Items[_mouseDownIndex].Event OnCaptureChanged()
+	if Not IsValid(this) then return
 	_mouseDownIndex = 0
 elseif _rightMouseDownIndex > 0 then
 	Items[_rightMouseDownIndex].Event OnCaptureChanged()
+	if Not IsValid(this) then return
 	_rightMouseDownIndex = 0
 end if
 end event
@@ -338,6 +341,7 @@ event type long onlbuttondown(unsignedlong vkey, real xpos, real ypos);if  _Disp
 	_MouseDown = true
 	of_Redraw(false)
 	_of_PopupPanel(xpos,ypos)
+	if Not IsValid(this) then return 0
 	_MouseDown = false
 	of_Redraw(true)
 elseif LaunchBtn.MouseOver then
@@ -360,15 +364,18 @@ event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);if _MouseCa
 		LaunchBtn.MouseDown = false
 		_of_DrawLaunchButton(true)
 		#ParentRibbonBar.Event OnLaunchButtonMouseUp(this,xpos,ypos)
+		if Not IsValid(this) then return 0
 		if LaunchBtn.MouseOver then
 			if IsAllowed(#ParentRibbonBar.Event OnLaunchButtonClicking(this)) then
+				if Not IsValid(this) then return 0
 				of_ExitPopupMode(0,true)
-				#ParentRibbonBar.Post Event OnLaunchButtonClicked(this)
+				#ParentRibbonBar.Event OnLaunchButtonClicked(this)
 			end if
 		end if
 	end if
 elseif _mouseDownIndex > 0 then
 	Items[_mouseDownIndex].Event OnLButtonUp(vkey,xpos,ypos)
+	if Not IsValid(this) then return 0
 	_mouseDownIndex = 0
 end if
 
@@ -748,6 +755,7 @@ end event
 
 event type long onrbuttonup(unsignedlong vkey, real xpos, real ypos);if _rightMouseDownIndex > 0 then
 	Items[_rightMouseDownIndex].Event OnRButtonUp(vkey,xpos,ypos)
+	if Not IsValid(this) then return 0
 	_rightMouseDownIndex = 0
 	return 0
 end if
@@ -2340,6 +2348,7 @@ private function unsignedlong _of_popuppanel (readonly real xpos, readonly real 
 _PopupPanel.Event OnInitData(Items,szCaption)
 
 rtCode = _PopupPanel.of_Popup( rcPaint.left,rcPaint.bottom)
+if Not IsValid(this) then return rtCode
 
 _lastPopupTime = Cpu()
 

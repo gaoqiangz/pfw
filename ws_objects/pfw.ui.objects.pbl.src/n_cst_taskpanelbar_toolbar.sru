@@ -1319,11 +1319,16 @@ end if
 
 pmFlags = Win32.TPM_LEFTALIGN + Win32.TPM_TOPALIGN
 if IsPrevented(#ParentTaskPanelBar.Event OnToolBarPopupMenu(this,index,ref xpos,ref ypos,ref pmFlags)) then return 0
+if Not IsValid(this) then return 0
 
 rtCode = Items[index].PopupMenu.of_Popup(#ParentTaskPanelBar.#Handle,xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
+
 if rtCode > 0 then
 	if IsAllowed(#ParentTaskPanelBar.Event OnToolBarMenuSelecting(this,index,rtCode)) then
-		#ParentTaskPanelBar.Post Event OnToolBarMenuSelected(this,index,rtCode)
+		if Not IsValid(this) then return rtCode
+		#ParentTaskPanelBar.Event OnToolBarMenuSelected(this,index,rtCode)
+		if Not IsValid(this) then return rtCode
 	end if
 end if
 		
@@ -1369,13 +1374,18 @@ ypos = Chevron.rcPaint.Bottom
 pmFlags = Win32.TPM_RIGHTALIGN + Win32.TPM_TOPALIGN
 
 #ParentTaskPanelBar.Event OnToolBarPopupMenu(this,IDX_CHEVRON,ref xpos,ref ypos,ref pmFlags)
+if Not IsValid(this) then return 0
+
 rtCode = ln_menu.of_Popup(#ParentTaskPanelBar.#Handle,xpos,ypos,pmFlags)
+if Not IsValid(this) then return rtCode
 
 if rtCode > 0 then
 	rtCode = ln_menu.of_GetLastSelectID()
 	if rtCode > 0 then
 		if IsAllowed(#ParentTaskPanelBar.Event OnToolBarButtonClicking(this,rtCode)) then
-			#ParentTaskPanelBar.Post Event OnToolBarButtonClicked(this,rtCode)
+			if Not IsValid(this) then return rtCode
+			#ParentTaskPanelBar.Event OnToolBarButtonClicked(this,rtCode)
+			if Not IsValid(this) then return rtCode
 		end if
 	else
 		n_cst_popupmenu ln_subMenuSelect,ln_subMenuSelect2,ln_subMenu
@@ -1402,7 +1412,9 @@ if rtCode > 0 then
 					nSelectIndex = IDX_CHEVRON
 				end if
 				if IsAllowed(#ParentTaskPanelBar.Event OnToolBarMenuSelecting(this,nSelectIndex,rtCode)) then
-					#ParentTaskPanelBar.Post Event OnToolBarMenuSelected(this,nSelectIndex,rtCode)
+					if Not IsValid(this) then return rtCode
+					#ParentTaskPanelBar.Event OnToolBarMenuSelected(this,nSelectIndex,rtCode)
+					if Not IsValid(this) then return rtCode
 				end if
 			end if
 		end if
@@ -1560,10 +1572,12 @@ if li_mouseOverIndex > 0 then
 		else
 			Items[li_mouseOverIndex].mousedown=true
 			#ParentTaskPanelBar.Event OnToolBarButtonMouseDown(this,li_mouseOverIndex,xpos,ypos)
+			if Not IsValid(this) then return 0
 		end if
 		_of_DrawItem(li_mouseOverIndex,false)
 		
 		_of_PopupMenu(li_mouseOverIndex,xpos,ypos)
+		if Not IsValid(this) then return 0 
 		
 		if Items[li_mouseOverIndex].ItemType = ITT_SPLIT then
 			Items[li_mouseOverIndex].Chevron.mousedown=false
@@ -1579,6 +1593,7 @@ if li_mouseOverIndex > 0 then
 		_of_CaptureMouse(true)
 		
 		#ParentTaskPanelBar.Event OnToolBarButtonMouseDown(this,_mouseDownIndex,xpos,ypos)
+		if Not IsValid(this) then return 0
 	end if
 end if
 
@@ -1590,7 +1605,9 @@ if Chevron.MouseOver then
 	_of_DrawChevron(false)
 	
 	#ParentTaskPanelBar.Event OnToolBarButtonMouseDown(this,IDX_CHEVRON,xpos,ypos)
+	if Not IsValid(this) then return 0
 	_of_PopupMenu(xpos,ypos)
+	if Not IsValid(this) then return 0
 	
 	Chevron.MouseDown = false
 	_of_DrawChevron(true)
@@ -1599,23 +1616,28 @@ end if
 return 0
 end event
 
-event onlbuttonup;call super::onlbuttonup;if Not _MouseCaptured then return 0
+event onlbuttonup;call super::onlbuttonup;int nMouseDownIndex
+
+if Not _MouseCaptured then return 0
 
 _of_CaptureMouse(false)
 
 if _mouseDownIndex > 0 then
-	Items[_mouseDownIndex].MouseDown = false
-	_of_DrawItem(_mouseDownIndex,true)
+	nMouseDownIndex = nMouseDownIndex
+	nMouseDownIndex = 0
 	
-	#ParentTaskPanelBar.Event OnToolBarButtonMouseUp(this,_mouseDownIndex,xpos,ypos)
+	Items[nMouseDownIndex].MouseDown = false
+	_of_DrawItem(nMouseDownIndex,true)
 	
-	if _mouseDownIndex = _mouseOverIndex and Not Items[_mouseDownIndex].Chevron.MouseOver then		//Clicked
-		if IsAllowed(#ParentTaskPanelBar.Event OnToolBarButtonClicking(this,_mouseDownIndex)) then
-			#ParentTaskPanelBar.Post Event OnToolBarButtonClicked(this,_mouseDownIndex)
+	#ParentTaskPanelBar.Event OnToolBarButtonMouseUp(this,nMouseDownIndex,xpos,ypos)
+	if Not IsValid(this) then return 0
+	
+	if nMouseDownIndex = _mouseOverIndex and Not Items[nMouseDownIndex].Chevron.MouseOver then		//Clicked
+		if IsAllowed(#ParentTaskPanelBar.Event OnToolBarButtonClicking(this,nMouseDownIndex)) then
+			if Not IsValid(this) then return 0
+			#ParentTaskPanelBar.Event OnToolBarButtonClicked(this,nMouseDownIndex)
 		end if
 	end if
-	
-	_mouseDownIndex = 0
 end if
 
 return 0

@@ -213,9 +213,11 @@ event oncapturechanged();if _MouseCaptured then
 	Event OnMouseLeave()
 elseif _mouseDownIndex > 0 then
 	Panels[_mouseDownIndex].Event OnCaptureChanged()
+	if Not IsValid(this) then return
 	_mouseDownIndex = 0
 elseif _rightMouseDownIndex > 0 then
 	Panels[_rightMouseDownIndex].Event OnCaptureChanged()
+	if Not IsValid(this) then return
 	_rightMouseDownIndex = 0
 end if
 end event
@@ -290,6 +292,7 @@ event type long onlbuttonup(unsignedlong vkey, real xpos, real ypos);if _MouseCa
 	end if
 elseif _mouseDownIndex > 0 then
 	Panels[_mouseDownIndex].Event OnLButtonUp(vkey,xpos,ypos)
+	if Not IsValid(this) then return 0
 	_mouseDownIndex = 0
 end if
 
@@ -713,6 +716,7 @@ end event
 
 event type long onrbuttonup(unsignedlong vkey, real xpos, real ypos);if _rightMouseDownIndex > 0 then
 	Panels[_rightMouseDownIndex].Event OnRButtonUp(vkey,xpos,ypos)
+	if Not IsValid(this) then return 0
 	_rightMouseDownIndex = 0
 end if
 
