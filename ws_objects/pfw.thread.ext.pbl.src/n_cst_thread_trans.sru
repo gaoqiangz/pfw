@@ -134,7 +134,7 @@ if SQLCode <> 0 then
 	if bConnected then
 		_of_CleanDisconnect()
 	end if
-	return RetCode.FAILED
+	return RetCode.E_DB_ERROR
 end if
 
 Event OnConnOK()
@@ -154,7 +154,7 @@ Event OnAfterDisconnect()
 _nLastConnOK = 0
 
 if SQLCode <> 0 then
-	return RetCode.FAILED
+	return RetCode.E_DB_ERROR
 end if
 
 return RetCode.OK
@@ -231,7 +231,7 @@ EXECUTE IMMEDIATE :sqlCmd USING this;
 Event OnAfterCommand(sqlCmd)
 
 if SQLCode <> 0 and SQLCode <> 100 then
-	return RetCode.FAILED
+	return RetCode.E_DB_ERROR
 end if
 
 return RetCode.OK
@@ -250,7 +250,7 @@ if SQLCode <> 0 then
 	if autoRollback then
 		_of_CleanRollback()
 	end if
-	return RetCode.FAILED
+	return RetCode.E_DB_ERROR
 end if
 
 return RetCode.OK
@@ -357,7 +357,7 @@ public function long of_autocommit ();if SQLCode <> 0 then
 	if Not AutoCommit then
 		_of_CleanRollback()
 	end if
-	return RetCode.FAILED
+	return RetCode.E_DB_ERROR
 end if
 if Not AutoCommit then
 	return of_Commit(true)
