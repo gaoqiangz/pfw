@@ -213,7 +213,6 @@ public function any of_getdataany (readonly string name, readonly any default)
 public function integer of_msgbox (readonly string title, readonly string text, readonly string detail, readonly icon ico, readonly button btn, readonly integer defbtn)
 public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname)
 public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname)
-public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
 public function long of_remove (readonly n_cst_threading_task tasking)
 public function long of_preventevent ()
 public function long of_setignoretaskcancel (readonly boolean ignore)
@@ -222,7 +221,11 @@ public function long of_stop ()
 public function long of_terminate (readonly long exitcode)
 public function long of_terminate ()
 public function long of_preventevent (readonly boolean deep)
-public function integer of_inserttask (integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
+public function integer of_inserttask (integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname, readonly long group)
+public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly long group)
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname, readonly long group)
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
+public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
 end prototypes
 
 event oninit(n_cst_threading_pool parentthreadingpool);#ParentThreadingPool = ParentThreadingPool
@@ -818,13 +821,10 @@ if Not IsNull(rtCode) then return rtCode
 return MessageBox(title,text,ico,btn,defBtn)
 end function
 
-public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(index,ref newTasking,taskingClsName,"")
+public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(index,ref newTasking,taskingClsName,"",n_cst_threading_task.GROUP_NORMAL)
 end function
 
-public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(0,ref newTasking,taskingClsName,"")
-end function
-
-public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);return of_InsertTask(0,ref newTasking,taskingClsName,taskClsName)
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(0,ref newTasking,taskingClsName,"",n_cst_threading_task.GROUP_NORMAL)
 end function
 
 public function long of_remove (readonly n_cst_threading_task tasking);return of_Remove(of_GetIndex(tasking))
@@ -892,7 +892,7 @@ end function
 public function long of_preventevent (readonly boolean deep);return _eventful.of_Prevent(deep)
 end function
 
-public function integer of_inserttask (integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);int i
+public function integer of_inserttask (integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname, readonly long group);int i
 long rtCode
 
 //if #Running then return RetCode.E_BUSY
@@ -909,7 +909,7 @@ if Not IsValidObject(newTasking) then return RetCode.E_INVALID_OBJECT
 
 if index = 0 then
 	for index = UpperBound(Tasks) to 1 step -1
-		if newTasking.#Group >= Tasks[index].#Group then
+		if group >= Tasks[index].#Group then
 			index++
 			exit
 		end if
@@ -917,7 +917,7 @@ if index = 0 then
 	if index <= 0 then index = 1
 end if
 
-rtCode = newTasking.Event OnInit(this,_Thread,index,_hEvtSync,taskClsName)
+rtCode = newTasking.Event OnInit(this,_Thread,index,_hEvtSync,taskClsName,group)
 if IsFailed(rtCode) then
 	Destroy newTasking
 	return rtCode
@@ -932,6 +932,18 @@ Event OnTaskCreated(newTasking)
 _eventful.of_Trigger(EVT_TASKCREATED,newTasking)
 
 return index
+end function
+
+public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly long group);return of_InsertTask(index,ref newTasking,taskingClsName,"",group)
+end function
+
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname, readonly long group);return of_InsertTask(0,ref newTasking,taskingClsName,taskClsName,group)
+end function
+
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);return of_InsertTask(0,ref newTasking,taskingClsName,taskClsName,n_cst_threading_task.GROUP_NORMAL)
+end function
+
+public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);return of_InsertTask(index,ref newTasking,taskingClsName,taskClsName,n_cst_threading_task.GROUP_NORMAL)
 end function
 
 on n_cst_threading.create

@@ -13,7 +13,7 @@ type nameddata from structure
 end type
 
 global type n_cst_threading_task from nonvisualobject
-event type long oninit ( n_cst_threading parentthreading,  n_cst_thread parentthread,  integer index,  unsignedlong hevtsync,  string clsname )
+event type long oninit ( n_cst_threading parentthreading,  n_cst_thread parentthread,  integer index,  unsignedlong hevtsync,  string clsname,  long group )
 event type string ongettaskclsname ( )
 event type long onerror ( long errcode,  string errinfo )
 event onstop ( long exitcode )
@@ -173,11 +173,10 @@ public function string of_gettaskclassname ()
 public function long of_preventevent ()
 public function long of_setdelayfor (readonly double seconds)
 public function long of_preventevent (boolean deep)
-public function long of_setgroup (readonly long group)
 public function long of_setskip (readonly boolean skip)
 end prototypes
 
-event type long oninit(n_cst_threading parentthreading, n_cst_thread parentthread, integer index, unsignedlong hevtsync, string clsname);long rtCode
+event type long oninit(n_cst_threading parentthreading, n_cst_thread parentthread, integer index, unsignedlong hevtsync, string clsname, long group);long rtCode
 
 #ParentThreading = ParentThreading
 
@@ -197,9 +196,11 @@ _Eventful = Create n_cst_threading_eventful
 
 _Eventful.Event OnInit(this,_hEvtCancelled,_hEvtSync,#ParentThreading.of_GetCancelEvent())
 
-_Task.Event OnInit(this,_Eventful,_hEvtCancelled)
+_Task.Event OnInit(this,_Eventful,_hEvtCancelled,group)
 
 _id = _Task.of_GetID()
+
+#Group = group
 
 return RetCode.OK
 end event
@@ -608,10 +609,6 @@ return _Task.of_SetDelayFor(seconds)
 end function
 
 public function long of_preventevent (boolean deep);return _eventful.of_Prevent(deep)
-end function
-
-public function long of_setgroup (readonly long group);if #ParentThreading.#Running then return RetCode.E_BUSY
-return _Task.of_SetGroup(group)
 end function
 
 public function long of_setskip (readonly boolean skip);if of_IsBusy() then return RetCode.E_BUSY

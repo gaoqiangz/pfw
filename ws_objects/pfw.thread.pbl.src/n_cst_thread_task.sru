@@ -15,7 +15,7 @@ end type
 global type n_cst_thread_task from nonvisualobject
 event type long onstart ( )
 event onstop ( long exitcode )
-event oninit ( n_cst_threading_task parenttasking,  n_cst_threading_eventful eventful,  unsignedlong hevtcancelled )
+event oninit ( n_cst_threading_task parenttasking,  n_cst_threading_eventful eventful,  unsignedlong hevtcancelled,  long group )
 event type long ondotask ( )
 event type long onerror ( long errcode,  string errinfo )
 event type long onnotify ( long wparam,  long lparam,  string sparam )
@@ -93,6 +93,7 @@ double _fDelayFor //sec
 
 NAMEDDATA _datas[]
 end variables
+
 forward prototypes
 public function boolean of_iscancelled ()
 public function unsignedlong of_getcancelevent ()
@@ -155,7 +156,6 @@ public function long of_setdelayfor (readonly double seconds)
 public function long of_getlasterrorcode ()
 public function string of_getlasterrorinfo ()
 public function long of_clearerror ()
-public function long of_setgroup (readonly long group)
 public function long of_setskip (readonly boolean skip)
 end prototypes
 
@@ -178,9 +178,10 @@ tasking = #ParentTasking
 tasking.Event OnStop(exitCode)
 end event
 
-event oninit(n_cst_threading_task parenttasking, n_cst_threading_eventful eventful, unsignedlong hevtcancelled);#ParentTasking = ParentTasking
+event oninit(n_cst_threading_task parenttasking, n_cst_threading_eventful eventful, unsignedlong hevtcancelled, long group);#ParentTasking = ParentTasking
 _eventful = eventful
 _hEvtCancelled = hEvtCancelled
+#Group = group
 end event
 
 event type long onerror(long errcode, string errinfo);long rtCode
@@ -601,13 +602,6 @@ end function
 
 public function long of_clearerror ();_lastErrCode = 0
 _lastErrInfo = ""
-
-return RetCode.OK
-end function
-
-public function long of_setgroup (readonly long group);if group < GROUP_NORMAL or group > GROUP_POST then return RetCode.E_INVALID_ARGUMENT
-
-#Group = group
 
 return RetCode.OK
 end function
