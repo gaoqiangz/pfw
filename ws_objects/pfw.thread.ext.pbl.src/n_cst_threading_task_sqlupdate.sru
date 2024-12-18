@@ -37,8 +37,6 @@ long _nRowsInserted
 long _nRowsUpdated
 long _nRowsDeleted
 
-ulong _hEvtCommitted
-
 boolean _bMultiTableUpdate
 
 powerobject _updateObject
@@ -46,23 +44,20 @@ powerobject _updateObject
 //Identity columns
 IDCOLDATA _idColDatas[]
 end variables
+
 forward prototypes
 private function n_cst_thread_task_sqlupdate _of_gettask ()
 public function long of_reset ()
 public function long of_setdataobject (readonly string dataobject)
 public function long of_setautocommit (readonly boolean autocommit)
-public function long of_rollback ()
 public function long of_setsqlsyntax (readonly string sqlsyntax)
 public function long of_refreshidentitydata (readonly powerobject object)
 public function long of_setmultitableupdate (readonly boolean multitable)
 public function long of_getrowsinserted ()
 public function long of_getrowsdeleted ()
 public function long of_getrowsupdated ()
-public function boolean of_iscommitted ()
 public function long of_addupdatabletable (string name, string updatablecolumns[], string keycolumns[], string identitycolumn, long updatewhere, boolean updatekeyinplace)
 public function long of_addupdatabletable (string name, string updatablecolumns[], string keycolumns[], string identitycolumn)
-public function long of_commit (readonly boolean autorollback)
-public function long of_commit ()
 public function long of_setupdatedata (ref blob blbdata, readonly long updaterows)
 public function long of_setupdateobject (readonly powerobject object, readonly boolean applydata)
 public function long of_setupdateobject (readonly powerobject object)
@@ -111,11 +106,6 @@ end function
 public function long of_setautocommit (readonly boolean autocommit);if of_IsBusy() then return RetCode.E_BUSY
 
 return _of_GetTask().of_SetAutoCommit(autoCommit)
-end function
-
-public function long of_rollback ();if of_IsBusy() then return RetCode.E_BUSY
-
-return _of_GetTask().of_Rollback()
 end function
 
 public function long of_setsqlsyntax (readonly string sqlsyntax);if of_IsBusy() then return RetCode.E_BUSY
@@ -230,9 +220,6 @@ end function
 public function long of_getrowsupdated ();return _nRowsUpdated
 end function
 
-public function boolean of_iscommitted ();return (WaitForSingleObject(_hEvtCommitted,0) = 0) //WAIT_OBJECT_0
-end function
-
 public function long of_addupdatabletable (string name, string updatablecolumns[], string keycolumns[], string identitycolumn, long updatewhere, boolean updatekeyinplace);if of_IsBusy() then return RetCode.E_BUSY
 return _of_GetTask().of_AddUpdatableTable(name,updatableColumns,keyColumns,identityColumn,updateWhere,updateKeyInPlace)
 end function
@@ -244,14 +231,6 @@ SetNull(nUpdateWhere)
 SetNull(bUpdateInPlace)
 
 return of_AddUpdatableTable(name,updatableColumns,keyColumns,identityColumn,nUpdateWhere,bUpdateInPlace)
-end function
-
-public function long of_commit (readonly boolean autorollback);if of_IsBusy() then return RetCode.E_BUSY
-
-return _of_GetTask().of_Commit(autoRollback)
-end function
-
-public function long of_commit ();return of_Commit(true)
 end function
 
 public function long of_setupdatedata (ref blob blbdata, readonly long updaterows);if of_IsBusy() then return RetCode.E_BUSY
@@ -319,11 +298,6 @@ _nRowsDeleted = 0
 _idColDatas = emptyIdColDatas
 
 return 0 //continue
-end event
-
-event oninit;call super::oninit;if AncestorReturnValue <> RetCode.OK then return AncestorReturnValue
-_hEvtCommitted = _of_GetTask().of_GetCommitEvent()
-return RetCode.OK
 end event
 
 event onfinalize;call super::onfinalize;if of_GetLastExitCode() = RetCode.OK then

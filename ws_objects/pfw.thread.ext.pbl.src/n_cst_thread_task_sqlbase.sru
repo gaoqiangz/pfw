@@ -227,9 +227,16 @@ end if
 return _hEvtCommitted
 end function
 
-public function long of_commit (readonly boolean autorollback);if Not IsValidObject(_transObject) then return RetCode.E_INVALID_TRANSACTION
+public function long of_commit (readonly boolean autorollback);long rtCode
 
-return _transObject.of_Commit(autoRollback)
+if Not IsValidObject(_transObject) then return RetCode.E_INVALID_TRANSACTION
+
+rtCode = _transObject.of_Commit(autoRollback)
+if IsSucceeded(rtCode) then
+	Event OnCommitted()
+end if
+
+return rtCode
 end function
 
 public function long of_reset ();if _hEvtCommitted <> 0 then

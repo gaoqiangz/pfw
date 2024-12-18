@@ -17,6 +17,9 @@ Transaction _Trans
 DBERRORDATA _lastDBError
 Boolean _bHasTransData
 Boolean _bHasParams
+
+Private:
+ulong _hEvtCommitted
 end variables
 
 forward prototypes
@@ -32,6 +35,10 @@ public function long of_addparam (readonly any param)
 public function long of_addparam (readonly string name, readonly any value)
 public function long of_resetparams ()
 public function boolean of_hasparams ()
+public function boolean of_iscommitted ()
+public function long of_rollback ()
+public function long of_commit (readonly boolean autorollback)
+public function long of_commit ()
 end prototypes
 
 event ondberror(readonly dberrordata err);_lastDBError = err
@@ -152,7 +159,6 @@ return rtCode
 end function
 
 public function long of_resetparams ();n_cst_thread_task_sqlbase task
-
 if of_IsBusy() then return RetCode.E_BUSY
 
 _bHasParams = false
@@ -163,6 +169,30 @@ return task.of_ResetParams()
 end function
 
 public function boolean of_hasparams ();return _bHasParams
+end function
+
+public function boolean of_iscommitted ();return (WaitForSingleObject(_hEvtCommitted,0) = 0) //WAIT_OBJECT_0
+end function
+
+public function long of_rollback ();n_cst_thread_task_sqlbase task
+
+if of_IsBusy() then return RetCode.E_BUSY
+
+task = _Task
+
+return task.of_Rollback()
+end function
+
+public function long of_commit (readonly boolean autorollback);n_cst_thread_task_sqlbase task
+
+if of_IsBusy() then return RetCode.E_BUSY
+
+task = _Task
+
+return task.of_Commit(autoRollback)
+end function
+
+public function long of_commit ();return of_Commit(true)
 end function
 
 on n_cst_threading_task_sqlbase.create
@@ -178,5 +208,15 @@ event onprepare;call super::onprepare;DBERRORDATA emptyData
 _lastDBError = emptyData
 
 return 0 //continue
+end event
+
+event oninit;call super::oninit;n_cst_thread_task_sqlbase task
+
+if AncestorReturnValue <> RetCode.OK then return AncestorReturnValue
+
+task = _Task
+_hEvtCommitted = task.of_GetCommitEvent()
+
+return RetCode.OK
 end event
 
