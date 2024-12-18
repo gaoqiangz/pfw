@@ -68,8 +68,8 @@ type variables
 Public:
 //Execute group
 constant long GROUP_NORMAL		= 0
-constant long GROUP_PREPARE	= 1
-constant long GROUP_POST		= 2
+constant long GROUP_PREPARE	= -1
+constant long GROUP_POST		= 1
 
 /*--- Properties---*/
 Public:
@@ -93,7 +93,6 @@ double _fDelayFor //sec
 
 NAMEDDATA _datas[]
 end variables
-
 forward prototypes
 public function boolean of_iscancelled ()
 public function unsignedlong of_getcancelevent ()

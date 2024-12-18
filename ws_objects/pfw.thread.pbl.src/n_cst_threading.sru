@@ -211,7 +211,6 @@ public function any of_getdata (readonly string name)
 public function any of_getdataany (readonly string name)
 public function any of_getdataany (readonly string name, readonly any default)
 public function integer of_msgbox (readonly string title, readonly string text, readonly string detail, readonly icon ico, readonly button btn, readonly integer defbtn)
-public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
 public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname)
 public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname)
 public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
@@ -223,6 +222,7 @@ public function long of_stop ()
 public function long of_terminate (readonly long exitcode)
 public function long of_terminate ()
 public function long of_preventevent (readonly boolean deep)
+public function integer of_inserttask (integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
 end prototypes
 
 event oninit(n_cst_threading_pool parentthreadingpool);#ParentThreadingPool = ParentThreadingPool
@@ -818,45 +818,13 @@ if Not IsNull(rtCode) then return rtCode
 return MessageBox(title,text,ico,btn,defBtn)
 end function
 
-public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);int i
-long rtCode
-
-//if #Running then return RetCode.E_BUSY
-if of_IsBusy() then return RetCode.E_BUSY
-if index < 1 or index > UpperBound(Tasks) + 1 then return RetCode.E_OUT_OF_RANGE
-if taskingClsName = "" then return RetCode.E_INVALID_TYPE
-
-try
-	newTasking = Create Using taskingClsName
-catch(Throwable ex)
-	return RetCode.E_INVALID_TYPE
-end try
-if Not IsValidObject(newTasking) then return RetCode.E_INVALID_OBJECT
-
-rtCode = newTasking.Event OnInit(this,_Thread,index,_hEvtSync,taskClsName)
-if IsFailed(rtCode) then
-	Destroy newTasking
-	return rtCode
-end if
-
-for i = UpperBound(Tasks) + 1 to index + 1 step -1
-	Tasks[i] = Tasks[i - 1]
-next
-Tasks[index] = newTasking
-
-Event OnTaskCreated(newTasking)
-_eventful.of_Trigger(EVT_TASKCREATED,newTasking)
-
-return index
+public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(index,ref newTasking,taskingClsName,"")
 end function
 
-public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(UpperBound(Tasks) + 1,ref newTasking,taskingClsName,"")
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(0,ref newTasking,taskingClsName,"")
 end function
 
-public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname);return of_InsertTask(UpperBound(Tasks) + 1,ref newTasking,taskingClsName,"")
-end function
-
-public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);return of_InsertTask(UpperBound(Tasks) + 1,ref newTasking,taskingClsName,taskClsName)
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);return of_InsertTask(0,ref newTasking,taskingClsName,taskClsName)
 end function
 
 public function long of_remove (readonly n_cst_threading_task tasking);return of_Remove(of_GetIndex(tasking))
@@ -922,6 +890,48 @@ return of_Terminate(nvl)
 end function
 
 public function long of_preventevent (readonly boolean deep);return _eventful.of_Prevent(deep)
+end function
+
+public function integer of_inserttask (integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);int i
+long rtCode
+
+//if #Running then return RetCode.E_BUSY
+if of_IsBusy() then return RetCode.E_BUSY
+if index < 0 or index > UpperBound(Tasks) + 1 then return RetCode.E_OUT_OF_RANGE
+if taskingClsName = "" then return RetCode.E_INVALID_TYPE
+
+try
+	newTasking = Create Using taskingClsName
+catch(Throwable ex)
+	return RetCode.E_INVALID_TYPE
+end try
+if Not IsValidObject(newTasking) then return RetCode.E_INVALID_OBJECT
+
+if index = 0 then
+	for index = UpperBound(Tasks) to 1 step -1
+		if newTasking.#Group >= Tasks[index].#Group then
+			index++
+			exit
+		end if
+	next
+	if index <= 0 then index = 1
+end if
+
+rtCode = newTasking.Event OnInit(this,_Thread,index,_hEvtSync,taskClsName)
+if IsFailed(rtCode) then
+	Destroy newTasking
+	return rtCode
+end if
+
+for i = UpperBound(Tasks) + 1 to index + 1 step -1
+	Tasks[i] = Tasks[i - 1]
+next
+Tasks[index] = newTasking
+
+Event OnTaskCreated(newTasking)
+_eventful.of_Trigger(EVT_TASKCREATED,newTasking)
+
+return index
 end function
 
 on n_cst_threading.create
