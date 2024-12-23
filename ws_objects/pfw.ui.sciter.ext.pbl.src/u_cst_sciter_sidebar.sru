@@ -687,6 +687,9 @@ end if
 return 0
 end event
 
+event destructor;call super::destructor;SetNull(#Bar)
+end event
+
 type uo_logo from u_cst_sciter`uo_logo within u_cst_sciter_sidebar
 end type
 

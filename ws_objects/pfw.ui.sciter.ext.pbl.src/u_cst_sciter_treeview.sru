@@ -57,6 +57,7 @@ Private:
 Constant String IMPL_HTML = "pfw://arch/sciter[treeview/main.html]"
 
 end variables
+
 forward prototypes
 public function n_cst_sciter_treeview_option of_addoption (readonly string txt, readonly string image, readonly string tiptext)
 public function n_cst_sciter_treeview_option of_addoption (readonly string txt, readonly string image, readonly long imageposition)
@@ -425,6 +426,9 @@ event onattachbehavior;call super::onattachbehavior;if name = "pfwTreeView" then
 	return 1
 end if
 return 0
+end event
+
+event destructor;call super::destructor;SetNull(#Tree)
 end event
 
 type uo_logo from u_cst_sciter`uo_logo within u_cst_sciter_treeview
