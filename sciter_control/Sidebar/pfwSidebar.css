@@ -125,7 +125,7 @@ sidebar option>caption>popup[role="tooltip"] {
 	/* 分组右侧的箭头 */
 
 	option:has-child-of-type(options)>caption {
-		padding-right: 30dip;
+		padding-right: 30dip !important;
 		foreground-image: url(stock:arrow-down);
 		foreground-size: 12dip 8dip;
 		foreground-repeat: no-repeat;
