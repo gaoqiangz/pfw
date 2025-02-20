@@ -226,6 +226,7 @@ public function integer of_inserttask (readonly integer index, ref n_cst_threadi
 public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname, readonly long group)
 public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
 public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname)
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly long group)
 end prototypes
 
 event oninit(n_cst_threading_pool parentthreadingpool);#ParentThreadingPool = ParentThreadingPool
@@ -944,6 +945,9 @@ public function integer of_addtask (ref n_cst_threading_task newtasking, readonl
 end function
 
 public function integer of_inserttask (readonly integer index, ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly string taskclsname);return of_InsertTask(index,ref newTasking,taskingClsName,taskClsName,n_cst_threading_task.GROUP_NORMAL)
+end function
+
+public function integer of_addtask (ref n_cst_threading_task newtasking, readonly string taskingclsname, readonly long group);return of_InsertTask(0,ref newTasking,taskingClsName,"",group)
 end function
 
 on n_cst_threading.create
