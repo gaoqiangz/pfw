@@ -51,11 +51,13 @@ event onopen;call super::onopen;n_sciterelement el
 uo_sciter.AttachEvent(Enums.SC_HANDLE_INVOKE_METHOD)
 //设置文字渲染的平滑模式为Clear-Type(High Quality)
 uo_sciter.SetOption(Enums.SC_OPT_FONT_SMOOTHING,Enums.SC_OPTV_FONT_CLEAR_TYPE)
+//支持嵌入子窗口的渲染模式
+uo_sciter.SetOption(Enums.SC_OPT_DIRECT_COMPOSITION,false)
 //设置元素事件处理对象的事件过滤类型,这里设置为Sciter预定行为事件和TIScript脚本调用(element.[Method])
 SciterEventHandler.SetFilter(Enums.SC_HANDLE_EVENT + Enums.SC_HANDLE_INVOKE_METHOD)
 
 //加载html文件
-uo_sciter.LoadFile("html\sciter\main.htm")
+uo_sciter.LoadFile("tests\sciter\window.htm")
 
 //设置元素的事件处理对象
 el = uo_sciter.GetElementByID("test-eventhandler") //通过GetElementByID取元素

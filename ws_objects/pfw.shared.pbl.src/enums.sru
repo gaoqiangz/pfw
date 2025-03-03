@@ -140,6 +140,7 @@ Constant Long SC_OPT_UX_THEMING							= 11	// value - BOOL, TRUE - the engine wi
 																				// the same (modulo fonts) look-n-feel on all platforms.
 Constant Long SC_OPT_ALPHA_WINDOW					= 12	//  hWnd, value - TRUE/FALSE - window uses per pixel alpha (e.g. WS_EX_LAYERED/UpdateLayeredWindow() window)
 Constant Long SC_OPT_PX_AS_DIP					= 16	//  value 1 - 1px in CSS is treated as 1dip, value 0 - default behavior - 1px is a physical pixel
+Constant Long SC_OPT_DIRECT_COMPOSITION     = 20 //TRUE/FALSE, enables DirectComposition on Windows 11. TRUE by default on Windows 11. Set it to FALSE if window will host child windows.
 
 //SC_OPT_HTTPS_ERROR_VALUE
 Constant Long SC_OPTV_HTTPS_ERROR_DROP		= 0

@@ -14,7 +14,7 @@ export class Manager {
         let sText = "";
         for (let name in this.__fonts) {
             let font = this.__fonts[name];
-            sText += `@font-face { font-family: 'icf@${name}'; src: url('${font.url}'); } .icon-font-${name} { display: inline-block; font-family: 'icf@${name}'; font-rendering-mode: sub-pixel; line-height: 1; size: max-content; overflow: visible; } `;
+            sText += `@font-face { font-family: 'icf@${name}'; src: url('${URL.fromPath(font.url)}'); } .icon-font-${name} { display: inline-block; font-family: 'icf@${name}'; font-rendering-mode: sub-pixel; line-height: 1; size: max-content; overflow: visible; } `;
         }
         let elStyle = document.$("style#icon-font");
         if (elStyle) elStyle.remove();
