@@ -2,6 +2,8 @@
 forward
 global type w_test_webview from window
 end type
+type cb_7 from commandbutton within w_test_webview
+end type
 type cb_6 from commandbutton within w_test_webview
 end type
 type cb_5 from commandbutton within w_test_webview
@@ -26,7 +28,7 @@ global type w_test_webview from window
 integer width = 5714
 integer height = 2428
 boolean titlebar = true
-string title = "Untitled"
+string title = "WebView2"
 boolean controlmenu = true
 boolean minbox = true
 boolean maxbox = true
@@ -34,6 +36,7 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
+cb_7 cb_7
 cb_6 cb_6
 cb_5 cb_5
 cb_4 cb_4
@@ -46,7 +49,12 @@ webview webview
 end type
 global w_test_webview w_test_webview
 
+type variables
+ulong _hDeferedReq
+end variables
+
 on w_test_webview.create
+this.cb_7=create cb_7
 this.cb_6=create cb_6
 this.cb_5=create cb_5
 this.cb_4=create cb_4
@@ -56,7 +64,8 @@ this.sle_url=create sle_url
 this.cb_1=create cb_1
 this.uo_webview=create uo_webview
 this.webview=create webview
-this.Control[]={this.cb_6,&
+this.Control[]={this.cb_7,&
+this.cb_6,&
 this.cb_5,&
 this.cb_4,&
 this.cb_3,&
@@ -67,6 +76,7 @@ this.uo_webview}
 end on
 
 on w_test_webview.destroy
+destroy(this.cb_7)
 destroy(this.cb_6)
 destroy(this.cb_5)
 destroy(this.cb_4)
@@ -101,6 +111,39 @@ event open;//为确保API兼容性请安装WebView2 Runtime 109.0.1518.78及以�
 
 
 uo_webview.SetOption(Enums.WEBVIEW_OPT_DEVTOOLS,true)
+//uo_webview.SetAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0")
+
+//uo_webview.AddFilterRequest("https://pfw.com/*")
+//uo_webview.AddFilterRequest("http://localhost:8080/*")
+end event
+
+type cb_7 from commandbutton within w_test_webview
+integer x = 3643
+integer y = 28
+integer width = 544
+integer height = 132
+integer taborder = 40
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+string text = "DeferResponse"
+end type
+
+event clicked;n_webviewrequest request
+n_webviewresponse resp
+
+request = Create n_webviewrequest
+request.FromHandle(_hDeferedReq)
+
+messagebox("",request.GetUrl())
+
+resp = request.Response(200,"OK")
+resp.SetHeader("Access-Control-Allow-Origin","*")
+resp.SetData("response from PB: " + request.GetUrl())
+resp.SetData("response2 from PB: " + request.GetUrl())
 end event
 
 type cb_6 from commandbutton within w_test_webview
@@ -206,7 +249,7 @@ event clicked;constant string HTML = '<html>'+&
 												 'height: 100px;'+&
 											'}'+&
 										'</style>'+&
-										'<script src="http://pfw.mem/test.js"></script>'+&
+										'<script src="http://mem.pfw.app/test.js"></script>'+&
 									'</head>'+&
 									'<body>'+&
 										'<div id="main"></div>'+&
@@ -293,10 +336,43 @@ for nIndex = 1 to nCnt
 	if nIndex < nCnt then sArgList += ","
 next
 
-return "OnInvoke: " + method + ", [" + sArgList + "]"
+return "Source: " + source + ", OnInvoke: " + method + ", [" + sArgList + "]"
 end event
 
 event onengineerror;call super::onengineerror;MessageBox("OnEngineError",reason)
+end event
+
+event onrequest;call super::onrequest;n_webviewresponse resp
+
+/*
+messagebox("",request.GetUrl())
+
+resp = request.Response(200,"OK")
+resp.SetHeader("Access-Control-Allow-Origin","*")
+resp.SetData("response from PB: " + request.GetUrl())
+return
+*/
+
+_hDeferedReq = request.IntoHandle()
+
+return
+/*
+n_test_threading_task tasking
+n_cst_threading threading
+threading = create n_cst_threading
+threading.of_SetAutoRelease(true)
+
+threading.of_AddTask(ref tasking,"n_test_threading_task")
+tasking.of_Sethandle(request.IntoHandle())
+tasking.of_SetDelayFor(3)
+
+threading.of_Run()
+*/
+end event
+
+event onloadresource;call super::onloadresource;data = Blob("我爱PB!"+url,EncodingUTF8!)
+headers = "Content-Type: text/xml;charset=utf8~r~n"
+//headers += "Access-Control-Allow-Origin: https://pfw.app"
 end event
 
 type webview from n_cst_webview within w_test_webview descriptor "pb_nvo" = "true" 
@@ -311,7 +387,15 @@ call super::destroy
 end on
 
 event onloadresource;call super::onloadresource;if url = "mem://test.js" then
-	data = Blob("alert('inject script')",EncodingUTF8!)
+	data = Blob("document.write('injected script from PB')",EncodingUTF8!)
 end if
+end event
+
+event onrequest;call super::onrequest;n_webviewresponse resp
+
+messagebox("",request.GetUrl())
+
+resp = request.Response(200,"OK")
+resp.SetData("response from PB: " + request.GetUrl())
 end event
 
