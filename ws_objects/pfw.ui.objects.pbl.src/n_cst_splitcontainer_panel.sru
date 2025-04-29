@@ -361,17 +361,14 @@ elseif IsValidObject(Item.Object) then
 	*/
 	if Visible then
 		Win32.SetRedraw(Handle(Item.Object),true)
-		Item.Object.Show()
+		//使发送WM_SHOWWINDOW消息
+		Win32.ShowWindow(Handle(Item.Object),Win32.SW_SHOWNA)
+		//Item.Object.Show()
 	else
 		Item.Object.Hide()
 		Item.Object.Move(-32768,-32768)
 	end if
 	/*----------------------*/
-	/*if visible then
-		Item.Object.Show()
-	else
-		Item.Object.Hide()
-	end if*/
 end if
 return 0
 end event
