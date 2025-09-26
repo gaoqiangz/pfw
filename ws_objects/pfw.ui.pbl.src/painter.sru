@@ -201,27 +201,6 @@ public function boolean of_drawline (readonly unsignedlong hdc, readonly real x1
 public function boolean of_drawgradientline (readonly unsignedlong hdc, readonly real x1, readonly real y1, readonly real x2, readonly real y2, readonly unsignedlong color, readonly boolean shadow, readonly boolean repeat, readonly real size)
 public function boolean of_drawpolygon (readonly unsignedlong hdc, readonly pointf paintregion[], readonly unsignedlong color, readonly unsignedinteger style, readonly real size)
 public function boolean of_drawrect (readonly unsignedlong hdc, readonly rectf rcpaint, readonly unsignedlong color, readonly unsignedinteger style, readonly real size)
-public function boolean of_drawgraphicobject (readonly unsignedlong hdc, readonly graphicobject object)
-public function long of_convertlinestyle (readonly linestyle style)
-public function boolean of_calctextsize (readonly n_cst_font font, readonly string text, readonly unsignedlong dtparam, ref rectf calcrect)
-public function boolean of_calcverttextsize (readonly n_cst_font font, readonly string text, readonly unsignedlong dtparam, ref rectf calcrect)
-public function boolean of_drawscrollbar (readonly unsignedlong hdc, readonly scrollbardrawinfo sbdrawinfo, readonly boolean bvert, readonly long flags, readonly n_cst_base_theme theme, readonly long borderstyle, readonly radiusf rdborder)
-public function boolean of_drawtext (readonly unsignedlong hdc, readonly n_cst_font font, readonly string text, readonly real left, readonly real top, readonly real right, readonly real bottom, readonly unsignedlong color, readonly unsignedlong dtparam)
-public function boolean of_drawtext (readonly unsignedlong hdc, readonly n_cst_font font, readonly string text, readonly rectf rctext, readonly unsignedlong color, readonly unsignedlong dtparam)
-public function boolean of_drawverticaltext (readonly unsignedlong hdc, readonly n_cst_font font, readonly string text, ref rectf rctext, readonly unsignedlong color, readonly unsignedlong dtparam)
-public function boolean of_drawverticaltext (readonly unsignedlong hdc, readonly n_cst_font font, readonly string text, readonly real left, readonly real top, readonly real right, readonly real bottom, readonly unsignedlong color, readonly unsignedlong dtparam)
-public function boolean of_fillpolygon (readonly unsignedlong hdc, readonly pointf paintregion[], readonly unsignedlong color, readonly boolean border, readonly unsignedlong bordercolor)
-public function boolean of_fillpolygon (readonly unsignedlong hdc, readonly pointf paintregion[], readonly unsignedlong startcolor, readonly unsignedlong endcolor, readonly unsignedinteger orientation, readonly boolean repeat, readonly boolean border, readonly unsignedlong bordercolor)
-public function boolean of_fillrect (readonly unsignedlong hdc, readonly rectf rcpaint, readonly unsignedlong startcolor, readonly unsignedlong endcolor, readonly unsignedinteger orientation, readonly boolean repeat, readonly boolean border, readonly unsignedlong bordercolor)
-public function boolean of_fillrect (readonly unsignedlong hdc, readonly rectf rcpaint, readonly unsignedlong color, readonly boolean border, readonly unsignedlong bordercolor)
-public function boolean of_fillroundrect (readonly unsignedlong hdc, readonly rectf rcpaint, readonly unsignedlong color, readonly boolean border, readonly unsignedlong bordercolor, radiusf radius)
-public function boolean of_fillroundrect (readonly unsignedlong hdc, readonly rectf rcpaint, readonly unsignedlong color, readonly boolean border, readonly unsignedlong bordercolor)
-public function boolean of_filltriangle (readonly unsignedlong hdc, readonly pointf pt1, readonly pointf pt2, readonly pointf pt3, readonly unsignedlong color, readonly boolean border, readonly unsignedlong bordercolor)
-public function boolean of_themefill (readonly unsignedlong hdc, readonly rectf rcpaint, readonly n_cst_base_theme theme, readonly unsignedlong state)
-public function boolean of_drawline (readonly unsignedlong hdc, readonly real x1, readonly real y1, readonly real x2, readonly real y2, readonly unsignedlong color, readonly boolean shadow, readonly real size)
-public function boolean of_drawgradientline (readonly unsignedlong hdc, readonly real x1, readonly real y1, readonly real x2, readonly real y2, readonly unsignedlong color, readonly boolean shadow, readonly boolean repeat, readonly real size)
-public function boolean of_drawpolygon (readonly unsignedlong hdc, readonly pointf paintregion[], readonly unsignedlong color, readonly unsignedinteger style, readonly real size)
-public function boolean of_drawrect (readonly unsignedlong hdc, readonly rectf rcpaint, readonly unsignedlong color, readonly unsignedinteger style, readonly real size)
 end prototypes
 
 public function boolean of_drawgraphicobject (readonly unsignedlong hdc, readonly graphicobject object);Long nLineStyle
@@ -349,7 +328,7 @@ else
 end if
 end function
 
-public function boolean of_drawscrollbar (readonly unsignedlong hdc, readonly scrollbardrawinfo sbdrawinfo, readonly boolean bvert, readonly long flags, readonly n_cst_base_theme theme, readonly long borderstyle, readonly radiusf rdborder);ulong bkColor,borderColor,arrowColor,nState
+public function boolean of_drawscrollbar (readonly unsignedlong hdc, readonly scrollbardrawinfo sbdrawinfo, readonly boolean bvert, readonly long flags, readonly n_cst_base_theme theme, readonly long borderstyle, readonly radiusf rdborder);ulong bkColor,borderColor,arrowColor,nMainState,nState
 long nBkgndOrientation
 boolean bDrawArrowUp,bDrawArrowDown,bDrawThumb
 POINTF pt1,pt2,pt3
@@ -369,11 +348,11 @@ else
 end if
 
 //Background
-if sbDrawInfo.MouseOver then nState += Enums.STATE_HOVER
-if sbDrawInfo.MouseDown then nState += Enums.STATE_PRESSED
+if sbDrawInfo.MouseOver then nMainState += Enums.STATE_HOVER
+if sbDrawInfo.MouseDown then nMainState += Enums.STATE_PRESSED
 
-bkColor = theme.of_GetColor(theme.CLR_SCROLLBARBKGND,nState)
-borderColor = theme.of_GetColor(theme.CLR_SCROLLBARBORDER,nState)
+bkColor = theme.of_GetColor(theme.CLR_SCROLLBARBKGND,nMainState)
+borderColor = theme.of_GetColor(theme.CLR_SCROLLBARBORDER,nMainState)
 if theme.#BkgndStyle = Enums.SOLID or theme.#BkgndStyle = Enums.TRANSPARENT then
 	ThemeFill( hdc, sbDrawInfo.rcPaint, bkColor, nBkgndOrientation, Enums.SOLID, Enums.STATE_NONE, false,borderStyle,borderColor,rdBorder)
 else
@@ -387,7 +366,7 @@ end if
 //Arrows
 if sbDrawInfo.MouseOver or sbDrawInfo.btnThumb.MouseDown or sbDrawInfo.btnArrowUp.MouseDown or sbDrawInfo.btnArrowDown.MouseDown then
 	if bDrawArrowUp and sbDrawInfo.btnArrowUp.Enabled and sbDrawInfo.Enabled then
-		nState = 0
+		nState = MakeLong(0,nMainState)
 		if sbDrawInfo.btnArrowUp.MouseOver then nState += Enums.STATE_HOVER
 		if sbDrawInfo.btnArrowUp.MouseDown then nState += Enums.STATE_PRESSED
 		bkColor = theme.of_GetColor(theme.CLR_SBARROWBKGND,nState)
@@ -405,7 +384,7 @@ if sbDrawInfo.MouseOver or sbDrawInfo.btnThumb.MouseDown or sbDrawInfo.btnArrowU
 	end if
 	
 	if bDrawArrowDown and sbDrawInfo.btnArrowDown.Enabled and sbDrawInfo.Enabled then
-		nState = 0
+		nState = MakeLong(0,nMainState)
 		if sbDrawInfo.btnArrowDown.MouseOver then nState += Enums.STATE_HOVER
 		if sbDrawInfo.btnArrowDown.MouseDown then nState += Enums.STATE_PRESSED
 		bkColor = theme.of_GetColor(theme.CLR_SBARROWBKGND,nState)
@@ -489,7 +468,7 @@ end if
 
 //Thumb
 if bDrawThumb then
-	nState = 0
+	nState = MakeLong(0,nMainState)
 	if sbDrawInfo.btnThumb.MouseOver then nState += Enums.STATE_HOVER
 	if sbDrawInfo.btnThumb.MouseDown then nState += Enums.STATE_PRESSED
 	if Not sbDrawInfo.btnThumb.Enabled then nState += Enums.STATE_DISABLED
