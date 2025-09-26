@@ -67,12 +67,10 @@ public function long of_reset ()
 public function long of_addparam (readonly string name, readonly any value)
 private function string _of_paramtostring (readonly any param, readonly long dbtype)
 public function long of_setparam (string name, readonly any value)
-private function integer _of_parseargs (string argstring, ref string args[])
 public function long of_resetparams ()
 public function boolean of_hasparams ()
 protected function long _of_sqlbindparams (ref string sql, readonly long dbtype, readonly string dwargstring)
 protected function long _of_sqlbindparams (ref string sql, readonly long dbtype)
-protected function long _of_retrievewithparams (readonly datastore data)
 public function long of_getparam (readonly integer index, ref any value)
 public function integer of_getparamcount ()
 public function long of_getparam (string name, ref any value)
@@ -80,6 +78,8 @@ public function string of_getparamname (readonly integer index)
 public function long of_setparam (readonly integer index, ref any value)
 public function boolean of_isncharbinding ()
 public function n_cst_thread_task_sqlbase_ds of_getcacheds (readonly string dataobject)
+private function integer _of_parsedwargs (string argstring, ref string args[], ref string argtypes[])
+protected function long _of_retrievewithparams (readonly datastore data)
 end prototypes
 
 event type long ondberror(long sqldbcode, string sqlerrtext, string sqlsyntax, dwbuffer buffer, long row);n_cst_threading_task_sqlbase tasking
@@ -356,25 +356,6 @@ _sqlParams[nIndex].value = value
 return RetCode.OK
 end function
 
-private function integer _of_parseargs (string argstring, ref string args[]);long nPos,nLastPos
-string sArg,sArgs[]
-
-argString = Lower(argString + "~n")
-nPos = Pos(argString,"~n")
-do while nPos > 0
-	sArg = Mid(argString,nLastPos + 1,nPos - nLastPos - 1)
-	sArg = Left(sArg,Pos(sArg,"~t") - 1)
-	if sArg <> "" then
-		sArgs[UpperBound(sArgs) + 1] = sArg
-	end if
-	nLastPos = nPos
-	nPos = Pos(argString,"~n",nPos + 1)
-loop
-
-args = sArgs
-return UpperBound(args)
-end function
-
 public function long of_resetparams ();SQLPARAM emptyParams[]
 
 //if #Running then return RetCode.E_BUSY
@@ -409,7 +390,7 @@ long nPos,nLen,nOffset
 int nIndex,nCount,nArgIdx,nArgIdx2,nArgCnt,nParmNameCnt
 boolean bQtUnclose
 string sWord,sQuote,sReplace
-string sDwArgs[]
+string sDwArgs[],sDwArgTypes[]
 SQLARG sqlArgs[]
 SQLPARAM sqlParams[]
 constant string ARG_PREFIX = ":"		//SQL参数占位符的前缀
@@ -427,7 +408,7 @@ if nParmNameCnt > 0 and nParmNameCnt <> nCount then return RetCode.E_INVALID_ARG
 
 //解析DW参数定义并将其名称绑定给实参列表
 if dwArgString <> "" and nParmNameCnt = 0 then
-	if _of_ParseArgs(dwArgString,ref sDwArgs) = 0 then return RetCode.E_INVALID_ARGUMENT
+	if _of_ParseDwArgs(dwArgString,ref sDwArgs,ref sDwArgTypes) = 0 then return RetCode.E_INVALID_ARGUMENT
 	if UpperBound(sDwArgs) <> nCount then return RetCode.E_OUT_OF_BOUND
 	for nIndex = 1 to nCount
 		sqlParams[nIndex].name = sDwArgs[nIndex]
@@ -501,105 +482,6 @@ return RetCode.OK
 end function
 
 protected function long _of_sqlbindparams (ref string sql, readonly long dbtype);return _of_SQLBindParams(ref sql,dbType,"")
-end function
-
-protected function long _of_retrievewithparams (readonly datastore data);long nRowCnt,nParmIdx,nParmCnt,nDwArgIdx,nDwArgCnt
-string sDwArgs[]
-any aParams[]
-boolean bHasNamedParm
-n_scriptinvoker invoker
-
-nParmCnt = UpperBound(_sqlParams)
-for nParmIdx = 1 to nParmCnt
-	if _sqlParams[nParmIdx].name <> "" then
-		bHasNamedParm = true
-		exit
-	end if
-next
-
-//自动匹配DW参数索引
-if bHasNamedParm then
-	nDwArgCnt = _of_ParseArgs(Data.Describe("DataWindow.Table.Arguments"),ref sDwArgs)
-	if nParmCnt >= nDwArgCnt then
-		for nDwArgIdx = 1 to nDwArgCnt
-			//查找参数
-			for nParmIdx = 1 to nParmCnt
-				if _sqlParams[nParmIdx].name = sDwArgs[nDwArgIdx] then
-					aParams[nDwArgIdx] = _sqlParams[nParmIdx].value
-					exit
-				end if
-			next
-			//没有找到按顺序取参
-			if nParmIdx > nParmCnt then
-				aParams[nDwArgIdx] = _sqlParams[nDwArgIdx].value
-			end if
-		next
-	end if
-end if
-
-if UpperBound(aParams) = 0 then
-	for nParmIdx = 1 to nParmCnt
-		aParams[nParmIdx] = _sqlParams[nParmIdx].value
-	next
-end if
-nParmCnt = UpperBound(aParams)
-
-if nParmCnt <= 20 then
-	choose case nParmCnt
-		case 0
-			nRowCnt = Data.Retrieve()
-		case 1
-			nRowCnt = Data.Retrieve(aParams[1])
-		case 2
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2])
-		case 3
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3])
-		case 4
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4])
-		case 5
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5])
-		case 6
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6])
-		case 7
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7])
-		case 8
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8])
-		case 9
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9])
-		case 10
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10])
-		case 11
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11])
-		case 12
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12])
-		case 13
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13])
-		case 14
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14])
-		case 15
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15])
-		case 16
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16])
-		case 17
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17])
-		case 18
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18])
-		case 19
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18],aParams[19])
-		case 20
-			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18],aParams[19],aParams[20])
-	end choose
-else
-	invoker = Create n_scriptinvoker
-	invoker.Init(Data,"retrieve","LAV")
-	for nParmIdx = 1 to nParmCnt
-		invoker.SetArg(nParmIdx,aParams[nParmIdx])
-	next
-	nRowCnt = invoker.Invoke()
-	Destroy invoker
-end if
-
-return nRowCnt
 end function
 
 public function long of_getparam (readonly integer index, ref any value);if index < 1 or index > UpperBound(_sqlParams) then return RetCode.E_OUT_OF_BOUND
@@ -686,6 +568,140 @@ end if
 ds.Event OnInit(this)
 
 return ds
+end function
+
+private function integer _of_parsedwargs (string argstring, ref string args[], ref string argtypes[]);long nPos,nTabPos,nLastPos
+string sArgPair,sArg,sType,sArgs[],sArgTypes[]
+
+argString = Lower(argString + "~n")
+nPos = Pos(argString,"~n")
+do while nPos > 0
+	sArgPair = Mid(argString,nLastPos + 1,nPos - nLastPos - 1)
+	nTabPos = Pos(sArgPair,"~t")
+	sArg = Left(sArgPair,nTabPos - 1)
+	sType = Mid(sArgPair,nTabPos + 1)
+	if sArg <> "" and sType <> "" then
+		sArgs[UpperBound(sArgs) + 1] = sArg
+		sArgTypes[UpperBound(sArgTypes) + 1] = sType
+	end if
+	nLastPos = nPos
+	nPos = Pos(argString,"~n",nPos + 1)
+loop
+
+args = sArgs
+argTypes = sArgTypes
+
+return UpperBound(args)
+end function
+
+protected function long _of_retrievewithparams (readonly datastore data);long nRowCnt,nParmIdx,nParmCnt,nDwArgIdx,nDwArgCnt
+string sDwArgs[],sDwArgTypes[]
+any aParams[]
+boolean bHasNamedParm
+n_scriptinvoker invoker
+
+nDwArgCnt = _of_ParseDwArgs(Data.Describe("DataWindow.Table.Arguments"),ref sDwArgs,ref sDwArgTypes)
+
+nParmCnt = UpperBound(_sqlParams)
+for nParmIdx = 1 to nParmCnt
+	if _sqlParams[nParmIdx].name <> "" then
+		bHasNamedParm = true
+		exit
+	end if
+next
+
+//自动匹配DW参数索引
+if bHasNamedParm then
+	if nParmCnt >= nDwArgCnt then
+		for nDwArgIdx = 1 to nDwArgCnt
+			//查找参数
+			for nParmIdx = 1 to nParmCnt
+				if _sqlParams[nParmIdx].name = sDwArgs[nDwArgIdx] then
+					aParams[nDwArgIdx] = _sqlParams[nParmIdx].value
+					exit
+				end if
+			next
+			//没有找到按顺序取参
+			if nParmIdx > nParmCnt then
+				aParams[nDwArgIdx] = _sqlParams[nDwArgIdx].value
+			end if
+		next
+	end if
+end if
+
+if UpperBound(aParams) = 0 then
+	for nParmIdx = 1 to nParmCnt
+		aParams[nParmIdx] = _sqlParams[nParmIdx].value
+	next
+end if
+nParmCnt = UpperBound(aParams)
+
+//检查数窗参数类型和传参数据类型是否一致
+//if nParmCnt >= nDwArgCnt then
+//	for nParmIdx = 1 to nParmCnt
+//		if sDwArgTypes[nParmIdx] <> ClassName(aParams[nParmIdx]) then
+//			errInfo = Sprintf("参数类型不匹配: 期望 {} 实际 {}",sDwArgTypes[nParmIdx],ClassName(_sqlParams[nParmIdx].value))
+//			return -1
+//		end if
+//	next
+//end if
+
+if nParmCnt <= 20 then
+	choose case nParmCnt
+		case 0
+			nRowCnt = Data.Retrieve()
+		case 1
+			nRowCnt = Data.Retrieve(aParams[1])
+		case 2
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2])
+		case 3
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3])
+		case 4
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4])
+		case 5
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5])
+		case 6
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6])
+		case 7
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7])
+		case 8
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8])
+		case 9
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9])
+		case 10
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10])
+		case 11
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11])
+		case 12
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12])
+		case 13
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13])
+		case 14
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14])
+		case 15
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15])
+		case 16
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16])
+		case 17
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17])
+		case 18
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18])
+		case 19
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18],aParams[19])
+		case 20
+			nRowCnt = Data.Retrieve(aParams[1],aParams[2],aParams[3],aParams[4],aParams[5],aParams[6],aParams[7],aParams[8],aParams[9],aParams[10],aParams[11],aParams[12],aParams[13],aParams[14],aParams[15],aParams[16],aParams[17],aParams[18],aParams[19],aParams[20])
+	end choose
+else
+	invoker = Create n_scriptinvoker
+	invoker.Init(Data,"retrieve","LAV")
+	for nParmIdx = 1 to nParmCnt
+		invoker.SetArg(nParmIdx,aParams[nParmIdx])
+	next
+	nRowCnt = invoker.Invoke()
+	Destroy invoker
+end if
+
+return nRowCnt
 end function
 
 on n_cst_thread_task_sqlbase.create
