@@ -348,6 +348,7 @@ else
 end if
 
 //Background
+if sbDrawInfo.ParentMouseOver then nMainState += Enums.STATE_ACTIVE
 if sbDrawInfo.MouseOver then nMainState += Enums.STATE_HOVER
 if sbDrawInfo.MouseDown then nMainState += Enums.STATE_PRESSED
 
@@ -366,7 +367,8 @@ end if
 //Arrows
 if sbDrawInfo.MouseOver or sbDrawInfo.btnThumb.MouseDown or sbDrawInfo.btnArrowUp.MouseDown or sbDrawInfo.btnArrowDown.MouseDown then
 	if bDrawArrowUp and sbDrawInfo.btnArrowUp.Enabled and sbDrawInfo.Enabled then
-		nState = MakeLong(0,nMainState)
+		nState = 0
+		if sbDrawInfo.ParentMouseOver or sbDrawInfo.MouseOver then nState += Enums.STATE_ACTIVE
 		if sbDrawInfo.btnArrowUp.MouseOver then nState += Enums.STATE_HOVER
 		if sbDrawInfo.btnArrowUp.MouseDown then nState += Enums.STATE_PRESSED
 		bkColor = theme.of_GetColor(theme.CLR_SBARROWBKGND,nState)
@@ -384,7 +386,8 @@ if sbDrawInfo.MouseOver or sbDrawInfo.btnThumb.MouseDown or sbDrawInfo.btnArrowU
 	end if
 	
 	if bDrawArrowDown and sbDrawInfo.btnArrowDown.Enabled and sbDrawInfo.Enabled then
-		nState = MakeLong(0,nMainState)
+		nState = 0
+		if sbDrawInfo.ParentMouseOver or sbDrawInfo.MouseOver then nState += Enums.STATE_ACTIVE
 		if sbDrawInfo.btnArrowDown.MouseOver then nState += Enums.STATE_HOVER
 		if sbDrawInfo.btnArrowDown.MouseDown then nState += Enums.STATE_PRESSED
 		bkColor = theme.of_GetColor(theme.CLR_SBARROWBKGND,nState)
@@ -468,7 +471,8 @@ end if
 
 //Thumb
 if bDrawThumb then
-	nState = MakeLong(0,nMainState)
+	nState = 0
+	if sbDrawInfo.ParentMouseOver or sbDrawInfo.MouseOver then nState += Enums.STATE_ACTIVE
 	if sbDrawInfo.btnThumb.MouseOver then nState += Enums.STATE_HOVER
 	if sbDrawInfo.btnThumb.MouseDown then nState += Enums.STATE_PRESSED
 	if Not sbDrawInfo.btnThumb.Enabled then nState += Enums.STATE_DISABLED

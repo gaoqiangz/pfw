@@ -125,6 +125,7 @@ Int		_mouseDownIndex	= 0
 
 Boolean _MouseLeaveTracked 	= false
 Boolean _MouseCaptured 		= false
+Ulong _hBrushStaticBkgnd
 
 //System icon indexes
 Int		_maxIconIndex			= 0
@@ -257,6 +258,9 @@ event oncreated;//不能定义其它PBM_OTHER事件，否则会有冲突
 if Message.Number = WinMSG.WM_PUI_CREATED then
 	of_Reattach()
 	return 0
+elseif Message.Number = WinMsg.WM_CTLCOLORSTATIC then
+	Win32.SetBkColor(wparam,theme.of_GetColor(theme.CLR_BKGND,0))
+	return _hBrushStaticBkgnd
 else
 	return Event Other(wparam,lparam)
 end if
@@ -288,9 +292,17 @@ Win32.CopyScrollBarCreateInfo(ref sbCreateInfo,lpsbci,Win32.SIZEOF_SCROLLBARCREA
 
 if Not HSplitScroll then
 	sbCreateInfo.fBarSize = theme.#ScrollBarSize
+	sbCreateInfo.rcBorderMargin = theme.#ScrollBarBorderMargin
+else
+	if bVert then
+		sbCreateInfo.rcBorderMargin.left = Round((sbCreateInfo.fBarSize - theme.#ScrollBarSize) / 2,0)
+		sbCreateInfo.rcBorderMargin.right = sbCreateInfo.rcBorderMargin.left
+	else
+		sbCreateInfo.rcBorderMargin.top = Round((sbCreateInfo.fBarSize - theme.#ScrollBarSize) / 2,0)
+		sbCreateInfo.rcBorderMargin.bottom = sbCreateInfo.rcBorderMargin.top
+	end if
 end if
 sbCreateInfo.fArrowSize = theme.#ScrollBarArrowSize
-sbCreateInfo.rcBorderMargin = theme.#ScrollBarBorderMargin
 sbCreateInfo.showArrow = theme.#ScrollBarArrow
 
 Win32.CopyScrollBarCreateInfo(lpsbci,ref sbCreateInfo,Win32.SIZEOF_SCROLLBARCREATEINFO)
@@ -361,6 +373,9 @@ Items[IDX_MINI].ImageIndex		= _miniIconIndex
 
 Event Constructor()
 Post Event OnPostConstructor( )
+
+_hBrushStaticBkgnd = Win32.CreateSolidBrush(ToRGB(theme.of_GetColor(theme.CLR_BKGND,0)))
+
 end event
 
 event ondestructor;Event OnPreDestructor()
@@ -376,6 +391,8 @@ if _TTID > 0 then
 end if
 
 Destroy _ToolTip
+
+Win32.DeleteObject(_hBrushStaticBkgnd)
 end event
 
 event type unsignedlong ongetwindowrgn(real newwidth, real newheight);if Not TitleBar then return 0

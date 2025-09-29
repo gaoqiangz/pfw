@@ -1,14 +1,15 @@
 ﻿$PBExportHeader$scrollbardrawinfo.srs
 $PBExportComments$PowerUI~r~nBy gaoqiangz@msn.com
 global type scrollbardrawinfo from structure
-	ulong cbSize
-	boolean Visible
-	boolean Enabled
-	boolean MouseOver
-	boolean MouseDown
-	RECTF rcPaint
-	PAINTPANE btnArrowUp
-	PAINTPANE btnArrowDown
-	PAINTPANE btnThumb
+	unsignedlong		cbsize
+	boolean		visible
+	boolean		enabled
+	boolean		parentmouseover
+	boolean		mouseover
+	boolean		mousedown
+	rectf		rcpaint
+	paintpane		btnarrowup
+	paintpane		btnarrowdown
+	paintpane		btnthumb
 end type
 

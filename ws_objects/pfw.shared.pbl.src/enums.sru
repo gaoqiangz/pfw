@@ -93,22 +93,22 @@ Constant Uint BTS_SPLIT			= 2
 Constant Long SF_FORWARD 	= 0
 Constant Long SF_BACKWARD 	= 1
 //States
-Constant Ulong STATE_NONE			= 0
-Constant Ulong STATE_HOVER       	= 1
-Constant Ulong STATE_PRESSED     	= 2
-Constant Ulong STATE_FOCUS		   	= 4
-Constant Ulong STATE_CURRENT     	= 8
-Constant Ulong STATE_CHECKED     	= 16
-Constant Ulong STATE_SELECTED     	= 16
-Constant Ulong STATE_ACTIVE     	= 32
-Constant Ulong STATE_DRAGGING    	= 64
-Constant Ulong STATE_EXPANDED    	= 128
-Constant Ulong STATE_COLLAPSED   	= 256
-Constant Ulong STATE_DISABLED    	= 65536
-Constant Ulong STATE_HIGHLIGHTED	= 131072
-Constant Ulong STATE_FLASHING    	= 262144
-Constant Ulong STATE_DEFAULT    	= 524288
-Constant Ulong STATE_READONLY		= 1048576
+Constant Ulong STATE_NONE				= 0
+Constant Ulong STATE_DISABLED    	= 1
+Constant Ulong STATE_HOVER       	= 2
+Constant Ulong STATE_PRESSED     	= 4
+Constant Ulong STATE_FOCUS		   	= 8
+Constant Ulong STATE_ACTIVE     		= 16
+Constant Ulong STATE_CURRENT     	= 32
+Constant Ulong STATE_CHECKED     	= 64
+Constant Ulong STATE_SELECTED     	= 128
+Constant Ulong STATE_EXPANDED    	= 256
+Constant Ulong STATE_COLLAPSED   	= 512
+Constant Ulong STATE_HIGHLIGHTED		= 1024
+Constant Ulong STATE_DRAGGING    	= 2048
+Constant Ulong STATE_FLASHING    	= 4096
+Constant Ulong STATE_DEFAULT    		= 8192
+Constant Ulong STATE_READONLY			= 16384
 
 /*--- I18N ---*/
 //Source

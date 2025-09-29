@@ -448,7 +448,7 @@ Constant Long GWL_STYLE 		= -16
 Constant Long GWL_EXSTYLE	= -20 
 //ScrollBar
 Constant Long SIZEOF_SCROLLBARCREATEINFO 	= 28
-Constant Long SIZEOF_SCROLLBARDRAWINFO 	= 100
+Constant Long SIZEOF_SCROLLBARDRAWINFO 	= 104
 Constant Long SB_HORZ 	= 0
 Constant Long SB_VERT 	= 1
 Constant Long SB_CTL 	= 2
