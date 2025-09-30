@@ -297,7 +297,11 @@ else
 	if bVert then
 		sbCreateInfo.rcBorderMargin.left = Round((sbCreateInfo.fBarSize - theme.#ScrollBarSize) / 2,0)
 		sbCreateInfo.rcBorderMargin.right = sbCreateInfo.rcBorderMargin.left
+		sbCreateInfo.rcBorderMargin.top = theme.#ScrollBarBorderMargin.top
+		sbCreateInfo.rcBorderMargin.bottom = theme.#ScrollBarBorderMargin.bottom
 	else
+		sbCreateInfo.rcBorderMargin.left = theme.#ScrollBarBorderMargin.left
+		sbCreateInfo.rcBorderMargin.right = theme.#ScrollBarBorderMargin.right
 		sbCreateInfo.rcBorderMargin.top = Round((sbCreateInfo.fBarSize - theme.#ScrollBarSize) / 2,0)
 		sbCreateInfo.rcBorderMargin.bottom = sbCreateInfo.rcBorderMargin.top
 	end if
