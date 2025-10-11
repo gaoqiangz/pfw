@@ -42,7 +42,7 @@ event ongetcolor ( unsignedinteger colorflag,  unsignedlong state,  ref unsigned
 event onpreconstructor ( )
 event onpredestructor ( )
 event onpostconstructor ( )
-event oncreated pbm_other
+event onmessage pbm_other
 event type long ondrawscrollbar ( unsignedlong hdc,  unsignedlong lpsbdi,  boolean bvert,  long flags )
 event type long oncreatescrollbar ( unsignedlong lpsbci,  boolean bvert )
 event onconstructor pbm_constructor
@@ -63,6 +63,11 @@ event type long ongetminmaxinfo ( ref real maximizedx,  ref real maximizedy,  re
 theme theme
 end type
 global s_cst_datawindow s_cst_datawindow
+
+type prototypes
+private:
+function long GetClassName(ulong hWnd,ref string lpClassName,long nMaxCount) library "User32.dll" alias for "GetClassNameW"
+end prototypes
 
 type variables
 //* Copyright (c) 2013 - 2017
@@ -254,13 +259,17 @@ end if
 return 1
 end event
 
-event oncreated;//不能定义其它PBM_OTHER事件，否则会有冲突
+event onmessage;//不能定义其它PBM_OTHER事件，否则会有冲突
 if Message.Number = WinMSG.WM_PUI_CREATED then
 	of_Reattach()
 	return 0
 elseif Message.Number = WinMsg.WM_CTLCOLORSTATIC then
-	Win32.SetBkColor(wparam,theme.of_GetColor(theme.CLR_BKGND,0))
-	return _hBrushStaticBkgnd
+	string clsName
+	clsName = Space(20)
+	GetClassName(lparam,ref clsName,20)
+	if clsName = "Static" then
+		return _hBrushStaticBkgnd
+	end if
 else
 	return Event Other(wparam,lparam)
 end if
