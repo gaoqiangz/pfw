@@ -293,7 +293,10 @@ public function long of_query (readonly string sql, ref datastore ds, ref string
 string sSqlSyntax
 boolean bCreated,bSucc
 
-if sql = "" then return RetCode.E_INVALID_SQL
+if sql = "" then
+	errInfo = "E_INVALID_SQL"
+	return RetCode.E_INVALID_SQL
+end if
 
 of_ClearState()
 
@@ -307,11 +310,20 @@ try
 		ds.DataObject = Mid(sql,2)
 	else
 		sSqlSyntax = of_GridSyntaxFromSQL(sql,ref errInfo)
-		if sSqlSyntax = "" then return RetCode.E_INVALID_SQL
-		if ds.Create(sSqlSyntax) <> 1 then return RetCode.E_INVALID_SQL
+		if sSqlSyntax = "" then
+			errInfo = "E_INVALID_SQL"
+			return RetCode.E_INVALID_SQL
+		end if
+		if ds.Create(sSqlSyntax) <> 1 then
+			errInfo = "E_INVALID_SQL"
+			return RetCode.E_INVALID_SQL
+		end if
 	end if
 	rtCode = of_Retrieve(ds)
 	bSucc = IsSucceeded(rtCode)
+	if Not bSucc then
+		errInfo = SqlErrText
+	end if
 	return rtCode
 finally
 	if Not bSucc and bCreated then
