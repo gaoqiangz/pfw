@@ -47,13 +47,7 @@ long _nRowsInserted
 long _nRowsUpdated
 long _nRowsDeleted
 
-private:
-n_regexp _re
-
-constant string RE_NCHAR_PAT = "(=|\(|,)(\s+)'"
-constant string RE_NCHAR_RPL = "$1$2N'"
 end variables
-
 forward prototypes
 public function boolean of_isrowsexceeded ()
 public function long of_setmaxrows (readonly long maxrows)
@@ -61,6 +55,7 @@ public function long of_getinsertedcount ()
 public function long of_getupdatedcount ()
 public function long of_getdeletedcount ()
 public subroutine of_clearstate ()
+private function string _of_replacencharliteral (readonly string sql)
 end prototypes
 
 event oninit(n_cst_thread_task_sqlbase parenttask);#ParentTask = parentTask
@@ -90,6 +85,63 @@ _nRowsUpdated = 0
 _nRowsDeleted = 0
 end subroutine
 
+private function string _of_replacencharliteral (readonly string sql);//====================================================================
+// Function: _of_replacencharliteral()
+//--------------------------------------------------------------------
+// Description: 替换SQL NChar语法
+//--------------------------------------------------------------------
+// Arguments:
+// 	readonly	string	sql	
+//--------------------------------------------------------------------
+// Returns:  string
+//--------------------------------------------------------------------
+// Author:	gaoqiangz@msn.com		Date: 2025-12-25
+//--------------------------------------------------------------------
+//	Copyright (c) 金千枝（深圳）软件技术有限公司, All rights reserved.
+//--------------------------------------------------------------------
+// Modify History:
+//
+//====================================================================
+long nPos,nLen,nStmtBegin
+string sNewSql
+boolean bQuoted
+
+nLen = Len(sql)
+if nLen <= 0 then return ""
+
+for nPos = 1 to nLen
+	if Mid(sql,nPos,1) = "'" then
+		if bQuoted then
+			//ESCAPE
+			if Mid(sql,nPos + 1,1) = "'" then
+				if nStmtBegin = 0 then nStmtBegin = nPos
+				nPos ++
+				continue
+			end if
+		end if
+		bQuoted = Not bQuoted
+		if bQuoted then
+			if Mid(sql,nPos - 1,1) = "N" then
+				//已经是NChar语法，不再做处理
+				return sql
+			end if
+			if nStmtBegin < nPos then
+				sNewSql += Mid(sql,nStmtBegin,nPos - nStmtBegin) + "N'"
+				nStmtBegin = 0
+			end if
+		end if
+	else
+		if nStmtBegin = 0 then nStmtBegin = nPos
+	end if
+next
+
+if nStmtBegin > 0 and nStmtBegin <= nLen then
+	sNewSql += Mid(sql,nStmtBegin,nLen - nStmtBegin + 1)
+end if
+
+return sNewSql
+end function
+
 on n_cst_thread_task_sqlbase_ds.create
 call super::create
 TriggerEvent( this, "constructor" )
@@ -109,16 +161,9 @@ _nRowsDeleted = rowsDeleted
 
 end event
 
-event constructor;_re = Create n_regexp
-_re.Compile(RE_NCHAR_PAT,true)
-end event
-
-event destructor;Destroy _re
-end event
-
 event sqlpreview;if sqlType <> PreviewSelect! then
 	if #ParentTask.of_IsNCharBinding() then
-		SetSqlPreview(_re.Replace(sqlSyntax,RE_NCHAR_RPL))
+		SetSqlPreview(_of_ReplaceNCharLiteral(sqlSyntax))
 	end if
 end if
 return 0
