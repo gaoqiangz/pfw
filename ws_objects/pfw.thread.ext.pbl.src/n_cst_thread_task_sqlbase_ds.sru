@@ -56,7 +56,7 @@ public function long of_getinsertedcount ()
 public function long of_getupdatedcount ()
 public function long of_getdeletedcount ()
 public subroutine of_clearstate ()
-public function string _of_replacencharliteral (readonly string sql)
+private function string _of_replacencharliteral (readonly string sql)
 end prototypes
 
 event oninit(n_cst_thread_task_sqlbase parenttask);#ParentTask = parentTask
@@ -86,7 +86,7 @@ _nRowsUpdated = 0
 _nRowsDeleted = 0
 end subroutine
 
-public function string _of_replacencharliteral (readonly string sql);//====================================================================
+private function string _of_replacencharliteral (readonly string sql);//====================================================================
 // Function: _of_replacencharliteral()
 //--------------------------------------------------------------------
 // Description: 替换SQL NChar语法
