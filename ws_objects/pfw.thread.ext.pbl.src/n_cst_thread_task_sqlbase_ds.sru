@@ -48,6 +48,7 @@ long _nRowsUpdated
 long _nRowsDeleted
 
 end variables
+
 forward prototypes
 public function boolean of_isrowsexceeded ()
 public function long of_setmaxrows (readonly long maxrows)
@@ -55,7 +56,7 @@ public function long of_getinsertedcount ()
 public function long of_getupdatedcount ()
 public function long of_getdeletedcount ()
 public subroutine of_clearstate ()
-private function string _of_replacencharliteral (readonly string sql)
+public function string _of_replacencharliteral (readonly string sql)
 end prototypes
 
 event oninit(n_cst_thread_task_sqlbase parenttask);#ParentTask = parentTask
@@ -85,7 +86,7 @@ _nRowsUpdated = 0
 _nRowsDeleted = 0
 end subroutine
 
-private function string _of_replacencharliteral (readonly string sql);//====================================================================
+public function string _of_replacencharliteral (readonly string sql);//====================================================================
 // Function: _of_replacencharliteral()
 //--------------------------------------------------------------------
 // Description: 替换SQL NChar语法
@@ -129,6 +130,9 @@ for nPos = 1 to nLen
 				sNewSql += Mid(sql,nStmtBegin,nPos - nStmtBegin) + "N'"
 				nStmtBegin = 0
 			end if
+		else
+			//覆盖空白字符串
+			if nStmtBegin = 0 then nStmtBegin = nPos
 		end if
 	else
 		if nStmtBegin = 0 then nStmtBegin = nPos
