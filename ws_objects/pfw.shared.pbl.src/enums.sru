@@ -945,7 +945,7 @@ Constant Long CRYPTO_SYMCRYPT_MODE_CBC		= 1
 Constant Long CRYPTO_SYMCRYPT_MODE_CFB		= 2
 Constant Long CRYPTO_SYMCRYPT_MODE_DEFAULT	= CRYPTO_SYMCRYPT_MODE_ECB
 
-//RSA padding modes (n_crypto::RSAEncrypto/RSADecrypt:[padding])
+//RSA padding modes (n_crypto::RSAEncrypt/RSADecrypt:[padding])
 Constant Long CRYPTO_RSA_PADDING_PKCS1		= 0 //RSA_PKCS1_PADDING
 Constant Long CRYPTO_RSA_PADDING_OAEP 		= 1 //RSA_PKCS1_OAEP_PADDING 
 Constant Long CRYPTO_RSA_PADDING_DEFAULT	= CRYPTO_RSA_PADDING_PKCS1
