@@ -319,6 +319,8 @@ try
 			return RetCode.E_INVALID_SQL
 		end if
 	end if
+	//关闭DW自己的错误提示窗口
+	ds.Modify("DataWindow.NoUserPrompt=yes")
 	rtCode = of_Retrieve(ds)
 	bSucc = IsSucceeded(rtCode)
 	if Not bSucc then
