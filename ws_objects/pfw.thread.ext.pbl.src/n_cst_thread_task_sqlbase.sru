@@ -270,7 +270,7 @@ if n > 0 then
 		case "string"
 			for i = 1 to n
 				sVal += "~'" + String(ReplaceAll(paramArray[i],"'","''",true)) + "~'"
-				if i <> UpperBound(paramArray) then
+				if i <> n then
 					sVal += ","
 				end if
 			next
