@@ -1,0 +1,19 @@
+﻿$PBExportHeader$jsonfrom.srf
+global type jsonfrom from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function n_json JsonFrom(readonly string val)
+global function n_json JsonFrom(readonly long val)
+global function n_json JsonFrom(readonly longlong val)
+global function n_json JsonFrom(readonly double val)
+global function n_json JsonFrom(readonly boolean val)
+global function n_json JsonFrom(readonly powerobject object)
+global function n_json JsonFrom(readonly string arr[])
+global function n_json JsonFrom(readonly long arr[])
+global function n_json JsonFrom(readonly longlong arr[])
+global function n_json JsonFrom(readonly double arr[])
+global function n_json JsonFrom(readonly boolean arr[])
+global function n_json JsonFrom(readonly powerobject arr[])
+end prototypes
+
