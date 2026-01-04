@@ -1548,6 +1548,13 @@ if bIncludePFWXBase then
 	sIncludeExps[nExpCnt] = "pfwx.base:.*"
 end if
 
+FileDelete(sPackFilePath)
+FileDelete(Left(sPackFilePath,Len(sPackFilePath) - 3) + "pbd")
+if LibraryCreate(sPackFilePath,"PowerFramework~n(c)金千枝（深圳）软件技术有限公司") = -1 then
+	MessageBox("错误","创建PBL失败！~n" + sPackFilePath,StopSign!)
+	return
+end if
+
 /*--- build.bat ---*/
 hFile = FileOpen("build.bat",LineMode!,Write!,LockReadWrite!,Replace!)
 if hFile = -1 then
@@ -1571,10 +1578,6 @@ if hFile = -1 then
 end if
 
 FileWrite(hFile,"start session")
-
-FileWrite(hFile,Sprintf('file delete "{1}" "Clobber Always"',sPackFilePath))
-FileWrite(hFile,Sprintf('file delete "{1}" "Clobber Always"',Left(sPackFilePath,Len(sPackFilePath) - 3) + "pbd"))
-FileWrite(hFile,Sprintf('create library "{1}" "{2}"',sPackFilePath,"PowerFramework (c)金千枝（深圳）软件技术有限公司"))
 
 nCount = _wf_Split(GetLibraryList(),",",ref sPBLFiles,true)
 for nIndex = 1 to nCount
@@ -1607,6 +1610,7 @@ for nIndex = 1 to nCount
 next
 
 if cbx_compile.Checked then
+	FileWrite(hFile,'set debug false') //屏蔽`DEBUG`宏代码
 	FileWrite(hFile,Sprintf('set liblist "{1};{2}"',PACK_APP_PBD,sPackFilePath))
 	FileWrite(hFile,Sprintf('set application "{1}" pfw',PACK_APP_PBD))
 	FileWrite(hFile,'build application full')
