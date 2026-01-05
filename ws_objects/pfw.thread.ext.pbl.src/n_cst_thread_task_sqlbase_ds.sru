@@ -165,7 +165,7 @@ _nRowsDeleted = rowsDeleted
 
 end event
 
-event sqlpreview;if sqlType <> PreviewSelect! then
+event sqlpreview;if sqlType = PreviewUpdate! or sqlType = PreviewInsert! then
 	if #ParentTask.of_IsNCharBinding() then
 		SetSqlPreview(_of_ReplaceNCharLiteral(sqlSyntax))
 	end if
