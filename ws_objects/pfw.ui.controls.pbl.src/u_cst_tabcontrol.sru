@@ -1795,6 +1795,7 @@ return Items[index].visible
 end function
 
 public function integer of_select (readonly integer index);int oldSelectedIndex
+ulong hParentWnd,hFocusWnd
 
 if index < 1 or index > UpperBound(Items) then return RetCode.E_OUT_OF_BOUND
 if Not Items[index].Visible or Not Items[index].Enabled or Items[index].Floated then return RetCode.FAILED
@@ -1807,6 +1808,17 @@ if oldSelectedIndex > 0 then
 		if IsPrevented(Items[oldSelectedIndex].Page.Event OnDeactivating()) then return RetCode.FAILED
 	elseif Items[oldSelectedIndex].IsPageW then
 		if IsPrevented(Items[oldSelectedIndex].PageW.Event OnDeactivating()) then return RetCode.FAILED
+	end if
+	if Items[oldSelectedIndex].IsWindow then
+		hParentWnd = Handle(Items[oldSelectedIndex].ObjectW)
+	else
+		hParentWnd = Handle(Items[oldSelectedIndex].Object)
+	end if	
+	hFocusWnd = Win32.GetFocus()
+	if Win32.IsChild(hParentWnd,hFocusWnd) then
+		Items[oldSelectedIndex].hFocusChild = hFocusWnd
+	else
+		Items[oldSelectedIndex].hFocusChild = 0
 	end if
 end if
 if Items[index].IsPage then
@@ -1832,11 +1844,12 @@ _of_UpdateObjectPosition(_selectedIndex)
 if Items[_selectedIndex].IsWindow then
 	Items[_selectedIndex].ObjectW.Show()
 	Items[_selectedIndex].ObjectW.BringToTop = true
-	Items[_selectedIndex].ObjectW.SetFocus()
 else
 	Items[_selectedIndex].Object.Show()
 	Items[_selectedIndex].Object.BringToTop = true
-	Items[_selectedIndex].Object.SetFocus()
+end if
+if Items[_selectedIndex].hFocusChild <> 0 then
+	Win32.SetFocus(Items[_selectedIndex].hFocusChild)
 end if
 
 if oldSelectedIndex > 0 then

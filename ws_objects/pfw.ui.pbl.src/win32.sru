@@ -26,8 +26,11 @@ function boolean IsZoomed(ulong hwnd) library "user32.dll"
 function boolean IsIconic(ulong hwnd) library "user32.dll"
 function boolean IsWindowVisible(ulong hwnd) library "user32.dll"
 function boolean IsWindowEnabled(ulong hwnd) library "user32.dll"
+function boolean IsChild(ulong hWndParent,ulong hWnd) library "user32.dll"
 function ulong ShowWindow(ulong hwnd,ulong nCmdShow) library "user32.dll"
 function boolean ShowWindowAsync(ulong hwnd,ulong nCmdShow) library "user32.dll"
+function ulong GetFocus() library "user32.dll"
+function ulong SetFocus(ulong hwnd) library "user32.dll"
 function ulong GetActiveWindow() library "user32.dll"
 function ulong SetActiveWindow(ulong hwnd) library "user32.dll"
 function ulong GetForegroundWindow() library "user32.dll"
@@ -163,7 +166,6 @@ Subroutine CopyScrollBarDrawInfo(ref SCROLLBARDRAWINFO lpsbdi,ulong lpcsbdi,ulon
 //function boolean StrReplace(ref String strDst,String strSrc,String strRplSrc,String strRplDst,boolean bMatchCase) library "pfw.dll" alias for "pfwStrReplaceW"
 
 end prototypes
-
 type variables
 //* Copyright (c) 2013 - 2017
 //* 著作权由金千枝（深圳）软件技术有限公司所有。著作权人保留一切权利。
@@ -476,6 +478,7 @@ Constant Long WIN8_1			= 	203
 Constant Long WIN10			= 	204
 Constant Long WINLATEST		= 	1000
 end variables
+
 forward prototypes
 public function boolean iswinxp ()
 public function boolean iswin2000 ()

@@ -33,7 +33,7 @@ global type tabcontrolitem from structure
 	boolean		isole
 	boolean		objectowner
 	unsignedlong		holdparent
-	u_cst_tabcontrol parenttabcontrol
+	u_cst_tabcontrol		parenttabcontrol
 	w_cst_tabfloat		floatwnd
 	pointf		floatpos
 	sizef		floatsize
@@ -46,5 +46,6 @@ global type tabcontrolitem from structure
 	rectf		rcpaint
 	unsignedlong		paintpath
 	real		offsetposition
+	unsignedlong		hfocuschild
 end type
 
