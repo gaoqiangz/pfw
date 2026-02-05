@@ -85,6 +85,7 @@ public function long Update(readonly datastore ds, readonly boolean accept,reado
 public function long Update(readonly datawindow dw)
 public function long Update(readonly datawindow dw, readonly boolean accept)
 public function long Update(readonly datawindow dw, readonly boolean accept,readonly boolean resetflag)
+event OnDBError (long code, string sqlErrorText, string sqlSyntax)
 end type
 global n_sqlite n_sqlite
 
