@@ -450,6 +450,9 @@ event clicked;if sqlitedb.IsOpened() then return
 FileDelete("test.db")
 
 //URI协议参见(https://www.sqlite.org/uri.html)
+//扩展参数：
+//- check[=quick] 检查数据文件是否损坏，默认`PRAGMA integrity_check`，可指定为`PRAGMA quick_check`
+//- journal[=DELETE|TRUNCATE|PERSIST|MEMORY|WAL|OFF] 指定日志模式，默认`DELETE`
 if IsFailed(sqlitedb.Open("test.db?mode=rwc"/*[,password]*/)) then
 	MessageBox("OPEN",sqlitedb.SQLErrText())
 	return
