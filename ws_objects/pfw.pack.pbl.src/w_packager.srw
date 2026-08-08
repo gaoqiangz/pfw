@@ -2,6 +2,8 @@
 forward
 global type w_packager from window
 end type
+type cbx_ui_webview from checkbox within w_packager
+end type
 type cbx_utility_eventful from checkbox within w_packager
 end type
 type cbx_utility_misc from checkbox within w_packager
@@ -126,6 +128,7 @@ long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
 event onchecked ( checkbox source )
+cbx_ui_webview cbx_ui_webview
 cbx_utility_eventful cbx_utility_eventful
 cbx_utility_misc cbx_utility_misc
 cbx_x_utility_dwparser cbx_x_utility_dwparser
@@ -327,6 +330,7 @@ _depends[nIndex].objDepend = objDepend
 end subroutine
 
 on w_packager.create
+this.cbx_ui_webview=create cbx_ui_webview
 this.cbx_utility_eventful=create cbx_utility_eventful
 this.cbx_utility_misc=create cbx_utility_misc
 this.cbx_x_utility_dwparser=create cbx_x_utility_dwparser
@@ -379,7 +383,8 @@ this.cbx_parser_xml=create cbx_parser_xml
 this.cbx_parser_json=create cbx_parser_json
 this.cb_build=create cb_build
 this.ln_1=create ln_1
-this.Control[]={this.cbx_utility_eventful,&
+this.Control[]={this.cbx_ui_webview,&
+this.cbx_utility_eventful,&
 this.cbx_utility_misc,&
 this.cbx_x_utility_dwparser,&
 this.cbx_x_net_mqtt,&
@@ -434,6 +439,7 @@ this.ln_1}
 end on
 
 on w_packager.destroy
+destroy(this.cbx_ui_webview)
 destroy(this.cbx_utility_eventful)
 destroy(this.cbx_utility_misc)
 destroy(this.cbx_x_utility_dwparser)
@@ -511,6 +517,26 @@ _wf_AddDepend(cbx_x_net_http,cbx_parser_json)
 _wf_AddDepend(cbx_x_net_http,cbx_parser_xml)
 _wf_AddDepend(cbx_x_net_mqtt,cbx_parser_json)
 _wf_AddDepend(cbx_x_net_mqtt,cbx_parser_xml)
+end event
+
+type cbx_ui_webview from checkbox within w_packager
+string tag = "pfw.ui.webview:.*"
+integer x = 457
+integer y = 220
+integer width = 393
+integer height = 96
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+long textcolor = 33554432
+long backcolor = 67108864
+string text = "WebView"
+end type
+
+event clicked;parent.Event OnChecked(this)
 end event
 
 type cbx_utility_eventful from checkbox within w_packager
@@ -1478,7 +1504,7 @@ event clicked;parent.Event OnChecked(this)
 end event
 
 type cbx_parser_json from checkbox within w_packager
-string tag = "pfw.utility.parser:.*json"
+string tag = "pfw.utility.parser:.*json.*"
 integer x = 55
 integer y = 992
 integer width = 283
