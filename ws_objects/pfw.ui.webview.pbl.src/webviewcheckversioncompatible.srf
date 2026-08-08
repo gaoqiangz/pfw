@@ -1,0 +1,9 @@
+﻿$PBExportHeader$webviewcheckversioncompatible.srf
+global type webviewcheckversioncompatible from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function long WebViewCheckVersionCompatible ()
+global function long WebViewCheckVersionCompatible (readonly string runtimeDir)
+end prototypes
+
