@@ -1,0 +1,8 @@
+﻿$PBExportHeader$webviewsetminimumversion.srf
+global type webviewsetminimumversion from function_object native "pfw.dll"
+end type
+
+forward prototypes
+global function long WebViewSetMinimumVersion (string version)
+end prototypes
+
