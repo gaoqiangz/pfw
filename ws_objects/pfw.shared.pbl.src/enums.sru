@@ -561,6 +561,7 @@ Constant Long WEBVIEW_OPT_BUILTIN_ERROR_PAGE	= 3    // value:boolean - disabled 
 Constant Long WEBVIEW_OPT_DEVTOOLS				= 4	 // value:boolean - disabled by default
 Constant Long WEBVIEW_OPT_GET_FAVICON			= 5    // value:boolean - OnFaviconChanged, disabled by default
 Constant Long WEBVIEW_OPT_DEBUG_OUTPUT			= 6    // value:boolean - OnDebugOutput, disabled by default
+Constant Long WEBVIEW_OPT_BROWSER_ARGUMENTS	= 7    // value:string - https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/webview-features-flags
 
 //create window flags (n_webview::CreateWindow:[flags])
 //注:
