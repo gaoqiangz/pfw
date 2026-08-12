@@ -560,6 +560,7 @@ Constant Long WEBVIEW_OPT_CUSTOM_DIALOG		= 2    // value:boolean - OnAlert/OnCon
 Constant Long WEBVIEW_OPT_BUILTIN_ERROR_PAGE	= 3    // value:boolean - disabled by default
 Constant Long WEBVIEW_OPT_DEVTOOLS				= 4	 // value:boolean - disabled by default
 Constant Long WEBVIEW_OPT_GET_FAVICON			= 5    // value:boolean - OnFaviconChanged, disabled by default
+Constant Long WEBVIEW_OPT_DEBUG_OUTPUT			= 6    // value:boolean - OnDebugOutput, disabled by default
 
 //create window flags (n_webview::CreateWindow:[flags])
 //注:
