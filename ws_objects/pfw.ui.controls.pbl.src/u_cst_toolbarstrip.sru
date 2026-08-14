@@ -393,6 +393,7 @@ if _mouseOverIndex > 0 then
 		_of_DrawItem(li_mouseOverIndex,false)
 		
 		_of_PopupMenu(li_mouseOverIndex,xpos,ypos)
+		if Not IsValid(this) then return 0
 		
 		if Items[li_mouseOverIndex].ItemType = ITT_SPLIT then
 			Items[li_mouseOverIndex].Chevron.mousedown=false
@@ -418,7 +419,8 @@ if Chevron.MouseOver then
 	
 	Event OnButtonMouseDown(IDX_CHEVRON,xpos,ypos)
 	_of_Popup(xpos,ypos)
-	
+	if Not IsValid(this) then return 0
+		
 	Chevron.MouseDown = false
 	_of_DrawChevron(true)
 end if
