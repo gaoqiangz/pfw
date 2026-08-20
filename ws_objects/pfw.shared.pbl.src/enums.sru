@@ -554,14 +554,15 @@ Constant Long WEBVIEW_RUNTIME_FIXED			= 1
 Constant Long WEBVIEW_RUNTIME_AUTO			= 2
 
 //options (u_webview/n_webview::SetOption:[option])
-Constant Long WEBVIEW_OPT_STATUSBAR				= 0    // value:boolean - disabled by default
-Constant Long WEBVIEW_OPT_CONTEXT_MENU			= 1    // value:boolean - enabled by default
-Constant Long WEBVIEW_OPT_CUSTOM_DIALOG		= 2    // value:boolean - OnAlert/OnConfirm/OnPrompt, disabled by default
-Constant Long WEBVIEW_OPT_BUILTIN_ERROR_PAGE	= 3    // value:boolean - disabled by default
-Constant Long WEBVIEW_OPT_DEVTOOLS				= 4	 // value:boolean - disabled by default
-Constant Long WEBVIEW_OPT_GET_FAVICON			= 5    // value:boolean - OnFaviconChanged, disabled by default
-Constant Long WEBVIEW_OPT_DEBUG_OUTPUT			= 6    // value:boolean - OnDebugOutput, disabled by default
-Constant Long WEBVIEW_OPT_BROWSER_ARGUMENTS	= 7    // value:string - https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/webview-features-flags
+Constant Long WEBVIEW_OPT_STATUSBAR				= 1    // value:boolean - disabled by default
+Constant Long WEBVIEW_OPT_CONTEXT_MENU			= 2    // value:boolean - enabled by default
+Constant Long WEBVIEW_OPT_CUSTOM_DIALOG		= 4    // value:boolean - OnAlert/OnConfirm/OnPrompt, disabled by default
+Constant Long WEBVIEW_OPT_ACCELERATOR_KEY		= 8    // value:boolean - disabled by default, https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2settings3?view=webview2-1.0.4129.50#put_arebrowseracceleratorkeysenabled
+Constant Long WEBVIEW_OPT_BUILTIN_ERROR_PAGE	= 16   // value:boolean - disabled by default
+Constant Long WEBVIEW_OPT_DEVTOOLS				= 32	 // value:boolean - disabled by default
+Constant Long WEBVIEW_OPT_GET_FAVICON			= 64   // value:boolean - OnFaviconChanged, disabled by default
+Constant Long WEBVIEW_OPT_DEBUG_OUTPUT			= 128  // value:boolean - OnDebugOutput, disabled by default
+Constant Long WEBVIEW_OPT_BROWSER_ARGUMENTS	= 256  // value:string - https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/webview-features-flags
 
 //create window flags (n_webview::CreateWindow:[flags])
 //注:
