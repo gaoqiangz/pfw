@@ -48,33 +48,16 @@ QUERYDATA _query[]
 end variables
 
 forward prototypes
-public function n_uribuilder sethost (readonly string host)
-public function n_uribuilder addpath (readonly string path)
-public function n_uribuilder addquery (readonly string name, readonly string value)
 public function n_uribuilder addquery (readonly string name, readonly long value)
 public function n_uribuilder addquery (readonly string name, readonly double value)
 public function n_uribuilder addquery (readonly string name, readonly date value)
 public function n_uribuilder addquery (readonly string name, readonly datetime value)
 public function n_uribuilder addquery (readonly string name, readonly longlong value)
 public function string serialize ()
+public function n_uribuilder addpath (string path)
+public function n_uribuilder addquery (string name, string value)
+public function n_uribuilder sethost (readonly string host)
 end prototypes
-
-public function n_uribuilder sethost (readonly string host);_host = host
-return this
-end function
-
-public function n_uribuilder addpath (readonly string path);if path = "" then return this
-_path[UpperBound(_path) + 1] = path
-return this
-end function
-
-public function n_uribuilder addquery (readonly string name, readonly string value);int nIndex
-if name = "" or value = "" then return this
-nIndex = UpperBound(_query) + 1
-_query[nIndex].name = name
-_query[nIndex].value = value
-return this
-end function
 
 public function n_uribuilder addquery (readonly string name, readonly long value);return AddQuery(name,String(value))
 end function
@@ -94,14 +77,11 @@ end function
 public function string serialize ();string ls_uri
 int nIndex,nCount
 
-ls_uri = Trim(_host)
-if ls_uri <> "" then
-	if Right(ls_uri,1) <> "/" then ls_uri += "/"
-end if
+ls_uri = _host
 
 nCount = UpperBound(_path)
 for nIndex = 1 to nCount
-	if nIndex > 1 then ls_uri += "/"
+	if Right(ls_uri,1) <> "/" and Left(_path[nIndex],1) <> "/" then ls_uri += "/"
 	ls_uri += _path[nIndex]
 next
 if ls_uri = "" then return ""
@@ -114,6 +94,33 @@ for nIndex = 1 to nCount
 next
 
 return ls_uri
+end function
+
+public function n_uribuilder addpath (string path);path = Trim(path)
+
+if path = "" then return this
+
+_path[UpperBound(_path) + 1] = path
+
+return this
+end function
+
+public function n_uribuilder addquery (string name, string value);int nIndex
+
+name = Trim(name)
+value = Trim(value)
+
+if name = "" or value = "" then return this
+
+nIndex = UpperBound(_query) + 1
+_query[nIndex].name = name
+_query[nIndex].value = value
+
+return this
+end function
+
+public function n_uribuilder sethost (readonly string host);_host = Trim(host)
+return this
 end function
 
 on n_uribuilder.create
