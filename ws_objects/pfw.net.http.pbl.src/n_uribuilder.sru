@@ -95,8 +95,10 @@ public function string serialize ();string ls_uri
 int nIndex,nCount
 
 ls_uri = Trim(_host)
-if Right(ls_uri,1) <> "/" then ls_uri += "/"
-	
+if ls_uri <> "" then
+	if Right(ls_uri,1) <> "/" then ls_uri += "/"
+end if
+
 nCount = UpperBound(_path)
 for nIndex = 1 to nCount
 	if nIndex > 1 then ls_uri += "/"
